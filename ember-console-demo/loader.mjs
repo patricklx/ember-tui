@@ -1,6 +1,6 @@
 import { resolve as resolvePath, dirname } from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
-import { existsSync, readdirSync, statSync, readFileSync } from 'fs';
+import { existsSync, readdirSync, statSync, readFileSync, realpathSync } from 'fs';
 import { cwd } from 'process';
 import { transformSync } from '@babel/core';
 import babelConfig from './babel.config.cjs';
@@ -52,20 +52,6 @@ function tryExtensions(basePath, extensions = ['js', 'ts', 'gts']) {
 }
 
 export async function resolve(specifier, context, nextResolve) {
-  // Handle ember-source/* imports
-  if (specifier.startsWith('ember-source/dist/packages/')) {
-    const relativePath = specifier.replace('ember-source/dist/packages/', '');
-    const basePath = resolvePath(emberSourcePath, relativePath);
-    const resolved = tryExtensions(basePath);
-
-    if (resolved) {
-      return {
-        url: pathToFileURL(resolved).href,
-        shortCircuit: true,
-      };
-    }
-  }
-
   // Handle @ember/* imports
   if (specifier.startsWith('@ember/')) {
     const basePath = resolvePath(emberSourcePath, specifier);
@@ -82,6 +68,8 @@ export async function resolve(specifier, context, nextResolve) {
   // Handle @glimmer/* imports
   if (specifier.startsWith('@glimmer/')) {
     const glimmerPackage = specifier.replace('@glimmer/', '');
+		console.log(glimmerPackage);
+		console.log(glimmerDirs);
     if (glimmerDirs.includes(glimmerPackage)) {
       const basePath = resolvePath(glimmerPath, glimmerPackage);
       const resolved = tryExtensions(basePath);
@@ -129,7 +117,8 @@ export async function resolve(specifier, context, nextResolve) {
 export async function load(url, context, nextLoad) {
 	let filePath = url;
 	try {
-		filePath = fileURLToPath(url)
+		filePath = fileURLToPath(url);
+		filePath = realpathSync(filePath);
 	} catch (e) {
 		console.log('url', url, context);
 	}

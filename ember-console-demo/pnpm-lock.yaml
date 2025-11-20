@@ -21,8 +21,8 @@ importers:
         specifier: ^5.3.0
         version: 5.6.2
       ember-console:
-        specifier: file:../ember-console
-        version: ember-ink@file:../ember-console(@glimmer/component@2.0.0)(@glimmer/tracking@1.1.2)
+        specifier: link:../ember-console
+        version: link:../ember-console
       ember-load-initializers:
         specifier: ^2.1.2
         version: 2.1.2(@babel/core@7.28.5)
@@ -1828,12 +1828,6 @@ packages:
     resolution: {integrity: sha512-BtkjulweiXo9c3yVWrtexw2dTmBrvavD/xixNC6TKOBdrixUwU+6nuOO9dufDWsMxoid7MvtmDpzc9+mE8PdaA==}
     engines: {node: 10.* || >= 12.*}
 
-  ember-ink@file:../ember-console:
-    resolution: {directory: ../ember-console, type: directory}
-    peerDependencies:
-      '@glimmer/component': ^1.1.2
-      '@glimmer/tracking': ^1.1.2
-
   ember-load-initializers@2.1.2:
     resolution: {integrity: sha512-CYR+U/wRxLbrfYN3dh+0Tb6mFaxJKfdyz+wNql6cqTrA0BBi9k6J3AaKXj273TqvEpyyXegQFFkZEiuZdYtgJw==}
     engines: {node: 6.* || 8.* || >= 10.*}
@@ -3310,9 +3304,6 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-
-  yoga-layout@3.2.1:
-    resolution: {integrity: sha512-0LPOt3AxKqMdFBZA3HBAt/t/8vIKq7VaQYbuA8WxCgung+p9TVyKRYdpvCb80HcdTN2NkbIKbhNwKUfm3tQywQ==}
 
 snapshots:
 
@@ -5548,13 +5539,6 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  ember-ink@file:../ember-console(@glimmer/component@2.0.0)(@glimmer/tracking@1.1.2):
-    dependencies:
-      '@glimmer/component': 2.0.0
-      '@glimmer/tracking': 1.1.2
-      chalk: 5.6.2
-      yoga-layout: 3.2.1
-
   ember-load-initializers@2.1.2(@babel/core@7.28.5):
     dependencies:
       ember-cli-babel: 7.26.11
@@ -7261,5 +7245,3 @@ snapshots:
   yallist@3.1.1: {}
 
   yocto-queue@0.1.0: {}
-
-  yoga-layout@3.2.1: {}

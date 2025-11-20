@@ -10,7 +10,7 @@
     "build": "rollup -c"
   },
   "dependencies": {
-    "ember-console": "file:../ember-console",
+    "ember-console": "link:../ember-console",
     "ember-source": "^6.8.2",
     "@glimmer/tracking": "^1.1.2",
     "@glimmer/component": "^2.0.0",
