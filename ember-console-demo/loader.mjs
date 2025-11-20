@@ -127,7 +127,12 @@ export async function resolve(specifier, context, nextResolve) {
 }
 
 export async function load(url, context, nextLoad) {
-  const filePath = fileURLToPath(url);
+	let filePath = url;
+	try {
+		filePath = fileURLToPath(url)
+	} catch (e) {
+		console.log('url', url, context);
+	}
 
   // Check if file needs transpilation
   if (filePath.endsWith('.ts') || filePath.endsWith('.gts') || filePath.endsWith('.js')) {

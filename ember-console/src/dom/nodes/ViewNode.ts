@@ -92,7 +92,7 @@ export default class ViewNode {
   }
 
   set tagName(name) {
-    this._tagName = normalizeElementName(name);
+    this._tagName = name;
   }
 
   get tagName() {

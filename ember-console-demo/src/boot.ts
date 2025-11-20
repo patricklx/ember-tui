@@ -1,4 +1,4 @@
-import { setup, TerminalDocumentNode } from 'ember-console';
+import { setup, DocumentNode } from 'ember-console';
 import App from './app';
 import type ApplicationClass from "@ember/application";
 import env from "./config/env";
@@ -8,7 +8,7 @@ function init(
 	env
 ) {
 
-	env.rootElement = TerminalDocumentNode.createElement('root-layout');
+	env.rootElement = DocumentNode.getInstance().body;
 
 	const app = Application.create({
 		// @ts-expect-error expected

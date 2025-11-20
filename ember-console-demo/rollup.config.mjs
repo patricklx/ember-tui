@@ -46,10 +46,12 @@ function emberSourceAliases() {
     resolveId(source) {
       // Handle @ember/* imports
       if (source.startsWith('@ember/')) {
-        const resolved = path.join(emberSourcePath, source, 'index.js');
+        let resolved = path.join(emberSourcePath, source, 'index.js');
         if (fs.existsSync(resolved)) {
           return resolved;
         }
+				resolved = path.join(emberSourcePath, source);
+				return this.resolve(resolved);
       }
 
       // Handle @glimmer/* imports

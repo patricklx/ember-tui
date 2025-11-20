@@ -1,4 +1,4 @@
-import EmberRouter from 'ember-source/dist/packages/@ember/routing/router';
+import EmberRouter from '@ember/routing/router';
 import ENV from './config/env';
 
 export default class Router extends EmberRouter {

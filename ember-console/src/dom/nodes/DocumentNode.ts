@@ -33,7 +33,6 @@ export default class DocumentNode extends ViewNode {
   head: any;
   config: any;
   declare nodeMap: Map<any, any>;
-  page: PageElement | undefined;
   body: ElementNode | undefined;
   documentElement = {
     dataset: {},
@@ -53,6 +52,7 @@ export default class DocumentNode extends ViewNode {
     this.tagName = 'docNode';
     this.nodeType = 9;
     this.head = new HeadNode('head', this);
+    this.body = new HeadNode('body', this);
     this.appendChild(this.head);
     this.nodeMap = new Map();
   }
@@ -70,6 +70,10 @@ export default class DocumentNode extends ViewNode {
     };
     return event;
   }
+
+	createElement(tagName: string) {
+		return new ElementNode(tagName);
+	}
 
   createComment(text: string) {
     return new CommentNode(text);
