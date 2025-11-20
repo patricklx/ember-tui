@@ -19,6 +19,6 @@
     "emitDecoratorMetadata": true,
     "types": ["node"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/**/*.gts"],
   "exclude": ["node_modules", "dist"]
 }

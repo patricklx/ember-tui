@@ -1,5 +1,32 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
+import { babel } from '@rollup/plugin-babel';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Content-tag preprocessor for .gts files
+import ContentTag from 'content-tag';
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+const Preprocessor = new ContentTag.Preprocessor();
+
+// Plugin to preprocess .gts files
+function gtsPreprocessor() {
+	return {
+		name: 'gts-preprocessor',
+		transform(code, id) {
+			if (id.endsWith('.gts') || id.endsWith('.gjs')) {
+				const result = Preprocessor.process(code, {
+					inline_source_map: true,
+				});
+				return {
+					code: result.code,
+					map: null,
+				};
+			}
+			return null;
+		},
+	};
+}
 
 export default {
   input: 'src/index.ts',
@@ -17,14 +44,14 @@ export default {
     'yoga-layout',
   ],
   plugins: [
+		gtsPreprocessor(),
     nodeResolve({
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts', '.js', '.gts', '.gjs'],
     }),
-    typescript({
-      tsconfig: './tsconfig.json',
-      declaration: false, // Glint handles declarations
-      declarationMap: false,
-      outDir: 'dist',
-    }),
+		babel({
+			babelHelpers: 'inline',
+			extensions: ['.js', '.ts', '.gts', '.gjs'],
+			configFile: path.resolve(__dirname, 'babel.config.cjs'),
+		}),
   ],
 };
