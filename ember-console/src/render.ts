@@ -6,6 +6,10 @@
 import { setup } from './setup.js';
 import TerminalDocumentNode from './dom/nodes/TerminalDocumentNode.js';
 import TerminalElementNode from './dom/nodes/TerminalElementNode.js';
+import { elementIterator } from "./dom/nodes/DocumentNode";
+import ElementNode from "./dom/nodes/ElementNode";
+import TextNode from "./dom/nodes/TextNode";
+import { TerminaTextElement } from "./dom/native-elements/TerminaTextElement";
 
 export interface RenderOptions {
   /**
@@ -48,40 +52,12 @@ export interface RenderInstance {
  * Render a Glimmer component to the terminal
  */
 export function render(
-  component: any,
+  rootNode: ElementNode,
   options: RenderOptions = {}
-): RenderInstance {
-  const {
-    stdout = process.stdout,
-    stdin = process.stdin,
-    stderr = process.stderr,
-  } = options;
-
-  // Setup the terminal environment
-  const document = setup();
-
-  // For now, we'll just render the component tree to the document
-  // Full Glimmer VM integration will come in the next phase
-  
-  // Create a root element
-  const root = document.createElement('terminal-root') as TerminalElementNode;
-  document.body.appendChild(root);
-
-  // Render the component (placeholder - will be replaced with Glimmer VM)
-  // For now, just log that we're ready
-  console.log('Ember-Ink initialized');
-  console.log('Document structure:', document.body.childNodes.length, 'children');
-
-  return {
-    document,
-    unmount() {
-      // Clear the document
-      while (document.body.childNodes.length > 0) {
-        document.body.removeChild(document.body.childNodes[0]!);
-      }
-    },
-    clear() {
-      stdout.write('\x1Bc'); // Clear terminal
-    },
-  };
+): void {
+	for (const node of elementIterator(rootNode)) {
+		if (node instanceof TerminaTextElement) {
+			console.log(node.text);
+		}
+	}
 }

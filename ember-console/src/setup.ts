@@ -6,10 +6,30 @@
 import TerminalDocumentNode from './dom/nodes/DocumentNode.js';
 import TerminalElementNode from './dom/nodes/TerminalElementNode.js';
 import ViewNode from "./dom/nodes/ViewNode";
+import { SimpleDynamicAttribute } from '@glimmer/runtime';
+import { registerElements } from "./dom/setup-registry";
+
+
+SimpleDynamicAttribute.prototype.set = function (dom, value) {
+	const { name, namespace } = this.attribute;
+	dom.__setAttribute(name, value as any, namespace);
+};
+
+SimpleDynamicAttribute.prototype.update = function (value) {
+	const normalizedValue = value;
+	const { element: element, name: name } = this.attribute;
+	if (null === normalizedValue) {
+		element.removeAttribute(name);
+	} else {
+		element.setAttribute(name, normalizedValue as string);
+	}
+};
 
 export function setup() {
   // Create the terminal document
   const document = TerminalDocumentNode.getInstance();
+
+	registerElements();
 
   // Setup global objects for Glimmer/Ember compatibility
   const g = globalThis as any;

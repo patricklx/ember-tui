@@ -20,6 +20,7 @@ const glimmerDirs = existsSync(glimmerPath) ? readdirSync(glimmerPath) : [];
 // Helper function to try multiple extensions
 function tryExtensions(basePath, extensions = ['js', 'ts', 'gts']) {
   // Try with extensions first
+	basePath = basePath.replace('.js', '');
   for (const ext of extensions) {
     const fullPath = `${basePath}.${ext}`;
     if (existsSync(fullPath)) {
@@ -68,8 +69,6 @@ export async function resolve(specifier, context, nextResolve) {
   // Handle @glimmer/* imports
   if (specifier.startsWith('@glimmer/')) {
     const glimmerPackage = specifier.replace('@glimmer/', '');
-		console.log(glimmerPackage);
-		console.log(glimmerDirs);
     if (glimmerDirs.includes(glimmerPackage)) {
       const basePath = resolvePath(glimmerPath, glimmerPackage);
       const resolved = tryExtensions(basePath);
@@ -120,7 +119,7 @@ export async function load(url, context, nextLoad) {
 		filePath = fileURLToPath(url);
 		filePath = realpathSync(filePath);
 	} catch (e) {
-		console.log('url', url, context);
+
 	}
 
   // Check if file needs transpilation

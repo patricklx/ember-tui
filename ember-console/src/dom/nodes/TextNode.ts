@@ -1,4 +1,5 @@
 import ViewNode from './ViewNode.ts';
+import { TerminaTextElement } from "../native-elements/TerminaTextElement";
 
 export default class TextNode extends ViewNode {
   text: any;
@@ -26,5 +27,8 @@ export default class TextNode extends ViewNode {
 
   setText(text: string) {
     this.text = text;
+		if (this._parentNode instanceof TerminaTextElement) {
+			this._parentNode.updateText();
+		}
   }
 }

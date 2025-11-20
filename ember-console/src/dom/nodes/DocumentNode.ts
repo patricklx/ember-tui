@@ -2,8 +2,9 @@ import CommentNode from './CommentNode.ts';
 import ElementNode from './ElementNode.ts';
 import TextNode from './TextNode.ts';
 import ViewNode, { EventListener } from './ViewNode.ts';
+import { createElement } from "../element-registry";
 
-function* elementIterator(el: any): Generator<any, void, unknown> {
+export function* elementIterator(el: any): Generator<ElementNode, void, undefined> {
   yield el;
   for (const child of el.childNodes) {
     yield* elementIterator(child);
@@ -72,7 +73,7 @@ export default class DocumentNode extends ViewNode {
   }
 
 	createElement(tagName: string) {
-		return new ElementNode(tagName);
+		return createElement(tagName);
 	}
 
   createComment(text: string) {
