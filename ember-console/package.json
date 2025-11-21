@@ -18,7 +18,8 @@
     "build": "rollup --config",
     "dev": "rollup --config --watch",
     "clean": "rm -rf dist",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "test:update": "vitest --run --update"
   },
   "keywords": [
     "ember-addon"

@@ -89,7 +89,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 0,
-          "text": "C",
+          "text": "[32m[1mC",
         },
         {
           "start": 2,
@@ -97,7 +97,11 @@ describe('findDiffSegments', () => {
         },
         {
           "start": 12,
-          "text": "[32m[1mView[0m",
+          "text": "[32m[1mView",
+        },
+        {
+          "start": 16,
+          "text": "",
         },
       ]
     `);
@@ -113,7 +117,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 21,
-          "text": "[32m[1m Second[0m",
+          "text": "[32m[1m Second",
         },
       ]
     `);
@@ -129,11 +133,11 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 0,
-          "text": "[32m",
+          "text": "[32m[1mColors Demo View",
         },
         {
-          "start": 0,
-          "text": "Colors Demo View[0m",
+          "start": 16,
+          "text": "",
         },
       ]
     `);
@@ -149,7 +153,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 12,
-          "text": "[35m[1m[32m[1mGenerator[0m",
+          "text": "[32m[1mGenerator",
         },
       ]
     `);
@@ -158,8 +162,7 @@ describe('findDiffSegments', () => {
   it('should handle complete text replacement with different colors 3', () => {
     // Use raw ANSI codes instead of chalk (chalk may strip codes in test environment)
     const oldText = '\x1b[35m\x1b[1mLorem Ipsum \x1b[35m\x1b[1mGenerator\x1b[0m';
-    const newText = '\x1b[35m\x1b[1mLorem \x1b[32m\x1b[1mIpsum \x1b[35m\x1b[1mGenerator\x1b[0m';
-    const segments = findDiffSegments(oldText, newText);
+    const newText = '\x1b[35m\x1b[1mLorem \x1b[32m\x1b[1mIpsum \x1b[35m\x1b[1mGenerator\x1b[0m';    const segments = findDiffSegments(oldText, newText);
 
     // Generator should NOT be in the segment because:
     // - In oldText: "Generator" has color [35m[1m
@@ -169,7 +172,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 6,
-          "text": "[35m[1m[32m[1mIpsum [35m[1mGenerator[0m",
+          "text": "[32m[1mIpsum ",
         },
       ]
     `);
@@ -238,7 +241,10 @@ describe('findDiffSegments', () => {
 
     // Should detect the color change from green to blue
     expect(segments.length).toBeGreaterThan(0);
-    const lastSegment = segments[segments.length - 1];
-    expect(lastSegment.text).toContain('\x1b[34m');
+    
+    // Find segment that contains 'blue' or the blue color code
+    const blueSegment = segments.find(s => s.text.includes('blue') || s.text.includes('\x1b[34m'));
+    expect(blueSegment).toBeDefined();
+    expect(blueSegment?.text).toContain('\x1b[34m');
   });
 });

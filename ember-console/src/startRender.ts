@@ -138,6 +138,29 @@ export function tokenize(text: string): Token[] {
 }
 
 /**
+ * Get all active ANSI codes up to a given visual position
+ */
+export function getActiveAnsiCodes(tokens: Token[], upToVisualPos: number): string {
+  let activeAnsi = '';
+  let currentPos = 0;
+  
+  for (const token of tokens) {
+    if (currentPos >= upToVisualPos) {
+      break;
+    }
+    
+    if (token.isAnsi) {
+      // Keep track of the most recent ANSI codes
+      activeAnsi += token.value;
+    }
+    
+    currentPos += token.visualLength;
+  }
+  
+  return activeAnsi;
+}
+
+/**
  * Represents a range of text with its active ANSI state
  */
 interface StateRange {
@@ -158,28 +181,58 @@ export function extractStateRanges(tokens: Token[]): StateRange[] {
   let currentFullText = '';
   let rangeStart = 0;
   let visualPos = 0;
+  let pendingAnsiCodes = '';
   
   for (const token of tokens) {
     if (token.isAnsi) {
-      // ANSI code changes the state
-      if (currentText.length > 0) {
-        // Save the previous range before state changes
-        ranges.push({
-          visualStart: rangeStart,
-          visualEnd: visualPos,
-          ansiState: currentAnsiState,
-          text: currentText,
-          fullText: currentFullText
-        });
-        currentText = '';
-        currentFullText = '';
-        rangeStart = visualPos;
+      // Accumulate ANSI codes
+      pendingAnsiCodes += token.value;
+      
+      // Check if this is a reset code
+      if (token.value === '\x1b[0m') {
+        // Reset clears the state
+        if (currentText.length > 0) {
+          // Save current range before reset
+          ranges.push({
+            visualStart: rangeStart,
+            visualEnd: visualPos,
+            ansiState: currentAnsiState,
+            text: currentText,
+            fullText: currentFullText
+          });
+          currentText = '';
+          currentFullText = '';
+          rangeStart = visualPos;
+          currentAnsiState = '';
+        }
+        // Clear pending codes too
+        pendingAnsiCodes = '';
       }
-      // Update state
-      currentAnsiState += token.value;
-      currentFullText += token.value;
     } else {
-      // Regular character
+      // Regular character - apply any pending ANSI codes
+      if (pendingAnsiCodes) {
+        if (currentText.length > 0) {
+          // ANSI state changed, save previous range
+          ranges.push({
+            visualStart: rangeStart,
+            visualEnd: visualPos,
+            ansiState: currentAnsiState,
+            text: currentText,
+            fullText: currentFullText
+          });
+          currentText = '';
+          currentFullText = '';
+          rangeStart = visualPos;
+          // Start fresh with new state
+          currentAnsiState = pendingAnsiCodes;
+        } else {
+          // No text yet, just accumulate
+          currentAnsiState += pendingAnsiCodes;
+        }
+        currentFullText += pendingAnsiCodes;
+        pendingAnsiCodes = '';
+      }
+      
       currentText += token.value;
       currentFullText += token.value;
       visualPos += token.visualLength;
@@ -210,69 +263,103 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
   const oldRanges = extractStateRanges(oldTokens);
   const newRanges = extractStateRanges(newTokens);
   
-  const segments: TextSegment[] = [];
+const segments: TextSegment[] = [];
   
-  let oldIdx = 0;
-  let newIdx = 0;
-  let oldVisualPos = 0;
-  let newVisualPos = 0;
+  // Build a map of visual positions to ranges for easier comparison
+  const maxVisualLength = Math.max(
+    oldRanges.length > 0 ? oldRanges[oldRanges.length - 1].visualEnd : 0,
+    newRanges.length > 0 ? newRanges[newRanges.length - 1].visualEnd : 0
+  );
   
-  while (oldIdx < oldRanges.length || newIdx < newRanges.length) {
-    const oldRange = oldIdx < oldRanges.length ? oldRanges[oldIdx] : null;
-    const newRange = newIdx < newRanges.length ? newRanges[newIdx] : null;
+  let currentSegmentStart = -1;
+  let currentSegmentText = '';
+  let currentSegmentAnsiState = '';
+  
+  for (let visualPos = 0; visualPos < maxVisualLength; visualPos++) {
+    // Find the range that contains this visual position
+    const oldRange = oldRanges.find(r => visualPos >= r.visualStart && visualPos < r.visualEnd);
+    const newRange = newRanges.find(r => visualPos >= r.visualStart && visualPos < r.visualEnd);
     
-    if (!newRange) {
-      // No more new ranges, we're done (old text was longer)
-      break;
-    }
+    // Get the character at this position
+    const oldChar = oldRange ? oldRange.text[visualPos - oldRange.visualStart] : undefined;
+    const newChar = newRange ? newRange.text[visualPos - newRange.visualStart] : undefined;
     
-    if (!oldRange) {
-      // No more old ranges, all remaining new ranges are additions
-      segments.push({
-        start: newVisualPos,
-        text: newRange.ansiState + newRange.text
-      });
-      newVisualPos = newRange.visualEnd;
-      newIdx++;
-      continue;
-    }
+    // Get the ANSI state at this position
+    const oldState = oldRange ? oldRange.ansiState : '';
+    const newState = newRange ? newRange.ansiState : '';
     
-    // Compare ranges at the same visual position
-    const oldRangeLength = oldRange.visualEnd - oldRange.visualStart;
-    const newRangeLength = newRange.visualEnd - newRange.visualStart;
+    // Check if this position differs
+    const charMatches = oldChar === newChar;
+    const stateMatches = oldState === newState;
+    const positionMatches = charMatches && stateMatches;
     
-    // Check if ANSI state and text content are identical
-    const stateMatches = oldRange.ansiState === newRange.ansiState;
-    const textMatches = oldRange.text === newRange.text;
-    
-    if (stateMatches && textMatches && oldRangeLength === newRangeLength) {
-      // Ranges are identical, skip both
-      oldVisualPos = oldRange.visualEnd;
-      newVisualPos = newRange.visualEnd;
-      oldIdx++;
-      newIdx++;
+    if (!positionMatches) {
+      // Position differs - start or continue a segment
+      if (currentSegmentStart === -1) {
+        // Start a new segment
+        currentSegmentStart = visualPos;
+        currentSegmentAnsiState = newState;
+        currentSegmentText = '';
+      } else if (currentSegmentAnsiState !== newState) {
+        // ANSI state changed within a diff - close current segment and start new one
+        segments.push({
+          start: currentSegmentStart,
+          text: currentSegmentAnsiState + currentSegmentText
+        });
+        currentSegmentStart = visualPos;
+        currentSegmentAnsiState = newState;
+        currentSegmentText = '';
+      }
+      
+      // Add the new character to the segment
+      if (newChar !== undefined) {
+        currentSegmentText += newChar;
+      }
     } else {
-      // Ranges differ, create a segment for the new range
-      segments.push({
-        start: newVisualPos,
-        text: newRange.ansiState + newRange.text
-      });
-      
-      // Advance positions
-      const minLength = Math.min(oldRangeLength, newRangeLength);
-      if (minLength > 0) {
-        oldVisualPos += minLength;
-        newVisualPos += minLength;
-      }
-      
-      // Advance to next range(s)
-      if (oldVisualPos >= oldRange.visualEnd) {
-        oldIdx++;
-      }
-      if (newVisualPos >= newRange.visualEnd) {
-        newIdx++;
+      // Position matches (both char and state are identical)
+      // Close any open segment
+      if (currentSegmentStart !== -1) {
+        // Only add segment if we have accumulated text
+        if (currentSegmentText.length > 0) {
+          segments.push({
+            start: currentSegmentStart,
+            text: currentSegmentAnsiState + currentSegmentText
+          });
+        }
+        currentSegmentStart = -1;
+        currentSegmentText = '';
+        currentSegmentAnsiState = '';
       }
     }
+  }
+  
+  // Close any remaining segment and check for trailing ANSI codes
+  if (currentSegmentStart !== -1) {
+    segments.push({
+      start: currentSegmentStart,
+      text: currentSegmentAnsiState + currentSegmentText
+    });
+  }
+  
+  // Check if there are trailing ANSI codes after the last visual character
+  // This handles reset codes like \x1b[0m at the end
+  const oldTrailingAnsi = oldTokens.slice(oldTokens.findLastIndex(t => t.visualLength > 0) + 1)
+    .filter(t => t.isAnsi)
+    .map(t => t.value)
+    .join('');
+  const newTrailingAnsi = newTokens.slice(newTokens.findLastIndex(t => t.visualLength > 0) + 1)
+    .filter(t => t.isAnsi)
+    .map(t => t.value)
+    .join('');
+  
+  if (oldTrailingAnsi !== newTrailingAnsi && newTrailingAnsi) {
+    // Add a segment for the trailing ANSI codes
+    const lastRange = newRanges[newRanges.length - 1];
+    const lastAnsiState = lastRange ? lastRange.ansiState : '';
+    segments.push({
+      start: maxVisualLength,
+      text: lastAnsiState + newTrailingAnsi
+    });
   }
   
   return segments;
