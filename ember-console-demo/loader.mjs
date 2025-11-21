@@ -4,10 +4,8 @@ import { existsSync, readdirSync, statSync, readFileSync, realpathSync } from 'f
 import { cwd } from 'process';
 import { transformSync } from '@babel/core';
 import babelConfig from './babel.config.cjs';
-import { Preprocessor } from 'content-tag';
 import { resolver, templateTag } from '@embroider/vite';
 
-const contentTagProcessor = new Preprocessor();
 
 const __dirname = cwd();
 
