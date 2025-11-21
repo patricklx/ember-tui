@@ -66,10 +66,14 @@ export class TerminaTextElement extends ElementNode {
 	}
 
 	updateText() {
-		const t = this.childNodes
+		let t = this.childNodes
 			.map((c) => (c as any).text)
 			.filter(Boolean)
 			.join('');
+        const preFormated = this.getAttribute('pre-formated');
+        if (!preFormated) {
+            t = t.split('\n').map((line) => line.trim()).join('\n');
+        }
 		this.text = this.transform(t);
 	}
 

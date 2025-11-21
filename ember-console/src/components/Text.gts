@@ -12,6 +12,7 @@ interface TextSignature {
     underline?: boolean;
     strikethrough?: boolean;
     inverse?: boolean;
+    preFormated?: boolean;
     wrap?: 'wrap' | 'truncate' | 'truncate-start' | 'truncate-middle' | 'truncate-end';
   };
   Blocks: {
@@ -28,7 +29,7 @@ export default class Text extends Component<TextSignature> {
   <template>
     <terminal-text
       color={{@color}}
-			background-color={{@backgroundColor}}
+      background-color={{@backgroundColor}}
       dim={{@dimColor}}
       bold={{@bold}}
       italic={{@italic}}
@@ -36,6 +37,7 @@ export default class Text extends Component<TextSignature> {
       strikethrough={{@strikethrough}}
       inverse={{@inverse}}
       wrap={{@wrap}}
+      pre-formated={{@preFormated}}
       ...attributes
     >{{yield}}</terminal-text>
   </template>

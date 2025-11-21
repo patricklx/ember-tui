@@ -65,36 +65,42 @@ async function log(...args) {
 `, resolve))
 }
 
-export async function resolve(specifier, context, nextResolve) {
-  console.log('context', context);
-  const emberResolverContext = {
-    async resolve(spec, from) {
-      await log('resolve', spec, from);
-      if (!from.startsWith('file://')) {
-        from = `file://${from}`;
-      }
-      try {
-        if (spec.startsWith('ember-source')) {
-          from = `file://` + path.resolve('./package.json');
-        }
-        const fullPath = spec.startsWith('.') ? path.resolve(path.dirname(from.slice('file://'.length)), spec) : spec;
-        const resolved = tryExtensions(fullPath) || fullPath;
-        const res = await nextResolve(resolved, {
-          conditions: ['node', 'import', 'module-sync', 'node-addons'],
-          importAttributes: {},
-          parentURL: from
-        });
-        await log('resolver', resolved, '->', res);
-        return {
-          id: res.url,
-        }
-      } catch (e) {
-        console.error(e);
-        return null;
-      }
+const emberResolverContext = (nextResolve) => ({
+  async resolve(spec, from) {
+    if (!from.startsWith('file://')) {
+      from = `file://${from}`;
     }
-  };
-  const res = await emberResolver.resolveId.call(emberResolverContext, specifier, context.parentURL || path.resolve('./package.json'), {});
+    try {
+      if (spec.startsWith('ember-source')) {
+        from = `file://${path.resolve('./package.json')}`;
+      }
+      const fullPath = spec.startsWith('.') ? path.resolve(path.dirname(from.slice('file://'.length)), spec) : spec;
+      const resolved = tryExtensions(fullPath) || fullPath;
+      const res = await nextResolve(resolved, {
+        conditions: ['node', 'import', 'module-sync', 'node-addons'],
+        importAttributes: {},
+        parentURL: from
+      });
+      return {
+        id: res.url,
+      }
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+});
+
+export async function resolve(specifier, context, nextResolve) {
+  const emberContext = emberResolverContext(nextResolve);
+  const res = await emberResolver.resolveId.call(emberContext, specifier, context.parentURL || path.resolve('./package.json'), {});
+  if (res?.id.includes('-embroider')) {
+    return {
+      url: `file://${res.id}`,
+      format: 'module',
+      shortCircuit: true,
+    };
+  }
   if (res) {
     return nextResolve(res.id, context);
   }
@@ -109,10 +115,21 @@ export async function load(url, context, nextLoad) {
   } catch (e) {
 
   }
+
+
   let content = emberResolver.load(filePath);
   if (existsSync(filePath)) {
     content = readFileSync(filePath, 'utf8');
   }
+
+  if (url.endsWith('.json')) {
+    return {
+      format: 'module',
+      source: 'export default ' + content,
+      shortCircuit: true,
+    };
+  }
+
   content = emberTemplateTag.transform(content, filePath)?.code || content;
 
   if (!content) {

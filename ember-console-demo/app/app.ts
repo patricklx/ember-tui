@@ -1,8 +1,7 @@
 import EmberApplication from '@ember/application';
 import Resolver from 'ember-resolver/index.js';
 import ENV from './config/env';
-import Router from './router';
-import AppTemplate from "./templates/application.gts";
+import compatModules from '@embroider/virtual/compat-modules';
 import ApplicationInstance from "@ember/application/instance";
 
 // Set up Ember globals
@@ -10,23 +9,14 @@ if (typeof window !== 'undefined') {
   window.EmberENV = ENV.EmberENV;
 }
 
-// Simple module registry for routes and services
-const modules: Record<string, any> = {};
 
-// Register the router
-modules['ember-console-demo/app/router'] = {
-  default: Router,
-};
-modules['ember-console-demo/templates/application'] = {
-	default: AppTemplate,
-};
 
 export default class App extends EmberApplication {
   rootElement = ENV.rootElement;
   autoboot = ENV.autoboot;
   modulePrefix = ENV.modulePrefix;
   podModulePrefix = `${ENV.modulePrefix}/pods`;
-  Resolver = Resolver.withModules(modules);
+  Resolver = Resolver.withModules(compatModules);
 
 	buildInstance() {
 		const instance = super.buildInstance();

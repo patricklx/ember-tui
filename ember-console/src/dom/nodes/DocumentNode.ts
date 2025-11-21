@@ -38,6 +38,7 @@ export default class DocumentNode extends ViewNode {
   documentElement = {
     dataset: {},
   };
+  private keypressListeners: EventListener[] = [];
 
   static getInstance() {
     if (!document) {
@@ -89,11 +90,22 @@ export default class DocumentNode extends ViewNode {
       setTimeout(callback, 0);
       return;
     }
+    if (event === 'keypress') {
+      this.keypressListeners.push(callback);
+      return;
+    }
     console.error('unsupported event on document', event);
   }
 
   removeEventListener(event: string, handler: EventListener) {
     if (event === 'DOMContentLoaded') {
+      return;
+    }
+    if (event === 'keypress') {
+      const index = this.keypressListeners.indexOf(handler);
+      if (index > -1) {
+        this.keypressListeners.splice(index, 1);
+      }
       return;
     }
     console.error('unsupported event on document', event, handler);
@@ -182,5 +194,15 @@ export default class DocumentNode extends ViewNode {
         },
       };
     }
+  }
+
+  dispatchEvent(event: any) {
+    if (event.type === 'keypress') {
+      for (const listener of this.keypressListeners) {
+        listener(event);
+      }
+      return true;
+    }
+    return false;
   }
 }

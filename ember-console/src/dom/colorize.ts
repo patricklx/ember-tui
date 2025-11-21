@@ -18,6 +18,10 @@ const colorize = (
 		return str;
 	}
 
+    if (typeof color === 'function') {
+        return color(str);
+    }
+
 	if (isNamedColor(color)) {
 		if (type === 'foreground') {
 			return chalk[color](str);

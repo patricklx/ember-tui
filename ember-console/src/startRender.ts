@@ -347,6 +347,16 @@ export function startRender(
       process.stdout.write('\x1b[?25h'); // Show cursor
       process.exit();
     }
+
+    // Dispatch keypress event to document
+    const event = {
+      type: 'keypress',
+      key: key,
+      keyCode: key.charCodeAt(0),
+      preventDefault: () => {},
+      stopPropagation: () => {}
+    };
+    document.dispatchEvent(event);
   });
 
   // Handle terminal resize
