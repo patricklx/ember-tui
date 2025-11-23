@@ -220,7 +220,7 @@ export interface IClassList {
   contains(className: string): boolean;
 }
 
-export default class ElementNode extends ViewNode {
+export default class ElementNode<Attributes = any> extends ViewNode<Attributes> {
   declare _classList: IClassList;
   declare _id: string;
   static ELEMENT_NODE: number;

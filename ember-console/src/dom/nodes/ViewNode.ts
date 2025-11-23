@@ -10,7 +10,7 @@ function* elementIterator(el: any): Generator<any, void, unknown> {
 
 export type EventListener = (args: any) => void;
 
-export default class ViewNode {
+export default class ViewNode<Attributes = any> {
   attributesObject: any = {};
   args: any;
   template: any;
@@ -135,7 +135,7 @@ export default class ViewNode {
     return null;
   }
 
-  get attributes(): any {
+  get attributes(): Attributes {
     return Object.entries(this.attributesObject).map(([key, value]) => ({
       nodeName: key,
       nodeValue: value,

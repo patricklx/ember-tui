@@ -1,67 +1,70 @@
 import ElementNode from '../nodes/ElementNode';
-import chalk from 'chalk';
+import chalk, { ForegroundColorName } from 'chalk';
 import { Styles } from '../styles';
 import colorize from '../colorize';
+import { LiteralUnion } from "type-fest";
 
 
-export class TerminaTextElement extends ElementNode {
-  text: string = '';
-  declare attributes: {
-    /**
+interface Attributes {
+	/**
      A label for the element for screen readers.
-     */
-    readonly 'aria-label'?: string;
+	 */
+	readonly 'aria-label'?: string;
 
-    /**
+	/**
      Hide the element from screen readers.
-     */
-    readonly 'aria-hidden'?: boolean;
+	 */
+	readonly 'aria-hidden'?: boolean;
 
-    /**
+	/**
      Change text color. Ink uses Chalk under the hood, so all its functionality is supported.
-     */
-    readonly color?: LiteralUnion<ForegroundColorName, string>;
+	 */
+	readonly color?: LiteralUnion<ForegroundColorName, string>;
 
-    /**
+	/**
      Same as `color`, but for the background.
-     */
-    readonly backgroundColor?: LiteralUnion<ForegroundColorName, string>;
+	 */
+	readonly backgroundColor?: LiteralUnion<ForegroundColorName, string>;
 
-    /**
+	/**
      Dim the color (make it less bright).
-     */
-    readonly dimColor?: boolean;
+	 */
+	readonly dimColor?: boolean;
 
-    /**
+	/**
      Make the text bold.
-     */
-    readonly bold?: boolean;
+	 */
+	readonly bold?: boolean;
 
-    /**
+	/**
      Make the text italic.
-     */
-    readonly italic?: boolean;
+	 */
+	readonly italic?: boolean;
 
-    /**
+	/**
      Make the text underlined.
-     */
-    readonly underline?: boolean;
+	 */
+	readonly underline?: boolean;
 
-    /**
+	/**
      Make the text crossed out with a line.
-     */
-    readonly strikethrough?: boolean;
+	 */
+	readonly strikethrough?: boolean;
 
-    /**
+	/**
      Inverse background and foreground colors.
-     */
-    readonly inverse?: boolean;
+	 */
+	readonly inverse?: boolean;
 
-    /**
+	/**
      This property tells Ink to wrap or truncate text if its width is larger than the container. If `wrap` is passed (the default), Ink will wrap text and split it into multiple lines. If `truncate-*` is passed, Ink will truncate text instead, resulting in one line of text with the rest cut off.
-     */
-    readonly wrap?: Styles['textWrap'];
-  }
+	 */
+	readonly wrap?: Styles['textWrap'];
+}
+
+
+export class TerminaTextElement extends ElementNode<Attributes> {
+  text: string = '';
 
 
   constructor() {
