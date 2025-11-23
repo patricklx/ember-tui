@@ -5,35 +5,26 @@ import { babel } from "@rollup/plugin-babel";
 export default defineConfig({
 	// Add this config
 	test: {
-		disableConsoleIntercept: true,
 		environment: "node",
-		include: ["tests/**/*-test.{gjs,gts}"],
+		include: ["./tests/**/*-test.{gjs,gts}"],
 		deps: {
-			inline: true,
+			inline: ['ember-vitest'],
 		},
 		maxConcurrency: 1,
 		server: {
 			deps: {
-				inline: true,
+				inline: ['ember-vitest'],
 			},
 		},
 	},
 	// For dev server (if needed)
 	server: {
 		deps: {
-			inline: true,
+			inline: ['ember-vitest'],
 		},
 	},
 	// Existing config:
 	plugins: [
-		{
-			enforce: "pre",
-			async resolveId(source, from) {
-				if (source.startsWith('ember-source')) {
-					return this.resolve(source);
-				}
-			}
-		},
 		ember(),
 		babel({
 			babelHelpers: "runtime",

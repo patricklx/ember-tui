@@ -22,5 +22,5 @@
       "ember-console": ["../ember/dist/index.js"]
     }
   },
-  "include": ["app/**/*", "types.d.ts"],
+  "include": ["app/**/*", "tests/**/*", "types.d.ts"],
 }

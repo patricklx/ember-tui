@@ -7,6 +7,10 @@ import ElementNode from "../dom/nodes/ElementNode";
 import { extractLines } from "./collect-lines.js";
 import * as readline from "node:readline";
 import { DocumentNode } from "../index.js";
+import * as Process from "node:process";
+import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo } from "./helpers";
+
+let process = globalThis.process;
 
 export interface RenderOptions {
 	/**
@@ -42,33 +46,6 @@ const state: RenderState = {
 	scrollOffset: 0
 };
 
-/**
- * Move cursor to specific line (0-based)
- */
-function moveCursorTo(line: number): void {
-	readline.cursorTo(process.stdout, 0, line);
-}
-
-/**
- * Clear from cursor to end of line
- */
-export function clearLineFromCursor(): void {
-	readline.clearLine(process.stdout, 1); // Clear from cursor to end
-}
-
-/**
- * Clear from cursor to start of line
- */
-export function clearLineToStart(): void {
-	readline.clearLine(process.stdout, -1); // Clear from cursor to start
-}
-
-/**
- * Clear entire line
- */
-export function clearEntireLine(): void {
-	readline.clearLine(process.stdout, 0); // Clear entire line
-}
 
 /**
  * Represents a segment of text that needs to be updated
@@ -579,7 +556,8 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 /**
  * Render with line-by-line diffing using layout-based rendering
  */
-export function render(rootNode: ElementNode): void {
+export function render(rootNode: ElementNode, debugProcess?: undefined | typeof Process): void {
+	process = debugProcess ?? process;
 	const newLines = extractLines(rootNode);
 	const oldLines = state.lines;
 

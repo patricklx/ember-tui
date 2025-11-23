@@ -4,7 +4,6 @@
   "description": "Terminal UI library for Ember.js - inspired by Ink",
   "type": "module",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "production": {
@@ -12,6 +11,9 @@
         "import": "./dist/index.esm.js"
       },
       "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
     }
   },
   "scripts": {
@@ -55,7 +57,7 @@
     "ember-concurrency": "^5.1.0",
     "rollup": "^4.9.0",
     "typescript": "^5.3.3",
-    "vitest": "^4.0.12"
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "@glimmer/component": "^2.0.0",
