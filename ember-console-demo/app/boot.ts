@@ -43,8 +43,8 @@ export async function startApp() {
   const document = globalThis.document;
 
 	const app = init(App, env)
-  // Visit the root route
-  await app.visit('/', {
+  // Visit the static-test route to test Static component
+  await app.visit('/static-test', {
     document: document,
     isInteractive: true,
   });

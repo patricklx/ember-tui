@@ -82,6 +82,9 @@ interface Attributes {
 }
 
 export class TerminalBoxElement extends ElementNode<Attributes> {
+  private staticChildren: ElementNode[] = [];
+  private isStaticElement = false;
+
   constructor() {
     super('terminal-box');
     // Set default flexDirection to column for proper vertical stacking
@@ -90,7 +93,12 @@ export class TerminalBoxElement extends ElementNode<Attributes> {
 
   setAttribute(key: string, value: any) {
     super.setAttribute(key, value);
-    
+
+    // Track if this is a static element
+    if (key === 'internal_static') {
+      this.isStaticElement = value === 'true' || value === true;
+    }
+
     // If backgroundColor is set, propagate it to child text elements
     if (key === 'background-color') {
       this.propagateBackgroundColor(value);
@@ -110,15 +118,51 @@ export class TerminalBoxElement extends ElementNode<Attributes> {
 
   /**
    * Override appendChild to propagate background color to new children
+   * and handle static children
    */
   appendChild(child: any) {
+    // For static elements, check if child already exists in staticChildren
+    if (this.isStaticElement && child instanceof ElementNode) {
+      const existingIndex = this.staticChildren.findIndex(c => c === child);
+      if (existingIndex === -1) {
+        // New child - add to static children and allow normal append
+        this.staticChildren.push(child);
+      } else {
+        // Already rendered - skip the append
+        return child;
+      }
+    }
+
     super.appendChild(child);
-    
+
     const backgroundColor = this.getAttribute('background-color');
     if (backgroundColor && child instanceof ElementNode && child.tagName === 'terminal-text') {
       child.setAttribute('inheritedBackgroundColor', backgroundColor);
     }
-    
+
     return child;
+  }
+
+  /**
+   * Override removeChild to prevent removal of static children
+   */
+  removeChild(child: any) {
+    // For static elements, prevent removal of static children
+    if (this.isStaticElement && child instanceof ElementNode) {
+      const staticIndex = this.staticChildren.indexOf(child);
+      if (staticIndex !== -1) {
+        // This is a static child - don't remove it
+        return child;
+      }
+    }
+
+    return super.removeChild(child);
+  }
+
+  /**
+   * Get only static children
+   */
+  getStaticChildren(): ElementNode[] {
+    return this.staticChildren;
   }
 }

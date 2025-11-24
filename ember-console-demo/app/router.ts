@@ -13,4 +13,5 @@ Router.map(function () {
   this.route('tomster');
   this.route('box-demo');
   this.route('component-test');
+  this.route('static-test');
 });

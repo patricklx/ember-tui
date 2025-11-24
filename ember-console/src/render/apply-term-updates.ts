@@ -605,8 +605,7 @@ export function render(rootNode: ElementNode, debugProcess?: undefined | typeof 
 			const oldLine = oldLines[i];
 
 			if (newLine !== oldLine) {
-				// For lines within terminal height, use cursor positioning
-				// For lines beyond, let terminal naturally scroll
+				// Only update lines within terminal height
 				if (i < state.terminalHeight) {
 					if (newLine === undefined) {
 						// Line was removed - clear it

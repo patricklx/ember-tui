@@ -12,7 +12,7 @@ const eq = (a, b) => a === b;
  */
 export default class AppTemplate extends Component {
 	@service declare router: RouterService;
-	@tracked selectedView: 'colors' | 'lorem' | 'tomster' | 'box-demo' = 'colors';
+	@tracked selectedView: 'colors' | 'lorem' | 'tomster' | 'box-demo' | 'static-test' = 'colors';
   @tracked counter = 0;
   @tracked debug = [];
 
@@ -31,9 +31,9 @@ export default class AppTemplate extends Component {
 			document.addEventListener('keypress', this.handleKeyPress);
 		}
 
-		// Navigate to component-test route to show new components
-		this.selectedView = 'component-test';
-		this.router.transitionTo('component-test');
+		// Navigate to static-test route to show Static component
+		this.selectedView = 'static-test';
+		this.router.transitionTo('static-test');
 	}
 
 	willDestroy() {
@@ -62,6 +62,9 @@ export default class AppTemplate extends Component {
 		} else if (key === '5') {
 			this.selectedView = 'component-test';
 			this.router.transitionTo('component-test');
+		} else if (key === '6') {
+			this.selectedView = 'static-test';
+			this.router.transitionTo('static-test');
 		}
 	}
 
@@ -76,6 +79,7 @@ export default class AppTemplate extends Component {
       <Text @color={{if (eq this.selectedView "tomster") "green" "white"}}>[3] Ember Tomster ASCII Art</Text>
       <Text @color={{if (eq this.selectedView "box-demo") "green" "white"}}>[4] Box Layout Demo</Text>
       <Text @color={{if (eq this.selectedView "component-test") "green" "white"}}>[5] Component Test (Newline & Spacer)</Text>
+      <Text @color={{if (eq this.selectedView "static-test") "green" "white"}}>[6] Static Component Test</Text>
       <Text>---</Text>
       {{outlet}}
     </Box>
