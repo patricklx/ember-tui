@@ -31,24 +31,9 @@ export default class AppTemplate extends Component {
 			document.addEventListener('keypress', this.handleKeyPress);
 		}
 
-		// Navigate to initial route
-		this.router.transitionTo('colors');
-
-		// Auto-switch views for demo
-		setTimeout(() => {
-			this.selectedView = 'lorem';
-			this.router.transitionTo('lorem');
-		}, 3000);
-
-		setTimeout(() => {
-			this.selectedView = 'tomster';
-			this.router.transitionTo('tomster');
-		}, 6000);
-
-		setTimeout(() => {
-			this.selectedView = 'box-demo';
-			this.router.transitionTo('box-demo');
-		}, 9000);
+		// Navigate to component-test route to show new components
+		this.selectedView = 'component-test';
+		this.router.transitionTo('component-test');
 	}
 
 	willDestroy() {
@@ -74,6 +59,9 @@ export default class AppTemplate extends Component {
 		} else if (key === '4') {
 			this.selectedView = 'box-demo';
 			this.router.transitionTo('box-demo');
+		} else if (key === '5') {
+			this.selectedView = 'component-test';
+			this.router.transitionTo('component-test');
 		}
 	}
 
@@ -82,11 +70,12 @@ export default class AppTemplate extends Component {
       <Text>
         {{this.debugMessages}}
       </Text>
-      <Text @bold={{true}} @color="cyan">Select a view (press 1, 2, 3, or 4): {{this.selectedView}}</Text>
+      <Text @bold={{true}} @color="cyan">Select a view (press 1, 2, 3, 4, or 5): {{this.selectedView}}</Text>
       <Text @color={{if (eq this.selectedView "colors") "green" "white"}}>[1] Colors Demo</Text>
       <Text @color={{if (eq this.selectedView "lorem") "green" "white"}}>[2] Lorem Ipsum Generator</Text>
       <Text @color={{if (eq this.selectedView "tomster") "green" "white"}}>[3] Ember Tomster ASCII Art</Text>
       <Text @color={{if (eq this.selectedView "box-demo") "green" "white"}}>[4] Box Layout Demo</Text>
+      <Text @color={{if (eq this.selectedView "component-test") "green" "white"}}>[5] Component Test (Newline & Spacer)</Text>
       <Text>---</Text>
       {{outlet}}
     </Box>

@@ -77,14 +77,29 @@ export class TerminaTextElement extends ElementNode<Attributes> {
   }
 
   updateText() {
-    let t = this.childNodes
-      .map((c) => (c as any).text)
-      .filter(Boolean)
-      .join('');
-    const preFormated = this.getAttribute('pre-formatted');
-    if (!preFormated) {
-      t = t.split('\n').map((line) => line.trim()).filter(Boolean).join(' ');
+    // Collect text from child nodes, preserving pre-formatted sections
+    let parts: string[] = [];
+    const preFormatted = this.getAttribute('pre-formatted');
+
+    for (const child of this.childNodes) {
+      if (child instanceof TerminaTextElement) {
+        // If child is pre-formatted, preserve its text as-is
+        const childPreFormatted = child.getAttribute('pre-formatted');
+        if (childPreFormatted) {
+          parts.push(child.text);
+        } else {
+          parts.push((child as any).text || '');
+        }
+      } else if ((child as any).text) {
+				let t = (child as any).text;
+				if (!preFormatted) {
+					t = t.split('\n').map((line) => line.trim()).filter(Boolean).join(' ');
+				}
+        parts.push(t);
+      }
     }
+
+    let t = parts.filter(Boolean).join('');
     this.text = this.transform(t);
   }
 

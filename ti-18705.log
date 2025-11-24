@@ -1,0 +1,418 @@
+[12:05:04.953] Global cache location '/Users/patrickpircher/Library/Caches/typescript/5.9', safe file path '/users/patrickpircher/ideaprojects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typingsafelist.json', types map path /users/patrickpircher/ideaprojects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typesmap.json
+[12:05:04.954] Processing cache location '/Users/patrickpircher/Library/Caches/typescript/5.9'
+[12:05:04.954] Trying to find '/Users/patrickpircher/Library/Caches/typescript/5.9/package.json'...
+[12:05:04.955] Loaded content of '/Users/patrickpircher/Library/Caches/typescript/5.9/package.json':
+    {
+      "private": true,
+      "dependencies": {
+        "types-registry": "^0.1.746"
+      },
+      "devDependencies": {
+        "@types/brace-expansion": "^1.1.2",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.5",
+        "@types/react": "^19.1.10"
+      }
+    }
+[12:05:04.955] Loaded content of '/Users/patrickpircher/Library/Caches/typescript/5.9/package-lock.json':
+    {
+      "name": "5.9",
+      "lockfileVersion": 3,
+      "requires": true,
+      "packages": {
+        "": {
+          "dependencies": {
+            "types-registry": "^0.1.746"
+          },
+          "devDependencies": {
+            "@types/brace-expansion": "^1.1.2",
+            "@types/cors": "^2.8.19",
+            "@types/express": "^5.0.5",
+            "@types/react": "^19.1.10"
+          }
+        },
+        "node_modules/@types/body-parser": {
+          "version": "1.19.6",
+          "resolved": "https://registry.npmjs.org/@types/body-parser/-/body-parser-1.19.6.tgz",
+          "integrity": "sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g==",
+          "dev": true,
+          "license": "MIT",
+          "dependencies": {
+            "@types/connect": "*",
+            "@types/node": "*"
+          }
+        },
+        "node_modules/@types/brace-expansion": {
+          "version": "1.1.2",
+          "resolved": "https://na.artifactory.swg-devops.com/artifactory/api/npm/hyc-wca-team-npm-virtual/@types/brace-expansion/-/brace-expansion-1.1.2.tgz?dl=https%3A%2F%2Fregistry.npmjs.org%2F%40types%2Fbrace-expansion%2F-%2Fbrace-expansion-1.1.2.tgz",
+          "integrity": "sha512-+YDjlWHMm/zoiQSKhEhL/0HdfYxCVuGlP5tQLm5hoHtxGPAMqyHjGpLqm58YDw7vG+RafAahp7HKXeNIwBP3kQ==",
+          "dev": true,
+          "license": "MIT"
+        },
+        "node_modules/@types/connect": {
+          "version": "3.4.38",
+          "resolved": "https://registry.npmjs.org/@types/connect/-/connect-3.4.38.tgz",
+          "integrity": "sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==",
+          "dev": true,
+          "license": "MIT",
+          "dependencies": {
+            "@types/node": "*"
+          }
+        },
+        "node_modules/@types/cors": {
+          "version": "2.8.19",
+          "resolved": "https://registry.npmjs.org/@types/cors/-/cors-2.8.19.tgz",
+          "integrity": "sha512-mFNylyeyqN93lfe/9CSxOGREz8cpzAhH+E93xJ4xWQf62V8sQ/24reV2nyzUWM6H6Xji+GGHpkbLe7pVoUEskg==",
+          "dev": true,
+          "license": "MIT",
+          "dependencies": {
+            "@types/node": "*"
+          }
+        },
+        "node_modules/@types/express": {
+          "version": "5.0.5",
+          "resolved": "https://registry.npmjs.org/@types/express/-/express-5.0.5.tgz",
+          "integrity": "sha512-LuIQOcb6UmnF7C1PCFmEU1u2hmiHL43fgFQX67sN3H4Z+0Yk0Neo++mFsBjhOAuLzvlQeqAAkeDOZrJs9rzumQ==",
+          "dev": true,
+          "license": "MIT",
+          "dependencies": {
+            "@types/body-parser": "*",
+            "@types/express-serve-static-core": "^5.0.0",
+            "@types/serve-static": "^1"
+          }
+        },
+        "node_modules/@types/express-serve-static-core": {
+          "version": "5.0.7",
+          "resolved": "https://registry.npmjs.org/@types/express-serve-static-core/-/express-serve-static-core-5.0.7.tgz",
+          "integrity": "sha512-R+33OsgWw7rOhD1emjU7dzCDHucJrgJXMA5PYCzJxVil0dsyx5iBEPHqpPfiKNJQb7lZ1vxwoLR4Z87bBUpeGQ==",
+          "dev": true,
+          "license": "MIT",
+          "dependencies": {
+            "@types/node": "*",
+            "@types/qs": "*",
+            "@types/range-parser": "*",
+            "@types/send": "*"
+          }
+        },
+        "node_modules/@types/http-errors": {
+          "version": "2.0.5",
+          "resolved": "https://registry.npmjs.org/@types/http-errors/-/http-errors-2.0.5.tgz",
+          "integrity": "sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg==",
+          "dev": true,
+          "license": "MIT"
+        },
+        "node_modules/@types/mime": {
+          "version": "1.3.5",
+          "resolved": "https://registry.npmjs.org/@types/mime/-/mime-1.3.5.tgz",
+          "integrity": "sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==",
+          "dev": true,
+          "license": "MIT"
+        },
+        "node_modules/@types/node": {
+          "version": "24.5.1",
+          "resolved": "https://registry.npmjs.org/@types/node/-/node-24.5.1.tgz",
+          "integrity": "sha512-/SQdmUP2xa+1rdx7VwB9yPq8PaKej8TD5cQ+XfKDPWWC+VDJU4rvVVagXqKUzhKjtFoNA8rXDJAkCxQPAe00+Q==",
+          "dev": true,
+          "license": "MIT",
+          "dependencies": {
+            "undici-types": "~7.12.0"
+          }
+        },
+        "node_modules/@types/qs": {
+          "version": "6.14.0",
+          "resolved": "https://registry.npmjs.org/@types/qs/-/qs-6.14.0.tgz",
+          "integrity": "sha512-eOunJqu0K1923aExK6y8p6fsihYEn/BYuQ4g0CxAAgFc4b/ZLN4CrsRZ55srTdqoiLzU2B2evC+apEIxprEzkQ==",
+          "dev": true,
+          "license": "MIT"
+        },
+        "node_modules/@types/range-parser": {
+          "version": "1.2.7",
+          "resolved": "https://registry.npmjs.org/@types/range-parser/-/range-parser-1.2.7.tgz",
+          "integrity": "sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==",
+          "dev": true,
+          "license": "MIT"
+        },
+        "node_modules/@types/react": {
+          "version": "19.1.10",
+          "resolved": "https://na.artifactory.swg-devops.com/artifactory/api/npm/hyc-wca-team-npm-virtual/@types/react/-/react-19.1.10.tgz?dl=https%3A%2F%2Fregistry.npmjs.org%2F%40types%2Freact%2F-%2Freact-19.1.10.tgz",
+          "integrity": "sha512-EhBeSYX0Y6ye8pNebpKrwFJq7BoQ8J5SO6NlvNwwHjSj6adXJViPQrKlsyPw7hLBLvckEMO1yxeGdR82YBBlDg==",
+          "dev": true,
+          "license": "MIT",
+          "dependencies": {
+            "csstype": "^3.0.2"
+          }
+        },
+        "node_modules/@types/send": {
+          "version": "0.17.5",
+          "resolved": "https://registry.npmjs.org/@types/send/-/send-0.17.5.tgz",
+          "integrity": "sha512-z6F2D3cOStZvuk2SaP6YrwkNO65iTZcwA2ZkSABegdkAh/lf+Aa/YQndZVfmEXT5vgAp6zv06VQ3ejSVjAny4w==",
+          "dev": true,
+          "license": "MIT",
+          "dependencies": {
+            "@types/mime": "^1",
+            "@types/node": "*"
+          }
+        },
+        "node_modules/@types/serve-static": {
+          "version": "1.15.8",
+          "resolved": "https://registry.npmjs.org/@types/serve-static/-/serve-static-1.15.8.tgz",
+          "integrity": "sha512-roei0UY3LhpOJvjbIP6ZZFngyLKl5dskOtDhxY5THRSpO+ZI+nzJ+m5yUMzGrp89YRa7lvknKkMYjqQFGwA7Sg==",
+          "dev": true,
+          "license": "MIT",
+          "dependencies": {
+            "@types/http-errors": "*",
+            "@types/node": "*",
+            "@types/send": "*"
+          }
+        },
+        "node_modules/csstype": {
+          "version": "3.1.3",
+          "resolved": "https://na.artifactory.swg-devops.com/artifactory/api/npm/hyc-wca-team-npm-virtual/csstype/-/csstype-3.1.3.tgz?dl=https%3A%2F%2Fregistry.npmjs.org%2Fcsstype%2F-%2Fcsstype-3.1.3.tgz",
+          "integrity": "sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==",
+          "dev": true,
+          "license": "MIT"
+        },
+        "node_modules/types-registry": {
+          "version": "0.1.746",
+          "resolved": "https://registry.npmjs.org/types-registry/-/types-registry-0.1.746.tgz",
+          "integrity": "sha512-BfsXbxO0A6reBoUs77Lj7iw6BCR6Cfw37LO1C482paOsjMbBFDkq9HXYWOOPTz12xYALfP1P3k4ZVOvggA7yKA==",
+          "license": "MIT"
+        },
+        "node_modules/undici-types": {
+          "version": "7.12.0",
+          "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-7.12.0.tgz",
+          "integrity": "sha512-goOacqME2GYyOZZfb5Lgtu+1IDmAlAEu5xnD3+xTzS10hT0vzpf0SPjkXwAw9Jm+4n/mQGDP3LO8CPbYROeBfQ==",
+          "dev": true,
+          "license": "MIT"
+        }
+      }
+    }
+[12:05:04.957] Adding entry into typings cache: 'brace-expansion' => '/Users/patrickpircher/Library/Caches/typescript/5.9/node_modules/@types/brace-expansion/index.d.ts'
+[12:05:04.958] Adding entry into typings cache: 'cors' => '/Users/patrickpircher/Library/Caches/typescript/5.9/node_modules/@types/cors/index.d.ts'
+[12:05:04.959] Adding entry into typings cache: 'express' => '/Users/patrickpircher/Library/Caches/typescript/5.9/node_modules/@types/express/index.d.ts'
+[12:05:04.960] Adding entry into typings cache: 'react' => '/Users/patrickpircher/Library/Caches/typescript/5.9/node_modules/@types/react/index.d.ts'
+[12:05:04.961] Finished processing cache location '/Users/patrickpircher/Library/Caches/typescript/5.9'
+[12:05:04.961] Process id: 18706
+[12:05:04.961] NPM location: /Users/patrickpircher/Library/pnpm/nodejs/24.11.1/bin/npm (explicit '--npmLocation' not  provided)
+[12:05:04.961] validateDefaultNpmLocation: false
+[12:05:04.961] Npm config file: /Users/patrickpircher/Library/Caches/typescript/5.9/package.json
+[12:05:04.961] Updating types-registry npm package...
+[12:05:04.961] Exec: /Users/patrickpircher/Library/pnpm/nodejs/24.11.1/bin/npm install --ignore-scripts types-registry@latest
+[12:05:04.982]     Failed. stdout:
+    stderr:
+    /bin/sh: /Users/patrickpircher/Library/pnpm/nodejs/24.11.1/bin/npm: No such file or directory
+    
+[12:05:04.982] Updated types-registry npm package
+[12:05:05.012] Closing file watchers for project '/dev/null/inferredProject1*'
+[12:05:05.013] No watchers are registered for project '/dev/null/inferredProject1*'
+[12:05:05.013] Got install request
+    {
+      "projectName": "/dev/null/inferredProject1*",
+      "fileNames": [
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.es5.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.dom.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.scripthost.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.decorators.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.decorators.legacy.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/@glint+ember-tsc@1.0.8_typescript@5.9.3/node_modules/@glint/ember-tsc/types/-private/dsl/integration-declarations.d.ts"
+      ],
+      "compilerOptions": {
+        "file": "./ts-server.log",
+        "sourceMap": true,
+        "level": "verbose",
+        "isolatedModules": true,
+        "logToFile": true,
+        "jsx": 2,
+        "outDir": "build",
+        "allowNonTsExtensions": true,
+        "noEmitForJsFiles": true
+      },
+      "typeAcquisition": {
+        "enable": true,
+        "include": [],
+        "exclude": []
+      },
+      "unresolvedImports": [
+        "@ember/component",
+        "@ember/controller",
+        "@ember/helper",
+        "@ember/modifier",
+        "@ember/object",
+        "@ember/owner",
+        "@ember/routing",
+        "@ember/test-helpers",
+        "ember-modifier",
+        "glob"
+      ],
+      "projectRootPath": "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/@glint+ember-tsc@1.0.8_typescript@5.9.3/node_modules/@glint/ember-tsc/types/-private/dsl",
+      "kind": "discover"
+    }
+[12:05:05.020] Loaded safelist from types map file '/users/patrickpircher/ideaprojects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typesmap.json'
+[12:05:05.020] Explicitly included types: []
+[12:05:05.021] Inferred typings from unresolved imports: ["@ember/component","@ember/controller","@ember/helper","@ember/modifier","@ember/object","@ember/owner","@ember/routing","@ember/test-helpers","ember-modifier","glob"]
+[12:05:05.021] Finished typings discovery:
+    {
+      "cachedTypingPaths": [],
+      "newTypingNames": [
+        "@ember/component",
+        "@ember/controller",
+        "@ember/helper",
+        "@ember/modifier",
+        "@ember/object",
+        "@ember/owner",
+        "@ember/routing",
+        "@ember/test-helpers",
+        "ember-modifier",
+        "glob"
+      ],
+      "filesToWatch": [
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/@glint+ember-tsc@1.0.8_typescript@5.9.3/node_modules/@glint/ember-tsc/types/-private/dsl/bower_components",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/@glint+ember-tsc@1.0.8_typescript@5.9.3/node_modules/@glint/ember-tsc/types/-private/dsl/node_modules"
+      ]
+    }
+[12:05:05.021] Sending response:
+    {
+      "kind": "action::watchTypingLocations",
+      "projectName": "/dev/null/inferredProject1*",
+      "files": [
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/@glint+ember-tsc@1.0.8_typescript@5.9.3/node_modules/@glint/ember-tsc/types/-private/dsl/bower_components",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/@glint+ember-tsc@1.0.8_typescript@5.9.3/node_modules/@glint/ember-tsc/types/-private/dsl/node_modules"
+      ]
+    }
+[12:05:05.021] Response has been sent.
+[12:05:05.021] Installing typings ["@ember/component","@ember/controller","@ember/helper","@ember/modifier","@ember/object","@ember/owner","@ember/routing","@ember/test-helpers","ember-modifier","glob"]
+[12:05:05.022] '@ember/test-helpers':: Entry for package 'ember__test-helpers' does not exist in local types registry - skipping...
+[12:05:05.022] 'ember-modifier':: Entry for package 'ember-modifier' does not exist in local types registry - skipping...
+[12:05:05.022] 'glob':: Entry for package 'glob' does not exist in local types registry - skipping...
+[12:05:05.022] Npm config file: /Users/patrickpircher/Library/Caches/typescript/5.9/package.json
+[12:05:05.022] Sending response:
+    {
+      "kind": "event::beginInstallTypes",
+      "eventId": 1,
+      "typingsInstallerVersion": "5.9.3",
+      "projectName": "/dev/null/inferredProject1*"
+    }
+[12:05:05.022] Response has been sent.
+[12:05:05.023] #1 with cwd: /Users/patrickpircher/Library/Caches/typescript/5.9 arguments: ["@types/ember__component@ts5.9","@types/ember__controller@ts5.9","@types/ember__helper@ts5.9","@types/ember__modifier@ts5.9","@types/ember__object@ts5.9","@types/ember__owner@ts5.9","@types/ember__routing@ts5.9"]
+[12:05:05.023] Exec: /Users/patrickpircher/Library/pnpm/nodejs/24.11.1/bin/npm install --ignore-scripts @types/ember__component@ts5.9 @types/ember__controller@ts5.9 @types/ember__helper@ts5.9 @types/ember__modifier@ts5.9 @types/ember__object@ts5.9 @types/ember__owner@ts5.9 @types/ember__routing@ts5.9 --save-dev --user-agent="typesInstaller/5.9.3"
+[12:05:05.046]     Failed. stdout:
+    stderr:
+    /bin/sh: /Users/patrickpircher/Library/pnpm/nodejs/24.11.1/bin/npm: No such file or directory
+    
+[12:05:05.046] npm install #1 took: 23 ms
+[12:05:05.046] install request failed, marking packages as missing to prevent repeated requests: ["ember__component","ember__controller","ember__helper","ember__modifier","ember__object","ember__owner","ember__routing"]
+[12:05:05.046] Sending response:
+    {
+      "kind": "event::endInstallTypes",
+      "eventId": 1,
+      "projectName": "/dev/null/inferredProject1*",
+      "packagesToInstall": [
+        "@types/ember__component@ts5.9",
+        "@types/ember__controller@ts5.9",
+        "@types/ember__helper@ts5.9",
+        "@types/ember__modifier@ts5.9",
+        "@types/ember__object@ts5.9",
+        "@types/ember__owner@ts5.9",
+        "@types/ember__routing@ts5.9"
+      ],
+      "installSuccess": false,
+      "typingsInstallerVersion": "5.9.3"
+    }
+[12:05:05.046] Response has been sent.
+[12:05:05.046] Got install request
+    {
+      "projectName": "/dev/null/inferredProject2*",
+      "fileNames": [
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.es5.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.dom.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.scripthost.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.decorators.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/lib.decorators.legacy.d.ts",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/templates/lorem.gts"
+      ],
+      "compilerOptions": {
+        "file": "./ts-server.log",
+        "sourceMap": true,
+        "level": "verbose",
+        "isolatedModules": true,
+        "logToFile": true,
+        "jsx": 2,
+        "outDir": "build",
+        "allowNonTsExtensions": true,
+        "noEmitForJsFiles": true
+      },
+      "typeAcquisition": {
+        "enable": true,
+        "include": [],
+        "exclude": []
+      },
+      "unresolvedImports": [
+        "@ember/owner",
+        "@glimmer/tracking",
+        "ember-console"
+      ],
+      "projectRootPath": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/templates",
+      "kind": "discover"
+    }
+[12:05:05.046] Explicitly included types: []
+[12:05:05.047] Inferred typings from unresolved imports: ["@ember/owner","@glimmer/tracking","ember-console"]
+[12:05:05.047] Finished typings discovery:
+    {
+      "cachedTypingPaths": [],
+      "newTypingNames": [
+        "@ember/owner",
+        "@glimmer/tracking",
+        "ember-console"
+      ],
+      "filesToWatch": [
+        "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/templates/bower_components",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/templates/node_modules"
+      ]
+    }
+[12:05:05.047] Sending response:
+    {
+      "kind": "action::watchTypingLocations",
+      "projectName": "/dev/null/inferredProject2*",
+      "files": [
+        "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/templates/bower_components",
+        "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/templates/node_modules"
+      ]
+    }
+[12:05:05.047] Response has been sent.
+[12:05:05.047] Installing typings ["@ember/owner","@glimmer/tracking","ember-console"]
+[12:05:05.047] '@ember/owner':: 'ember__owner' is in missingTypingsSet - skipping...
+[12:05:05.048] '@glimmer/tracking':: Entry for package 'glimmer__tracking' does not exist in local types registry - skipping...
+[12:05:05.048] 'ember-console':: Entry for package 'ember-console' does not exist in local types registry - skipping...
+[12:05:05.048] All typings are known to be missing or invalid - no need to install more typings
+[12:05:05.048] Sending response:
+    {
+      "projectName": "/dev/null/inferredProject2*",
+      "typeAcquisition": {
+        "enable": true,
+        "include": [],
+        "exclude": []
+      },
+      "compilerOptions": {
+        "file": "./ts-server.log",
+        "sourceMap": true,
+        "level": "verbose",
+        "isolatedModules": true,
+        "logToFile": true,
+        "jsx": 2,
+        "outDir": "build",
+        "allowNonTsExtensions": true,
+        "noEmitForJsFiles": true
+      },
+      "typings": [],
+      "unresolvedImports": [
+        "@ember/owner",
+        "@glimmer/tracking",
+        "ember-console"
+      ],
+      "kind": "action::set"
+    }
+[12:05:05.048] Response has been sent.

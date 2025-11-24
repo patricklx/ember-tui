@@ -7,7 +7,10 @@ import { Text, Box } from 'ember-console';
 export default class ColorsTemplate extends Component {
 	<template>
 		<Box @flexDirection="column" @overflow="visible">
-			<Text @bold={{true}} @color="green">Colors Demo View</Text>
+			<Text @bold={{true}} @color="green">
+				Colors Demo View
+				<Text @color="yellow">text in text</Text>
+			</Text>
 			<Text @preFormatted={{true}}>
 				Hello from ember-console!
 			</Text>

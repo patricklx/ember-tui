@@ -1,0 +1,1263 @@
+Info 0    [09:34:39.049] Starting TS Server
+Info 1    [09:34:39.050] Version: 5.9.3
+Info 2    [09:34:39.050] Arguments: /Users/patrickpircher/Library/pnpm/nodejs/24.11.1/bin/node /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/js-language-service.js -id=1763973278897 -debug-name=typescript --pluginProbeLocations /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo --globalPlugins tsc-ide-plugin --cancellationPipeName /private/var/folders/_0/0cp8z1ss5_z6gq2sdmqm5p3r0000gn/T/tsServerCancellationPipes39245/cmd*
+Info 3    [09:34:39.050] Platform: darwin NodeVersion: v24.11.1 CaseSensitive: false
+Info 4    [09:34:39.050] ServerMode: undefined hasUnknownServerMode: undefined
+Info 5    [09:34:39.052] currentDirectory:: /Users/patrickpircher/IdeaProjects/ink useCaseSensitiveFileNames:: false
+Info 6    [09:34:39.052] libs Location:: /Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib
+Info 7    [09:34:39.052] globalTypingsCacheLocation:: /Users/patrickpircher/Library/Caches/typescript/5.9
+Err 8     [09:34:39.056] Process: Require is used /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules/typescript/lib/
+Info 9    [09:34:39.058] Host information IntelliJ
+Info 10   [09:34:39.061] getConfigFileNameForFile:: File: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/init.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/tsconfig.json
+Info 11   [09:34:39.061] Creating ConfiguredProject: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/tsconfig.json, currentDirectory: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript
+Info 12   [09:34:39.070] Config: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/tsconfig.json : {
+ "rootNames": [
+  "/Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/init.ts"
+ ],
+ "options": {
+  "configFilePath": "/Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/tsconfig.json"
+ }
+}
+Info 13   [09:34:39.072] Loading global plugin tsc-ide-plugin
+Info 14   [09:34:39.072] Enabling plugin tsc-ide-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 15   [09:34:39.072] Loading tsc-ide-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 16   [09:34:39.076] Called handler processing
+Info 17   [09:34:39.076] IDE specific commands are successfully added.
+Info 18   [09:34:39.077] Plugin validation succeeded
+Info 19   [09:34:39.077] Starting updateGraphWorker: Project: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/tsconfig.json
+Info 20   [09:34:39.350] Finishing updateGraphWorker: Project: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/tsconfig.json projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 272.500458ms
+Info 21   [09:34:39.350] Project '/Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/tsconfig.json' (Configured)
+Info 22   [09:34:39.350] 	Files (8)
+
+Info 23   [09:34:39.350] -----------------------------------------------
+Info 24   [09:34:39.356] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 25   [09:34:39.356] Creating ConfiguredProject: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console
+Info 26   [09:34:39.364] Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json : {
+ "rootNames": [
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/index.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/startRender.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/__mocks__/@ember/runloop.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/__tests__/diffSegments.test.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/colorize.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/element-registry.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/layout.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements-tag-name-map.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/setup-registry.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/styles.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/nodes/CommentNode.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/nodes/DocumentNode.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/nodes/ElementNode.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/nodes/TerminalElementNode.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/nodes/TextNode.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/nodes/ViewNode.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/render/Output.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/render/apply-term-updates.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/render/collect-lines.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/render/helpers.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/render/measure-text.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/render/render-background.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/render/render-border.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/render/renderNodeToOutput.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/types/glint.d.ts"
+ ],
+ "options": {
+  "target": 9,
+  "module": 7,
+  "lib": [
+   "lib.es2022.d.ts"
+  ],
+  "moduleResolution": 100,
+  "declaration": true,
+  "declarationMap": true,
+  "sourceMap": true,
+  "outDir": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/dist",
+  "rootDir": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src",
+  "strict": true,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "forceConsistentCasingInFileNames": true,
+  "resolveJsonModule": true,
+  "allowSyntheticDefaultImports": true,
+  "experimentalDecorators": true,
+  "emitDecoratorMetadata": true,
+  "types": [
+   "node"
+  ],
+  "configFilePath": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json"
+ }
+}
+Info 27   [09:34:39.365] Loading global plugin tsc-ide-plugin
+Info 28   [09:34:39.365] Enabling plugin tsc-ide-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 29   [09:34:39.365] Loading tsc-ide-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 30   [09:34:39.365] Plugin validation succeeded
+Info 31   [09:34:39.369] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 32   [09:34:39.994] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 625.01875ms
+Info 33   [09:34:39.994] Project '/Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json' (Configured)
+Info 34   [09:34:39.994] 	Files (491)
+
+Info 35   [09:34:39.994] -----------------------------------------------
+Info 36   [09:34:40.002] AutoImportProviderProject: found 4 root files in 4 dependencies 0 referenced projects in 6.362292000000025 ms
+Info 37   [09:34:40.002] Creating AutoImportProviderProject: /dev/null/autoImportProviderProject1*, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console
+Info 38   [09:34:40.002] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject1*
+Info 39   [09:34:40.008] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject1* projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 5.902749999999969ms
+Info 40   [09:34:40.008] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 41   [09:34:40.008] 	Files (8)
+
+Info 42   [09:34:40.008] -----------------------------------------------
+Info 43   [09:34:40.009] `remove Project::
+Info 44   [09:34:40.009] Project '/Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/tsconfig.json' (Configured)
+Info 45   [09:34:40.009] 	Files (8)
+
+Info 46   [09:34:40.009] -----------------------------------------------
+Info 47   [09:34:40.013] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 48   [09:34:40.030] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 2 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 17.022207999999864ms
+Info 49   [09:34:40.030] Different program with same set of files
+Info 50   [09:34:40.094] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 51   [09:34:40.110] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 52   [09:34:40.127] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 53   [09:34:40.149] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 54   [09:34:40.165] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 55   [09:34:41.318] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 56   [09:34:41.323] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 57   [09:34:41.736] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 58   [09:34:41.744] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 59   [09:34:41.757] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 60   [09:34:41.762] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 61   [09:34:41.768] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 62   [09:34:41.774] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 63   [09:34:41.898] Invoking /users/patrickpircher/ideaprojects/ink/ember/ember-console/tsconfig.json:: wildcard for open scriptInfo:: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components/Newline.gts
+Info 64   [09:34:41.898] Project: /users/patrickpircher/ideaprojects/ink/ember/ember-console/tsconfig.json Detected file add/remove of non supported extension: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components/Newline.gts
+Info 65   [09:34:41.898] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components/Newline.gts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 66   [09:34:41.899] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json
+Info 67   [09:34:41.899] Creating ConfiguredProject: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember
+Info 68   [09:34:41.901] Config: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json : {
+ "rootNames": [],
+ "options": {
+  "plugins": [
+   {
+    "name": "@glint/tsserver-plugin"
+   }
+  ],
+  "target": 9,
+  "module": 7,
+  "lib": [
+   "lib.es2022.d.ts"
+  ],
+  "moduleResolution": 100,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "strict": true,
+  "resolveJsonModule": true,
+  "allowSyntheticDefaultImports": true,
+  "forceConsistentCasingInFileNames": true,
+  "outDir": "/Users/patrickpircher/IdeaProjects/ink/ember/dist",
+  "rootDir": "/Users/patrickpircher/IdeaProjects/ink/ember/src",
+  "paths": {
+   "@ember/*": [
+    "./node_modules/ember-source/dist/packages/@ember/*"
+   ],
+   "ember": [
+    "./node_modules/ember-source/dist/packages/ember"
+   ],
+   "@glimmer/*": [
+    "./node_modules/ember-source/dist/packages/@glimmer/*"
+   ],
+   "ember-console": [
+    "../ember/dist/index.js"
+   ]
+  },
+  "pathsBasePath": "/Users/patrickpircher/IdeaProjects/ink/ember",
+  "configFilePath": "/Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json"
+ }
+}
+Info 69   [09:34:41.901] Enabling plugin @glint/tsserver-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 70   [09:34:41.901] Loading @glint/tsserver-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 71   [09:34:41.910] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink (resolved to /Users/patrickpircher/IdeaProjects/ink/node_modules)
+Info 72   [09:34:41.910] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo (resolved to /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules)
+Info 73   [09:34:42.071] Glint: called handler processing 1
+Info 74   [09:34:42.071] Glint specific commands are successfully added.
+Info 75   [09:34:42.071] Plugin validation succeeded
+Info 76   [09:34:42.071] Loading global plugin tsc-ide-plugin
+Info 77   [09:34:42.071] Enabling plugin tsc-ide-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 78   [09:34:42.071] Loading tsc-ide-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 79   [09:34:42.071] Plugin validation succeeded
+Info 80   [09:34:42.072] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json
+Info 81   [09:34:42.072] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 0.6920000000000073ms
+Info 82   [09:34:42.072] Different program with same set of files
+Info 83   [09:34:42.073] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json ProjectRootPath: undefined:: Result: undefined
+Info 84   [09:34:42.073] Creating InferredProject: /dev/null/inferredProject1*, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components
+Info 85   [09:34:42.073] Loading global plugin tsc-ide-plugin
+Info 86   [09:34:42.073] Enabling plugin tsc-ide-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 87   [09:34:42.073] Loading tsc-ide-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 88   [09:34:42.073] Plugin validation succeeded
+Info 89   [09:34:42.074] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 90   [09:34:42.544] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 470.5041659999997ms
+Info 91   [09:34:42.544] Project '/dev/null/inferredProject1*' (Inferred)
+Info 92   [09:34:42.544] 	Files (259)
+
+Info 93   [09:34:42.544] -----------------------------------------------
+Info 94   [09:34:42.547] AutoImportProviderProject: attempted to add more than 10 dependencies. Aborting.
+Info 95   [09:34:42.550] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components/Newline.gts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 96   [09:34:42.550] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json
+Info 97   [09:34:42.551] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json ProjectRootPath: undefined:: Result: undefined
+Info 98   [09:34:42.551] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 99   [09:34:42.551] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* projectStateVersion: 2 projectProgramVersion: 1 structureChanged: false structureIsReused:: Not Elapsed: 0.6117079999999078ms
+Info 100  [09:34:42.551] Project '/dev/null/inferredProject1*' (Inferred)
+Info 101  [09:34:42.551] 	Files (259)
+
+Info 102  [09:34:42.551] -----------------------------------------------
+Info 103  [09:34:51.087] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 104  [09:34:51.087] `remove Project::
+Info 105  [09:34:51.087] Project '/Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json' (Configured)
+Info 106  [09:34:51.087] 	Files (0)
+
+Info 107  [09:34:51.087] -----------------------------------------------
+Info 108  [09:34:51.088] `remove Project::
+Info 109  [09:34:51.088] Project '/dev/null/inferredProject1*' (Inferred)
+Info 110  [09:34:51.088] 	Files (259)
+
+Info 111  [09:34:51.088] -----------------------------------------------
+Info 112  [09:34:51.100] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 113  [09:34:51.104] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 114  [09:34:51.107] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 115  [09:34:51.110] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 116  [09:35:17.005] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 117  [09:35:17.009] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 118  [09:35:17.808] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 119  [09:35:17.812] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 120  [09:35:17.816] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 121  [09:35:17.819] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 122  [09:35:17.823] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 123  [09:35:20.219] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/templates/component-test.gts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json
+Info 124  [09:35:20.219] Creating ConfiguredProject: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo
+Info 125  [09:35:20.226] Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json : {
+ "rootNames": [
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/app.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/boot.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/index.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/router.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/config/env.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/types.d.ts"
+ ],
+ "options": {
+  "plugins": [
+   {
+    "name": "@glint/tsserver-plugin"
+   }
+  ],
+  "target": 9,
+  "module": 7,
+  "lib": [
+   "lib.es2022.d.ts"
+  ],
+  "moduleResolution": 100,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "strict": true,
+  "resolveJsonModule": true,
+  "allowSyntheticDefaultImports": true,
+  "forceConsistentCasingInFileNames": true,
+  "outDir": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/dist",
+  "rootDir": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/src",
+  "paths": {
+   "@ember/*": [
+    "./node_modules/ember-source/dist/packages/@ember/*"
+   ],
+   "ember": [
+    "./node_modules/ember-source/dist/packages/ember"
+   ],
+   "@glimmer/*": [
+    "./node_modules/ember-source/dist/packages/@glimmer/*"
+   ],
+   "ember-console": [
+    "../ember/dist/index.js"
+   ]
+  },
+  "pathsBasePath": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo",
+  "configFilePath": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json"
+ }
+}
+Info 126  [09:35:20.226] Enabling plugin @glint/tsserver-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 127  [09:35:20.226] Loading @glint/tsserver-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 128  [09:35:20.226] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink (resolved to /Users/patrickpircher/IdeaProjects/ink/node_modules)
+Info 129  [09:35:20.227] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo (resolved to /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules)
+Info 130  [09:35:20.228] Glint: called handler processing 1
+Info 131  [09:35:20.228] Plugin validation succeeded
+Info 132  [09:35:20.228] Loading global plugin tsc-ide-plugin
+Info 133  [09:35:20.228] Enabling plugin tsc-ide-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 134  [09:35:20.228] Loading tsc-ide-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 135  [09:35:20.228] Plugin validation succeeded
+Info 136  [09:35:20.230] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json
+Info 137  [09:35:20.919] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 688.9596249999959ms
+Info 138  [09:35:20.919] Project '/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json' (Configured)
+Info 139  [09:35:20.919] 	Files (605)
+
+Info 140  [09:35:20.919] -----------------------------------------------
+Info 141  [09:35:20.954] AutoImportProviderProject: found 6 root files in 4 dependencies 0 referenced projects in 33.5030409999963 ms
+Info 142  [09:35:20.954] Creating AutoImportProviderProject: /dev/null/autoImportProviderProject2*, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo
+Info 143  [09:35:20.954] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject2*
+Info 144  [09:35:21.523] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject2* projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 569.096666999998ms
+Info 145  [09:35:21.523] Project '/dev/null/autoImportProviderProject2*' (AutoImportProvider)
+Info 146  [09:35:21.523] 	Files (839)
+
+Info 147  [09:35:21.523] -----------------------------------------------
+Err 148   [09:35:38.993] Process 1763973278897 heartbeat: "alive" 
+Err 149   [09:36:38.995] Process 1763973278897 heartbeat: "alive" 
+Info 150  [09:37:10.869] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components/Newline.gts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 151  [09:37:10.870] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json
+Info 152  [09:37:10.870] Creating ConfiguredProject: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember
+Info 153  [09:37:10.875] Config: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json : {
+ "rootNames": [],
+ "options": {
+  "plugins": [
+   {
+    "name": "@glint/tsserver-plugin"
+   }
+  ],
+  "target": 9,
+  "module": 7,
+  "lib": [
+   "lib.es2022.d.ts"
+  ],
+  "moduleResolution": 100,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "strict": true,
+  "resolveJsonModule": true,
+  "allowSyntheticDefaultImports": true,
+  "forceConsistentCasingInFileNames": true,
+  "outDir": "/Users/patrickpircher/IdeaProjects/ink/ember/dist",
+  "rootDir": "/Users/patrickpircher/IdeaProjects/ink/ember/src",
+  "paths": {
+   "@ember/*": [
+    "./node_modules/ember-source/dist/packages/@ember/*"
+   ],
+   "ember": [
+    "./node_modules/ember-source/dist/packages/ember"
+   ],
+   "@glimmer/*": [
+    "./node_modules/ember-source/dist/packages/@glimmer/*"
+   ],
+   "ember-console": [
+    "../ember/dist/index.js"
+   ]
+  },
+  "pathsBasePath": "/Users/patrickpircher/IdeaProjects/ink/ember",
+  "configFilePath": "/Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json"
+ }
+}
+Info 154  [09:37:10.875] Enabling plugin @glint/tsserver-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 155  [09:37:10.875] Loading @glint/tsserver-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 156  [09:37:10.876] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink (resolved to /Users/patrickpircher/IdeaProjects/ink/node_modules)
+Info 157  [09:37:10.876] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo (resolved to /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules)
+Info 158  [09:37:10.878] Glint: called handler processing 1
+Info 159  [09:37:10.878] Plugin validation succeeded
+Info 160  [09:37:10.878] Loading global plugin tsc-ide-plugin
+Info 161  [09:37:10.878] Enabling plugin tsc-ide-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 162  [09:37:10.878] Loading tsc-ide-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 163  [09:37:10.879] Plugin validation succeeded
+Info 164  [09:37:10.880] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json
+Info 165  [09:37:10.881] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 0.8934579999768175ms
+Info 166  [09:37:10.881] Different program with same set of files
+Info 167  [09:37:10.881] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json ProjectRootPath: undefined:: Result: undefined
+Info 168  [09:37:10.884] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json
+Info 169  [09:37:10.886] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json projectStateVersion: 2 projectProgramVersion: 1 structureChanged: false structureIsReused:: Not Elapsed: 1.8856249999953434ms
+Info 170  [09:37:26.522] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 171  [09:37:26.535] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 3 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 12.170874999981606ms
+Info 172  [09:37:26.535] Different program with same set of files
+Info 173  [09:37:26.726] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 174  [09:37:26.726] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json
+Info 175  [09:37:26.738] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json projectStateVersion: 3 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 11.910750000010012ms
+Info 176  [09:37:26.738] Different program with same set of files
+Info 177  [09:37:26.739] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject2*
+Info 178  [09:37:26.881] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject2* projectStateVersion: 2 projectProgramVersion: 1 structureChanged: true structureIsReused:: Not Elapsed: 142.0582080000022ms
+Info 179  [09:37:26.881] Project '/dev/null/autoImportProviderProject2*' (AutoImportProvider)
+Info 180  [09:37:26.881] 	Files (0)
+
+Info 181  [09:37:26.881] -----------------------------------------------
+Info 182  [09:37:26.881] `remove Project::
+Info 183  [09:37:26.881] Project '/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json' (Configured)
+Info 184  [09:37:26.881] 	Files (605)
+
+Info 185  [09:37:26.881] -----------------------------------------------
+Info 186  [09:37:26.881] Project '/dev/null/autoImportProviderProject2*' (AutoImportProvider)
+Info 187  [09:37:26.881] 	Files (0)
+
+Info 188  [09:37:26.881] -----------------------------------------------
+Info 189  [09:37:26.885] `remove Project::
+Info 190  [09:37:26.885] Project '/Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json' (Configured)
+Info 191  [09:37:26.885] 	Files (0)
+
+Info 192  [09:37:26.885] -----------------------------------------------
+Info 193  [09:37:26.898] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 194  [09:37:26.901] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 195  [09:37:26.906] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 196  [09:37:26.917] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 197  [09:37:26.931] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 198  [09:37:26.939] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Err 199   [09:37:38.996] Process 1763973278897 heartbeat: "alive" 
+Info 200  [09:38:07.835] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 201  [09:38:07.848] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 4 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 13.254291999997804ms
+Info 202  [09:38:07.848] Different program with same set of files
+Info 203  [09:38:07.961] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 204  [09:38:07.966] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 205  [09:38:07.972] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 206  [09:38:07.978] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 207  [09:38:07.990] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 208  [09:38:07.994] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 209  [09:38:08.001] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 210  [09:38:08.057] Invoking /users/patrickpircher/ideaprojects/ink/ember/ember-console/tsconfig.json:: wildcard for open scriptInfo:: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components/Newline.gts
+Info 211  [09:38:08.058] Project: /users/patrickpircher/ideaprojects/ink/ember/ember-console/tsconfig.json Detected file add/remove of non supported extension: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components/Newline.gts
+Info 212  [09:38:08.058] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components/Newline.gts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 213  [09:38:08.058] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json
+Info 214  [09:38:08.058] Creating ConfiguredProject: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember
+Info 215  [09:38:08.060] Config: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json : {
+ "rootNames": [],
+ "options": {
+  "plugins": [
+   {
+    "name": "@glint/tsserver-plugin"
+   }
+  ],
+  "target": 9,
+  "module": 7,
+  "lib": [
+   "lib.es2022.d.ts"
+  ],
+  "moduleResolution": 100,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "strict": true,
+  "resolveJsonModule": true,
+  "allowSyntheticDefaultImports": true,
+  "forceConsistentCasingInFileNames": true,
+  "outDir": "/Users/patrickpircher/IdeaProjects/ink/ember/dist",
+  "rootDir": "/Users/patrickpircher/IdeaProjects/ink/ember/src",
+  "paths": {
+   "@ember/*": [
+    "./node_modules/ember-source/dist/packages/@ember/*"
+   ],
+   "ember": [
+    "./node_modules/ember-source/dist/packages/ember"
+   ],
+   "@glimmer/*": [
+    "./node_modules/ember-source/dist/packages/@glimmer/*"
+   ],
+   "ember-console": [
+    "../ember/dist/index.js"
+   ]
+  },
+  "pathsBasePath": "/Users/patrickpircher/IdeaProjects/ink/ember",
+  "configFilePath": "/Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json"
+ }
+}
+Info 216  [09:38:08.060] Enabling plugin @glint/tsserver-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 217  [09:38:08.060] Loading @glint/tsserver-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 218  [09:38:08.060] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink (resolved to /Users/patrickpircher/IdeaProjects/ink/node_modules)
+Info 219  [09:38:08.060] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo (resolved to /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules)
+Info 220  [09:38:08.061] Glint: called handler processing 1
+Info 221  [09:38:08.061] Plugin validation succeeded
+Info 222  [09:38:08.061] Loading global plugin tsc-ide-plugin
+Info 223  [09:38:08.061] Enabling plugin tsc-ide-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 224  [09:38:08.061] Loading tsc-ide-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 225  [09:38:08.062] Plugin validation succeeded
+Info 226  [09:38:08.062] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json
+Info 227  [09:38:08.062] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 0.38483299998915754ms
+Info 228  [09:38:08.062] Different program with same set of files
+Info 229  [09:38:08.063] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json ProjectRootPath: undefined:: Result: undefined
+Info 230  [09:38:08.063] Creating InferredProject: /dev/null/inferredProject2*, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components
+Info 231  [09:38:08.063] Loading global plugin tsc-ide-plugin
+Info 232  [09:38:08.063] Enabling plugin tsc-ide-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 233  [09:38:08.063] Loading tsc-ide-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 234  [09:38:08.063] Plugin validation succeeded
+Info 235  [09:38:08.064] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 236  [09:38:08.562] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 498.268624999997ms
+Info 237  [09:38:08.563] Project '/dev/null/inferredProject2*' (Inferred)
+Info 238  [09:38:08.563] 	Files (259)
+
+Info 239  [09:38:08.563] -----------------------------------------------
+Info 240  [09:38:08.566] AutoImportProviderProject: attempted to add more than 10 dependencies. Aborting.
+Info 241  [09:38:08.575] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/components/Newline.gts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 242  [09:38:08.575] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json
+Info 243  [09:38:08.575] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json ProjectRootPath: undefined:: Result: undefined
+Info 244  [09:38:08.576] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 245  [09:38:08.576] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* projectStateVersion: 2 projectProgramVersion: 1 structureChanged: false structureIsReused:: Not Elapsed: 0.6195829999924172ms
+Info 246  [09:38:08.576] Project '/dev/null/inferredProject2*' (Inferred)
+Info 247  [09:38:08.576] 	Files (259)
+
+Info 248  [09:38:08.576] -----------------------------------------------
+Info 249  [09:38:09.597] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 250  [09:38:09.597] Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json Detected file add/remove of non supported extension: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~
+Info 251  [09:38:09.597] Elapsed:: 0.47041700000409037ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 252  [09:38:09.597] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 253  [09:38:09.598] Elapsed:: 0.22091699999873526ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 254  [09:38:09.598] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 255  [09:38:09.598] Elapsed:: 0.2883750000037253ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 256  [09:38:09.598] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 257  [09:38:09.598] Elapsed:: 0.02550000001792796ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 258  [09:38:09.968] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 259  [09:38:09.976] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 5 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 7.630207999987761ms
+Info 260  [09:38:09.976] Different program with same set of files
+Info 261  [09:38:10.125] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 262  [09:38:10.126] `remove Project::
+Info 263  [09:38:10.126] Project '/Users/patrickpircher/IdeaProjects/ink/ember/tsconfig.json' (Configured)
+Info 264  [09:38:10.126] 	Files (0)
+
+Info 265  [09:38:10.126] -----------------------------------------------
+Info 266  [09:38:10.126] `remove Project::
+Info 267  [09:38:10.126] Project '/dev/null/inferredProject2*' (Inferred)
+Info 268  [09:38:10.126] 	Files (259)
+
+Info 269  [09:38:10.126] -----------------------------------------------
+Info 270  [09:38:10.150] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 271  [09:38:10.176] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 272  [09:38:10.223] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 273  [09:38:10.231] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 274  [09:38:10.234] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 275  [09:38:10.238] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 276  [09:38:12.373] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 277  [09:38:12.378] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 278  [09:38:12.381] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 279  [09:38:12.386] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 280  [09:38:12.395] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 281  [09:38:12.401] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 282  [09:38:12.404] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Err 283   [09:38:38.996] Process 1763973278897 heartbeat: "alive" 
+Info 284  [09:38:39.055] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 285  [09:38:39.062] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 6 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 7.076790999999503ms
+Info 286  [09:38:39.062] Different program with same set of files
+Info 287  [09:38:39.069] getCompletionData: Get current token: 0.0067909999925177544
+Info 288  [09:38:39.069] getCompletionData: Is inside comment: 0.0017499999958090484
+Info 289  [09:38:39.069] getCompletionData: Get previous token: 0.03766699999687262
+Info 290  [09:38:39.070] getCompletionsAtPosition: isCompletionListBlocker: 0.11175000001094304
+Info 291  [09:38:39.071] getCompletionData: Semantic work: 1.2179159999941476
+Info 292  [09:38:39.080] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 8.867417000001296
+Info 293  [09:38:39.091] getCompletionData: Get current token: 0.010500000003958121
+Info 294  [09:38:39.091] getCompletionData: Is inside comment: 0.004124999977648258
+Info 295  [09:38:39.091] getCompletionData: Get previous token: 0.038166999991517514
+Info 296  [09:38:39.091] getCompletionsAtPosition: isCompletionListBlocker: 0.0015830000047571957
+Info 297  [09:38:39.091] getCompletionData: Semantic work: 0.2588339999783784
+Info 298  [09:38:39.104] getCompletionData: Get current token: 0.010249999992083758
+Info 299  [09:38:39.104] getCompletionData: Is inside comment: 0.002542000001994893
+Info 300  [09:38:39.104] getCompletionData: Get previous token: 0.02704200000152923
+Info 301  [09:38:39.104] getCompletionsAtPosition: isCompletionListBlocker: 0.001416999992216006
+Info 302  [09:38:39.104] getCompletionData: Semantic work: 0.16958299998077564
+Info 303  [09:38:39.106] getCompletionData: Get current token: 0.007707999990088865
+Info 304  [09:38:39.106] getCompletionData: Is inside comment: 0.002334000018890947
+Info 305  [09:38:39.106] getCompletionData: Get previous token: 0.012124999979278073
+Info 306  [09:38:39.106] getCompletionsAtPosition: isCompletionListBlocker: 0.0012920000008307397
+Info 307  [09:38:39.107] getCompletionData: Semantic work: 0.1557500000053551
+Info 308  [09:38:39.109] getCompletionData: Get current token: 0.007459000014932826
+Info 309  [09:38:39.109] getCompletionData: Is inside comment: 0.0024169999815057963
+Info 310  [09:38:39.109] getCompletionData: Get previous token: 0.013917000003857538
+Info 311  [09:38:39.109] getCompletionsAtPosition: isCompletionListBlocker: 0.0016670000040903687
+Info 312  [09:38:39.109] getCompletionData: Semantic work: 0.24758299998939037
+Info 313  [09:38:39.114] getCompletionData: Get current token: 0.007375000015599653
+Info 314  [09:38:39.114] getCompletionData: Is inside comment: 0.003333999979076907
+Info 315  [09:38:39.114] getCompletionData: Get previous token: 0.010209000000031665
+Info 316  [09:38:39.114] getCompletionsAtPosition: isCompletionListBlocker: 0.0015829999756533653
+Info 317  [09:38:39.114] getCompletionData: Semantic work: 0.19091699999989942
+Info 318  [09:38:39.116] getCompletionData: Get current token: 0.0075409999990370125
+Info 319  [09:38:39.116] getCompletionData: Is inside comment: 0.003000000026077032
+Info 320  [09:38:39.116] getCompletionData: Get previous token: 0.009959000017261133
+Info 321  [09:38:39.116] getCompletionsAtPosition: isCompletionListBlocker: 0.0014159999846015126
+Info 322  [09:38:39.117] getCompletionData: Semantic work: 0.14733300000079907
+Info 323  [09:38:39.119] getCompletionData: Get current token: 0.014540999982273206
+Info 324  [09:38:39.119] getCompletionData: Is inside comment: 0.004083999985596165
+Info 325  [09:38:39.119] getCompletionData: Get previous token: 0.016499999997904524
+Info 326  [09:38:39.119] getCompletionsAtPosition: isCompletionListBlocker: 0.0012080000014975667
+Info 327  [09:38:39.119] getCompletionData: Semantic work: 0.13012499999604188
+Info 328  [09:38:39.121] getCompletionData: Get current token: 0.007916000002296641
+Info 329  [09:38:39.121] getCompletionData: Is inside comment: 0.004917000012937933
+Info 330  [09:38:39.121] getCompletionData: Get previous token: 0.008624999987659976
+Info 331  [09:38:39.121] getCompletionsAtPosition: isCompletionListBlocker: 0.0028329999768175185
+Info 332  [09:38:39.121] getCompletionData: Semantic work: 0.1568340000230819
+Info 333  [09:38:39.123] getCompletionData: Get current token: 0.007374999986495823
+Info 334  [09:38:39.123] getCompletionData: Is inside comment: 0.00245800000266172
+Info 335  [09:38:39.123] getCompletionData: Get previous token: 0.009332999994512647
+Info 336  [09:38:39.123] getCompletionsAtPosition: isCompletionListBlocker: 0.0017080000252462924
+Info 337  [09:38:39.124] getCompletionData: Semantic work: 0.14129199998569675
+Info 338  [09:38:39.126] getCompletionData: Get current token: 0.0076249999983701855
+Info 339  [09:38:39.126] getCompletionData: Is inside comment: 0.003333000000566244
+Info 340  [09:38:39.126] getCompletionData: Get previous token: 0.008667000016430393
+Info 341  [09:38:39.126] getCompletionsAtPosition: isCompletionListBlocker: 0.0014999999839346856
+Info 342  [09:38:39.126] getCompletionData: Semantic work: 0.13070899999001995
+Info 343  [09:38:39.128] getCompletionData: Get current token: 0.007958000001963228
+Info 344  [09:38:39.128] getCompletionData: Is inside comment: 0.003415999992284924
+Info 345  [09:38:39.128] getCompletionData: Get previous token: 0.009125000011408702
+Info 346  [09:38:39.128] getCompletionsAtPosition: isCompletionListBlocker: 0.001707999996142462
+Info 347  [09:38:39.128] getCompletionData: Semantic work: 0.15145800000755116
+Info 348  [09:38:39.135] getCompletionData: Get current token: 0.009041999990586191
+Info 349  [09:38:39.135] getCompletionData: Is inside comment: 0.004457999981241301
+Info 350  [09:38:39.135] getCompletionData: Get previous token: 0.008791999978711829
+Info 351  [09:38:39.135] getCompletionsAtPosition: isCompletionListBlocker: 0.002542000001994893
+Info 352  [09:38:39.135] getCompletionData: Semantic work: 0.17666600001393817
+Info 353  [09:38:39.137] getCompletionData: Get current token: 0.007500000006984919
+Info 354  [09:38:39.137] getCompletionData: Is inside comment: 0.003208000009180978
+Info 355  [09:38:39.137] getCompletionData: Get previous token: 0.008750000008149073
+Info 356  [09:38:39.137] getCompletionsAtPosition: isCompletionListBlocker: 0.001707999996142462
+Info 357  [09:38:39.137] getCompletionData: Semantic work: 0.1279999999969732
+Info 358  [09:38:39.139] getCompletionData: Get current token: 0.007459000014932826
+Info 359  [09:38:39.139] getCompletionData: Is inside comment: 0.005166999995708466
+Info 360  [09:38:39.139] getCompletionData: Get previous token: 0.008208999992348254
+Info 361  [09:38:39.139] getCompletionsAtPosition: isCompletionListBlocker: 0.0014580000133719295
+Info 362  [09:38:39.139] getCompletionData: Semantic work: 0.12179199999081902
+Info 363  [09:38:39.141] getCompletionData: Get current token: 0.007083000004058704
+Info 364  [09:38:39.141] getCompletionData: Is inside comment: 0.0043750000186264515
+Info 365  [09:38:39.141] getCompletionData: Get previous token: 0.007916000002296641
+Info 366  [09:38:39.141] getCompletionsAtPosition: isCompletionListBlocker: 0.0022089999984018505
+Info 367  [09:38:39.141] getCompletionData: Semantic work: 0.12729100001160987
+Info 368  [09:38:39.152] getCompletionData: Get current token: 0.009541000006720424
+Info 369  [09:38:39.152] getCompletionData: Is inside comment: 0.002749999985098839
+Info 370  [09:38:39.152] getCompletionData: Get previous token: 0.010624999995343387
+Info 371  [09:38:39.152] getCompletionsAtPosition: isCompletionListBlocker: 0.003208000009180978
+Info 372  [09:38:39.152] getCompletionData: Semantic work: 0.18712499999674037
+Info 373  [09:38:39.156] getCompletionData: Get current token: 0.013708000013139099
+Info 374  [09:38:39.156] getCompletionData: Is inside comment: 0.0026249999937135726
+Info 375  [09:38:39.156] getCompletionData: Get previous token: 0.0437499999825377
+Info 376  [09:38:39.156] getCompletionsAtPosition: isCompletionListBlocker: 0.0035419999912846833
+Info 377  [09:38:39.157] getCompletionData: Semantic work: 0.4292499999864958
+Info 378  [09:38:39.161] getCompletionData: Get current token: 0.008874999999534339
+Info 379  [09:38:39.161] getCompletionData: Is inside comment: 0.0024169999815057963
+Info 380  [09:38:39.161] getCompletionData: Get previous token: 0.00812499999301508
+Info 381  [09:38:39.161] getCompletionsAtPosition: isCompletionListBlocker: 0.0029590000049211085
+Info 382  [09:38:39.161] getCompletionData: Semantic work: 0.1748340000049211
+Info 383  [09:38:39.163] getCompletionData: Get current token: 0.007582999998703599
+Info 384  [09:38:39.163] getCompletionData: Is inside comment: 0.0026249999937135726
+Info 385  [09:38:39.163] getCompletionData: Get previous token: 0.013708999991649762
+Info 386  [09:38:39.163] getCompletionsAtPosition: isCompletionListBlocker: 0.001999999978579581
+Info 387  [09:38:39.164] getCompletionData: Semantic work: 0.17625000001862645
+Info 388  [09:38:39.166] getCompletionData: Get current token: 0.008750000008149073
+Info 389  [09:38:39.166] getCompletionData: Is inside comment: 0.002250000019557774
+Info 390  [09:38:39.166] getCompletionData: Get previous token: 0.008667000016430393
+Info 391  [09:38:39.166] getCompletionsAtPosition: isCompletionListBlocker: 0.0025000000023283064
+Info 392  [09:38:39.166] getCompletionData: Semantic work: 0.14795899999444373
+Info 393  [09:38:39.168] getCompletionData: Get current token: 0.007167000003391877
+Info 394  [09:38:39.168] getCompletionData: Is inside comment: 0.002166999998735264
+Info 395  [09:38:39.168] getCompletionData: Get previous token: 0.007917000009911135
+Info 396  [09:38:39.168] getCompletionsAtPosition: isCompletionListBlocker: 0.0022499999904539436
+Info 397  [09:38:39.169] getCompletionData: Semantic work: 0.1864579999819398
+Info 398  [09:38:39.170] getCompletionData: Get current token: 0.007666999998036772
+Info 399  [09:38:39.171] getCompletionData: Is inside comment: 0.001791999995475635
+Info 400  [09:38:39.171] getCompletionData: Get previous token: 0.008250000013504177
+Info 401  [09:38:39.171] getCompletionsAtPosition: isCompletionListBlocker: 0.002250000019557774
+Info 402  [09:38:39.171] getCompletionData: Semantic work: 0.17787500002305023
+Info 403  [09:38:39.172] getCompletionData: Get current token: 0.007791999989422038
+Info 404  [09:38:39.172] getCompletionData: Is inside comment: 0.0015410000050906092
+Info 405  [09:38:39.172] getCompletionData: Get previous token: 0.007875000010244548
+Info 406  [09:38:39.172] getCompletionsAtPosition: isCompletionListBlocker: 0.0016659999964758754
+Info 407  [09:38:39.173] getCompletionData: Semantic work: 0.11841700001969002
+Info 408  [09:38:39.175] getCompletionData: Get current token: 0.008000000001629815
+Info 409  [09:38:39.175] getCompletionData: Is inside comment: 0.0025000000023283064
+Info 410  [09:38:39.175] getCompletionData: Get previous token: 0.00833400001283735
+Info 411  [09:38:39.175] getCompletionsAtPosition: isCompletionListBlocker: 0.0025840000016614795
+Info 412  [09:38:39.175] getCompletionData: Semantic work: 0.14487499999813735
+Info 413  [09:38:39.310] getCompletionData: Get current token: 0.009332999994512647
+Info 414  [09:38:39.310] getCompletionData: Is inside comment: 0.002917000005254522
+Info 415  [09:38:39.310] getCompletionData: Get previous token: 0.008916999999200925
+Info 416  [09:38:39.310] getCompletionsAtPosition: isCompletionListBlocker: 0.0034589999995660037
+Info 417  [09:38:39.310] getCompletionData: Semantic work: 0.173832999978913
+Info 418  [09:38:39.312] getCompletionData: Get current token: 0.007791999989422038
+Info 419  [09:38:39.312] getCompletionData: Is inside comment: 0.001875000016298145
+Info 420  [09:38:39.312] getCompletionData: Get previous token: 0.008707999979378656
+Info 421  [09:38:39.312] getCompletionsAtPosition: isCompletionListBlocker: 0.0038750000239815563
+Info 422  [09:38:39.312] getCompletionData: Semantic work: 0.12687500001629815
+Info 423  [09:38:39.321] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 424  [09:38:39.328] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 7 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 7.003333000000566ms
+Info 425  [09:38:39.328] Different program with same set of files
+Info 426  [09:38:41.099] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 427  [09:38:41.107] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 8 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 8.355332999984967ms
+Info 428  [09:38:41.107] Different program with same set of files
+Info 429  [09:38:41.427] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 430  [09:38:41.437] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 9 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 10.427958000014769ms
+Info 431  [09:38:41.437] Different program with same set of files
+Info 432  [09:38:41.504] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 433  [09:38:41.510] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 434  [09:38:41.526] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 435  [09:38:41.561] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 436  [09:38:41.567] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 437  [09:38:41.579] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 438  [09:38:41.583] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 439  [09:38:41.944] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 440  [09:38:41.950] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 10 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 6.5819159999955446ms
+Info 441  [09:38:41.950] Different program with same set of files
+Info 442  [09:38:41.969] getCompletionData: Get current token: 0.005166000017197803
+Info 443  [09:38:41.969] getCompletionData: Is inside comment: 0.0008339999767486006
+Info 444  [09:38:41.969] getCompletionData: Get previous token: 0.029750000016065314
+Info 445  [09:38:41.969] getCompletionsAtPosition: isCompletionListBlocker: 0.04849999997531995
+Info 446  [09:38:41.970] getCompletionData: Semantic work: 1.5192079999833368
+Info 447  [09:38:41.972] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 1.7210419999901205
+Info 448  [09:38:42.958] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 449  [09:38:42.966] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 11 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 8.203542000002926ms
+Info 450  [09:38:42.966] Different program with same set of files
+Info 451  [09:38:42.979] getCompletionData: Get current token: 0.005166999995708466
+Info 452  [09:38:42.979] getCompletionData: Is inside comment: 0.0008329999982379377
+Info 453  [09:38:42.979] getCompletionData: Get previous token: 0.017875000019557774
+Info 454  [09:38:42.979] getCompletionsAtPosition: isCompletionListBlocker: 0.0032079999800771475
+Info 455  [09:38:42.979] getCompletionData: Semantic work: 0.5165000000270084
+Info 456  [09:38:42.981] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 1.0877090000140015
+Info 457  [09:38:43.082] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 458  [09:38:43.088] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 12 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 6.337750000006054ms
+Info 459  [09:38:43.088] Different program with same set of files
+Info 460  [09:38:43.101] getCompletionData: Get current token: 0.005417000007582828
+Info 461  [09:38:43.101] getCompletionData: Is inside comment: 0.0010420000180602074
+Info 462  [09:38:43.101] getCompletionData: Get previous token: 0.01808300000266172
+Info 463  [09:38:43.101] getCompletionsAtPosition: isCompletionListBlocker: 0.0031250000174622983
+Info 464  [09:38:43.101] getCompletionData: Semantic work: 0.47000000000116415
+Info 465  [09:38:43.103] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 1.0656670000171289
+Info 466  [09:38:43.368] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 467  [09:38:43.374] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 13 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 5.950165999995079ms
+Info 468  [09:38:43.374] Different program with same set of files
+Info 469  [09:38:43.773] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 470  [09:38:43.774] Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json Detected file add/remove of non supported extension: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~
+Info 471  [09:38:43.774] Elapsed:: 0.3152919999847654ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 472  [09:38:43.774] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 473  [09:38:43.774] Elapsed:: 0.05470800001057796ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 474  [09:38:43.774] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 475  [09:38:43.774] Elapsed:: 0.06745899998350069ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 476  [09:38:43.774] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 477  [09:38:43.774] Elapsed:: 0.018125000002328306ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 478  [09:38:44.121] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 479  [09:38:44.133] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 480  [09:38:44.136] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 481  [09:38:44.161] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 482  [09:38:44.168] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 483  [09:38:44.173] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 484  [09:38:44.183] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 485  [09:39:27.511] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/render/apply-term-updates.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Err 486   [09:39:38.998] Process 1763973278897 heartbeat: "alive" 
+Info 487  [09:39:43.275] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 488  [09:39:43.286] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 14 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 10.692417000012938ms
+Info 489  [09:39:43.286] Different program with same set of files
+Info 490  [09:39:43.508] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 491  [09:39:43.511] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 492  [09:39:43.514] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 493  [09:39:43.534] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 494  [09:39:43.543] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 495  [09:39:43.547] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 496  [09:39:43.551] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 497  [09:39:46.285] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 498  [09:39:46.293] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 15 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 8.14570900000399ms
+Info 499  [09:39:46.293] Different program with same set of files
+Info 500  [09:39:46.294] getCompletionData: Get current token: 0.006374999997206032
+Info 501  [09:39:46.294] getCompletionData: Is inside comment: 0.023999999975785613
+Info 502  [09:39:46.294] getCompletionData: Get previous token: 0.0408750000060536
+Info 503  [09:39:46.294] getCompletionsAtPosition: isCompletionListBlocker: 0.012540999974589795
+Info 504  [09:39:46.294] getCompletionData: Semantic work: 0.5079580000019632
+Info 505  [09:39:46.296] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 1.2268339999718592
+Info 506  [09:39:46.369] getCompletionData: Get current token: 0.005624999990686774
+Info 507  [09:39:46.369] getCompletionData: Is inside comment: 0.025625000009313226
+Info 508  [09:39:46.369] getCompletionData: Get previous token: 0.043292000016663224
+Info 509  [09:39:46.369] getCompletionsAtPosition: isCompletionListBlocker: 0.006374999997206032
+Info 510  [09:39:46.369] getCompletionData: Semantic work: 0.5104170000413433
+Info 511  [09:39:46.370] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.6760409999988042
+Info 512  [09:39:46.468] getCompletionData: Get current token: 0.005750000011175871
+Info 513  [09:39:46.468] getCompletionData: Is inside comment: 0.011667000013403594
+Info 514  [09:39:46.468] getCompletionData: Get previous token: 0.024708000011742115
+Info 515  [09:39:46.468] getCompletionsAtPosition: isCompletionListBlocker: 0.0028750000055879354
+Info 516  [09:39:46.469] getCompletionData: Semantic work: 0.5531669999472797
+Info 517  [09:39:46.470] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.6091250000172295
+Info 518  [09:39:46.486] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 519  [09:39:46.492] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 16 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 6.421542000025511ms
+Info 520  [09:39:46.492] Different program with same set of files
+Info 521  [09:39:47.005] getCompletionData: Get current token: 0.006916999991517514
+Info 522  [09:39:47.005] getCompletionData: Is inside comment: 0.0010839999886229634
+Info 523  [09:39:47.005] getCompletionData: Get previous token: 0.0195839999942109
+Info 524  [09:39:47.005] getCompletionsAtPosition: isCompletionListBlocker: 0.0025419999728910625
+Info 525  [09:39:47.006] getCompletionData: Semantic work: 0.5550000000512227
+Info 526  [09:39:47.006] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.7415420000324957
+Info 527  [09:39:47.158] getCompletionData: Get current token: 0.005459000007249415
+Info 528  [09:39:47.158] getCompletionData: Is inside comment: 0.0008749999688006938
+Info 529  [09:39:47.158] getCompletionData: Get previous token: 0.018250000022817403
+Info 530  [09:39:47.158] getCompletionsAtPosition: isCompletionListBlocker: 0.002207999990787357
+Info 531  [09:39:47.159] getCompletionData: Semantic work: 0.3836250000167638
+Info 532  [09:39:47.159] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.4829170000157319
+Info 533  [09:39:47.581] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 534  [09:39:47.592] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 17 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 10.426042000006419ms
+Info 535  [09:39:47.592] Different program with same set of files
+Info 536  [09:39:47.621] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 537  [09:39:47.631] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 538  [09:39:47.647] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 539  [09:39:47.679] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 540  [09:39:47.685] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 541  [09:39:47.695] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 542  [09:39:47.701] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 543  [09:39:48.003] getCompletionData: Get current token: 0.005874999973457307
+Info 544  [09:39:48.003] getCompletionData: Is inside comment: 0.011416999972425401
+Info 545  [09:39:48.003] getCompletionData: Get previous token: 0.009041000041179359
+Info 546  [09:39:48.003] getCompletionsAtPosition: isCompletionListBlocker: 0.0021249999990686774
+Info 547  [09:39:48.004] getCompletionData: Semantic work: 0.5221250000176951
+Info 548  [09:39:48.004] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.7076670000096783
+Info 549  [09:39:48.061] getCompletionData: Get current token: 0.005499999970197678
+Info 550  [09:39:48.061] getCompletionData: Is inside comment: 0.012334000028204173
+Info 551  [09:39:48.061] getCompletionData: Get previous token: 0.009166999952867627
+Info 552  [09:39:48.061] getCompletionsAtPosition: isCompletionListBlocker: 0.0024579999735578895
+Info 553  [09:39:48.061] getCompletionData: Semantic work: 0.3794590000179596
+Info 554  [09:39:48.062] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.5306250000139698
+Info 555  [09:39:48.121] getCompletionData: Get current token: 0.005624999990686774
+Info 556  [09:39:48.121] getCompletionData: Is inside comment: 0.010583999974187464
+Info 557  [09:39:48.121] getCompletionData: Get previous token: 0.008915999962482601
+Info 558  [09:39:48.121] getCompletionsAtPosition: isCompletionListBlocker: 0.002250000019557774
+Info 559  [09:39:48.122] getCompletionData: Semantic work: 0.42099999997299165
+Info 560  [09:39:48.122] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.6327499999897555
+Info 561  [09:39:48.324] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 562  [09:39:48.331] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 18 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 7.0799999999580905ms
+Info 563  [09:39:48.332] Different program with same set of files
+Info 564  [09:39:48.752] getCompletionData: Get current token: 0.0066250000381842256
+Info 565  [09:39:48.752] getCompletionData: Is inside comment: 0.012709000031463802
+Info 566  [09:39:48.752] getCompletionData: Get previous token: 0.020250000001396984
+Info 567  [09:39:48.752] getCompletionsAtPosition: isCompletionListBlocker: 0.0024170000106096268
+Info 568  [09:39:48.753] getCompletionData: Semantic work: 0.45566699997289106
+Info 569  [09:39:48.753] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.8267500000074506
+Info 570  [09:39:48.756] getCompletionData: Get current token: 0.01049999997485429
+Info 571  [09:39:48.756] getCompletionData: Is inside comment: 0.016499999968800694
+Info 572  [09:39:48.756] getCompletionData: Get previous token: 0.010207999963313341
+Info 573  [09:39:48.756] getCompletionsAtPosition: isCompletionListBlocker: 0.010832999949343503
+Info 574  [09:39:48.756] Returning an empty list because completion was requested in an invalid position.
+Info 575  [09:39:48.757] getCompletionData: Get current token: 0.009083000011742115
+Info 576  [09:39:48.757] getCompletionData: Is inside comment: 0.015750000020489097
+Info 577  [09:39:48.757] getCompletionData: Get previous token: 0.011500000022351742
+Info 578  [09:39:48.757] getCompletionsAtPosition: isCompletionListBlocker: 0.004458000010345131
+Info 579  [09:39:48.757] Returning an empty list because completion was requested in an invalid position.
+Info 580  [09:39:48.759] getCompletionData: Get current token: 0.01033Err 152   [09:39:59.143] Process 1763970598957 heartbeat: "alive" 
+Err 153   [09:40:59.144] Process 1763970598957 heartbeat: "alive" 
+nData: Get previous token: 0.010833000007551163
+Info 583  [09:39:48.759] getCompletionsAtPosition: isCompletionListBlocker: 0.00345799996284768
+Info 584  [09:39:48.759] Returning an empty list because completion was requested in an invalid position.
+Info 585  [09:39:48.760] getCompletionData: Get current token: 0.009041999990586191
+Info 586  [09:39:48.760] getCompletionData: Is inside comment: 0.014999999955762178
+Info 587  [09:39:48.760] getCompletionData: Get previous token: 0.009375000023283064
+Info 588  [09:39:48.760] getCompletionsAtPosition: isCompletionListBlocker: 0.004291999968700111
+Info 589  [09:39:48.760] Returning an empty list because completion was requested in an invalid position.
+Info 590  [09:39:48.761] getCompletionData: Get current token: 0.007666999998036772
+Info 591  [09:39:48.761] getCompletionData: Is inside comment: 0.012125000008381903
+Info 592  [09:39:48.761] getCompletionData: Get previous token: 0.008666999987326562
+Info 593  [09:39:48.761] getCompletionsAtPosition: isCompletionListBlocker: 0.002999999967869371
+Info 594  [09:39:48.761] Returning an empty list because completion was requested in an invalid position.
+Info 595  [09:39:48.762] getCompletionData: Get current token: 0.00995800003875047
+Info 596  [09:39:48.762] getCompletionData: Is inside comment: 0.01324999995995313
+Info 597  [09:39:48.762] getCompletionData: Get previous token: 0.008833000028971583
+Info 598  [09:39:48.762] getCompletionsAtPosition: isCompletionListBlocker: 0.004124999977648258
+Info 599  [09:39:48.762] Returning an empty list because completion was requested in an invalid position.
+Info 600  [09:39:48.763] getCompletionData: Get current token: 0.00604200002271682
+Info 601  [09:39:48.763] getCompletionData: Is inside comment: 0.010291000013239682
+Info 602  [09:39:48.763] getCompletionData: Get previous token: 0.008416999946348369
+Info 603  [09:39:48.763] getCompletionsAtPosition: isCompletionListBlocker: 0.001791000016964972
+Info 604  [09:39:48.763] Returning an empty list because completion was requested in an invalid position.
+Info 605  [09:39:48.763] getCompletionData: Get current token: 0.007541000028140843
+Info 606  [09:39:48.763] getCompletionData: Is inside comment: 0.01279199996497482
+Info 607  [09:39:48.763] getCompletionData: Get previous token: 0.009124999982304871
+Info 608  [09:39:48.763] getCompletionsAtPosition: isCompletionListBlocker: 0.0025420000310987234
+Info 609  [09:39:48.763] Returning an empty list because completion was requested in an invalid position.
+Info 610  [09:39:48.764] getCompletionData: Get current token: 0.008874999999534339
+Info 611  [09:39:48.764] getCompletionData: Is inside comment: 0.014292000036220998
+Info 612  [09:39:48.764] getCompletionData: Get previous token: 0.017958000011276454
+Info 613  [09:39:48.764] getCompletionsAtPosition: isCompletionListBlocker: 0.004499999980907887
+Info 614  [09:39:48.764] Returning an empty list because completion was requested in an invalid position.
+Info 615  [09:39:48.765] getCompletionData: Get current token: 0.007749999989755452
+Info 616  [09:39:48.765] getCompletionData: Is inside comment: 0.01304099999833852
+Info 617  [09:39:48.765] getCompletionData: Get previous token: 0.008750000037252903
+Info 618  [09:39:48.765] getCompletionsAtPosition: isCompletionListBlocker: 0.003167000017128885
+Info 619  [09:39:48.765] Returning an empty list because completion was requested in an invalid position.
+Info 620  [09:39:48.766] getCompletionData: Get current token: 0.006916999991517514
+Info 621  [09:39:48.766] getCompletionData: Is inside comment: 0.01195800001733005
+Info 622  [09:39:48.766] getCompletionData: Get previous token: 0.00979199999710545
+Info 623  [09:39:48.766] getCompletionsAtPosition: isCompletionListBlocker: 0.002582999994046986
+Info 624  [09:39:48.766] Returning an empty list because completion was requested in an invalid position.
+Info 625  [09:39:48.767] getCompletionData: Get current token: 0.009500000043772161
+Info 626  [09:39:48.767] getCompletionData: Is inside comment: 0.01433299999916926
+Info 627  [09:39:48.767] getCompletionData: Get previous token: 0.021250000048894435
+Info 628  [09:39:48.767] getCompletionsAtPosition: isCompletionListBlocker: 0.0037919999449513853
+Info 629  [09:39:48.767] Returning an empty list because completion was requested in an invalid position.
+Info 630  [09:39:48.768] getCompletionData: Get current token: 0.006500000017695129
+Info 631  [09:39:48.768] getCompletionData: Is inside comment: 0.01087499997811392
+Info 632  [09:39:48.768] getCompletionData: Get previous token: 0.008166000014171004
+Info 633  [09:39:48.768] getCompletionsAtPosition: isCompletionListBlocker: 0.0019169999868609011
+Info 634  [09:39:48.768] Returning an empty list because completion was requested in an invalid position.
+Info 635  [09:39:48.769] getCompletionData: Get current token: 0.006583000009413809
+Info 636  [09:39:48.769] getCompletionData: Is inside comment: 0.012624999973922968
+Info 637  [09:39:48.769] getCompletionData: Get previous token: 0.00941699999384582
+Info 638  [09:39:48.769] getCompletionsAtPosition: isCompletionListBlocker: 0.0027080000145360827
+Info 639  [09:39:48.769] Returning an empty list because completion was requested in an invalid position.
+Info 640  [09:39:48.770] getCompletionData: Get current token: 0.008040999993681908
+Info 641  [09:39:48.770] getCompletionData: Is inside comment: 0.012332999962382019
+Info 642  [09:39:48.770] getCompletionData: Get previous token: 0.01087500003632158
+Info 643  [09:39:48.770] getCompletionsAtPosition: isCompletionListBlocker: 0.003000000026077032
+Info 644  [09:39:48.770] Returning an empty list because completion was requested in an invalid position.
+Info 645  [09:39:48.771] getCompletionData: Get current token: 0.00604200002271682
+Info 646  [09:39:48.771] getCompletionData: Is inside comment: 0.009584000043105334
+Info 647  [09:39:48.771] getCompletionData: Get previous token: 0.007832999981474131
+Info 648  [09:39:48.771] getCompletionsAtPosition: isCompletionListBlocker: 0.0016249999753199518
+Info 649  [09:39:48.771] Returning an empty list because completion was requested in an invalid position.
+Info 650  [09:39:48.771] getCompletionData: Get current token: 0.005333000037353486
+Info 651  [09:39:48.771] getCompletionData: Is inside comment: 0.009375000023283064
+Info 652  [09:39:48.771] getCompletionData: Get previous token: 0.007666999998036772
+Info 653  [09:39:48.771] getCompletionsAtPosition: isCompletionListBlocker: 0.0014999999548308551
+Info 654  [09:39:48.771] Returning an empty list because completion was requested in an invalid position.
+Info 655  [09:39:48.772] getCompletionData: Get current token: 0.007999999972525984
+Info 656  [09:39:48.772] getCompletionData: Is inside comment: 0.010833000007551163
+Info 657  [09:39:48.772] getCompletionData: Get previous token: 0.022957999957725406
+Info 658  [09:39:48.772] getCompletionsAtPosition: isCompletionListBlocker: 0.002207999990787357
+Info 659  [09:39:48.772] Returning an empty list because completion was requested in an invalid position.
+Info 660  [09:39:48.782] getCompletionData: Get current token: 0.012290999991819263
+Info 661  [09:39:48.782] getCompletionData: Is inside comment: 0.015541000000666827
+Info 662  [09:39:48.782] getCompletionData: Get previous token: 0.008541000017430633
+Info 663  [09:39:48.782] getCompletionsAtPosition: isCompletionListBlocker: 0.0050829999963752925
+Info 664  [09:39:48.782] Returning an empty list because completion was requested in an invalid position.
+Info 665  [09:39:48.783] getCompletionData: Get current token: 0.00841700000455603
+Info 666  [09:39:48.783] getCompletionData: Is inside comment: 0.014750000031199306
+Info 667  [09:39:48.783] getCompletionData: Get previous token: 0.008291999984066933
+Info 668  [09:39:48.783] getCompletionsAtPosition: isCompletionListBlocker: 0.003916999965440482
+Info 669  [09:39:48.783] Returning an empty list because completion was requested in an invalid position.
+Info 670  [09:39:48.784] getCompletionData: Get current token: 0.007582999998703599
+Info 671  [09:39:48.784] getCompletionData: Is inside comment: 0.011832999996840954
+Info 672  [09:39:48.784] getCompletionData: Get previous token: 0.00970900000538677
+Info 673  [09:39:48.784] getCompletionsAtPosition: isCompletionListBlocker: 0.0044169999891892076
+Info 674  [09:39:48.784] Returning an empty list because completion was requested in an invalid position.
+Info 675  [09:39:48.784] getCompletionData: Get current token: 0.005834000010509044
+Info 676  [09:39:48.784] getCompletionData: Is inside comment: 0.00970900000538677
+Info 677  [09:39:48.785] getCompletionData: Get previous token: 0.011375000001862645
+Info 678  [09:39:48.785] getCompletionsAtPosition: isCompletionListBlocker: 0.0016670000040903687
+Info 679  [09:39:48.785] Returning an empty list because completion was requested in an invalid position.
+Info 680  [09:39:48.785] getCompletionData: Get current token: 0.00741700001526624
+Info 681  [09:39:48.785] getCompletionData: Is inside comment: 0.011916999996174127
+Info 682  [09:39:48.785] getCompletionData: Get previous token: 0.00829099997645244
+Info 683  [09:39:48.785] getCompletionsAtPosition: isCompletionListBlocker: 0.0025840000016614795
+Info 684  [09:39:48.785] Returning an empty list because completion was requested in an invalid position.
+Info 685  [09:39:48.786] getCompletionData: Get current token: 0.006415999960154295
+Info 686  [09:39:48.786] getCompletionData: Is inside comment: 0.0094999999855645
+Info 687  [09:39:48.786] getCompletionData: Get previous token: 0.007625000027474016
+Info 688  [09:39:48.786] getCompletionsAtPosition: isCompletionListBlocker: 0.0017499999958090484
+Info 689  [09:39:48.786] Returning an empty list because completion was requested in an invalid position.
+Info 690  [09:39:48.787] getCompletionData: Get current token: 0.007582999998703599
+Info 691  [09:39:48.787] getCompletionData: Is inside comment: 0.009208999981638044
+Info 692  [09:39:48.787] getCompletionData: Get previous token: 0.007624999969266355
+Info 693  [09:39:48.787] getCompletionsAtPosition: isCompletionListBlocker: 0.0012080000014975667
+Info 694  [09:39:48.787] Returning an empty list because completion was requested in an invalid position.
+Info 695  [09:39:48.788] getCompletionData: Get current token: 0.007916999980807304
+Info 696  [09:39:48.788] getCompletionData: Is inside comment: 0.012583999952767044
+Info 697  [09:39:48.788] getCompletionData: Get previous token: 0.008832999970763922
+Info 698  [09:39:48.788] getCompletionsAtPosition: isCompletionListBlocker: 0.003000000026077032
+Info 699  [09:39:48.788] Returning an empty list because completion was requested in an invalid position.
+Info 700  [09:39:48.789] getCompletionData: Get current token: 0.00812499999301508
+Info 701  [09:39:48.789] getCompletionData: Is inside comment: 0.012416999961715192
+Info 702  [09:39:48.789] getCompletionData: Get previous token: 0.008541999966837466
+Info 703  [09:39:48.789] getCompletionsAtPosition: isCompletionListBlocker: 0.0036669999826699495
+Info 704  [09:39:48.789] Returning an empty list because completion was requested in an invalid position.
+Info 705  [09:39:48.790] getCompletionData: Get current token: 0.007666999998036772
+Info 706  [09:39:48.790] getCompletionData: Is inside comment: 0.01208400004543364
+Info 707  [09:39:48.790] getCompletionData: Get previous token: 0.009291999973356724
+Info 708  [09:39:48.790] getCompletionsAtPosition: isCompletionListBlocker: 0.0035830000415444374
+Info 709  [09:39:48.790] Returning an empty list because completion was requested in an invalid position.
+Info 710  [09:39:48.791] getCompletionData: Get current token: 0.006374999997206032
+Info 711  [09:39:48.791] getCompletionData: Is inside comment: 0.010667000024113804
+Info 712  [09:39:48.791] getCompletionData: Get previous token: 0.009084000019356608
+Info 713  [09:39:48.791] getCompletionsAtPosition: isCompletionListBlocker: 0.0018339999951422215
+Info 714  [09:39:48.791] Returning an empty list because completion was requested in an invalid position.
+Info 715  [09:39:48.792] getCompletionData: Get current token: 0.007333999965339899
+Info 716  [09:39:48.792] getCompletionData: Is inside comment: 0.01179199997568503
+Info 717  [09:39:48.792] getCompletionData: Get previous token: 0.024250000016763806
+Info 718  [09:39:48.792] getCompletionsAtPosition: isCompletionListBlocker: 0.003874999994877726
+Info 719  [09:39:48.792] Returning an empty list because completion was requested in an invalid position.
+Info 720  [09:39:48.793] getCompletionData: Get current token: 0.008167000021785498
+Info 721  [09:39:48.793] getCompletionData: Is inside comment: 0.013624999963212758
+Info 722  [09:39:48.793] getCompletionData: Get previous token: 0.009083000011742115
+Info 723  [09:39:48.793] getCompletionsAtPosition: isCompletionListBlocker: 0.0032499999506399035
+Info 724  [09:39:48.793] Returning an empty list because completion was requested in an invalid position.
+Info 725  [09:39:48.794] getCompletionData: Get current token: 0.009083000011742115
+Info 726  [09:39:48.794] getCompletionData: Is inside comment: 0.011292000010143965
+Info 727  [09:39:48.794] getCompletionData: Get previous token: 0.008625000016763806
+Info 728  [09:39:48.794] getCompletionsAtPosition: isCompletionListBlocker: 0.002666999993380159
+Info 729  [09:39:48.794] Returning an empty list because completion was requested in an invalid position.
+Info 730  [09:39:48.794] getCompletionData: Get current token: 0.007458999985828996
+Info 731  [09:39:48.795] getCompletionData: Is inside comment: 0.012916999985463917
+Info 732  [09:39:48.795] getCompletionData: Get previous token: 0.008374999975785613
+Info 733  [09:39:48.795] getCompletionsAtPosition: isCompletionListBlocker: 0.004333000048063695
+Info 734  [09:39:48.795] Returning an empty list because completion was requested in an invalid position.
+Info 735  [09:39:48.796] getCompletionData: Get current token: 0.008166000014171004
+Info 736  [09:39:48.796] getCompletionData: Is inside comment: 0.01737499999580905
+Info 737  [09:39:48.796] getCompletionData: Get previous token: 0.008250000013504177
+Info 738  [09:39:48.796] getCompletionsAtPosition: isCompletionListBlocker: 0.004041000036522746
+Info 739  [09:39:48.796] Returning an empty list because completion was requested in an invalid position.
+Info 740  [09:39:48.797] getCompletionData: Get current token: 0.007166999974288046
+Info 741  [09:39:48.797] getCompletionData: Is inside comment: 0.011832999996840954
+Info 742  [09:39:48.797] getCompletionData: Get previous token: 0.009250000002793968
+Info 743  [09:39:48.797] getCompletionsAtPosition: isCompletionListBlocker: 0.0036250000121071935
+Info 744  [09:39:48.797] Returning an empty list because completion was requested in an invalid position.
+Info 745  [09:39:49.555] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 746  [09:39:49.564] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 19 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 8.535667000047397ms
+Info 747  [09:39:49.564] Different program with same set of files
+Info 748  [09:39:49.730] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 749  [09:39:49.734] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 750  [09:39:49.737] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 751  [09:39:49.741] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 752  [09:39:49.744] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 753  [09:39:49.747] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 754  [09:39:49.749] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 755  [09:39:50.489] getCompletionData: Get current token: 0.0052090000244788826
+Info 756  [09:39:50.489] getCompletionData: Is inside comment: 0.012584000010974705
+Info 757  [09:39:50.489] getCompletionData: Get previous token: 0.01041699998313561
+Info 758  [09:39:50.489] getCompletionsAtPosition: isCompletionListBlocker: 0.08433399995556101
+Info 759  [09:39:50.489] getCompletionData: Semantic work: 0.42804199998499826
+Info 760  [09:39:50.490] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.7941669999854639
+Info 761  [09:39:50.659] getCompletionData: Get current token: 0.004584000038448721
+Info 762  [09:39:50.659] getCompletionData: Is inside comment: 0.011208000010810792
+Info 763  [09:39:50.659] getCompletionData: Get previous token: 0.009416000044438988
+Info 764  [09:39:50.659] getCompletionsAtPosition: isCompletionListBlocker: 0.010124999971594661
+Info 765  [09:39:50.659] getCompletionData: Semantic work: 0.4451659999904223
+Info 766  [09:39:50.660] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.5905410000123084
+Info 767  [09:39:50.701] getCompletionData: Get current token: 0.00504200003342703
+Info 768  [09:39:50.701] getCompletionData: Is inside comment: 0.011125000019092113
+Info 769  [09:39:50.701] getCompletionData: Get previous token: 0.009332999994512647
+Info 770  [09:39:50.701] getCompletionsAtPosition: isCompletionListBlocker: 0.010083000001031905
+Info 771  [09:39:50.702] getCompletionData: Semantic work: 0.42137500003445894
+Info 772  [09:39:50.702] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.5057500000111759
+Info 773  [09:39:51.436] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 774  [09:39:51.444] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 20 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 7.274625000020023ms
+Info 775  [09:39:51.444] Different program with same set of files
+Info 776  [09:39:51.444] getCompletionData: Get current token: 0.00604200002271682
+Info 777  [09:39:51.444] getCompletionData: Is inside comment: 0.0297920000157319
+Info 778  [09:39:51.444] getCompletionData: Get previous token: 0.01116700004786253
+Info 779  [09:39:51.444] getCompletionsAtPosition: isCompletionListBlocker: 0.001542000041808933
+Info 780  [09:39:51.445] getCompletionData: Semantic work: 0.7625000000116415
+Info 781  [09:39:51.445] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.2619999999878928
+Info 782  [09:39:51.734] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 783  [09:39:51.741] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 21 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 7.19383399997605ms
+Info 784  [09:39:51.742] Different program with same set of files
+Info 785  [09:39:51.789] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 786  [09:39:51.796] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 22 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 6.386457999993581ms
+Info 787  [09:39:51.796] Different program with same set of files
+Info 788  [09:39:52.386] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 789  [09:39:52.393] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 23 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 7.385917000006884ms
+Info 790  [09:39:52.394] Different program with same set of files
+Info 791  [09:39:52.731] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 792  [09:39:52.740] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 24 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 8.59579200000735ms
+Info 793  [09:39:52.740] Different program with same set of files
+Info 794  [09:39:53.637] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 795  [09:39:53.648] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 25 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 11.021875000034925ms
+Info 796  [09:39:53.648] Different program with same set of files
+Info 797  [09:39:53.684] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 798  [09:39:53.703] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 799  [09:39:53.718] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 800  [09:39:53.741] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 801  [09:39:53.764] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 802  [09:39:53.777] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 803  [09:39:53.822] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 804  [09:39:57.995] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 805  [09:39:58.004] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 26 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 9.011957999959122ms
+Info 806  [09:39:58.004] Different program with same set of files
+Info 807  [09:39:58.452] getCompletionData: Get current token: 0.007165999966673553
+Info 808  [09:39:58.453] getCompletionData: Is inside comment: 0.0047500000218860805
+Info 809  [09:39:58.453] getCompletionData: Get previous token: 0.042416000040248036
+Info 810  [09:39:58.453] getCompletionsAtPosition: isCompletionListBlocker: 0.0050829999963752925
+Info 811  [09:39:58.453] getCompletionData: Semantic work: 0.5639580000424758
+Info 812  [09:39:58.454] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.8540830000420101
+Info 813  [09:39:58.459] getCompletionData: Get current token: 0.02916699997149408
+Info 814  [09:39:58.459] getCompletionData: Is inside comment: 0.00604200002271682
+Info 815  [09:39:58.459] getCompletionData: Get previous token: 0.04649999999674037
+Info 816  [09:39:58.459] getCompletionsAtPosition: isCompletionListBlocker: 0.0024170000106096268
+Info 817  [09:39:58.460] getCompletionData: Semantic work: 0.3705830000108108
+Info 818  [09:39:58.461] getCompletionData: Get current token: 0.008833000028971583
+Info 819  [09:39:58.461] getCompletionData: Is inside comment: 0.0029170000343583524
+Info 820  [09:39:58.461] getCompletionData: Get previous token: 0.06008299998939037
+Info 821  [09:39:58.461] getCompletionsAtPosition: isCompletionListBlocker: 0.0014589999918825924
+Info 822  [09:39:58.461] getCompletionData: Semantic work: 0.13050000002840534
+Info 823  [09:39:58.565] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 824  [09:39:58.574] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 27 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 8.736125000054017ms
+Info 825  [09:39:58.574] Different program with same set of files
+Info 826  [09:39:58.679] getCompletionData: Get current token: 0.007332999957725406
+Info 827  [09:39:58.679] getCompletionData: Is inside comment: 0.0012500000302679837
+Info 828  [09:39:58.679] getCompletionData: Get previous token: 0.0467499999795109
+Info 829  [09:39:58.679] getCompletionsAtPosition: isCompletionListBlocker: 0.12904100003652275
+Info 830  [09:39:58.679] getCompletionData: Semantic work: 0.5256659999722615
+Info 831  [09:39:58.680] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.9779579999740236
+Info 832  [09:39:58.786] getCompletionData: Get current token: 0.006875000020954758
+Info 833  [09:39:58.786] getCompletionData: Is inside comment: 0.0012080000014975667
+Info 834  [09:39:58.786] getCompletionData: Get previous token: 0.05254099995363504
+Info 835  [09:39:58.786] getCompletionsAtPosition: isCompletionListBlocker: 0.024875000002793968
+Info 836  [09:39:58.786] getCompletionData: Semantic work: 0.5449170000501908
+Info 837  [09:39:58.787] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.7273329999879934
+Info 838  [09:39:58.896] getCompletionData: Get current token: 0.006916999991517514
+Info 839  [09:39:58.896] getCompletionData: Is inside comment: 0.0009999999892897904
+Info 840  [09:39:58.896] getCompletionData: Get previous token: 0.026833000010810792
+Info 841  [09:39:58.896] getCompletionsAtPosition: isCompletionListBlocker: 0.024875000002793968
+Info 842  [09:39:58.897] getCompletionData: Semantic work: 0.6113750000367872
+Info 843  [09:39:58.898] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.8586660000146367
+Info 844  [09:39:59.063] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 845  [09:39:59.069] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 28 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 6.3232500000158325ms
+Info 846  [09:39:59.069] Different program with same set of files
+Info 847  [09:39:59.464] getCompletionData: Get current token: 0.007458000036422163
+Info 848  [09:39:59.464] getCompletionData: Is inside comment: 0.002708999963942915
+Info 849  [09:39:59.464] getCompletionData: Get previous token: 0.03720800002338365
+Info 850  [09:39:59.464] getCompletionsAtPosition: isCompletionListBlocker: 0.0030830000177957118
+Info 851  [09:39:59.464] getCompletionData: Semantic work: 0.4015839999774471
+Info 852  [09:39:59.466] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 1.8075419999659061
+Info 853  [09:39:59.630] getCompletionData: Get current token: 0.007082999974954873
+Info 854  [09:39:59.630] getCompletionData: Is inside comment: 0.0013330000219866633
+Info 855  [09:39:59.630] getCompletionData: Get previous token: 0.028457999986130744
+Info 856  [09:39:59.630] getCompletionsAtPosition: isCompletionListBlocker: 0.002540999965276569
+Info 857  [09:39:59.630] getCompletionData: Semantic work: 0.4657909999950789
+Info 858  [09:39:59.632] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 1.1440419999998994
+Info 859  [09:39:59.751] getCompletionData: Get current token: 0.006875000020954758
+Info 860  [09:39:59.751] getCompletionData: Is inside comment: 0.0012499999720603228
+Info 861  [09:39:59.751] getCompletionData: Get previous token: 0.018125000002328306
+Info 862  [09:39:59.751] getCompletionsAtPosition: isCompletionListBlocker: 0.0028340000426396728
+Info 863  [09:39:59.752] getCompletionData: Semantic work: 0.46020800003316253
+Info 864  [09:39:59.752] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.8502089999965392
+Info 865  [09:40:00.382] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 866  [09:40:00.392] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 29 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 9.279458000033628ms
+Info 867  [09:40:00.392] Different program with same set of files
+Info 868  [09:40:00.488] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 869  [09:40:00.496] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 870  [09:40:00.812] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 871  [09:40:00.820] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 30 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 7.680832999991253ms
+Info 872  [09:40:00.820] Different program with same set of files
+Info 873  [09:40:00.860] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 874  [09:40:00.875] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 875  [09:40:00.885] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 876  [09:40:00.929] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 877  [09:40:00.933] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 878  [09:40:00.946] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 879  [09:40:00.952] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 880  [09:40:02.100] forEachExternalModuleToImportFrom autoImportProvider: 0.2397909999708645
+Info 881  [09:40:02.103] forEachExternalModuleToImportFrom autoImportProvider: 0.03741599997738376
+Info 882  [09:40:04.322] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 883  [09:40:04.331] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 31 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 8.069499999983236ms
+Info 884  [09:40:04.331] Different program with same set of files
+Info 885  [09:40:04.514] forEachExternalModuleToImportFrom autoImportProvider: 0.03999999997904524
+Info 886  [09:40:04.685] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 887  [09:40:04.685] Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json Detected file add/remove of non supported extension: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~
+Info 888  [09:40:04.685] Elapsed:: 0.2519169999868609ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 889  [09:40:04.685] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 890  [09:40:04.685] Elapsed:: 0.05008299998007715ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 891  [09:40:04.686] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 892  [09:40:04.686] Elapsed:: 0.15366700000595301ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 893  [09:40:04.686] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 894  [09:40:04.686] Elapsed:: 0.014291999978013337ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 895  [09:40:05.023] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 896  [09:40:05.040] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 897  [09:40:05.044] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 898  [09:40:05.049] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 899  [09:40:18.815] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 900  [09:40:18.824] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json projectStateVersion: 32 projectProgramVersion: 1 structureChanged: false structureIsReused:: Completely Elapsed: 8.40600000001723ms
+Info 901  [09:40:18.824] Different program with same set of files
+Info 902  [09:40:18.844] getCompletionData: Get current token: 0.004165999998804182
+Info 903  [09:40:18.844] getCompletionData: Is inside comment: 0.001125000009778887
+Info 904  [09:40:18.844] getCompletionData: Get previous token: 0.027833000000100583
+Info 905  [09:40:18.844] getCompletionsAtPosition: isCompletionListBlocker: 0.005166999995708466
+Info 906  [09:40:18.845] getCompletionData: Semantic work: 0.5525420000194572
+Info 907  [09:40:18.847] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0.8022920000366867
+Info 908  [09:40:19.611] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 909  [09:40:19.611] Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json Detected file add/remove of non supported extension: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~
+Info 910  [09:40:19.611] Elapsed:: 0.18837500002700835ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 911  [09:40:19.611] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 912  [09:40:19.611] Elapsed:: 0.05133300001034513ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts~ :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 913  [09:40:19.611] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 914  [09:40:19.611] Elapsed:: 0.06945800001267344ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Wild card directory
+Info 915  [09:40:19.611] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 916  [09:40:19.611] Elapsed:: 0.01204099995084107ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminaTextElement.ts :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json WatchType: Failed Lookup Locations
+Info 917  [09:40:20.007] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 918  [09:40:20.015] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 919  [09:40:20.019] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 920  [09:40:20.026] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 921  [09:40:20.034] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 922  [09:40:20.047] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 923  [09:40:20.051] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Err 924   [09:40:39.000] Process 1763973278897 heartbeat: "alive" 
+Info 925  [09:40:40.514] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 926  [09:40:40.526] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 927  [09:40:40.531] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 928  [09:40:40.556] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 929  [09:40:40.561] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 930  [09:40:40.566] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 931  [09:40:40.570] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 932  [09:40:45.266] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 933  [09:40:45.274] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/dom/native-elements/TerminalBoxElement.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 934  [09:40:45.278] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 935  [09:40:45.281] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 936  [09:40:45.286] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 937  [09:40:45.289] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/src/setup.ts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console/tsconfig.json
+Info 938  [09:40:50.564] getConfigFileNameForFile:: File: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tests/basic-test.gts ProjectRootPath: undefined:: Result: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json
+Info 939  [09:40:50.564] Creating ConfiguredProject: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo
+Info 940  [09:40:50.569] Config: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json : {
+ "rootNames": [
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/app.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/boot.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/index.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/router.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/app/config/env.ts",
+  "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/types.d.ts"
+ ],
+ "options": {
+  "plugins": [
+   {
+    "name": "@glint/tsserver-plugin"
+   }
+  ],
+  "target": 9,
+  "module": 7,
+  "lib": [
+   "lib.es2022.d.ts"
+  ],
+  "moduleResolution": 100,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "strict": true,
+  "resolveJsonModule": true,
+  "allowSyntheticDefaultImports": true,
+  "forceConsistentCasingInFileNames": true,
+  "outDir": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/dist",
+  "rootDir": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/src",
+  "paths": {
+   "@ember/*": [
+    "./node_modules/ember-source/dist/packages/@ember/*"
+   ],
+   "ember": [
+    "./node_modules/ember-source/dist/packages/ember"
+   ],
+   "@glimmer/*": [
+    "./node_modules/ember-source/dist/packages/@glimmer/*"
+   ],
+   "ember-console": [
+    "../ember/dist/index.js"
+   ]
+  },
+  "pathsBasePath": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo",
+  "configFilePath": "/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json"
+ }
+}
+Info 941  [09:40:50.569] Enabling plugin @glint/tsserver-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 942  [09:40:50.569] Loading @glint/tsserver-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 943  [09:40:50.570] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink (resolved to /Users/patrickpircher/IdeaProjects/ink/node_modules)
+Info 944  [09:40:50.570] Loading @glint/tsserver-plugin from /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo (resolved to /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules)
+Info 945  [09:40:50.571] Glint: called handler processing 1
+Info 946  [09:40:50.571] Plugin validation succeeded
+Info 947  [09:40:50.571] Loading global plugin tsc-ide-plugin
+Info 948  [09:40:50.571] Enabling plugin tsc-ide-plugin from candidate paths: /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript,/Users/patrickpircher/IdeaProjects/ink,/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo,/Users/patrickpircher/IdeaProjects/ink/ember/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js/../../..
+Info 949  [09:40:50.571] Loading tsc-ide-plugin from /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript (resolved to /Users/patrickpircher/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/typescript/node_modules)
+Info 950  [09:40:50.571] Plugin validation succeeded
+Info 951  [09:40:50.573] Starting updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json
+Info 952  [09:40:50.925] Finishing updateGraphWorker: Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 351.3909579999745ms
+Info 953  [09:40:50.925] Project '/Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json' (Configured)
+Info 954  [09:40:50.925] 	Files (605)
+
+Info 955  [09:40:50.925] -----------------------------------------------
+Info 956  [09:40:50.956] AutoImportProviderProject: found 6 root files in 4 dependencies 0 referenced projects in 30.604417000024114 ms
+Info 957  [09:40:50.956] Creating AutoImportProviderProject: /dev/null/autoImportProviderProject3*, currentDirectory: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo
+Info 958  [09:40:50.957] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject3*
+Info 959  [09:40:51.480] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject3* projectStateVersion: 1 projectProgramVersion: 0 structureChanged: true structureIsReused:: Not Elapsed: 523.2266250000102ms
+Info 960  [09:40:51.480] Project '/dev/null/autoImportProviderProject3*' (AutoImportProvider)
+Info 961  [09:40:51.480] 	Files (839)
+
+Info 962  [09:40:51.480] -----------------------------------------------
+Info 963  [09:40:58.679] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules/.vite-temp/vite.config.js.timestamp-1763973658667-e3938cca13b33.mjs :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json WatchType: Failed Lookup Locations
+Info 964  [09:40:58.679] Elapsed:: 0.1261250000097789ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules/.vite-temp/vite.config.js.timestamp-1763973658667-e3938cca13b33.mjs :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json WatchType: Failed Lookup Locations
+Info 965  [09:40:58.679] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules/.vite-temp/vite.config.js.timestamp-1763973658667-e3938cca13b33.mjs :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache
+Info 966  [09:40:58.679] Elapsed:: 0.06329199997708201ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules/.vite-temp/vite.config.js.timestamp-1763973658667-e3938cca13b33.mjs :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache
+Info 967  [09:40:59.392] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules/.vite-temp/vite.config.js.timestamp-1763973658667-e3938cca13b33.mjs :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json WatchType: Failed Lookup Locations
+Info 968  [09:40:59.392] Elapsed:: 0.045542000036221ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules/.vite-temp/vite.config.js.timestamp-1763973658667-e3938cca13b33.mjs :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules 1 undefined Project: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/tsconfig.json WatchType: Failed Lookup Locations
+Info 969  [09:40:59.392] DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules/.vite-temp/vite.config.js.timestamp-1763973658667-e3938cca13b33.mjs :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache
+Info 970  [09:40:59.392] Elapsed:: 0.006416999967768788ms DirectoryWatcher:: Triggered with /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules/.vite-temp/vite.config.js.timestamp-1763973658667-e3938cca13b33.mjs :: WatchInfo: /Users/patrickpircher/IdeaProjects/ink/ember/ember-console-demo/node_modules 1 undefined WatchType: node_modules for closed script infos and package.jsons affecting module specifier cache

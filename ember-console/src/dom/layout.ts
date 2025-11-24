@@ -183,6 +183,12 @@ function buildYogaTree(node: ViewNode): void {
 		element.yogaNode = createYogaNode(element);
 	}
 	
+	// terminal-text elements are leaf nodes in Yoga tree (they have measure functions)
+	// They cannot have Yoga children, but can have DOM children for text aggregation
+	if (element.tagName === 'terminal-text') {
+		return;
+	}
+	
 	// Process children
 	let childIndex = 0;
 	for (let i = 0; i < element.childNodes.length; i++) {

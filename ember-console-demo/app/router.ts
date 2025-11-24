@@ -12,4 +12,5 @@ Router.map(function () {
   this.route('lorem');
   this.route('tomster');
   this.route('box-demo');
+  this.route('component-test');
 });
