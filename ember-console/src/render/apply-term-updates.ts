@@ -530,7 +530,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 		process.stdout.write('\x1b[0m');
 
 		// If first segment starts at position 0, clear from start to ensure no leftover content
-		if (isFirstSegment && segment.start === 0) {
+		if (isFirstSegment && segment.start > 0 && segment.text === '') {
 			clearLineToStart();
 		}
 
@@ -672,8 +672,6 @@ export function handleResize(document: DocumentNode): void {
 	const newWidth = process.stdout.columns || 80;
 	// Check if dimensions actually changed
 	if (newHeight !== state.terminalHeight || newWidth !== state.terminalWidth) {
-		state.terminalHeight = newHeight;
-		state.terminalWidth = newWidth;
 		// Clear and force full re-render on resize
 		clearScreen();
 		// The next render cycle will redraw everything

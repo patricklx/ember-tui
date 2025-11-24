@@ -54,5 +54,5 @@ export async function startApp() {
   // Make app available globally for debugging
   (globalThis as any).app = app;
 
-	startRender(document);
+	startRender(document, 0);
 }

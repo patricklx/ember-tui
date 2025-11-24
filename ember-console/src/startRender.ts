@@ -1,13 +1,13 @@
 import { _backburner } from "@ember/runloop";
 import { DocumentNode } from "./index";
-import { clearScreen, handleResize, render } from "./render/apply-term-updates";
+import { clearScreen, handleResize, render, setMinimalDimensions } from "./render/apply-term-updates";
 
 
 /**
  * Render a Glimmer component to the terminal
  */
 export function startRender(
-  document: DocumentNode
+  document: DocumentNode,
 ): void {
   // Initial clear and render
   clearScreen();

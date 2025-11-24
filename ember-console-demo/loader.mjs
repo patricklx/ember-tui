@@ -7,15 +7,6 @@ import babelConfig from './babel.config.cjs';
 import { resolver, templateTag } from '@embroider/vite';
 
 
-const __dirname = cwd();
-
-// Get ember-source path
-const emberSourcePath = resolvePath(__dirname, 'node_modules/ember-source/dist/packages');
-
-// Get all @glimmer packages
-const glimmerPath = resolvePath(emberSourcePath, '@glimmer');
-const glimmerDirs = existsSync(glimmerPath) ? readdirSync(glimmerPath) : [];
-
 // Helper function to try multiple extensions
 function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', '.gjs']) {
   // Try with extensions first
@@ -92,6 +83,13 @@ const emberResolverContext = (nextResolve) => ({
 });
 
 export async function resolve(specifier, context, nextResolve) {
+	if (specifier.endsWith('-embroider-implicit-modules.js')) {
+		return {
+			url: `file://${specifier}`,
+			format: 'module',
+			shortCircuit: true,
+		};
+	}
   const emberContext = emberResolverContext(nextResolve);
   const res = await emberResolver.resolveId.call(emberContext, specifier, context.parentURL || path.resolve('./package.json'), {});
   if (res?.id.includes('-embroider')) {
@@ -108,6 +106,15 @@ export async function resolve(specifier, context, nextResolve) {
 }
 
 export async function load(url, context, nextLoad) {
+
+	if (url.endsWith('-embroider-implicit-modules.js')) {
+		return {
+			format: 'module',
+			source: 'export default {}',
+			shortCircuit: true,
+		};
+	}
+
   let filePath = url;
   try {
     filePath = fileURLToPath(url);

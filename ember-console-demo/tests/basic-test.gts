@@ -112,7 +112,7 @@ describe("background color clearing", () => {
 		`);
 	});
 
-	test("should clear line from start when text starts at position 0", async () => {
+	test("should clear line from start when new text is prefixed with spaces", async () => {
 		await using ctx = await setupRenderingContext();
 		const state = trackedObject({ text: "Green Text" });
 
@@ -135,7 +135,7 @@ describe("background color clearing", () => {
 			  "[?25h",
 			]
 		`)
-		expect(clearLineToStart).toHaveBeenCalled();
+		expect(clearLineToStartSpy).toHaveBeenCalled();
 	});
 
 	test("should clear line from cursor when new text is shorter", async () => {
