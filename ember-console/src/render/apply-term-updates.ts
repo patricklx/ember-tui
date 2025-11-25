@@ -302,10 +302,12 @@ class DiffSegmentBuilder {
 		const existingSegment = this.segments.find(s => s.start === visualPos);
 		if (existingSegment) {
 			existingSegment.text = ansiState + trailingAnsi;
+			existingSegment.isAnsiOnly = true;
 		} else {
 			this.segments.push({
 				start: visualPos,
-				text: ansiState + trailingAnsi
+				text: ansiState + trailingAnsi,
+				isAnsiOnly: true,
 			});
 		}
 	}
@@ -535,17 +537,16 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 		}
 
 		// If this is the last segment and new text is visually shorter, clear to end of line
-		const needsClearRight = isLastSegment && segmentEndPos < oldVisualLength;
-
-		if (needsClearRight) {
-			clearLineFromCursor();
-		}
+		// Check if segment is ANSI-only (trailing ANSI codes) - these have 0 visual length
+		const needsClearRight = isLastSegment && (newVisualLength < oldVisualLength);
 
 		// Write the new text for this segment (including any ANSI codes)
 		if (segment.text.length > 0) {
 			process.stdout.write(segment.text);
-		} else if (needsClearRight) {
-			// Just clearing, no text to write
+		}
+		if (needsClearRight) {
+			readline.cursorTo(process.stdout, newVisualLength, line);
+			clearLineFromCursor();
 		}
 	}
 
@@ -558,17 +559,20 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
  */
 export function render(rootNode: ElementNode, debugProcess?: undefined | typeof Process): void {
 	process = debugProcess ?? process;
-	const newLines = extractLines(rootNode);
+	const result = extractLines(rootNode);
 	const oldLines = state.lines;
 
+	// Calculate scroll buffer offset (lines that have scrolled off screen)
+	const scrollBufferSize = Math.max(0, oldLines.length - state.terminalHeight);
+
+	const newLines = [...result.static, ...result.dynamic];
 	// Check if we need a full redraw:
-	// 1. If there's content in the scroll buffer (oldLines.length > terminalHeight)
-	// 2. AND any line has changed (including visible lines, as they might have been in scroll buffer)
-	const needsFullRedraw = oldLines.length > state.terminalHeight &&
+	// Only check lines in the scroll buffer (before the visible viewport)
+	// If any line in scroll buffer changed, we need full redraw
+	const needsFullRedraw = scrollBufferSize > 0 &&
 		(() => {
-			// If there's a scroll buffer, check if ANY line changed
-			const maxCheck = Math.max(newLines.length, oldLines.length);
-			for (let i = 0; i < maxCheck; i++) {
+			// Check only lines in the scroll buffer (0 to scrollBufferSize)
+			for (let i = 0; i < scrollBufferSize; i++) {
 				if (newLines[i] !== oldLines[i]) {
 					return true;
 				}
@@ -597,7 +601,9 @@ export function render(rootNode: ElementNode, debugProcess?: undefined | typeof 
 	process.stdout.write('\x1b[?25l');
 
 	try {
-		// Diff and update only changed lines
+		// Calculate which lines are visible (after scroll buffer)
+		const scrollBufferSize = Math.max(0, oldLines.length - state.terminalHeight);
+		const visibleStartLine = scrollBufferSize;
 		const maxLines = Math.max(newLines.length, oldLines.length);
 
 		for (let i = 0; i < maxLines; i++) {
@@ -605,22 +611,25 @@ export function render(rootNode: ElementNode, debugProcess?: undefined | typeof 
 			const oldLine = oldLines[i];
 
 			if (newLine !== oldLine) {
-				// Only update lines within terminal height
-				if (i < state.terminalHeight) {
+				// Calculate screen position (relative to visible viewport)
+				const screenLine = i - visibleStartLine;
+
+				// Only update lines within visible terminal viewport
+				if (screenLine >= 0 && screenLine < state.terminalHeight) {
 					if (newLine === undefined) {
 						// Line was removed - clear it
-						moveCursorTo(i);
+						moveCursorTo(screenLine);
 						clearEntireLine();
 					} else if (oldLine === undefined) {
 						// New line - just write it
-						moveCursorTo(i);
+						moveCursorTo(screenLine);
 						process.stdout.write(newLine);
 					} else {
 						// Line changed - apply minimal update
-						updateLineMinimal(i, oldLine, newLine);
+						updateLineMinimal(screenLine, oldLine, newLine);
 					}
-				} else {
-					// Beyond terminal height - just write newline and content
+				} else if (i >= oldLines.length) {
+					// Beyond previous content - just write newline and content
 					process.stdout.write('\n');
 					if (newLine !== undefined) {
 						process.stdout.write(newLine);
@@ -671,6 +680,8 @@ export function handleResize(document: DocumentNode): void {
 	const newWidth = process.stdout.columns || 80;
 	// Check if dimensions actually changed
 	if (newHeight !== state.terminalHeight || newWidth !== state.terminalWidth) {
+		state.terminalHeight = newHeight;
+		state.terminalWidth = newWidth;
 		// Clear and force full re-render on resize
 		clearScreen();
 		// The next render cycle will redraw everything

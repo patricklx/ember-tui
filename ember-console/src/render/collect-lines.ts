@@ -30,7 +30,10 @@ function* staticElementIterator(el: any): Generator<ElementNode, void, undefined
  * 4. Extracts the final output and converts to lines
  * 5. Handles static elements separately - they are cached and not re-rendered
  */
-export function extractLines(rootNode: ElementNode): string[] {
+export function extractLines(rootNode: ElementNode): {
+	static: string[],
+	dynamic: string[],
+} {
 	// Get terminal dimensions
 	const terminalWidth = process.stdout.columns || 80;
 	const terminalHeight = process.stdout.rows || 24;
@@ -92,7 +95,7 @@ export function extractLines(rootNode: ElementNode): string[] {
 	// Render the node tree to the output buffer, skipping static elements
 	renderNodeToOutput(rootNode, output, {
 		offsetX: 0,
-		offsetY: staticOutputCache.length,
+		offsetY: 0,
 		transformers: [],
 		skipStaticElements: true,
 	});
@@ -103,9 +106,9 @@ export function extractLines(rootNode: ElementNode): string[] {
 	// Convert to lines
 	const dynamicLines = renderedOutput.split('\n');
 
-	// Combine static cache with dynamic content
-	const lines = [...staticOutputCache, ...dynamicLines];
-
-	return lines;
+	return {
+		static: staticOutputCache,
+		dynamic: dynamicLines
+	};
 }
 
