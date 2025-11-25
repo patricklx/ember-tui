@@ -1,7 +1,7 @@
 import { template } from '@ember/template-compiler';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { Box, Text, Static } from 'ember-console';
+import { Box, Text, Static, Spacer } from 'ember-console';
 
 interface Task {
   id: number;
@@ -46,13 +46,17 @@ export default class StaticTest extends Component {
   }
 
   <template>
-    <Box flexDirection="column" @overflow="visible">
-      {{! Static section - tasks that don't change once rendered }}
-      <Static @items={{this.tasks}}>
-        <:default as |task|>
+		{{! Static section - tasks that don't change once rendered }}
+		<Box flexDirection="column" >
+			<Static @items={{this.tasks}}>
+				<:default as |task|>
 					<Text color={{this.randomColor}}>✔ {{task.title}}</Text>
 				</:default>
-      </Static>
+			</Static>
+		</Box>
+
+    <Box flexDirection="column" @overflow="visible">
+			<Spacer />
 
       {{! Dynamic section - updates continuously }}
       <Box marginTop={{1}}>

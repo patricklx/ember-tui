@@ -82,11 +82,9 @@ export function extractLines(rootNode: ElementNode): {
 		}
 	}
 
-	calculateLayout(rootNode, terminalWidth, terminalHeight);
-
 	const height = rootNode.childNodes.map(c => c.yogaNode?.getComputedHeight() || 0).reduce((x, y) => x + y, 0);
 
-	// Create output buffer with terminal dimensions, offset by static content
+	// Create output buffer with calculated height
 	const output = new Output({
 		width: rootNode.yogaNode?.getComputedWidth(),
 		height: height,
