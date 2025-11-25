@@ -69,7 +69,7 @@ export default class AppTemplate extends Component {
 	}
 
 	<template>
-    <Box @flexDirection="column" @overflow="visible">
+    <Box @flexDirection="column" @overflow="visible" @height='100%'>
       <Text>
         {{this.debugMessages}}
       </Text>

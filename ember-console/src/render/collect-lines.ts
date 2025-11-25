@@ -39,7 +39,7 @@ export function extractLines(rootNode: ElementNode): {
 	const terminalHeight = process.stdout.rows || 24;
 
 	// Calculate layout for the entire tree
-	calculateLayout(rootNode, terminalWidth, terminalHeight);
+	calculateLayout(rootNode, terminalWidth, Math.max(0, terminalHeight - staticOutputCache.length));
 
 	// First, render static elements if they haven't been rendered yet
 	const staticElements: TerminalBoxElement[] = [];

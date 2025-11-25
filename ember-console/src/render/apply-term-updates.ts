@@ -533,6 +533,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 
 		// If first segment starts at position 0, clear from start to ensure no leftover content
 		if (isFirstSegment && segment.start > 0 && segment.text === '') {
+      readline.cursorTo(process.stdout, segment.start, line);
 			clearLineToStart();
 		}
 

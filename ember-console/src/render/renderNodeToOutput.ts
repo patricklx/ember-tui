@@ -130,8 +130,6 @@ export function renderNodeToOutput(
 		return;
 	}
 
-	if (node.staticRendered) return;
-
 	const yogaNode = node.yogaNode;
 
 	if (!yogaNode) {

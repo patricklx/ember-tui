@@ -55,9 +55,9 @@ export default class StaticTest extends Component {
 			</Static>
 		</Box>
 
-    <Box flexDirection="column" @overflow="visible">
-			<Spacer />
+    <Spacer />
 
+    <Box flexDirection="column">
       {{! Dynamic section - updates continuously }}
       <Box marginTop={{1}}>
         <Text dimColor={{true}}>Completed tasks: {{this.tasks.length}} | Counter: {{this.counter}}</Text>
