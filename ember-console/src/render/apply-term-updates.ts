@@ -588,10 +588,13 @@ export function render(rootNode: ElementNode, options?: RenderOptions | typeof P
 			stdin: options.stdin || process.stdin,
 			stderr: options.stderr || process.stderr,
 		} as any;
-		
+
 		// Set process in helpers so they use the fake TTY
 		setProcess(process);
-		
+
+		state.terminalHeight = process.stdout.rows;
+		state.terminalWidth = process.stdout.columns;
+
 		try {
 			renderInternal(rootNode);
 		} finally {
@@ -631,22 +634,6 @@ function renderInternal(rootNode: ElementNode): void {
 	// If scroll buffer changed, clear everything and redraw
 	if (needsFullRedraw) {
 		clearScreen();
-		try {
-			for (let i = 0; i < newLines.length; i++) {
-				if (i > 0) {
-					process.stdout.write('\n');
-				}
-				process.stdout.write(newLines[i]);
-			}
-			state.lines = newLines;
-		} finally {
-			process.stdout.write('\x1b[?25h'); // Show cursor
-		}
-		return;
-	}
-	
-	// For first render or when old lines is empty, write all lines
-	if (oldLines.length === 0) {
 		try {
 			for (let i = 0; i < newLines.length; i++) {
 				if (i > 0) {
@@ -744,8 +731,6 @@ export function handleResize(document: DocumentNode): void {
 	const newWidth = process.stdout.columns || 80;
 	// Check if dimensions actually changed
 	if (newHeight !== state.terminalHeight || newWidth !== state.terminalWidth) {
-		state.terminalHeight = newHeight;
-		state.terminalWidth = newWidth;
 		// Clear and force full re-render on resize
 		clearScreen();
 		// The next render cycle will redraw everything
