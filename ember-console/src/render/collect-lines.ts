@@ -37,8 +37,7 @@ function* staticElementIterator(el: any): Generator<ElementNode, void, undefined
 export function extractLines(rootNode: ElementNode, {
 	terminalHeight,
 	terminalWidth,
-	scrollOffset,
-}): {
+}: { terminalHeight: number; terminalWidth: number }, stdout) : {
 	static: string[],
 	dynamic: string[],
 } {
@@ -53,15 +52,13 @@ export function extractLines(rootNode: ElementNode, {
     staticElements.push(element);
   }
 
-	let hadNewStaticElements = false;
-
 	// If static elements have new children, render only the new ones and cache
 	if (staticElements.length) {
 
 		// Render only NEW children from static elements
 		for (const staticElement of staticElements) {
 			const staticOutput = new Output({
-				width: process.stdout.rows,
+				width: stdout.rows,
 				height: staticElement.yogaNode!.getComputedHeight(),
 			});
 
@@ -80,7 +77,6 @@ export function extractLines(rootNode: ElementNode, {
 
 			for (const el of staticElement.childNodes) {
 				el.staticRendered = true;
-				hadNewStaticElements = true;
 				if (el.yogaNode) {
 					staticElement.yogaNode?.removeChild(el.yogaNode);
 				}

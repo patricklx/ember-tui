@@ -610,7 +610,7 @@ export function render(rootNode: ElementNode, options?: RenderOptions | typeof P
 }
 
 function renderInternal(rootNode: ElementNode): void {
-	const result = extractLines(rootNode, state);
+	const result = extractLines(rootNode, state, process.stdout);
 	const oldLines = state.lines;
 
 	// Calculate scroll buffer offset (lines that have scrolled off screen)

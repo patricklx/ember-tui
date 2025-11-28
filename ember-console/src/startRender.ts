@@ -1,6 +1,6 @@
 import { _backburner } from "@ember/runloop";
 import { DocumentNode } from "./index";
-import { clearScreen, handleResize, render, setMinimalDimensions } from "./render/apply-term-updates";
+import { clearScreen, handleResize, render } from "./render/apply-term-updates";
 
 
 /**

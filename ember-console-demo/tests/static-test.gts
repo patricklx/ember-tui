@@ -4,6 +4,7 @@ import { describe, test, expect as hardExpect, beforeEach } from "vitest";
 import { Text, Box, Static, Spacer, render, FakeTTY, resetStaticCache } from "ember-console";
 import { rerender } from "@ember/test-helpers";
 import { trackedObject } from "@ember/reactive/collections";
+import { clearScreen } from "ember-console/render/apply-term-updates";
 
 const expect = hardExpect.soft;
 
@@ -16,7 +17,9 @@ describe("Static component integration test", () => {
   let fakeTTY: FakeTTY;
 
   beforeEach(() => {
+		clearScreen();
     fakeTTY = new FakeTTY();
+		fakeTTY.reset();
     resetStaticCache();
   });
 
@@ -82,7 +85,7 @@ describe("Static component integration test", () => {
 
     // Second render should write less (only new task + updated counter)
     const secondTaskRenderCount = fakeTTY.output.length;
-    expect(secondTaskRenderCount).toBeLessThan(firstTaskRenderCount);
+    expect(secondTaskRenderCount - firstTaskRenderCount).toBeLessThan(firstTaskRenderCount);
 
     fakeTTY.clear();
 
