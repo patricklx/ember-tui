@@ -26,13 +26,6 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
    */
   setAttribute(key: string, value: any): void {
     super.setAttribute(key, value);
-
-    // Update Yoga node if this is a style-related attribute
-    if (this.yogaNode && this.isStyleAttribute(key)) {
-      const styles: Partial<Styles> = {};
-      styles[key as keyof Styles] = value;
-      updateYogaNodeStyles(this, styles as Styles);
-    }
   }
 
   /**
@@ -67,7 +60,6 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
     super();
     this.nodeType = 1;
     this.tagName = tagName;
-		this.yogaNode = createYogaNode(this);
   }
 
   get id() {
@@ -127,15 +119,6 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
     if (childNode.nodeType === 7) {
       (childNode as PropertyNode).setOnNode(this);
     }
-
-    // Update Yoga tree when child is added
-    if (childNode.nodeType === 1 && this.yogaNode) {
-      const childElement = childNode as ElementNode;
-      if (childElement.yogaNode) {
-				childElement.yogaNode.getParent()?.removeChild(childElement.yogaNode);
-        this.yogaNode.insertChild(childElement.yogaNode, this.childNodes.length - 1);
-      }
-    }
   }
 
   insertBefore(childNode: ViewNode, referenceNode: ViewNode) {
@@ -144,26 +127,9 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
     if (childNode.nodeType === 7) {
       (childNode as PropertyNode).setOnNode(this);
     }
-
-    // Update Yoga tree when child is inserted
-    if (childNode.nodeType === 1 && this.yogaNode) {
-      const childElement = childNode as ElementNode;
-      const index = this.childNodes.indexOf(childNode);
-      if (childElement.yogaNode && index >= 0) {
-        this.yogaNode.insertChild(childElement.yogaNode, index);
-      }
-    }
   }
 
   removeChild(childNode: ViewNode) {
-    // Remove from Yoga tree before removing from DOM
-    if (childNode.nodeType === 1 && this.yogaNode) {
-      const childElement = childNode as ElementNode;
-      if (childElement.yogaNode) {
-        this.yogaNode.removeChild(childElement.yogaNode);
-      }
-    }
-
     super.removeChild(childNode);
 
     if (childNode.nodeType === 7) {
