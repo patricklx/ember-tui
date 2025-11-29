@@ -37,11 +37,19 @@ export function startRender(
       process.exit();
     }
 
+    // Detect Ctrl+ key combinations
+    // Ctrl+key produces ASCII codes 1-26 (Ctrl+A = 1, Ctrl+B = 2, etc.)
+    // But exclude \r (13) and \n (10) which are Enter/newline
+    const charCode = key.charCodeAt(0);
+    const isCtrl = charCode >= 1 && charCode <= 26 && key !== '\r' && key !== '\n';
+    const actualKey = isCtrl ? String.fromCharCode(charCode + 96) : key;
+
     // Dispatch keypress event to document
     const event = {
       type: 'keypress',
-      key: key,
+      key: actualKey,
       keyCode: key.charCodeAt(0),
+      ctrlKey: isCtrl,
       preventDefault: () => {},
       stopPropagation: () => {}
     };
@@ -49,5 +57,14 @@ export function startRender(
   });
 
   // Handle terminal resize
-  stdout.on('resize', () => handleResize(document));
+  stdout.on('resize', () => {
+    handleResize(document);
+    // Dispatch resize event to document
+    const event = {
+      type: 'resize',
+      preventDefault: () => {},
+      stopPropagation: () => {}
+    };
+    document.dispatchEvent(event);
+  });
 }

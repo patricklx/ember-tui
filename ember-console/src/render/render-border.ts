@@ -83,7 +83,7 @@ const renderBorder = (
 	verticalBorderHeight = Math.max(verticalBorderHeight, 0);
 
 	let leftBorder = (
-		colorize(box.left, leftBorderColor, 'foreground') + '\n'
+		colorize(box.left, leftBorderColor, 'foreground')
 	).repeat(verticalBorderHeight);
 
 	if (dimLeftBorderColor) {
@@ -91,7 +91,7 @@ const renderBorder = (
 	}
 
 	let rightBorder = (
-		colorize(box.right, rightBorderColor, 'foreground') + '\n'
+		colorize(box.right, rightBorderColor, 'foreground')
 	).repeat(verticalBorderHeight);
 
 	if (dimRightBorderColor) {

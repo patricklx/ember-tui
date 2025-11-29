@@ -37,13 +37,23 @@ interface RenderState {
 	terminalHeight: number;
 	terminalWidth: number;
 	scrollOffset: number;
+	cursor: {
+		y: number,
+		x: number,
+		state: 'hidden' | 'visible'
+	}
 }
 
 const state: RenderState = {
 	lines: [],
 	terminalHeight: process.stdout.rows || 0,
 	terminalWidth: process.stdout.columns || 0,
-	scrollOffset: 0
+	scrollOffset: 0,
+	cursor: {
+		x: 0,
+		y: 0,
+		state: 'visible'
+	}
 };
 
 
@@ -573,6 +583,24 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 	process.stdout.write('\x1b[0m');
 }
 
+export function cursorTo(y: number, x: number) {
+	Object.assign(state.cursor, {
+		x,
+		y,
+	});
+	moveCursorTo(y, x);
+}
+
+export function hideCursor() {
+	state.cursor.state = 'hidden';
+	process.stdout.write('\x1b[?25l');
+}
+
+export function showCursor() {
+	state.cursor.state = 'visible';
+	process.stdout.write('\x1b[?25h');
+}
+
 /**
  * Render with line-by-line diffing using layout-based rendering
  */
@@ -646,11 +674,11 @@ function renderInternal(rootNode: ElementNode): void {
 		} finally {
 			process.stdout.write('\x1b[?25h'); // Show cursor
 		}
+		moveCursorTo(state.cursor.y, state.cursor.x);
 		return;
 	}
 
-	// Hide cursor during rendering for smoother updates
-	process.stdout.write('\x1b[?25l');
+	process.stdout.write('\x1b[?25l'); // Hide cursor
 
 	try {
 		// Calculate which lines are visible (after scroll buffer)
@@ -696,12 +724,11 @@ function renderInternal(rootNode: ElementNode): void {
 
 	} finally {
 		// Show cursor again
-		process.stdout.write('\x1b[?25h');
-
-		// Move cursor to end
-		if (newLines.length > 0) {
-			const cursorLine = Math.min(newLines.length, state.terminalHeight - 1);
-			moveCursorTo(cursorLine);
+		if (state.cursor.state === 'visible') {
+			process.stdout.write('\x1b[?25h');
+			moveCursorTo(state.cursor.y, state.cursor.x);
+		} else {
+			process.stdout.write('\x1b[?25l');
 		}
 	}
 }
@@ -725,4 +752,5 @@ export function handleResize(document: DocumentNode): void {
 	state.terminalHeight = newHeight;
 	state.terminalWidth = newWidth;
 	clearScreen();
+	render(document.body);
 }

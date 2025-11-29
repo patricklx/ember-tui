@@ -10,10 +10,10 @@ import {
 
 /**
  * "Virtual" output class
- * 
+ *
  * Handles the positioning and saving of the output of each node in the tree.
  * Also responsible for applying transformations to each character of the output.
- * 
+ *
  * Used to generate the final output of all nodes before writing it to actual output stream
  */
 
@@ -100,7 +100,7 @@ export default class Output {
 	get(): {output: string; height: number} {
 		// Initialize output array - start with terminal height but allow growth
 		const output: StyledChar[][] = [];
-		
+
 		// Helper function to ensure row exists
 		const ensureRow = (y: number) => {
 			while (output.length <= y) {

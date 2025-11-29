@@ -1,7 +1,7 @@
 import PropertyNode from './PropertyNode.ts';
 import ViewNode from './ViewNode.ts';
 import {type Node as YogaNode} from 'yoga-layout';
-import {updateYogaNodeStyles} from '../layout.ts';
+import { createYogaNode, updateYogaNodeStyles } from '../layout.ts';
 import type {Styles} from '../styles.ts';
 
 
@@ -19,7 +19,7 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
   declare _classList: IClassList;
   declare _id: string;
   yogaNode?: YogaNode;
-	staticRendered?: Boolean;
+	staticRendered?: YogaNode;
 
   /**
    * Override setAttribute to update Yoga styles when style attributes change
@@ -67,6 +67,7 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
     super();
     this.nodeType = 1;
     this.tagName = tagName;
+		this.yogaNode = createYogaNode(this);
   }
 
   get id() {
@@ -131,6 +132,7 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
     if (childNode.nodeType === 1 && this.yogaNode) {
       const childElement = childNode as ElementNode;
       if (childElement.yogaNode) {
+				childElement.yogaNode.getParent()?.removeChild(childElement.yogaNode);
         this.yogaNode.insertChild(childElement.yogaNode, this.childNodes.length - 1);
       }
     }

@@ -14,4 +14,5 @@ Router.map(function () {
   this.route('box-demo');
   this.route('component-test');
   this.route('static-test');
+  this.route('file-editor');
 });

@@ -13,12 +13,12 @@ export function setProcess(proc: typeof globalThis.process): void {
 /**
  * Move cursor to specific line (0-based)
  */
-export function moveCursorTo(line: number): void {
+export function moveCursorTo(line: number, row: number = 0): void {
 	const stdout = process.stdout as any;
 	if (stdout.cursorTo) {
-		stdout.cursorTo(0, line);
+		stdout.cursorTo(row, line);
 	} else {
-		readline.cursorTo(stdout, 0, line);
+		readline.cursorTo(stdout, row, line);
 	}
 }
 
