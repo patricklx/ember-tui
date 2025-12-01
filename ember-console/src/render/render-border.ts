@@ -82,17 +82,16 @@ const renderBorder = (
 
 	verticalBorderHeight = Math.max(verticalBorderHeight, 0);
 
-	let leftBorder = (
-		colorize(box.left, leftBorderColor, 'foreground')
-	).repeat(verticalBorderHeight);
+	// Create vertical borders with newlines to span multiple rows
+	const leftBorderChar = colorize(box.left, leftBorderColor, 'foreground');
+	let leftBorder = Array(verticalBorderHeight).fill(leftBorderChar).join('\n');
 
 	if (dimLeftBorderColor) {
 		leftBorder = chalk.dim(leftBorder);
 	}
 
-	let rightBorder = (
-		colorize(box.right, rightBorderColor, 'foreground')
-	).repeat(verticalBorderHeight);
+	const rightBorderChar = colorize(box.right, rightBorderColor, 'foreground');
+	let rightBorder = Array(verticalBorderHeight).fill(rightBorderChar).join('\n');
 
 	if (dimRightBorderColor) {
 		rightBorder = chalk.dim(rightBorder);
