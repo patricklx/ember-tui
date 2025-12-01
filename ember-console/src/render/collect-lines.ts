@@ -57,7 +57,7 @@ export function extractLines(rootNode: ElementNode, {
 		// Render only NEW children from static elements
 		for (const staticElement of staticElements) {
 			const staticOutput = new Output({
-				width: stdout.rows,
+				width: terminalWidth,
 				height: staticElement.yogaNode!.getComputedHeight(),
 			});
 

@@ -183,9 +183,7 @@ function buildYogaTree(node: ViewNode): void {
 	const element = node as ElementNode;
 
 	// Create Yoga node if it doesn't exist
-	if (!element.yogaNode) {
-		element.yogaNode = createYogaNode(element);
-	}
+  element.yogaNode = createYogaNode(element);
 
 	// terminal-text elements are leaf nodes in Yoga tree (they have measure functions)
 	// They cannot have Yoga children, but can have DOM children for text aggregation
@@ -193,8 +191,6 @@ function buildYogaTree(node: ViewNode): void {
 		return;
 	}
 
-	// Process children
-	let childIndex = 0;
 	for (let i = 0; i < element.childNodes.length; i++) {
 		const child = element.childNodes[i];
 
@@ -204,37 +200,7 @@ function buildYogaTree(node: ViewNode): void {
 			// Build child's Yoga tree
 			buildYogaTree(childElement);
 
-			// Insert child Yoga node (only if not already a child)
-			if (childElement.yogaNode && element.yogaNode) {
-				// Check if child already has a parent, remove it first
-				const childYogaNode = childElement.yogaNode;
-				const parentYogaNode = element.yogaNode;
-
-				// Try to get parent - if it has one and it's different, remove it
-				try {
-					const currentParent = childYogaNode.getParent();
-					if (currentParent && currentParent !== parentYogaNode) {
-						currentParent.removeChild(childYogaNode);
-					}
-				} catch (e) {
-					// getParent might not exist or child might not have parent yet
-				}
-
-				// Only insert if not already a child of this parent
-				const childCount = parentYogaNode.getChildCount();
-				let alreadyChild = false;
-				for (let j = 0; j < childCount; j++) {
-					if (parentYogaNode.getChild(j) === childYogaNode) {
-						alreadyChild = true;
-						break;
-					}
-				}
-
-				if (!alreadyChild) {
-					parentYogaNode.insertChild(childYogaNode, childIndex);
-				}
-				childIndex++;
-			}
+      element.yogaNode.insertChild(childElement.yogaNode, element.yogaNode.getChildCount());
 		}
 	}
 }

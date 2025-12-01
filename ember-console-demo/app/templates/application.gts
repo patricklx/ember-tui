@@ -31,7 +31,8 @@ export default class AppTemplate extends Component {
 		hideCursor();
 
 		// Start at menu
-		this.selectedView = 'menu';
+		this.selectedView = 'file-editor';
+    this.router.transitionTo('file-editor');
 	}
 
 	willDestroy() {

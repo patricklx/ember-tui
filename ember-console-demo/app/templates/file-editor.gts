@@ -18,7 +18,7 @@ export default class FileEditorTemplate extends Component {
   @tracked scrollOffset = 0;
   @tracked statusMessage = '';
 
-  maxVisibleLines = process.stdout.rows - 3 - 7;
+  maxVisibleLines = (process.stdout.rows || 22) - 3 - 7;
 
   constructor(owner: unknown, args: object) {
     super(owner, args);
@@ -52,6 +52,12 @@ export default class FileEditorTemplate extends Component {
         }
       }).sort();
       this.selectedIndex = 0;
+      this.loadFile(this.files[0]);
+      setTimeout(() => {
+        for (let i = 0; i < 20; i++) {
+          this.handleEditMode('\u001b[B');
+        }
+      }, 1000)
     } catch (error) {
       this.statusMessage = `Error loading files: ${error.message}`;
     }

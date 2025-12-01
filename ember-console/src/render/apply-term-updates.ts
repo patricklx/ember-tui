@@ -46,8 +46,8 @@ interface RenderState {
 
 const state: RenderState = {
 	lines: [],
-	terminalHeight: process.stdout.rows || 0,
-	terminalWidth: process.stdout.columns || 0,
+	terminalHeight: process.stdout.rows || 15,
+	terminalWidth: process.stdout.columns || 80,
 	scrollOffset: 0,
 	cursor: {
 		x: 0,

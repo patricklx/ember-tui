@@ -128,11 +128,4 @@ export class TerminalBoxElement extends ElementNode<Attributes> {
 
     return child;
   }
-
-  /**
-   * Override removeChild to prevent removal of static children
-   */
-  removeChild(child: any) {
-    return super.removeChild(child);
-  }
 }
