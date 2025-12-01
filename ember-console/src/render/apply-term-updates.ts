@@ -9,6 +9,7 @@ import * as readline from "node:readline";
 import { DocumentNode } from "../index.js";
 import * as Process from "node:process";
 import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo, setProcess } from "./helpers";
+import * as fs from 'node:fs';
 
 let process = globalThis.process;
 
@@ -508,6 +509,7 @@ function getVisualLength(text: string): number {
  */
 function updateLineMinimal(line: number, oldText: string, newText: string): void {
 	const segments = findDiffSegments(oldText, newText);
+  fs.appendFileSync('./out.txt', line + JSON.stringify(segments, null, 2));
 
 	// If no segments, strings are identical
 	if (segments.length === 0) {
@@ -563,7 +565,9 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 
 		// If this is the last segment and new text is visually shorter, clear to end of line
 		// Check if segment is ANSI-only (trailing ANSI codes) - these have 0 visual length
-		const needsClearRight = isLastSegment && (newVisualLength < oldVisualLength);
+		const needsClearRight = isLastSegment && ((newVisualLength < oldVisualLength) || segment.text === '');
+
+    const start = newVisualLength < oldVisualLength ? newVisualLength - 1: segment.start;
 
 		// Write the new text for this segment (including any ANSI codes)
 		if (segment.text.length > 0) {
@@ -571,9 +575,9 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 		}
 		if (needsClearRight) {
 			if (stdout.cursorTo) {
-				stdout.cursorTo(newVisualLength, line);
+				stdout.cursorTo(start, line);
 			} else {
-				readline.cursorTo(stdout, newVisualLength, line);
+				readline.cursorTo(stdout, start, line);
 			}
 			clearLineFromCursor();
 		}
