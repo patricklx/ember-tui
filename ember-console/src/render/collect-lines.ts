@@ -3,7 +3,6 @@ import { calculateLayout } from "../dom/layout.js";
 import Output from "./Output.js";
 import { renderNodeToOutput } from "./renderNodeToOutput.js";
 import { TerminalBoxElement } from "../dom/native-elements/TerminalBoxElement.js";
-import { elementIterator } from '../dom/nodes/DocumentNode';
 
 // Cache for static element output
 let staticOutputCache: string[] = [];

@@ -677,7 +677,6 @@ function renderInternal(rootNode: ElementNode): void {
 		moveCursorTo(state.cursor.y, state.cursor.x);
 		return;
 	}
-
 	process.stdout.write('\x1b[?25l'); // Hide cursor
 
 	try {
