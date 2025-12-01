@@ -213,9 +213,7 @@ export function calculateLayout(
 	width?: number,
 	height?: number,
 ): void {
-	if (rootNode.nodeType !== 1) {
-		return;
-	}
+
 
 	const rootElement = rootNode as ElementNode;
 

@@ -203,6 +203,7 @@ export default class ViewNode<Attributes = any> {
       // fixes #127 - see for more details
       // fixes #240
       // throw new Error(`Can't insert child, because it is already a child.`)
+      this.removeChild(childNode);
     }
 
     const index = this.childNodes.indexOf(referenceNode);
@@ -230,6 +231,11 @@ export default class ViewNode<Attributes = any> {
       // fixes #127 - see for more details
       // fixes #240
       // throw new Error(`Can't append child, because it is already a child.`)
+      return;
+    }
+
+    if (this.childNodes.includes(childNode)) {
+      throw new Error('already added child.');
     }
 
     this.childNodes.push(childNode);
@@ -251,7 +257,12 @@ export default class ViewNode<Attributes = any> {
       throw new Error(`Can't remove child, because it has a different parent.`);
     }
 
+    if (!this.childNodes.includes(childNode)) {
+      throw new Error(`Can't remove child, because its already removed`);
+    }
+
     childNode.parentNode = null;
+
 
     this.childNodes = this.childNodes.filter((node) => node !== childNode);
     this.onRemovedChild(childNode);

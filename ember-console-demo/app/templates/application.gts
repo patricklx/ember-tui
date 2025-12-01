@@ -107,7 +107,6 @@ export default class AppTemplate extends Component {
         <Box @borderStyle="single" @borderColor="gray" @paddingX={{1}}>
           <Text @color="yellow">Press Ctrl+B to go back to menu</Text>
         </Box>
-				<Text>{{this.counter}}</Text>
       {{/if}}
     </Box>
 	</template>

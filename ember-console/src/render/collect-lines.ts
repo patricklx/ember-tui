@@ -42,7 +42,8 @@ export function extractLines(rootNode: ElementNode, {
 } {
 
 	// Calculate layout for the entire tree
-	calculateLayout(rootNode, terminalWidth, Math.max(0, terminalHeight - staticOutputCache.length));
+	const availableHeight = Math.max(0, terminalHeight - staticOutputCache.length);
+	calculateLayout(rootNode, terminalWidth, availableHeight);
 
 	// First, render static elements if they haven't been rendered yet
 	const staticElements: TerminalBoxElement[] = [];
@@ -56,9 +57,10 @@ export function extractLines(rootNode: ElementNode, {
 
 		// Render only NEW children from static elements
 		for (const staticElement of staticElements) {
+			const staticHeight = staticElement.yogaNode!.getComputedHeight();
 			const staticOutput = new Output({
 				width: terminalWidth,
-				height: staticElement.yogaNode!.getComputedHeight(),
+				height: staticHeight,
 			});
 
 			if (!staticElement.firstElement() || staticElement.childNodes.every(c => c.staticRendered)) {
@@ -85,14 +87,18 @@ export function extractLines(rootNode: ElementNode, {
 			}
 		}
 
-	calculateLayout(rootNode, terminalWidth, Math.max(0, terminalHeight - staticOutputCache.length));
+	const availableHeightForDynamic = Math.max(0, terminalHeight - staticOutputCache.length);
+	calculateLayout(rootNode, terminalWidth, availableHeightForDynamic);
 
 	const height = rootNode.childNodes.map(c => c.yogaNode?.getComputedHeight() || 0).reduce((x, y) => x + y, 0);
 
-	// Create output buffer with calculated height
+	// Create output buffer with calculated height, but constrain to available terminal height
+	// This prevents content from being rendered beyond the visible viewport
+	const constrainedHeight = Math.min(height, availableHeightForDynamic);
+	const outputWidth = rootNode.yogaNode?.getComputedWidth();
 	const output = new Output({
-		width: rootNode.yogaNode?.getComputedWidth(),
-		height: height,
+		width: outputWidth,
+		height: constrainedHeight,
 	});
 
 	// Render the node tree to the output buffer, skipping static elements
