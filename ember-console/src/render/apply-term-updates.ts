@@ -70,6 +70,7 @@ export interface TextSegment {
  * Parse text into tokens, treating ANSI escape sequences as single units
  */
 export interface Token {
+	start: number;
 	value: string;
 	isAnsi: boolean;
 	visualLength: number; // 0 for ANSI codes, 1 for regular chars
@@ -87,6 +88,8 @@ class AnsiTokenizer {
 		const tokens: Token[] = [];
 		let i = 0;
 
+		let visualStart = 0;
+
 		while (i < text.length) {
 			const ansiToken = this.tryParseAnsiSequence(text, i);
 			if (ansiToken) {
@@ -94,10 +97,12 @@ class AnsiTokenizer {
 				i += ansiToken.value.length;
 			} else {
 				tokens.push({
+					start: visualStart,
 					value: text[i],
 					isAnsi: false,
 					visualLength: 1
 				});
+				visualStart += 1;
 				i++;
 			}
 		}
@@ -497,6 +502,44 @@ function getTrailingAnsi(tokens: Token[]): string {
 }
 
 /**
+ * Expand tabs to spaces based on column position
+ * Tabs move to the next multiple of tabWidth (default 8)
+ */
+function expandTabs(text: string, startColumn: number = 0, tabWidth: number = 8): string {
+	let result = '';
+	let column = startColumn;
+
+	for (let i = 0; i < text.length; i++) {
+		const char = text[i];
+		if (char === '\t') {
+			// Calculate spaces needed to reach next tab stop
+			const spacesToAdd = tabWidth - (column % tabWidth);
+			result += ' '.repeat(spacesToAdd);
+			column += spacesToAdd;
+		} else if (char === '\x1b') {
+			// Handle ANSI escape sequences - don't affect column position
+			let j = i;
+			if (text[i + 1] === '[') {
+				j = i + 2;
+				while (j < text.length && !/[a-zA-Z]/.test(text[j])) {
+					j++;
+				}
+				if (j < text.length) {
+					j++; // Include the final letter
+				}
+			}
+			result += text.slice(i, j);
+			i = j - 1; // -1 because loop will increment
+		} else {
+			result += char;
+			column++;
+		}
+	}
+
+	return result;
+}
+
+/**
  * Calculate visual length of text (excluding ANSI codes)
  */
 function getVisualLength(text: string): number {
@@ -508,7 +551,11 @@ function getVisualLength(text: string): number {
  * Apply minimal update to a line by only rewriting the changed portions
  */
 function updateLineMinimal(line: number, oldText: string, newText: string): void {
-	const segments = findDiffSegments(oldText, newText);
+	// Expand tabs to spaces before processing
+	const expandedOldText = expandTabs(oldText);
+	const expandedNewText = expandTabs(newText);
+
+	const segments = findDiffSegments(expandedOldText, expandedNewText);
   fs.appendFileSync('./out.txt', line + JSON.stringify(segments, null, 2));
 
 	// If no segments, strings are identical
@@ -553,21 +600,23 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 		// This ensures old backgrounds don't persist
 		process.stdout.write('\x1b[0m');
 
-		// If first segment starts at position 0, clear from start to ensure no leftover content
-		if (isFirstSegment && segment.start > 0 && segment.text === '') {
-			if (stdout.cursorTo) {
-				stdout.cursorTo(segment.start, line);
-			} else {
-				readline.cursorTo(stdout, segment.start, line);
+		if (isFirstSegment && segment.start > 0) {
+			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
+			if (prevStart < segment.start) {
+				if (stdout.cursorTo) {
+					stdout.cursorTo(segment.start, line);
+				} else {
+					readline.cursorTo(stdout, segment.start, line);
+				}
+				clearLineToStart();
 			}
-			clearLineToStart();
 		}
 
 		// If this is the last segment and new text is visually shorter, clear to end of line
 		// Check if segment is ANSI-only (trailing ANSI codes) - these have 0 visual length
 		const needsClearRight = isLastSegment && ((newVisualLength < oldVisualLength) || segment.text === '');
 
-    const start = newVisualLength < oldVisualLength ? newVisualLength - 1: segment.start;
+    const start = newVisualLength < oldVisualLength ? newVisualLength: segment.start;
 
 		// Write the new text for this segment (including any ANSI codes)
 		if (segment.text.length > 0) {
@@ -672,7 +721,7 @@ function renderInternal(rootNode: ElementNode): void {
 				if (i > 0) {
 					process.stdout.write('\n');
 				}
-				process.stdout.write(newLines[i]);
+				process.stdout.write(expandTabs(newLines[i]));
 			}
 			state.lines = newLines;
 		} finally {
@@ -704,9 +753,9 @@ function renderInternal(rootNode: ElementNode): void {
 						moveCursorTo(screenLine);
 						clearEntireLine();
 					} else if (oldLine === undefined || oldLine === "") {
-						// New line - just write it
+						// New line - just write it (expand tabs)
 						moveCursorTo(screenLine);
-						process.stdout.write(newLine);
+						process.stdout.write(expandTabs(newLine));
 					} else {
 						// Line changed - apply minimal update
 						updateLineMinimal(screenLine, oldLine, newLine);
@@ -716,7 +765,7 @@ function renderInternal(rootNode: ElementNode): void {
 					moveCursorTo(screenLine);
 					process.stdout.write('\n');
 					if (newLine !== undefined) {
-						process.stdout.write(newLine);
+						process.stdout.write(expandTabs(newLine));
 					}
 				}
 			}

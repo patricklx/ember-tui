@@ -57,7 +57,7 @@ import { Box, Text } from 'ember-console';
   <Box @borderStyle="round" @borderColor="green" @padding={{1}}>
     <Box @flexDirection="column" @gap={{1}}>
       <Text @bold={{true}} @color="green">Dashboard</Text>
-      <Box @flexDirection="row" @gap={{2}}>
+      <Box @flexDirection="row" @gap={{1}}>
         <Box @backgroundColor="blue" @padding={{1}}>
           <Text @color="white">Status: OK</Text>
         </Box>
