@@ -1,7 +1,5 @@
 import ViewNode from './ViewNode.ts';
 import {type Node as YogaNode} from 'yoga-layout';
-import { createYogaNode, updateYogaNodeStyles } from '../layout.ts';
-import type {Styles} from '../styles.ts';
 import { OutputTransformer } from "./TerminalElementNode";
 
 

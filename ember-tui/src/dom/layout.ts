@@ -154,7 +154,7 @@ export function createYogaNode(element: ElementNode): YogaNode {
 
 	// Set measure function for text elements
 	if (element.tagName === 'terminal-text') {
-		yogaNode.setMeasureFunc((width) => {
+		yogaNode.setMeasureFunc(() => {
 			const text = (element as any).text || '';
 			const dimensions = measureText(text);
 			return {

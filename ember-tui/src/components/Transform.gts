@@ -1,5 +1,4 @@
 import Component from '@glimmer/component';
-import Box from './Box.gts';
 
 /**
  * A flexible space that expands along the major axis of its containing layout.

@@ -11,6 +11,7 @@ function* elementIterator(el: any): Generator<any, void, unknown> {
 
 export type EventListener = (args: any) => void;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default class ViewNode<Attributes = any> {
   attributesObject: any = {};
   args: any;
@@ -68,6 +69,7 @@ export default class ViewNode<Attributes = any> {
     return this.getElementByTagName(selector);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   contains(_otherElement: ViewNode) {
     return false;
   }
@@ -178,8 +180,10 @@ export default class ViewNode<Attributes = any> {
     this[key as keyof this] = value;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onInsertedChild(_childNode: ViewNode, _index: number) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onRemovedChild(_childNode: ViewNode) {}
 
   insertBefore(childNode: ViewNode, referenceNode: ViewNode) {

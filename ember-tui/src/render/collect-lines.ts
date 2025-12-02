@@ -38,7 +38,8 @@ function* staticElementIterator(el: ElementNode): Generator<TerminalBoxElement, 
 export function extractLines(rootNode: ElementNode, {
 	terminalHeight,
 	terminalWidth,
-}: { terminalHeight: number; terminalWidth: number }, stdout: any) : {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+}: { terminalHeight: number; terminalWidth: number }, _stdout: any) : {
 	static: string[],
 	dynamic: string[],
 } {

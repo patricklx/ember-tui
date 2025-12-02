@@ -3,7 +3,6 @@ import chalk from 'chalk';
 import colorize from '../dom/colorize.js';
 import ElementNode from '../dom/nodes/ElementNode.js';
 import type Output from './Output.js';
-import Yoga from 'yoga-layout';
 
 /**
  * Render border around a box element

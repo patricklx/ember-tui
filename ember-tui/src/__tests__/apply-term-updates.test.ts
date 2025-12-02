@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, clearScreen } from '../render/apply-term-updates';
+import { render } from '../render/apply-term-updates';
 import ElementNode from '../dom/nodes/ElementNode';
-import TextNode from '../dom/nodes/TextNode';
 import { extractLines } from '../render/collect-lines';
 import { FakeTTY } from '../test-utils/FakeTTY';
 
@@ -100,7 +99,6 @@ describe('apply-term-updates - render with fake TTY', () => {
       dynamic: ['Static Line', 'Dynamic: 0']
     });
     render(root, global.process);
-    const fullRenderCount = fakeTTY.getOutputSinceClear().length;
     fakeTTY.clear();
 
     // Third render - only second line changed (minimal update)

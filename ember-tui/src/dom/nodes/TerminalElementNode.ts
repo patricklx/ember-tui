@@ -1,4 +1,3 @@
-import ViewNode from './ViewNode.js';
 import type { Node as YogaNode } from 'yoga-layout';
 import ElementNode from "./ElementNode";
 

@@ -440,7 +440,8 @@ class DiffAnalyzer {
 		return false;
 	}
 
-	private handleTrailingContent(maxVisualLength: number): void {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	private handleTrailingContent(_maxVisualLength: number): void {
 		const oldVisualLength = this.oldLookup.getMaxVisualLength();
 		const newVisualLength = this.newLookup.getMaxVisualLength();
 
@@ -510,7 +511,8 @@ function getTrailingAnsi(tokens: Token[]): string {
  * Expand tabs to spaces based on column position
  * Tabs move to the next multiple of tabWidth (default 8)
  */
-function expandTabs(text: string, startColumn: number = 0, tabWidth: number = 8): string {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function expandTabs(text: string, _startColumn: number = 0, tabWidth: number = 8): string {
 	return text.replace(/\t/g, ' '.repeat(tabWidth));
 }
 
@@ -568,9 +570,6 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 		}
 
 		// Optimize clearing strategy based on segment position
-		const segmentVisualLength = getVisualLength(segment.text);
-		const segmentEndPos = segment.start + segmentVisualLength;
-
 		// Reset any previous styling (background colors, etc.) before writing new content
 		// This ensures old backgrounds don't persist
 		process.stdout.write('\x1b[0m');

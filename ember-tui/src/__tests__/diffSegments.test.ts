@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { tokenize, getActiveAnsiCodes, findDiffSegments, clearLineFromCursor, clearLineToStart, clearEntireLine } from '../render/apply-term-updates';
-import * as readline from 'node:readline';
+import { tokenize, getActiveAnsiCodes, findDiffSegments } from '../render/apply-term-updates';
 import * as applyTermUpdates from '../render/apply-term-updates';
 
 
@@ -63,24 +62,6 @@ describe('getActiveAnsiCodes', () => {
 });
 
 describe('findDiffSegments', () => {
-
-  // Helper function to convert visual position to actual string position
-  function visualToStringPosition(text: string, visualPos: number): number {
-    const tokens = tokenize(text);
-    let currentVisualPos = 0;
-    let stringPos = 0;
-
-    for (const token of tokens) {
-      if (currentVisualPos >= visualPos) {
-        break;
-      }
-      stringPos += token.value.length;
-      currentVisualPos += token.visualLength;
-    }
-
-    return stringPos;
-  }
-
   it('should handle partial text replacement with same colors 1', () => {
     // Use raw ANSI codes instead of chalk (chalk may strip codes in test environment)
     const oldText = '\x1b[32m\x1b[1mLorem Ipsum Generator\x1b[0m';

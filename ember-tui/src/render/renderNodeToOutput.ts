@@ -10,23 +10,6 @@ import renderBorder from './render-border.js';
 import renderBackground from './render-background.js';
 
 /**
- * Squash text nodes into a single string
- */
-function squashTextNodes(node: ElementNode): string {
-	let text = '';
-
-	for (const child of node.childNodes) {
-		if (child instanceof TerminaTextElement) {
-			text += child.text;
-		} else if (child.nodeType === 1) {
-			text += squashTextNodes(child as ElementNode);
-		}
-	}
-
-	return text;
-}
-
-/**
  * Get maximum width for text wrapping
  */
 function getMaxWidth(yogaNode: any): number {
