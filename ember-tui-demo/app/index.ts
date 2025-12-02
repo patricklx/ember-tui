@@ -1,5 +1,4 @@
 import { startApp } from './boot';
-import { startRender } from 'ember-tui';
 
 // Start the Ember application
 startApp()

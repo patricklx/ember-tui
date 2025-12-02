@@ -3,7 +3,6 @@ import { Text, Box, Spacer } from 'ember-tui';
 import { tracked } from '@glimmer/tracking';
 import { readFileSync, readdirSync, writeFileSync, statSync } from 'fs';
 import { join } from 'path';
-import * as readline from 'readline';
 import * as process from "node:process";
 import { cursorTo, hideCursor, showCursor } from "ember-tui/render/apply-term-updates";
 
@@ -26,6 +25,8 @@ export default class FileEditorTemplate extends Component {
   @tracked scrollOffset = 0;
 	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked statusMessage = '';
+
+	maxVisibleLines = (process.stdout.rows || 22) - 3 - 7;
 
   constructor(owner: unknown, args: object) {
 		// @ts-expect-error - Owner type mismatch

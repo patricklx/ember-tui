@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { Transform } from "ember-tui";
 import gradientString from 'gradient-string';
-import * as console from "node:console";
 
 export type GradientName =
 	| 'cristal'
