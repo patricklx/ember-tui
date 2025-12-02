@@ -3,13 +3,7 @@ import ElementNode from './ElementNode.ts';
 import TextNode from './TextNode.ts';
 import ViewNode, { EventListener } from './ViewNode.ts';
 import { createElement } from "../element-registry";
-
-export function* elementIterator(el: any): Generator<ElementNode, void, undefined> {
-  yield el;
-  for (const child of el.childNodes) {
-    yield* elementIterator(child);
-  }
-}
+import { elementIterator } from './element-iterator.ts';
 
 class HeadNode extends ElementNode {
   private document: any;

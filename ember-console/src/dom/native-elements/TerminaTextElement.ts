@@ -3,7 +3,7 @@ import chalk, { ForegroundColorName } from 'chalk';
 import { Styles } from '../styles';
 import colorize from '../colorize';
 import { LiteralUnion } from "type-fest";
-import { elementIterator } from "../nodes/DocumentNode";
+import { elementIterator } from "../nodes/element-iterator";
 
 
 interface Attributes {
