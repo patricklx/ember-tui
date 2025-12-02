@@ -1,7 +1,7 @@
 {
-  "name": "ember-tui",
+  "name": "etui",
   "version": "0.1.0",
-  "description": "Terminal UI library for Ember.js",
+  "description": "Ember Terminal UI library",
   "type": "module",
   "main": "./dist/index.js",
   "files": [
