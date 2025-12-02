@@ -1,14 +1,18 @@
 {
-	"name": "etui-demo",
+	"name": "ember-tui-demo",
 	"version": "0.1.0",
-	"description": "Demo application for etui",
+	"description": "Demo application for ember-tui",
 	"type": "module",
 	"private": true,
 	"scripts": {
 		"start": "node --enable-source-maps --loader ./loader.mjs app/index.ts",
 		"dev": "rollup -c -w",
 		"build": "rollup -c",
-		"type": "ember-tsc -c",
+        "lint": "concurrently 'pnpm:lint:*(!fix)' --names 'lint:'",
+        "lint:fix": "concurrently 'pnpm:lint:*:fix' --names 'fix:'",
+        "lint:js": "eslint .",
+        "lint:js:fix": "eslint . --fix",
+        "lint:types": "ember-tsc --noEmit",
 		"test": "vitest --run --printConsoleTrace --disable-console-intercept --silent=false",
 		"test:update": "vitest --run --update"
 	},
@@ -20,12 +24,14 @@
 		"@babel/runtime": "^7.23.0",
 		"@glimmer/component": "^2.0.0",
 		"chalk": "^5.3.0",
-		"etui": "link:../etui",
+		"ember-tui": "link:../ember-tui",
 		"ember-load-initializers": "^2.1.2",
 		"ember-resolver": "^13.1.1",
 		"ember-source": "^6.8.2"
 	},
 	"devDependencies": {
+        "globals": "^16.5.0",
+        "concurrently": "^9.2.1",
 		"@babel/core": "^7.23.0",
 		"@babel/plugin-proposal-class-properties": "^7.18.6",
 		"@babel/plugin-proposal-decorators": "^7.23.0",
@@ -36,7 +42,6 @@
 		"@embroider/core": "^4.2.8",
 		"@embroider/macros": "^1.13.0",
 		"@embroider/vite": "^1.4.2",
-		"@glint/ember-tsc": "^1.0.8",
 		"@glint/template": "^1.7.3",
 		"@glint/tsserver-plugin": "^2.0.8",
 		"@rollup/plugin-babel": "^6.0.4",
@@ -56,8 +61,23 @@
 		"typescript": "^5.9.3",
 		"vite": "^7.2.4",
 		"vitest": "^3.2.4",
-		"gradient-string": "^3.0.0"
-	},
+		"gradient-string": "^3.0.0",
+        "@glint/ember-tsc": "^1.0.8",
+        "eslint": "^9.27.0",
+        "@eslint/js": "^9.28.0",
+        "@typescript-eslint/eslint-plugin": "^8.48.1",
+        "@typescript-eslint/parser": "^8.48.1",
+        "@babel/eslint-parser": "^7.28.5",
+        "typescript-eslint": "^8.48.1",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-config-prettier": "9.1.2",
+        "eslint-plugin-ember": "^12.3.1",
+        "eslint-plugin-ember-template-lint": "^0.21.0",
+        "eslint-plugin-n": "^17.21.3",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-qunit": "^8.1.1",
+        "fix-bad-declaration-output": "^1.1.4"
+    },
 	"ember": {
 		"edition": "octane"
 	}

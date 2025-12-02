@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { Text, Box } from 'etui';
+import { Text, Box } from 'ember-tui';
 
 /**
  * Colors demo view showcasing text styling capabilities
@@ -12,7 +12,7 @@ export default class ColorsTemplate extends Component {
 				<Text @color="yellow">text in text</Text>
 			</Text>
 			<Text @preFormatted={{true}}>
-				Hello from etui!
+				Hello from ember-tui!
 			</Text>
 
 			{{! Colored text }}

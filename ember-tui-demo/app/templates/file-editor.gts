@@ -1,11 +1,11 @@
 import Component from '@glimmer/component';
-import { Text, Box, Spacer } from 'etui';
+import { Text, Box, Spacer } from 'ember-tui';
 import { tracked } from '@glimmer/tracking';
 import { readFileSync, readdirSync, writeFileSync, statSync } from 'fs';
 import { join } from 'path';
 import * as readline from 'readline';
 import * as process from "node:process";
-import { cursorTo, hideCursor, showCursor } from "etui/render/apply-term-updates";
+import { cursorTo, hideCursor, showCursor } from "ember-tui/render/apply-term-updates";
 
 export default class FileEditorTemplate extends Component {
   @tracked mode: 'list' | 'edit' = 'list';

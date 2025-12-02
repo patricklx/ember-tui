@@ -1,7 +1,7 @@
 import { template } from '@ember/template-compiler';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { Box, Text, Static, Spacer } from 'etui';
+import { Box, Text, Static, Spacer } from 'ember-tui';
 
 interface Task {
   id: number;

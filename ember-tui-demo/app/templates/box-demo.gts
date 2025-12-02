@@ -1,4 +1,4 @@
-import { Box, Text } from 'etui';
+import { Box, Text } from 'ember-tui';
 
 <template>
   {{! Basic Box }}

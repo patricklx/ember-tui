@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { Transform } from "etui";
+import { Transform } from "ember-tui";
 import gradientString from 'gradient-string';
 import * as console from "node:console";
 
