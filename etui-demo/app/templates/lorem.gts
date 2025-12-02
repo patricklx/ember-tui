@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { Text } from 'ember-tui';
+import { Text } from 'etui';
 import { tracked } from "@glimmer/tracking";
 import chalk from 'chalk';
 

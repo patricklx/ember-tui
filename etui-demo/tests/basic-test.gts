@@ -1,10 +1,10 @@
 import "./globalSetup";
 import { setupRenderingContext } from 'ember-vitest';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
-import { Text, render } from "ember-tui";
+import { Text, render } from "etui";
 import { rerender } from "@ember/test-helpers";
 import { trackedObject } from "@ember/reactive/collections";
-import { FakeTTY } from "ember-tui/test-utils/FakeTTY";
+import { FakeTTY } from "etui/test-utils/FakeTTY";
 
 const expect = hardExpect.soft;
 

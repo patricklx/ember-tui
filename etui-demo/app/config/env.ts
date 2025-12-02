@@ -1,5 +1,5 @@
 export default {
-  modulePrefix: 'ember-tui-demo',
+  modulePrefix: 'etui-demo',
   environment: 'development',
   rootElement: '#app',
   autoboot: false,

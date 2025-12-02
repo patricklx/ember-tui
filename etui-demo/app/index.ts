@@ -1,5 +1,5 @@
 import { startApp } from './boot';
-import { startRender } from 'ember-tui';
+import { startRender } from 'etui';
 
 // Start the Ember application
 startApp()
@@ -7,6 +7,6 @@ startApp()
     // Start rendering to terminal
   })
   .catch((error) => {
-    console.error('Failed to start ember-tui application:', error);
+    console.error('Failed to start etui application:', error);
     process.exit(1);
   });

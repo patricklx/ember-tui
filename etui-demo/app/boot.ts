@@ -1,4 +1,4 @@
-import { setup, DocumentNode, startRender } from 'ember-tui';
+import { setup, DocumentNode, startRender } from 'etui';
 import App from './app';
 import type ApplicationClass from "@ember/application";
 import env from "./config/env";
@@ -27,7 +27,7 @@ export async function boot() {
       // Set up the terminal environment (creates document, window, etc.)
       setup();
 
-      console.log('🚀 Starting ember-tui Application...\n');
+      console.log('🚀 Starting etui Application...\n');
 
       // Resolve immediately - we're ready to visit
       resolve();
@@ -49,7 +49,7 @@ export async function startApp() {
     isInteractive: true,
   });
 
-  console.log('\n✨ ember-tui application started successfully!');
+  console.log('\n✨ etui application started successfully!');
 
   // Make app available globally for debugging
   (globalThis as any).app = app;

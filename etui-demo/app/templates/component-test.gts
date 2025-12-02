@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { Text, Box, Spacer, Newline } from 'ember-tui';
+import { Text, Box, Spacer, Newline } from 'etui';
 
 /**
  * Test template for Newline and Spacer components
