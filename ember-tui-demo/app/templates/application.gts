@@ -7,21 +7,26 @@ import { hideCursor } from "ember-tui/render/apply-term-updates";
 import Gradient from "../components/Gradient.gts";
 
 
-const eq = (a, b) => a === b;
+const eq = (a: any, b: any) => a === b;
 
 /**
  * Main application template with keyboard navigation
  */
 export default class AppTemplate extends Component {
+	// @ts-expect-error - decorator syntax issue in .gts files
 	@service declare router: RouterService;
-	@tracked selectedView: 'colors' | 'lorem' | 'tomster' | 'box-demo' | 'static-test' | 'file-editor' | 'menu' = 'menu';
+	// @ts-expect-error - decorator syntax issue in .gts files
+	@tracked selectedView: 'colors' | 'lorem' | 'tomster' | 'box-demo' | 'static-test' | 'file-editor' | 'menu' | 'component-test' = 'menu';
+	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked counter = 0;
+	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked debug = [];
 
   get debugMessages() {
     return this.debug.join('\n');
   }
 	constructor(owner: unknown, args: object) {
+		// @ts-expect-error - Owner type mismatch
 		super(owner, args);
 
 		// Set up keyboard listener on the document node
@@ -86,7 +91,7 @@ export default class AppTemplate extends Component {
 	}
 
 	<template>
-    <Box @flexDirection="column"  @height='100%' @alignItems={{if (eq this.selectedView 'file-editor') '' 'center'}}>
+    <Box @flexDirection="column"  @height='100%' @alignItems={{if (eq this.selectedView 'file-editor') 'flex-start' 'center'}}>
       {{#if (eq this.selectedView "menu")}}
         <Gradient @name="rainbow" >Ember Console Demo - Main Menu</Gradient>
         <Text>---</Text>
@@ -103,6 +108,7 @@ export default class AppTemplate extends Component {
         <Text @bold={{true}} @color="cyan">{{this.selectedView}}</Text>
         <Text>---</Text>
         {{outlet}}
+        {{! @glint-expect-error: paddingX is not in Box signature but works at runtime }}
         <Box @borderStyle="single" @borderColor="gray" @paddingX={{1}}>
           <Text @color="yellow">Press Ctrl+B to go back to menu</Text>
         </Box>

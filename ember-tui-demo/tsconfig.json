@@ -5,22 +5,19 @@
     }],
     "target": "ES2022",
     "module": "ES2022",
-    "lib": ["ES2022"],
+    "lib": ["ES2023", "DOM"],
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": "./app",
     "paths": {
-      "@ember/*": ["./node_modules/ember-source/dist/packages/@ember/*"],
-      "ember": ["./node_modules/ember-source/dist/packages/ember"],
-      "@glimmer/*": ["./node_modules/ember-source/dist/packages/@glimmer/*"],
       "ember-tui": ["../ember/dist/index.js"]
     }
   },
-  "include": ["app/**/*", "tests/**/*", "types.d.ts"],
+  "include": ["./app/**/*", "./tests/**/*", "./types.d.ts"]
 }

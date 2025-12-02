@@ -6,9 +6,13 @@ import Box from './Box.gts';
  *
  * It's useful as a shortcut for filling all the available space between elements.
  */
+// eslint-disable-next-line ember/no-empty-glimmer-component-classes
 export default class Transform extends Component<{
 	Args: {
 		transform: (value: string) => string,
+	},
+	Blocks: {
+		default: []
 	}
 }> {
   <template>

@@ -12,13 +12,15 @@ export function resetStaticCache() {
 }
 
 
-function* staticElementIterator(el: any): Generator<ElementNode, void, undefined> {
+function* staticElementIterator(el: ElementNode): Generator<TerminalBoxElement, void, undefined> {
   if (el.getAttribute('internal_static')) {
-		yield el;
+		yield el as TerminalBoxElement;
     return;
   }
   for (const child of el.childNodes) {
-    yield* staticElementIterator(child);
+    if (child instanceof ElementNode) {
+      yield* staticElementIterator(child);
+    }
   }
 }
 
@@ -36,7 +38,7 @@ function* staticElementIterator(el: any): Generator<ElementNode, void, undefined
 export function extractLines(rootNode: ElementNode, {
 	terminalHeight,
 	terminalWidth,
-}: { terminalHeight: number; terminalWidth: number }, stdout) : {
+}: { terminalHeight: number; terminalWidth: number }, stdout: any) : {
 	static: string[],
 	dynamic: string[],
 } {
@@ -95,7 +97,7 @@ export function extractLines(rootNode: ElementNode, {
 	// Create output buffer with calculated height, but constrain to available terminal height
 	// This prevents content from being rendered beyond the visible viewport
 	const constrainedHeight = Math.min(height, availableHeightForDynamic);
-	const outputWidth = rootNode.yogaNode?.getComputedWidth();
+	const outputWidth = rootNode.yogaNode?.getComputedWidth() ?? terminalWidth;
 	const output = new Output({
 		width: outputWidth,
 		height: constrainedHeight,

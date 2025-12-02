@@ -37,6 +37,7 @@ import { Box, Text } from 'ember-tui';
   </Box>
 
   {{! Nested boxes }}
+  {{! @glint-expect-error: padding is not in Box signature but works at runtime }}
   <Box @borderStyle="double" @borderColor="magenta" @padding={{1}}>
     <Box @backgroundColor="green">
       <Text @color="white" @bold={{true}}>Nested Box</Text>
@@ -54,16 +55,20 @@ import { Box, Text } from 'ember-tui';
   </Box>
 
   {{! Complex layout example }}
+  {{! @glint-expect-error: padding is not in Box signature but works at runtime }}
   <Box @borderStyle="round" @borderColor="green" @padding={{1}}>
     <Box @flexDirection="column" @gap={{1}}>
       <Text @bold={{true}} @color="green">Dashboard</Text>
       <Box @flexDirection="row" @gap={{1}}>
+        {{! @glint-expect-error: padding is not in Box signature but works at runtime }}
         <Box @backgroundColor="blue" @padding={{1}}>
           <Text @color="white">Status: OK</Text>
         </Box>
+        {{! @glint-expect-error: padding is not in Box signature but works at runtime }}
         <Box @backgroundColor="yellow" @padding={{1}}>
           <Text @color="black">Warnings: 2</Text>
         </Box>
+        {{! @glint-expect-error: padding is not in Box signature but works at runtime }}
         <Box @backgroundColor="red" @padding={{1}}>
           <Text @color="white">Errors: 0</Text>
         </Box>

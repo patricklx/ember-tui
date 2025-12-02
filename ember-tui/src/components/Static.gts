@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { type Styles } from '../dom/styles';
+import type ElementNode from '../dom/nodes/ElementNode';
 
 interface StaticSignature<T> {
   Args: {
@@ -9,7 +10,7 @@ interface StaticSignature<T> {
   Blocks: {
     default: [item: T, index: number];
   };
-  Element: HTMLElement;
+  Element: ElementNode;
 }
 
 /**
@@ -23,8 +24,9 @@ interface StaticSignature<T> {
  */
 export default class Static<T> extends Component<StaticSignature<T>> {
   <template>
+    {{! @glint-nocheck }}
     <terminal-box
-      internal_static="true"
+      internal_static={{true}}
       flex-direction={{if @style.flexDirection @style.flexDirection "column"}}
       width={{@style.width}}
       height={{@style.height}}

@@ -5,13 +5,16 @@ import ViewNode, { EventListener } from './ViewNode.ts';
 import { createElement } from "../element-registry";
 import { elementIterator } from './element-iterator.ts';
 
+// Type alias for elements with nativeView property
+type NativeElementNode = ViewNode & { nativeView: any };
+
 class HeadNode extends ElementNode {
   private document: any;
   constructor(tagName: string, document: DocumentNode) {
     super(tagName);
     this.document = document;
   }
-	append = this.appendChild;
+	append = this.appendChild.bind(this);
   appendChild(childNode: ViewNode) {
     if (childNode.tagName === 'style') {
       this.document.page.nativeView.addCss(
@@ -68,8 +71,8 @@ export default class DocumentNode extends ViewNode {
     return event;
   }
 
-	createElement(tagName: string) {
-		return createElement(tagName);
+	createElement(tagName: string): ElementNode {
+		return createElement(tagName as keyof import('../native-elements-tag-name-map').NativeElementsTagNameMap) as ElementNode;
 	}
 
   createComment(text: string) {
@@ -147,10 +150,14 @@ export default class DocumentNode extends ViewNode {
         this.endNode = endNode;
       },
       isPointInRange(dom: ViewNode): boolean {
-        return self.searchDom(dom, this.startNode!, this.endNode!);
+        if (!this.startNode || !this.endNode) return false;
+        return self.searchDom(dom, this.startNode, this.endNode);
       },
       getBoundingClientRect() {
-        if (!(this.startNode instanceof NativeElementNode)) return null;
+        const isNativeElement = (node: ViewNode): node is NativeElementNode => {
+          return 'nativeView' in node && node.nativeView !== undefined;
+        };
+        if (!this.startNode || !isNativeElement(this.startNode)) return null;
         if (!this.startNode?.nativeView) return null;
         const point = this.startNode.nativeView.getLocationInWindow();
         const size = this.startNode.nativeView.getActualSize();

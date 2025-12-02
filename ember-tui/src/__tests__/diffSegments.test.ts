@@ -8,34 +8,34 @@ describe('tokenize', () => {
   it('should tokenize plain text', () => {
     const tokens = tokenize('hello');
     expect(tokens).toEqual([
-      { value: 'h', isAnsi: false, visualLength: 1 },
-      { value: 'e', isAnsi: false, visualLength: 1 },
-      { value: 'l', isAnsi: false, visualLength: 1 },
-      { value: 'l', isAnsi: false, visualLength: 1 },
-      { value: 'o', isAnsi: false, visualLength: 1 },
+      { value: 'h', isAnsi: false, visualLength: 1, start: 0 },
+      { value: 'e', isAnsi: false, visualLength: 1, start: 1 },
+      { value: 'l', isAnsi: false, visualLength: 1, start: 2 },
+      { value: 'l', isAnsi: false, visualLength: 1, start: 3 },
+      { value: 'o', isAnsi: false, visualLength: 1, start: 4 },
     ]);
   });
 
   it('should tokenize text with ANSI codes', () => {
     const tokens = tokenize('\x1b[31mred\x1b[0m');
     expect(tokens).toEqual([
-      { value: '\x1b[31m', isAnsi: true, visualLength: 0 },
-      { value: 'r', isAnsi: false, visualLength: 1 },
-      { value: 'e', isAnsi: false, visualLength: 1 },
-      { value: 'd', isAnsi: false, visualLength: 1 },
-      { value: '\x1b[0m', isAnsi: true, visualLength: 0 },
+      { value: '\x1b[31m', isAnsi: true, visualLength: 0, start: 0 },
+      { value: 'r', isAnsi: false, visualLength: 1, start: 0 },
+      { value: 'e', isAnsi: false, visualLength: 1, start: 1 },
+      { value: 'd', isAnsi: false, visualLength: 1, start: 2 },
+      { value: '\x1b[0m', isAnsi: true, visualLength: 0, start: 8 },
     ]);
   });
 
   it('should handle multiple ANSI codes', () => {
     const tokens = tokenize('\x1b[31m\x1b[1mred\x1b[0m');
     expect(tokens).toEqual([
-      { value: '\x1b[31m', isAnsi: true, visualLength: 0 },
-      { value: '\x1b[1m', isAnsi: true, visualLength: 0 },
-      { value: 'r', isAnsi: false, visualLength: 1 },
-      { value: 'e', isAnsi: false, visualLength: 1 },
-      { value: 'd', isAnsi: false, visualLength: 1 },
-      { value: '\x1b[0m', isAnsi: true, visualLength: 0 },
+      { value: '\x1b[31m', isAnsi: true, visualLength: 0, start: 0 },
+      { value: '\x1b[1m', isAnsi: true, visualLength: 0, start: 5 },
+      { value: 'r', isAnsi: false, visualLength: 1, start: 0 },
+      { value: 'e', isAnsi: false, visualLength: 1, start: 1 },
+      { value: 'd', isAnsi: false, visualLength: 1, start: 2 },
+      { value: '\x1b[0m', isAnsi: true, visualLength: 0, start: 12 },
     ]);
   });
 });

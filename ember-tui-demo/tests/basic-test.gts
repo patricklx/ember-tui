@@ -1,4 +1,5 @@
 import "./globalSetup";
+// @ts-expect-error - ember-vitest has no type declarations
 import { setupRenderingContext } from 'ember-vitest';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
 import { Text, render } from "ember-tui";
@@ -129,6 +130,7 @@ describe("background color clearing", () => {
 		fakeTTY.clear();
 
 		// Remove background
+		// @ts-expect-error - undefined is valid for backgroundColor
 		state.backgroundColor = undefined;
 		state.text = "Text without background";
 		await rerender();

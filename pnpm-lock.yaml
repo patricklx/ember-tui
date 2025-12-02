@@ -98,6 +98,9 @@ importers:
       '@glint/ember-tsc':
         specifier: ^1.0.8
         version: 1.0.8(typescript@5.9.3)
+      '@glint/template':
+        specifier: ^1.7.3
+        version: 1.7.3
       '@rollup/plugin-babel':
         specifier: ^6.1.0
         version: 6.1.0(@babel/core@7.28.5)(rollup@4.53.3)
@@ -125,6 +128,9 @@ importers:
       ember-concurrency:
         specifier: ^5.1.0
         version: 5.1.0(@babel/core@7.28.5)(@glint/template@1.7.3)
+      ember-source:
+        specifier: ^6.9.0
+        version: 6.9.0(@glimmer/component@2.0.0)(rsvp@4.8.5)
       eslint:
         specifier: ^9.27.0
         version: 9.39.1(jiti@2.4.2)

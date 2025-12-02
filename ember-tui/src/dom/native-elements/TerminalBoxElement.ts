@@ -79,9 +79,13 @@ interface Attributes {
 
   // Background
   readonly 'background-color'?: LiteralUnion<ForegroundColorName, string>;
+
+  // Internal
+  readonly 'internal_static'?: string | boolean;
 }
 
 export class TerminalBoxElement extends ElementNode<Attributes> {
+  isStaticElement?: boolean;
 
   constructor() {
     super('terminal-box');

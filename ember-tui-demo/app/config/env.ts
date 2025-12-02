@@ -2,6 +2,7 @@ export default {
   modulePrefix: 'ember-tui-demo',
   environment: 'development',
   rootElement: '#app',
+  rootURL: '/',
   autoboot: false,
   EmberENV: {
     EXTEND_PROTOTYPES: false,

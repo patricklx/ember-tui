@@ -17,7 +17,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   beforeEach(() => {
     fakeTTY = new FakeTTY();
-    
+
     // Create a mock process object with our fake TTY
     originalProcess = global.process;
     (global as any).process = {
@@ -38,7 +38,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should render simple text to fake TTY', () => {
     const root = new ElementNode('div');
-    
+
     // Mock extractLines to return simple text
     mockExtractLines.mockReturnValue({
       static: [],
@@ -53,7 +53,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should render colored text with ANSI codes', () => {
     const root = new ElementNode('div');
-    
+
     // Mock extractLines to return colored text
     mockExtractLines.mockReturnValue({
       static: [],
@@ -69,7 +69,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should render multiple lines', () => {
     const root = new ElementNode('div');
-    
+
     mockExtractLines.mockReturnValue({
       static: [],
       dynamic: ['Line 1', 'Line 2', 'Line 3']
@@ -85,7 +85,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should perform minimal updates on re-render', () => {
     const root = new ElementNode('div');
-    
+
     // First render
     mockExtractLines.mockReturnValue({
       static: [],
@@ -101,11 +101,12 @@ describe('apply-term-updates - render with fake TTY', () => {
       dynamic: ['Static Line', 'Dynamic: 1']
     });
     render(root, global.process);
-    const secondRenderCount = fakeTTY.output.length;
+    const secondRenderCount = fakeTTY.getOutputSinceClear();
+    console.log('secondRenderCount', secondRenderCount.split(''), secondRenderCount.length)
 
     // Second render should write less than first (minimal update)
-    expect(secondRenderCount).toBeLessThan(firstRenderCount);
-    
+    expect(secondRenderCount.length).toBeLessThan(firstRenderCount);
+
     // On minimal update, only the changed part is written (just "1")
     const output = fakeTTY.getVisibleOutput();
     expect(output).toContain('1');
@@ -113,7 +114,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should handle text with background colors', () => {
     const root = new ElementNode('div');
-    
+
     mockExtractLines.mockReturnValue({
       static: [],
       dynamic: ['\x1b[44mBlue Background\x1b[0m']
@@ -128,7 +129,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should clear lines when content becomes shorter', () => {
     const root = new ElementNode('div');
-    
+
     // First render with 3 lines
     mockExtractLines.mockReturnValue({
       static: [],
@@ -144,14 +145,14 @@ describe('apply-term-updates - render with fake TTY', () => {
     });
     render(root, global.process);
 
-    const output = fakeTTY.getFullOutput();
+    const output = fakeTTY.getOutputSinceClear();
     // Should contain clear line sequences
     expect(output).toContain('\x1b[2K');
   });
 
   it('should handle empty content', () => {
     const root = new ElementNode('div');
-    
+
     mockExtractLines.mockReturnValue({
       static: [],
       dynamic: []
@@ -165,7 +166,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should reset ANSI codes at end of lines', () => {
     const root = new ElementNode('div');
-    
+
     mockExtractLines.mockReturnValue({
       static: [],
       dynamic: ['\x1b[32mGreen Text\x1b[0m']
@@ -188,7 +189,7 @@ describe('apply-term-updates - render with fake TTY', () => {
         dynamic: [`Counter: ${i}`]
       });
       render(root, global.process);
-      
+
       const output = fakeTTY.getVisibleOutput();
       // On updates after first, only changed part is written
       expect(output).toContain(`${i}`);
@@ -197,14 +198,14 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should handle mixed static and dynamic content', () => {
     const root = new ElementNode('div');
-    
+
     // First render with static and dynamic
     mockExtractLines.mockReturnValue({
       static: ['\x1b[32m✔ Task #1\x1b[0m', '\x1b[32m✔ Task #2\x1b[0m'],
       dynamic: ['Counter: 0']
     });
     render(root, global.process);
-    
+
     let output = fakeTTY.getVisibleOutput();
     expect(output).toContain('✔ Task #1');
     expect(output).toContain('✔ Task #2');
@@ -218,7 +219,7 @@ describe('apply-term-updates - render with fake TTY', () => {
       dynamic: ['Counter: 1']
     });
     render(root, global.process);
-    
+
     output = fakeTTY.getVisibleOutput();
     // On minimal update, only changed part is written
     expect(output).toContain('1');
@@ -226,7 +227,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should hide cursor during render and show after', () => {
     const root = new ElementNode('div');
-    
+
     mockExtractLines.mockReturnValue({
       static: [],
       dynamic: ['Test']
@@ -234,10 +235,10 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     render(root, global.process);
 
-    const fullOutput = fakeTTY.getFullOutput();
+    const fullOutput = fakeTTY.getOutputSinceClear();
     expect(fullOutput).toContain('\x1b[?25l'); // Hide cursor
     expect(fullOutput).toContain('\x1b[?25h'); // Show cursor
-    
+
     // Cursor show should come after cursor hide
     const hideIndex = fullOutput.indexOf('\x1b[?25l');
     const showIndex = fullOutput.lastIndexOf('\x1b[?25h');
@@ -248,25 +249,25 @@ describe('apply-term-updates - render with fake TTY', () => {
     // clearScreen writes directly to process.stdout
     // We need to test it writes the correct sequences
     const root = new ElementNode('div');
-    
+
     // First render some content
     mockExtractLines.mockReturnValue({
       static: [],
       dynamic: ['Some content']
     });
     render(root, global.process);
-    
+
     // Now clear - clearScreen is called internally by render when needed
     // For this test, we verify the clear sequences are in the output
     // when we do a full redraw (which happens on certain conditions)
-    
+
     // Instead, let's just verify clearScreen writes to stdout
     fakeTTY.clear();
-    
+
     // Manually write what clearScreen does
     fakeTTY.write('\x1b[2J\x1b[3J\x1b[H');
-    
-    const output = fakeTTY.getFullOutput();
+
+    const output = fakeTTY.getOutputSinceClear();
     expect(output).toContain('\x1b[2J'); // Clear screen
     expect(output).toContain('\x1b[3J'); // Clear scrollback
     expect(output).toContain('\x1b[H');  // Move cursor to home
@@ -274,7 +275,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should handle text with leading spaces', () => {
     const root = new ElementNode('div');
-    
+
     mockExtractLines.mockReturnValue({
       static: [],
       dynamic: ['   Indented Text']
@@ -288,7 +289,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should handle color changes in same position', () => {
     const root = new ElementNode('div');
-    
+
     // First render - red
     mockExtractLines.mockReturnValue({
       static: [],
@@ -311,7 +312,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
   it('should handle line with only whitespace changes', () => {
     const root = new ElementNode('div');
-    
+
     // First render
     mockExtractLines.mockReturnValue({
       static: [],
@@ -327,14 +328,14 @@ describe('apply-term-updates - render with fake TTY', () => {
     });
     render(root, global.process);
 
-    const output = fakeTTY.getFullOutput();
+    const output = fakeTTY.getOutputSinceClear();
     // Should clear the trailing spaces
     expect(output).toContain('\x1b[0K'); // Clear from cursor
   });
 
   it('should handle complete line replacement', () => {
     const root = new ElementNode('div');
-    
+
     // First render
     mockExtractLines.mockReturnValue({
       static: [],

@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import chalk from 'chalk';
+import type ElementNode from '../dom/nodes/ElementNode';
 
 interface TextSignature {
   Args: {
@@ -18,7 +19,7 @@ interface TextSignature {
   Blocks: {
     default: [];
   };
-  Element: HTMLElement;
+  Element: ElementNode;
 }
 
 
@@ -26,6 +27,7 @@ interface TextSignature {
  * Text component for terminal rendering
  * Displays styled text with color, formatting, and wrapping options
  */
+// eslint-disable-next-line ember/no-empty-glimmer-component-classes
 export default class Text extends Component<TextSignature> {
   <template>
     <terminal-text

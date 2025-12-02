@@ -79,7 +79,7 @@ export class TerminaTextElement extends ElementNode<Attributes> {
 
   updateText() {
     // Collect text from child nodes, preserving pre-formatted sections
-    let parts: string[] = [];
+    const parts: string[] = [];
     const preFormatted = this.getAttribute('pre-formatted');
 
 		for (const child of elementIterator(this)) {
@@ -93,14 +93,15 @@ export class TerminaTextElement extends ElementNode<Attributes> {
 					parts.push((child as any).text || '');
 				}
 			} else if ((child as any).text) {
-				let t = (child as any).text;
+				const t = (child as any).text;
 				if (!preFormatted) {
-					t = t.split('\n').map((line) => line.trim()).filter(Boolean).join(' ');
+					parts.push(t.split('\n').map((line: string) => line.trim()).filter(Boolean).join(' '));
+				} else {
+					parts.push(t);
 				}
-				parts.push(t);
 			}
 		}
-    let t = parts.join(' ');
+    const t = parts.join(' ');
     this.text = this.transform(t);
   }
 
@@ -119,14 +120,14 @@ export class TerminaTextElement extends ElementNode<Attributes> {
     }
 
     if (color) {
-      text = colorize(text, color, 'foreground');
+      text = colorize(text, color as string | ((str: string) => string) | undefined, 'foreground');
     }
 
     // Use explicit backgroundColor if provided, otherwise use inherited from parent Box
     const effectiveBackgroundColor =
       backgroundColor ?? inheritedBackgroundColor;
     if (effectiveBackgroundColor) {
-      text = colorize(text, effectiveBackgroundColor, 'background');
+      text = colorize(text, effectiveBackgroundColor as string | ((str: string) => string) | undefined, 'background');
     }
 
     if (bold) {

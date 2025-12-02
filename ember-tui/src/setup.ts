@@ -5,6 +5,7 @@
 
 import TerminalDocumentNode from './dom/nodes/DocumentNode.js';
 import ViewNode from "./dom/nodes/ViewNode";
+// @ts-expect-error - @glimmer/runtime has no type declarations
 import { SimpleDynamicAttribute } from '@glimmer/runtime';
 import { registerElements } from "./dom/setup-registry";
 

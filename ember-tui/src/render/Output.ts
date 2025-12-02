@@ -194,16 +194,16 @@ export default class Output {
 
 				let offsetY = 0;
 
-				for (let [index, line] of lines.entries()) {
+				for (const [index, line] of lines.entries()) {
 					// Ensure row exists (allows growth beyond initial height)
 					ensureRow(y + offsetY);
 					const currentLine = output[y + offsetY];
 
-					for (const transformer of transformers) {
-						line = transformer(line, index);
-					}
-
-					const characters = styledCharsFromTokens(tokenize(line));
+									let transformedLine = line;
+									for (const transformer of transformers) {
+										transformedLine = transformer(transformedLine, index);
+									}
+				const characters = styledCharsFromTokens(tokenize(transformedLine));
 					let offsetX = x;
 
 					for (const character of characters) {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import {type Boxes, type BoxStyle} from 'cli-boxes';
 import {type LiteralUnion} from 'type-fest';
 import Yoga, {type Node as YogaNode} from 'yoga-layout';
@@ -176,6 +175,16 @@ export type Styles = {
 	readonly minHeight?: number | string;
 
 	/**
+	Sets a maximum width of the element.
+	*/
+	readonly maxWidth?: number | string;
+
+	/**
+	Sets a maximum height of the element.
+	*/
+	readonly maxHeight?: number | string;
+
+	/**
 	Set this property to `none` to hide the element.
 	*/
 	readonly display?: 'flex' | 'none';
@@ -184,6 +193,26 @@ export type Styles = {
 	Add a border with a specified style. If `borderStyle` is `undefined` (the default), no border will be added.
 	*/
 	readonly borderStyle?: keyof Boxes | BoxStyle;
+
+	/**
+	Style for the top border.
+	*/
+	readonly borderTopStyle?: keyof Boxes | BoxStyle;
+
+	/**
+	Style for the bottom border.
+	*/
+	readonly borderBottomStyle?: keyof Boxes | BoxStyle;
+
+	/**
+	Style for the left border.
+	*/
+	readonly borderLeftStyle?: keyof Boxes | BoxStyle;
+
+	/**
+	Style for the right border.
+	*/
+	readonly borderRightStyle?: keyof Boxes | BoxStyle;
 
 	/**
 	Determines whether top border is visible.

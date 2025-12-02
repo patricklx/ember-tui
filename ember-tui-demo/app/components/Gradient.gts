@@ -52,7 +52,6 @@ export default class Gradient extends Component<GradientOptions> {
 		if (this.args.name) {
 			gradient = gradientString[this.args.name];
 		} else if (this.args.colors) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 			gradient = gradientString(this.args.colors as any); // TODO: Make stronger type.
 		} else {
 			throw new Error('Either `name` or `colors` prop must be provided');

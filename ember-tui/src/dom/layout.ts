@@ -1,8 +1,8 @@
 import Yoga, {type Node as YogaNode} from 'yoga-layout';
-import applyStyles, {type Styles} from './styles.ts';
-import type ElementNode from './nodes/ElementNode.ts';
-import type ViewNode from './nodes/ViewNode.ts';
-import measureText from '../render/measure-text.ts';
+import applyStyles, {type Styles} from './styles';
+import type ElementNode from './nodes/ElementNode';
+import type ViewNode from './nodes/ViewNode';
+import measureText from '../render/measure-text';
 
 /**
  * Creates a Yoga node for an element and applies styles from attributes
@@ -17,7 +17,7 @@ export function createYogaNode(element: ElementNode): YogaNode {
 	}
 
 	// Apply individual style attributes
-	const styles: Partial<Styles> = {};
+	const styles: Record<string, any> = {};
 
 	// Flexbox properties (check both camelCase and kebab-case)
 	if (element.hasAttribute('flexDirection') || element.hasAttribute('flex-direction')) {
@@ -200,7 +200,9 @@ function buildYogaTree(node: ViewNode): void {
 			// Build child's Yoga tree
 			buildYogaTree(childElement);
 
-      element.yogaNode.insertChild(childElement.yogaNode, element.yogaNode.getChildCount());
+			if (childElement.yogaNode) {
+				element.yogaNode.insertChild(childElement.yogaNode, element.yogaNode.getChildCount());
+			}
 		}
 	}
 }

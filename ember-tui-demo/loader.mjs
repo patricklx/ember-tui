@@ -1,7 +1,6 @@
-import path, { resolve as resolvePath, dirname } from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
-import { existsSync, readdirSync, statSync, readFileSync, realpathSync } from 'fs';
-import { cwd } from 'process';
+import path, { resolve as resolvePath } from 'path';
+import { fileURLToPath } from 'url';
+import { existsSync, statSync, readFileSync, realpathSync } from 'fs';
 import { transformSync } from '@babel/core';
 import babelConfig from './babel.config.cjs';
 import { resolver, templateTag } from '@embroider/vite';
@@ -24,7 +23,7 @@ function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', '.gjs']) {
         if (stats.isFile()) {
           return fullPath;
         }
-      } catch (e) {
+      } catch {
         // Continue to next extension
       }
     }
@@ -39,7 +38,7 @@ function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', '.gjs']) {
         if (stats.isFile()) {
           return indexPath;
         }
-      } catch (e) {
+      } catch {
         // Continue to next extension
       }
     }
@@ -50,11 +49,7 @@ function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', '.gjs']) {
 const emberResolver = resolver();
 const emberTemplateTag = templateTag();
 
-async function log(...args) {
-  const str = args.map(x => typeof x === 'object' ? JSON.stringify(x, null, 2) : x.toString()).join(' ');
-  await new Promise(resolve => process.stdout.write(`${str.toString()}
-`, resolve))
-}
+
 
 const emberResolverContext = (nextResolve) => ({
   async resolve(spec, from) {
@@ -75,8 +70,8 @@ const emberResolverContext = (nextResolve) => ({
       return {
         id: res.url,
       }
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
       return null;
     }
   }
@@ -119,7 +114,7 @@ export async function load(url, context, nextLoad) {
   if (url.includes('tinygradient') && url.includes('node_modules')) {
     try {
       const filePath = fileURLToPath(url);
-      const content = readFileSync(filePath, 'utf8');
+      readFileSync(filePath, 'utf8');
       // Wrap CommonJS in ESM wrapper
       const wrappedSource = `
         import { createRequire } from 'module';
@@ -132,8 +127,8 @@ export async function load(url, context, nextLoad) {
         source: wrappedSource,
         shortCircuit: true,
       };
-    } catch (e) {
-      console.error('Error wrapping tinygradient:', e);
+    } catch (error) {
+      console.error('Error wrapping tinygradient:', error);
     }
   }
 
@@ -141,8 +136,8 @@ export async function load(url, context, nextLoad) {
   try {
     filePath = fileURLToPath(url);
     filePath = realpathSync(filePath);
-  } catch (e) {
-
+  } catch {
+    // Ignore errors
   }
 
 

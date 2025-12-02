@@ -1,4 +1,5 @@
 
+import type ElementNode from './ElementNode';
 
 export function* elementIterator(el: any): Generator<ElementNode, void, undefined> {
   yield el;

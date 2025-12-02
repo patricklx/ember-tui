@@ -11,7 +11,7 @@ const isNamedColor = (color: string): color is ForegroundColorName => {
 
 const colorize = (
 	str: string,
-	color: string | undefined,
+	color: string | ((str: string) => string) | undefined,
 	type: ColorType,
 ): string => {
 	if (!color) {

@@ -5,11 +5,12 @@ import env from "./config/env";
 
 function init(
 	Application: typeof ApplicationClass,
-	env
+	env: any
 ) {
 
 	env.rootElement = DocumentNode.getInstance().body;
 
+	// @ts-expect-error - name property not in Application type but accepted at runtime
 	const app = Application.create({
 		name: env.modulePrefix,
 		version: env.APP.version,
@@ -32,7 +33,7 @@ export async function boot() {
       // Resolve immediately - we're ready to visit
       resolve();
     } catch (e) {
-      reject(e);
+      reject(e instanceof Error ? e : new Error(String(e)));
     }
   });
 }
@@ -44,6 +45,7 @@ export async function startApp() {
 
 	const app = init(App, env)
   // Visit the static-test route to test Static component
+  // @ts-expect-error - Document type mismatch between DOM and custom DocumentNode
   await app.visit('/static-test', {
     document: document,
     isInteractive: true,
@@ -54,5 +56,5 @@ export async function startApp() {
   // Make app available globally for debugging
   (globalThis as any).app = app;
 
-	startRender(document, 0);
+	startRender(document);
 }

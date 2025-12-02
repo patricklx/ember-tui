@@ -1,4 +1,3 @@
-import PropertyNode from './PropertyNode.ts';
 import ViewNode from './ViewNode.ts';
 import {type Node as YogaNode} from 'yoga-layout';
 import { createYogaNode, updateYogaNodeStyles } from '../layout.ts';
@@ -19,9 +18,8 @@ export interface IClassList {
 export default class ElementNode<Attributes = any> extends ViewNode<Attributes> {
   declare _classList: IClassList;
   declare _id: string;
-  yogaNode?: YogaNode;
-	internal_transform?: OutputTransformer;
-	staticRendered?: YogaNode;
+  declare yogaNode?: YogaNode;
+	declare internal_transform?: OutputTransformer;
 
   /**
    * Override setAttribute to update Yoga styles when style attributes change

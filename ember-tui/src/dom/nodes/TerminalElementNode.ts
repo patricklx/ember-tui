@@ -83,8 +83,8 @@ export type OutputTransformer = (text: string) => string;
  */
 export default class TerminalElementNode extends ElementNode {
   style: TerminalStyles = {};
-  yogaNode?: YogaNode;
-  internal_transform?: OutputTransformer;
+  declare yogaNode?: YogaNode;
+  declare internal_transform?: OutputTransformer;
   internal_static?: boolean;
 
   // For root node

@@ -1,6 +1,8 @@
 import EmberApplication from '@ember/application';
+// @ts-expect-error - ember-resolver types not properly exported
 import Resolver from 'ember-resolver/index.js';
 import ENV from './config/env';
+// @ts-expect-error - @embroider/virtual has no type declarations
 import compatModules from '@embroider/virtual/compat-modules';
 import ApplicationInstance from "@ember/application/instance";
 
@@ -20,7 +22,7 @@ export default class App extends EmberApplication {
 
 	buildInstance() {
 		const instance = super.buildInstance();
-		instance.setupRegistry = (options) => {
+		instance.setupRegistry = (options: any) => {
 			options.isInteractive = true;
 			options.document = globalThis.document;
 			ApplicationInstance.prototype.setupRegistry.call(instance, options);

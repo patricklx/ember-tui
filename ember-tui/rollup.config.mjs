@@ -80,10 +80,6 @@ export default {
       babelHelpers: 'bundled',
     }),
 
-    astroturf({
-      include: /\.(jsx?|tsx?|gts|gjs)/i,
-    }),
-
     // Ensure that standalone .hbs files are properly integrated as Javascript.
     addon.hbs(),
 

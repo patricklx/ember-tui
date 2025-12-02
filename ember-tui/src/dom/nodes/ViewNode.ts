@@ -1,5 +1,6 @@
 import DocumentNode from './DocumentNode.ts';
 import { getViewMeta } from "../element-registry";
+import {type Node as YogaNode} from 'yoga-layout';
 
 function* elementIterator(el: any): Generator<any, void, unknown> {
   yield el;
@@ -21,6 +22,13 @@ export default class ViewNode<Attributes = any> {
   childNodes: ViewNode[];
   _ownerDocument: any;
   _meta: any;
+  
+  // Properties used by layout and rendering
+  yogaNode?: YogaNode;
+  staticRendered?: boolean;
+  nativeView?: any;
+  page?: any;
+  location?: any;
 
   get textContent() {
     const contents = [];
@@ -153,7 +161,7 @@ export default class ViewNode<Attributes = any> {
     return null;
   }
 
-  get attributes(): Attributes {
+  get attributes(): any {
     return Object.entries(this.attributesObject).map(([key, value]) => ({
       nodeName: key,
       nodeValue: value,

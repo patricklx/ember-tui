@@ -11,6 +11,9 @@ import * as Process from "node:process";
 import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo, setProcess } from "./helpers";
 import * as fs from 'node:fs';
 
+// Re-export helper functions for testing
+export { clearEntireLine, clearLineFromCursor, clearLineToStart };
+
 let process = globalThis.process;
 
 export interface RenderOptions {
@@ -64,6 +67,7 @@ const state: RenderState = {
 export interface TextSegment {
 	start: number;
 	text: string;
+	isAnsiOnly?: boolean;
 }
 
 /**
@@ -123,6 +127,7 @@ class AnsiTokenizer {
 		if (endIndex < text.length) {
 			endIndex++; // Include the final letter
 			return {
+				start: startIndex,
 				value: text.slice(startIndex, endIndex),
 				isAnsi: true,
 				visualLength: 0
@@ -774,5 +779,7 @@ export function handleResize(document: DocumentNode): void {
 	state.terminalHeight = newHeight;
 	state.terminalWidth = newWidth;
 	clearScreen();
-	render(document.body);
+	if (document.body) {
+		render(document.body);
+	}
 }

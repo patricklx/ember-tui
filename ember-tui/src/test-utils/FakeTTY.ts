@@ -12,7 +12,7 @@ export class FakeTTY {
   private lastClearIndex: number = 0;
 
   // Terminal buffer: array of lines, each line is array of {char, ansi}
-  private buffer: Array<Array<{char: string, ansi: string}>> = [];
+  public buffer: Array<Array<{char: string, ansi: string}>> = [];
   private currentAnsiState: string = '';
 
   constructor() {
@@ -345,7 +345,7 @@ export class FakeTTY {
   /**
    * Get output since last clear() call
    */
-  private getOutputSinceClear(): string {
+  getOutputSinceClear(): string {
     return this.output.slice(this.lastClearIndex).join('');
   }
 
