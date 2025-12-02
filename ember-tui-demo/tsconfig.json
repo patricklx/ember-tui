@@ -19,7 +19,7 @@
       "@ember/*": ["./node_modules/ember-source/dist/packages/@ember/*"],
       "ember": ["./node_modules/ember-source/dist/packages/ember"],
       "@glimmer/*": ["./node_modules/ember-source/dist/packages/@glimmer/*"],
-      "ember-console": ["../ember/dist/index.js"]
+      "ember-tui": ["../ember/dist/index.js"]
     }
   },
   "include": ["app/**/*", "tests/**/*", "types.d.ts"],

@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { Text } from 'ember-console';
+import { Text } from 'ember-tui';
 import { tracked } from "@glimmer/tracking";
 import chalk from 'chalk';
 

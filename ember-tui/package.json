@@ -1,7 +1,7 @@
 {
-  "name": "ember-console",
+  "name": "ember-tui",
   "version": "0.1.0",
-  "description": "Terminal UI library for Ember.js - inspired by Ink",
+  "description": "Terminal UI library for Ember.js",
   "type": "module",
   "main": "./dist/index.js",
   "files": [

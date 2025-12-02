@@ -1,10 +1,10 @@
 import "./globalSetup";
 import { setupRenderingContext } from 'ember-vitest';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
-import { Text, Box, Static, Spacer, render, FakeTTY, resetStaticCache } from "ember-console";
+import { Text, Box, Static, Spacer, render, FakeTTY, resetStaticCache } from "ember-tui";
 import { rerender } from "@ember/test-helpers";
 import { trackedObject } from "@ember/reactive/collections";
-import { clearScreen } from "ember-console/render/apply-term-updates";
+import { clearScreen } from "ember-tui/render/apply-term-updates";
 
 const expect = hardExpect.soft;
 

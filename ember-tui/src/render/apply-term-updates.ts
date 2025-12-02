@@ -1,5 +1,5 @@
 /**
- * Render function for Ember-Console
+ * Render function for Ember Tui
  * Renders components to terminal output using layout-based rendering
  */
 
