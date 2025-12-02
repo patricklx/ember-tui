@@ -35,7 +35,7 @@ importers:
         specifier: ^0.17.0
         version: 0.17.2
 
-  ember-console:
+  ember-tui:
     dependencies:
       '@alcalzone/ansi-tokenize':
         specifier: ^0.2.2
@@ -123,7 +123,7 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@20.19.25)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.20.6)
 
-  ember-console-demo:
+  ember-tui-demo:
     dependencies:
       '@babel/runtime':
         specifier: ^7.23.0
@@ -134,9 +134,6 @@ importers:
       chalk:
         specifier: ^5.3.0
         version: 5.6.2
-      ember-console:
-        specifier: link:../ember-console
-        version: link:../ember-console
       ember-load-initializers:
         specifier: ^2.1.2
         version: 2.1.2(@babel/core@7.28.5)
@@ -146,6 +143,9 @@ importers:
       ember-source:
         specifier: ^6.8.2
         version: 6.8.2(@glimmer/component@2.0.0)(rsvp@4.8.5)
+      ember-tui:
+        specifier: link:../ember-tui
+        version: link:../ember-tui
     devDependencies:
       '@babel/core':
         specifier: ^7.23.0
