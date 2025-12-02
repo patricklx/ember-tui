@@ -18,33 +18,33 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      
+
       - uses: pnpm/action-setup@v4
         with:
           version: 9
-          
+
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
-          
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        
+
       - name: Lint ember-tui
         run: pnpm --filter ember-tui lint
-        
+
       - name: Lint ember-tui-demo
         run: pnpm --filter ember-tui-demo lint
-        
+
       - name: Test ember-tui
         run: pnpm --filter ember-tui test
-        
+
       - name: Test ember-tui-demo
         run: pnpm --filter ember-tui-demo test
-        
+
       - name: Build ember-tui
         run: pnpm --filter ember-tui build
-        
+
       - name: Build ember-tui-demo
         run: pnpm --filter ember-tui-demo build
