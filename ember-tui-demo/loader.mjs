@@ -63,7 +63,7 @@ const emberResolverContext = (nextResolve) => ({
       const fullPath = spec.startsWith('.') ? path.resolve(path.dirname(from.slice('file://'.length)), spec) : spec;
       const resolved = tryExtensions(fullPath) || fullPath;
       const res = await nextResolve(resolved, {
-        conditions: ['node', 'import', 'module-sync', 'node-addons'],
+        conditions: ['import', 'node', 'module-sync', 'node-addons'],
         importAttributes: {},
         parentURL: from
       });
@@ -85,6 +85,23 @@ export async function resolve(specifier, context, nextResolve) {
 			shortCircuit: true,
 		};
 	}
+
+  // Force emoji-regex to use ESM (.mjs) instead of CommonJS (.js)
+  if (specifier === 'emoji-regex') {
+    const resolved = await nextResolve(specifier, {
+      ...context,
+      conditions: ['import', 'node', 'module-sync', 'node-addons'],
+    });
+    if (resolved.url.endsWith('/index.js')) {
+      return {
+        ...resolved,
+        url: resolved.url.replace('/index.js', '/index.mjs'),
+        shortCircuit: true,
+      };
+    }
+    return resolved;
+  }
+
   const emberContext = emberResolverContext(nextResolve);
   const res = await emberResolver.resolveId.call(emberContext, specifier, context.parentURL || path.resolve('./package.json'), {});
   if (res?.id.includes('-embroider')) {
@@ -95,9 +112,15 @@ export async function resolve(specifier, context, nextResolve) {
     };
   }
   if (res) {
-    return nextResolve(res.id, context);
+    return nextResolve(res.id, {
+      ...context,
+      conditions: ['import', 'node', 'module-sync', 'node-addons'],
+    });
   }
-  return nextResolve(specifier, context);
+  return nextResolve(specifier, {
+    ...context,
+    conditions: ['import', 'node', 'module-sync', 'node-addons'],
+  });
 }
 
 export async function load(url, context, nextLoad) {

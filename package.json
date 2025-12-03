@@ -13,10 +13,5 @@
     "@glint/tsserver-plugin": "^2.0.8",
     "@rollup/plugin-json": "^6.1.0",
     "release-plan": "^0.17.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "tinygradient": "^1.1.5"
-    }
   }
 }
