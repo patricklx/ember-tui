@@ -20,7 +20,7 @@
         "types": "./declarations/index.d.ts"
       },
       "./*": {
-        "default": "./dist/*.ts",
+        "default": "./dist/*.js",
         "types": "./declarations/*"
       }
     }
