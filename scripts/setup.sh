@@ -40,6 +40,17 @@ curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember
 curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/tests/globalSetup.js > tests/globalSetup.js
 curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/tests/basic-test.gts > tests/integration/basic-test.gts
 
+# Create application template
+cat > app/templates/application.gts << 'EOF'
+import { Box, Text } from 'ember-tui';
+
+<template>
+  <Box>
+    <Text>Welcome to Ember-Tui</Text>
+  </Box>
+</template>
+EOF
+
 # Fetch remote package.json and merge scripts section
 curl -s https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/package.json > /tmp/remote-package.json
 if [ -f package.json ]; then
