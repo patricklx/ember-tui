@@ -4,7 +4,7 @@
   <img src="logo.svg" alt="Ember TUI Logo" width="200" height="200">
 </p>
 
-> Ember.js for CLIs. Build and test your CLI output using components.
+> Ember.js Terminal UI Library. Build and test your CLI output using components.
 
 Ember TUI provides the same component-based UI building experience that Ember.js offers in the browser, but for command-line apps.
 It uses [Yoga](https://github.com/facebook/yoga) to build Flexbox layouts in the terminal, so most CSS-like properties are available in Ember TUI as well.
