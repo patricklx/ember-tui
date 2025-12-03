@@ -29,8 +29,9 @@ export default {
     'tty',
     'process',
     'readline',
+    'yoga-layout'
     // Keep these as external
-  ].map(x => [x, `node:${x}`]).flat().concat(['chalk', 'yoga-layout']),
+  ].map(x => [x, `node:${x}`]).flat(),
   plugins: [
     resolver(),
     templateTag(),

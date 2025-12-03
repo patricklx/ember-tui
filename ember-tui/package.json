@@ -110,8 +110,7 @@
     "@glint/template": "^1.7.3"
   },
   "peerDependencies": {
-    "@glimmer/component": "^2.0.0",
-    "@glimmer/tracking": "^1.1.2"
+    "yoga-layout": "~3.2.1"
   },
   "ember-addon": {
     "version": 2,
