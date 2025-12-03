@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "plugins": [{
+      "name": "@glint/tsserver-plugin"
+    }],
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2023", "DOM"],
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "paths": {
+      "ember-tui": ["../ember/dist/index.js"]
+    }
+  },
+  "include": ["./app/**/*", "./tests/**/*", "./types.d.ts"]
+}

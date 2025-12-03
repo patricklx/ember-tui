@@ -16,7 +16,8 @@
   },
   "pnpm": {
     "overrides": {
-      "string-width": "^8.1.0"
+      "string-width": "^8.1.0",
+      "tinygradient": "^1.1.5"
     }
   }
 }

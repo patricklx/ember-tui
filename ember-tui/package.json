@@ -1,0 +1,141 @@
+{
+	"name": "ember-tui",
+	"version": "0.1.0",
+	"description": "Ember Terminal UI library",
+	"type": "module",
+	"main": "./dist/index.js",
+	"files": [
+		"dist",
+		"declarations"
+	],
+	"publishConfig": {
+		"exports": {
+			".": {
+				"require": "./dist/index.cjs.js",
+				"import": "./dist/index.esm.js"
+			},
+			"./*": {
+				"default": "./dist/*.ts"
+			}
+		}
+	},
+	"exports": {
+		".": {
+			"production": {
+				"default": "./dist/index.js"
+			},
+			"default": "./src/index.ts"
+		},
+		"./render/apply-term-updates": {
+			"production": {
+				"default": "./dist/render/apply-term-updates.js"
+			},
+			"development": {
+				"default": "./src/render/apply-term-updates.js"
+			},
+			"types": "./declarations/render/apply-term-updates.d.ts"
+		},
+		"./test-utils/FakeTTY": {
+			"production": {
+				"default": "./dist/test-utils/FakeTTY.js"
+			},
+			"development": {
+				"default": "./src/test-utils/FakeTTY.js"
+			},
+			"types": "./declarations/test-utils/FakeTTY.d.ts"
+		},
+		"./*": {
+			"production": {
+				"default": "./dist/*"
+			},
+			"development": {
+				"default": "./src/*"
+			},
+			"types": "./declarations/*"
+		}
+	},
+	"scripts": {
+		"build": "rollup --config && pnpm build:types",
+		"build:types": "ember-tsc --project tsconfig.build.json --declaration && npx fix-bad-declaration-output './declarations/**/*.d.ts'",
+		"lint": "concurrently 'pnpm:lint:*(!fix)' --names 'lint:'",
+		"lint:fix": "concurrently 'pnpm:lint:*:fix' --names 'fix:'",
+		"lint:js": "eslint .",
+		"lint:js:fix": "eslint . --fix",
+		"lint:types": "ember-tsc --noEmit --project tsconfig.json",
+		"prepack": "pnpm build",
+		"dev": "rollup --config --watch",
+		"clean": "rm -rf dist",
+		"test": "vitest --run",
+		"test:update": "vitest --run --update"
+	},
+	"keywords": [
+		"ember-addon"
+	],
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"@alcalzone/ansi-tokenize": "^0.2.2",
+		"@glimmer/component": "^2.0.0",
+		"ansi-styles": "^6.2.3",
+		"chalk": "^5.6.2",
+		"cli-boxes": "^4.0.1",
+		"slice-ansi": "^7.1.2",
+		"string-width": "^8.1.0",
+		"type-fest": "^5.2.0",
+		"widest-line": "^5.0.0",
+		"yoga-layout": "~3.2.1",
+		"indent-string": "^5.0.0"
+	},
+	"devDependencies": {
+		"rollup-plugin-copy": "^3.5.0",
+		"globals": "^16.5.0",
+		"@babel/eslint-parser": "^7.28.5",
+		"@babel/plugin-proposal-class-properties": "^7.18.6",
+		"@babel/plugin-proposal-decorators": "^7.28.0",
+		"@babel/plugin-transform-class-static-block": "^7.28.3",
+		"@babel/plugin-transform-typescript": "^7.28.5",
+		"@embroider/addon-dev": "^8.1.0",
+		"@rollup/plugin-babel": "^6.1.0",
+		"@rollup/plugin-node-resolve": "^15.2.3",
+		"@types/node": "^20.10.0",
+		"babel-plugin-ember-template-compilation": "^3.0.1",
+		"concurrently": "^9.2.1",
+		"content-tag": "^4.0.0",
+		"ember-concurrency": "^5.1.0",
+		"@glint/ember-tsc": "^1.0.8",
+		"eslint": "^9.27.0",
+		"@eslint/js": "^9.28.0",
+		"@typescript-eslint/eslint-plugin": "^8.47.0",
+		"@typescript-eslint/parser": "^8.48.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-config-prettier": "9.1.2",
+		"eslint-plugin-ember": "^12.3.1",
+		"eslint-plugin-ember-template-lint": "^0.21.0",
+		"eslint-plugin-n": "^17.21.3",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-qunit": "^8.1.1",
+		"fix-bad-declaration-output": "^1.1.4",
+		"rollup": "^4.9.0",
+		"typescript": "^5.3.3",
+		"typescript-eslint": "^8.38.0",
+		"vitest": "^3.2.4",
+		"ember-source": "^6.9.0",
+		"@glint/template": "^1.7.3"
+	},
+	"peerDependencies": {
+		"@glimmer/component": "^2.0.0",
+		"@glimmer/tracking": "^1.1.2"
+	},
+	"ember-addon": {
+		"version": 2,
+		"type": "addon",
+		"app-js": {
+			"./components/ember-native/Box.js": "./dist/_app_/components/ember-native/Box.js",
+			"./components/ember-native/Newline.js": "./dist/_app_/components/ember-native/Newline.js",
+			"./components/ember-native/Spacer.js": "./dist/_app_/components/ember-native/Spacer.js",
+			"./components/ember-native/Static.js": "./dist/_app_/components/ember-native/Static.js",
+			"./components/ember-native/Text.js": "./dist/_app_/components/ember-native/Text.js",
+			"./components/ember-native/Transform.js": "./dist/_app_/components/ember-native/Transform.js"
+		}
+	}
+}
