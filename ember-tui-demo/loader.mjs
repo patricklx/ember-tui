@@ -86,6 +86,10 @@ export async function resolve(specifier, context, nextResolve) {
 		};
 	}
 
+	if (specifier.includes('.embroider/content-for.json')) {
+		specifier = path.resolve('.', 'node_modules', specifier);
+	}
+
   // Force emoji-regex to use ESM (.mjs) instead of CommonJS (.js)
   if (specifier === 'emoji-regex') {
     const resolved = await nextResolve(specifier, {

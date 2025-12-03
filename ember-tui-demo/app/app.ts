@@ -13,7 +13,7 @@ if (typeof window !== 'undefined') {
 
 class App extends EmberApplication {
   rootElement = ENV.rootElement;
-  autoboot = ENV.autoboot;
+  autoboot = false;
   modulePrefix = ENV.modulePrefix;
   podModulePrefix = `${ENV.modulePrefix}/pods`;
   Resolver = Resolver.withModules(compatModules);

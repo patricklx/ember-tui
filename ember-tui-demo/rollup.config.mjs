@@ -3,7 +3,13 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import path from 'path';
-import { resolver, templateTag } from '@embroider/vite';
+import { resolver, templateTag, compatPrebuild } from '@embroider/vite';
+
+const compat = compatPrebuild();
+compat.config({}, {
+	mode: 'production',
+	command: 'build',
+});
 
 export default {
   input: 'app/app.ts',
@@ -29,10 +35,11 @@ export default {
     'tty',
     'process',
     'readline',
-    'yoga-layout'
+    'yoga-layout',
     // Keep these as external
   ].map(x => [x, `node:${x}`]).flat(),
   plugins: [
+		compat,
     resolver(),
     templateTag(),
     nodeResolve({

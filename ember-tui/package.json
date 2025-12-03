@@ -115,6 +115,7 @@
   "ember-addon": {
     "version": 2,
     "type": "addon",
+    "main": "addon.cjs",
     "app-js": {
       "./components/ember-native/Box.js": "./dist/_app_/components/ember-native/Box.js",
       "./components/ember-native/Newline.js": "./dist/_app_/components/ember-native/Newline.js",
