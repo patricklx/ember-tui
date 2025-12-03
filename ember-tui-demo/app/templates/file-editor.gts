@@ -70,7 +70,10 @@ export default class FileEditorTemplate extends Component {
     try {
       const cwd = process.cwd();
       const content = readFileSync(join(cwd, filename), 'utf-8');
-      this.fileContent = content.split('\n');
+      this.fileContent = content
+        .replace(/\n\r/g, '\n')
+        .replace(/\r/g, '\n')
+        .split('\n');
       this.currentFile = filename;
       this.cursorLine = 0;
       this.cursorCol = 0;

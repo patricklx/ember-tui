@@ -77,7 +77,10 @@ export function extractLines(rootNode: ElementNode, {
 					skipStaticElements: false,
 				});
 				const { output: staticRendered } = staticOutput.get();
-				const newStaticLines = staticRendered.split('\n');
+				const newStaticLines = staticRendered
+          .replace(/\r\n/g, '\n')
+          .replace(/\r/g, '\n')
+          .split('\n');
 
 			for (const el of staticElement.childNodes) {
 				el.staticRendered = true;
@@ -116,7 +119,10 @@ export function extractLines(rootNode: ElementNode, {
 	const { output: renderedOutput } = output.get();
 
 	// Convert to lines
-	const dynamicLines = renderedOutput.split('\n');
+	const dynamicLines = renderedOutput
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .split('\n');
 
 	return {
 		static: staticOutputCache,

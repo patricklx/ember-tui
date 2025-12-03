@@ -9,7 +9,6 @@ import * as readline from "node:readline";
 import { DocumentNode } from "../index";
 import * as Process from "node:process";
 import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo, setProcess } from "./helpers";
-import * as fs from 'node:fs';
 
 // Re-export helper functions for testing
 export { clearEntireLine, clearLineFromCursor, clearLineToStart };
@@ -517,10 +516,12 @@ function expandTabs(text: string, _startColumn: number = 0, tabWidth: number = 8
 }
 
 /**
- * Calculate visual length of text (excluding ANSI codes)
+ * Calculate visual length of text (excluding ANSI codes and control characters)
  */
 function getVisualLength(text: string): number {
-	const tokens = tokenize(text);
+	// Remove control characters like \r and \n before calculating visual length
+	const cleanText = text.replace(/[\r\n]/g, '');
+	const tokens = tokenize(cleanText);
 	return tokens.reduce((sum, token) => sum + token.visualLength, 0);
 }
 
@@ -533,15 +534,14 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 	const expandedNewText = expandTabs(newText);
 
 	const segments = findDiffSegments(expandedOldText, expandedNewText);
-  fs.appendFileSync('./out.txt', line + JSON.stringify(segments, null, 2));
 
 	// If no segments, strings are identical
 	if (segments.length === 0) {
 		return;
 	}
 
-	const oldVisualLength = getVisualLength(oldText);
-	const newVisualLength = getVisualLength(newText);
+	const oldVisualLength = getVisualLength(expandedOldText);
+	const newVisualLength = getVisualLength(expandedNewText);
 
 	// If new line is empty, clear the entire line and return
 	if (newVisualLength === 0 && oldVisualLength > 0) {
