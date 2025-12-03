@@ -16,11 +16,12 @@
   "publishConfig": {
     "exports": {
       ".": {
-        "require": "./dist/index.cjs.js",
-        "import": "./dist/index.esm.js"
+        "default": "./dist/index.js",
+        "types": "./declarations/index.d.ts"
       },
       "./*": {
-        "default": "./dist/*.ts"
+        "default": "./dist/*.ts",
+        "types": "./declarations/*"
       }
     }
   },
@@ -31,28 +32,13 @@
       },
       "default": "./src/index.ts"
     },
-    "./render/apply-term-updates": {
-      "types": "./declarations/render/apply-term-updates.d.ts",
-      "production": {
-        "default": "./dist/render/apply-term-updates.js"
-      },
-      "default": "./src/render/apply-term-updates.ts"
-    },
-    "./test-utils/FakeTTY": {
-      "production": {
-        "default": "./dist/test-utils/FakeTTY.js"
-      },
-      "default": "./src/test-utils/FakeTTY.js",
-      "types": "./declarations/test-utils/FakeTTY.d.ts"
-    },
     "./*": {
       "production": {
-        "default": "./dist/*"
+        "default": "./dist/*",
+        "types": "./declarations/*"
       },
-      "development": {
-        "default": "./src/*"
-      },
-      "types": "./declarations/*"
+      "default": "./src/*.ts",
+      "types": "./src/*.ts"
     }
   },
   "scripts": {

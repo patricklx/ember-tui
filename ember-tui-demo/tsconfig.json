@@ -14,10 +14,7 @@
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",
-    "paths": {
-      "ember-tui": ["../ember/dist/index.js"]
-    }
+    "outDir": "./dist"
   },
   "include": ["./app/**/*", "./tests/**/*", "./types.d.ts"]
 }
