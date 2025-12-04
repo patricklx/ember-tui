@@ -4,12 +4,13 @@ import { existsSync, statSync, readFileSync, realpathSync } from 'fs';
 import { transformSync } from '@babel/core';
 import babelConfig from './babel.config.cjs';
 import { resolver, templateTag } from '@embroider/vite';
+import { ResolverLoader } from '@embroider/core';
 
 
 // Helper function to try multiple extensions
 function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', '.gjs']) {
   // Try with extensions first
-	basePath = basePath
+  basePath = basePath
     .replace('.js', '')
     .replace('.ts', '')
     .replace('.gjs', '')
@@ -48,11 +49,15 @@ function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', '.gjs']) {
 
 const emberResolver = resolver();
 const emberTemplateTag = templateTag();
-
+const resolverloader = new ResolverLoader(process.cwd());
 
 
 const emberResolverContext = (nextResolve) => ({
   async resolve(spec, from) {
+    // Skip built-in Node.js modules
+    if (spec.startsWith('node:')) {
+      return null;
+    }
     if (!from.startsWith('file://')) {
       from = `file://${from}`;
     }
@@ -69,22 +74,33 @@ const emberResolverContext = (nextResolve) => ({
       });
       return {
         id: res.url,
+        format: res.format,
       }
-    } catch (error) {
-      console.error(error);
+    } catch {
       return null;
     }
   }
 });
 
 export async function resolve(specifier, context, nextResolve) {
-	if (specifier.endsWith('-embroider-implicit-modules.js')) {
-		return {
-			url: `file://${specifier}`,
-			format: 'module',
-			shortCircuit: true,
-		};
-	}
+  if (specifier.startsWith('node:')) {
+    return nextResolve(specifier, context);
+  }
+  if (specifier.endsWith('-embroider-implicit-modules.js')) {
+    return {
+      url: `file://${specifier}`,
+      format: 'module',
+      shortCircuit: true,
+    };
+  }
+
+  if (specifier.startsWith('node:')) {
+    return nextResolve(specifier, context);
+  }
+
+  if (specifier.includes('.embroider/content-for.json')) {
+    specifier = path.resolve('.', 'node_modules', specifier);
+  }
 
   // Force emoji-regex to use ESM (.mjs) instead of CommonJS (.js)
   if (specifier === 'emoji-regex') {
@@ -103,7 +119,7 @@ export async function resolve(specifier, context, nextResolve) {
   }
 
   const emberContext = emberResolverContext(nextResolve);
-  const res = await emberResolver.resolveId.call(emberContext, specifier, context.parentURL || path.resolve('./package.json'), {});
+  const res = await emberResolver.resolveId.call(emberContext, specifier, context.parentURL?.replace('file://', '') || path.resolve('./package.json'), {});
   if (res?.id.includes('-embroider')) {
     return {
       url: `file://${res.id}`,
@@ -112,10 +128,15 @@ export async function resolve(specifier, context, nextResolve) {
     };
   }
   if (res) {
-    return nextResolve(res.id, {
+    const r = await nextResolve(res.id, {
       ...context,
       conditions: ['import', 'node', 'module-sync', 'node-addons'],
     });
+    const f = r.url.replace('file://', '');
+    const pkg = resolverloader.resolver.packageCache.ownerOfFile(f);
+    const isEmber = pkg?.isEmberAddon() || pkg?.packageJSON.ember;
+    r.format = isEmber ? 'module' : r.format ;
+    return r;
   }
   return nextResolve(specifier, {
     ...context,
@@ -124,34 +145,45 @@ export async function resolve(specifier, context, nextResolve) {
 }
 
 export async function load(url, context, nextLoad) {
+  // Skip built-in Node.js modules - don't intercept them at all
+  if (url.startsWith('node:')) {
+    return {
+      format: 'builtin',
+      source: null,
+      shortCircuit: true,
+    }
+  }
 
-	if (url.endsWith('-embroider-implicit-modules.js')) {
-		return {
-			format: 'module',
-			source: 'export default {}',
-			shortCircuit: true,
-		};
-	}
+  if (url.endsWith('-embroider-implicit-modules.js')) {
+    return {
+      format: 'module',
+      source: 'export default {}',
+      shortCircuit: true,
+    };
+  }
 
-  // Handle tinygradient CommonJS module
-  if (url.includes('tinygradient') && url.includes('node_modules')) {
-    try {
-      const filePath = fileURLToPath(url);
-      readFileSync(filePath, 'utf8');
-      // Wrap CommonJS in ESM wrapper
-      const wrappedSource = `
-        import { createRequire } from 'module';
-        const require = createRequire(import.meta.url);
-        const mod = require('${filePath}');
-        export default mod;
-      `;
-      return {
-        format: 'module',
-        source: wrappedSource,
-        shortCircuit: true,
-      };
-    } catch (error) {
-      console.error('Error wrapping tinygradient:', error);
+  // Handle CommonJS modules in node_modules
+  if (url.includes('node_modules') && (url.endsWith('.js') || url.endsWith('.cjs'))) {
+    // Only wrap if context indicates it's CommonJS (format: 'commonjs')
+    // or if format is not specified (let require handle detection)
+    if (!context.format || context.format === 'commonjs') {
+      try {
+        const filePath = fileURLToPath(url);
+        // Wrap as CommonJS - let require handle detection
+        const wrappedSource = `
+          import { createRequire } from 'node:module';
+          const require = createRequire(import.meta.url);
+          const mod = require('${filePath}');
+          export default mod;
+        `;
+        return {
+          format: 'module',
+          source: wrappedSource,
+          shortCircuit: true,
+        };
+      } catch {
+        // If wrapping fails, let Node.js handle it normally
+      }
     }
   }
 
@@ -164,9 +196,10 @@ export async function load(url, context, nextLoad) {
   }
 
 
-  let content = emberResolver.load(filePath);
-  if (existsSync(filePath)) {
-    content = readFileSync(filePath, 'utf8');
+  let content = await emberResolver.load(filePath);
+
+  if (!content) {
+    content = readFileSync(filePath).toString();
   }
 
   if (url.endsWith('.json')) {
@@ -177,11 +210,7 @@ export async function load(url, context, nextLoad) {
     };
   }
 
-  content = emberTemplateTag.transform(content, filePath)?.code || content;
-
-  if (!content) {
-    return nextLoad(url, context);
-  }
+  content = (await emberTemplateTag.transform(content, filePath))?.code || content;
 
   const result = transformSync(content, {
     ...babelConfig,
@@ -197,6 +226,5 @@ export async function load(url, context, nextLoad) {
     };
   }
 
-  // Let Node.js handle all other files
   return nextLoad(url, context);
 }

@@ -1,16 +1,33 @@
-export default {
-  modulePrefix: 'ember-tui-demo',
-  environment: 'development',
-  rootElement: '#app',
-  rootURL: '/',
-  autoboot: false,
-  EmberENV: {
-    EXTEND_PROTOTYPES: false,
-    FEATURES: {},
-    _APPLICATION_TEMPLATE_WRAPPER: false,
-    _DEFAULT_ASYNC_OBSERVERS: true,
-    _JQUERY_INTEGRATION: false,
-    _TEMPLATE_ONLY_GLIMMER_COMPONENTS: true,
-  },
-  APP: {},
-};
+import { assert } from '@ember/debug';
+
+// eslint-disable-next-line
+// @ts-ignore
+import contentFor from '.embroider/content-for.json';
+
+const head = contentFor['/index.html'].head;
+const rawConfig = head.substring(head.indexOf('content="') + 'content="'.length, head.indexOf('" />'))
+
+const config = JSON.parse(decodeURIComponent(rawConfig));
+
+assert(
+  'config is not an object',
+  typeof config === 'object' && config !== null
+);
+assert(
+  'modulePrefix was not detected on your config',
+  'modulePrefix' in config && typeof config.modulePrefix === 'string'
+);
+assert(
+  'locationType was not detected on your config',
+  'locationType' in config && typeof config.locationType === 'string'
+);
+assert(
+  'rootURL was not detected on your config',
+  'rootURL' in config && typeof config.rootURL === 'string'
+);
+assert(
+  'APP was not detected on your config',
+  'APP' in config && typeof config.APP === 'object'
+);
+
+export default config;

@@ -107,7 +107,8 @@
     "typescript-eslint": "^8.38.0",
     "vitest": "^3.2.4",
     "ember-source": "^6.9.0",
-    "@glint/template": "^1.7.3"
+    "@glint/template": "^1.7.3",
+    "yoga-layout": "~3.2.1"
   },
   "peerDependencies": {
     "yoga-layout": "~3.2.1"
@@ -115,6 +116,7 @@
   "ember-addon": {
     "version": 2,
     "type": "addon",
+    "main": "addon.cjs",
     "app-js": {
       "./components/ember-native/Box.js": "./dist/_app_/components/ember-native/Box.js",
       "./components/ember-native/Newline.js": "./dist/_app_/components/ember-native/Newline.js",

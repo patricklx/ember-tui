@@ -2,7 +2,6 @@
 	"name": "ember-tui-demo",
 	"version": "0.1.0",
 	"description": "Demo application for ember-tui",
-	"type": "module",
 	"private": true,
 	"scripts": {
 		"start": "node --enable-source-maps --loader ./loader.mjs app/app.ts",
@@ -13,6 +12,7 @@
         "lint:js": "eslint .",
         "lint:js:fix": "eslint . --fix",
         "lint:types": "ember-tsc --noEmit",
+		"prebuild": "EMBROIDER_PREBUILD=true pnpm ember build",
 		"test": "FORCE_COLOR=2 vitest --run ./tests",
 		"test:update": "vitest --run --update"
 	},
@@ -54,6 +54,7 @@
 		"decorator-transforms": "^2.0.0",
 		"ember-compatibility-helpers": "^1.2.7",
 		"ember-vitest": "^0.2.1",
+		"ember-cli": "^6.8.0",
 		"indent-string": "^5.0.0",
 		"jimp": "^1.6.0",
 		"rollup": "^4.9.0",

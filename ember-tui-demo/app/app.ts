@@ -13,20 +13,20 @@ if (typeof window !== 'undefined') {
 
 class App extends EmberApplication {
   rootElement = ENV.rootElement;
-  autoboot = ENV.autoboot;
+  autoboot = false;
   modulePrefix = ENV.modulePrefix;
   podModulePrefix = `${ENV.modulePrefix}/pods`;
   Resolver = Resolver.withModules(compatModules);
 
-	buildInstance() {
-		const instance = super.buildInstance();
-		instance.setupRegistry = (options: any) => {
-			options.isInteractive = true;
-			options.document = globalThis.document;
-			ApplicationInstance.prototype.setupRegistry.call(instance, options);
-		}
-		return instance;
-	}
+  buildInstance() {
+    const instance = super.buildInstance();
+    instance.setupRegistry = (options: any) => {
+      options.isInteractive = true;
+      options.document = globalThis.document;
+      ApplicationInstance.prototype.setupRegistry.call(instance, options);
+    }
+    return instance;
+  }
 }
 
 function init(
@@ -66,7 +66,7 @@ async function startApp() {
 
 	const app = init(App, ENV)
   // Visit the static-test route to test Static component
-  await app.visit('/static-test', {
+  await app.visit('/', {
     document: document as any,
     isInteractive: true,
   });
@@ -77,6 +77,7 @@ async function startApp() {
   (globalThis as any).app = app;
 
 	startRender(document as any as DocumentNode);
+  return App;
 }
 
 // Start the Ember application
@@ -89,4 +90,4 @@ startApp()
     process.exit(1);
   });
 
-export default App;
+

@@ -114,7 +114,8 @@ export default ts.config(
       'babel.config.js',
       'rollup.config.mjs',
       'webpack.config.js',
-      'utils/*.js'
+      'utils/*.js',
+      'config/**/*.js'
     ],
     plugins: {
       n,
