@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "0.2.3",
-      "newVersion": "0.2.4",
+      "oldVersion": "0.2.4",
+      "newVersion": "0.2.5",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2025-12-04)\n\n* ember-tui 0.2.4 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#19](https://github.com/patricklx/ember-tui/pull/19) fix missing file ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2025-12-04)\n\n* ember-tui 0.2.5 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#21](https://github.com/patricklx/ember-tui/pull/21) add bin ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }

@@ -2,6 +2,17 @@
 
 ## Release (2025-12-04)
 
+* ember-tui 0.2.5 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#21](https://github.com/patricklx/ember-tui/pull/21) add bin ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
+## Release (2025-12-04)
+
 * ember-tui 0.2.4 (patch)
 
 #### :bug: Bug Fix
