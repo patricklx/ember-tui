@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-12-04)
+
+* ember-tui 0.2.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#11](https://github.com/patricklx/ember-tui/pull/11) add scripts for app setup ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2025-12-03)
 
 * ember-tui 0.2.2 (patch)
