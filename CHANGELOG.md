@@ -1,5 +1,10 @@
 # Changelog
 
+
+
+
+
+
 ## Release (2025-12-04)
 
 * ember-tui 0.2.5 (patch)
