@@ -61,7 +61,7 @@
 		"tsx": "^4.7.0",
 		"typescript": "^5.9.3",
 		"vite": "^7.2.4",
-		"vitest": "^3.2.4",
+		"vitest": "^4.0.15",
 		"gradient-string": "^3.0.0",
         "@glint/ember-tsc": "^1.0.8",
         "eslint": "^9.27.0",
