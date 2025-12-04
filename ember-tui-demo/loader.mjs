@@ -147,6 +147,10 @@ export async function load(url, context, nextLoad) {
     };
   }
 
+  if (url.startsWith('node:')) {
+    return nextLoad(url, context);
+  }
+
   // Handle CommonJS modules in node_modules
   if (url.includes('node_modules') && (url.endsWith('.js') || url.endsWith('.cjs'))) {
     // Only wrap if context indicates it's CommonJS (format: 'commonjs')
@@ -183,6 +187,10 @@ export async function load(url, context, nextLoad) {
 
   let content = await emberResolver.load(filePath);
 
+  if (!content) {
+    content = readFileSync(filePath).toString();
+  }
+
   if (url.endsWith('.json')) {
     return {
       format: 'module',
@@ -207,6 +215,5 @@ export async function load(url, context, nextLoad) {
     };
   }
 
-  // Let Node.js handle all other files
   return nextLoad(url, context);
 }

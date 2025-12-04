@@ -42,7 +42,7 @@ module.exports = {
       '@babel/plugin-transform-typescript',
       {
         allExtensions: true,
-        onlyRemoveTypeImports: true,
+        onlyRemoveTypeImports: false,
         allowDeclareFields: true,
       },
     ],
