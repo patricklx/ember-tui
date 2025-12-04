@@ -76,7 +76,7 @@ const emberResolverContext = (nextResolve) => ({
         id: res.url,
         format: res.format,
       }
-    } catch (error) {
+    } catch {
       return null;
     }
   }
@@ -181,7 +181,7 @@ export async function load(url, context, nextLoad) {
           source: wrappedSource,
           shortCircuit: true,
         };
-      } catch (error) {
+      } catch {
         // If wrapping fails, let Node.js handle it normally
       }
     }
