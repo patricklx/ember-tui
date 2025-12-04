@@ -14,36 +14,15 @@ Since Ember TUI is built on Ember.js, all features of Ember.js are supported.
 Head over to the [Ember.js](https://emberjs.com) website for documentation on how to use it.
 Only Ember TUI's methods are documented in this readme.
 
-## Install
+## start developing
 
-```sh
-npm install ember-tui
+to create a new terminal app just run
+```
+curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/scripts/create-new-app.sh | bash -s -- <my-cli-app> --pnpm
+npm start
 ```
 
-## Usage
-
-```glimmer-ts
-import { render, Text } from 'ember-tui';
-import { tracked } from '@glimmer/tracking';
-
-class Counter {
-  @tracked counter = 0;
-
-  constructor() {
-    setInterval(() => {
-      this.counter++;
-    }, 100);
-  }
-}
-
-const counter = new Counter();
-
-const template = <template>
-  <Text color="green">{{counter.counter}} tests passed</Text>
-</template>;
-
-render(template);
-```
+that will create the app with emberjs blueprint and adjust some files for ember-tui
 
 ## Contents
 
