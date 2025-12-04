@@ -34,16 +34,16 @@ rm -f testem.cjs
 rm -f ./tests/helpers/index.ts
 rmdir ./tests/helpers
 
-curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/app/config/environment.ts > app/config/environment.ts
-curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/app/app.ts > app/app.ts
-curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/vite.config.mjs > vite.config.mjs
-curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/rollup.config.mjs > rollup.config.mjs
-curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/README.md > README.md
-curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/loader.mjs > loader.mjs
+curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/app/config/environment.ts > app/config/environment.ts
+curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/app/app.ts > app/app.ts
+curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/vite.config.mjs > vite.config.mjs
+curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/rollup.config.mjs > rollup.config.mjs
+curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/README.md > README.md
+curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/loader.mjs > loader.mjs
 
 # Download test files
-curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/tests/globalSetup.js > tests/globalSetup.js
-curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/tests/basic-test.gts > tests/integration/basic-test.gts
+curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/tests/globalSetup.js > tests/globalSetup.js
+curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/tests/basic-test.gts > tests/integration/basic-test.gts
 
 # Create application template
 cat > app/templates/application.gts << 'EOF'
@@ -67,7 +67,7 @@ if [ -f config/environment.js ]; then
 fi
 
 # Fetch remote package.json and merge scripts section
-curl -s https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/package.json > /tmp/remote-package.json
+curl -s https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo/package.json > /tmp/remote-package.json
 if [ -f package.json ]; then
   # Merge scripts section from remote into local package.json
   jq -s '.[0].scripts = .[1].scripts | .[0]' package.json /tmp/remote-package.json > /tmp/merged-package.json
