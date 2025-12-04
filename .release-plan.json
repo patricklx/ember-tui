@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "0.2.1",
-      "newVersion": "0.2.2",
+      "oldVersion": "0.2.2",
+      "newVersion": "0.2.3",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2025-12-03)\n\n* ember-tui 0.2.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#9](https://github.com/patricklx/ember-tui/pull/9) add peer dep ([@patricklx](https://github.com/patricklx))\n  * [#8](https://github.com/patricklx/ember-tui/pull/8) fix bad exports definition ([@patricklx](https://github.com/patricklx))\n\n#### :memo: Documentation\n* [#10](https://github.com/patricklx/ember-tui/pull/10) fix: 404 on demo links in readme ([@johanrd](https://github.com/johanrd))\n\n#### Committers: 2\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n- [@johanrd](https://github.com/johanrd)\n"
+  "description": "## Release (2025-12-04)\n\n* ember-tui 0.2.3 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#11](https://github.com/patricklx/ember-tui/pull/11) add scripts for app setup ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
