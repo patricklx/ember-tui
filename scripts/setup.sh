@@ -21,15 +21,10 @@ for arg in "$@"; do
   fi
 done
 
-rm -f ember-cli-build.js
+
 rm -f testem.cjs
-rm -f ./config/ember-cli-update.json
-rm -f ./config/environment.js
-rm -f ./config/optional-features.json
-rm -f ./config/targets.js
-rmdir -f ./config
 rm -f ./tests/helpers/index.ts
-rmdir -f ./tests
+rmdir -f ./tests/helpers
 
 curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/app/config/environment.ts > app/config/environment.ts
 curl https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo/app/app.ts > app/app.ts

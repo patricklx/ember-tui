@@ -71,7 +71,6 @@ const emberResolverContext = (nextResolve) => ({
         id: res.url,
       }
     } catch (error) {
-      console.error(error);
       return null;
     }
   }
@@ -85,6 +84,10 @@ export async function resolve(specifier, context, nextResolve) {
 			shortCircuit: true,
 		};
 	}
+
+  if (specifier.startsWith('node:')) {
+    return nextResolve(specifier, context);
+  }
 
 	if (specifier.includes('.embroider/content-for.json')) {
 		specifier = path.resolve('.', 'node_modules', specifier);
@@ -107,7 +110,7 @@ export async function resolve(specifier, context, nextResolve) {
   }
 
   const emberContext = emberResolverContext(nextResolve);
-  const res = await emberResolver.resolveId.call(emberContext, specifier, context.parentURL || path.resolve('./package.json'), {});
+  const res = await emberResolver.resolveId.call(emberContext, specifier, context.parentURL?.replace('file://', '') || path.resolve('./package.json'), {});
   if (res?.id.includes('-embroider')) {
     return {
       url: `file://${res.id}`,
@@ -116,10 +119,12 @@ export async function resolve(specifier, context, nextResolve) {
     };
   }
   if (res) {
-    return nextResolve(res.id, {
+    const r = nextResolve(res.id, {
       ...context,
       conditions: ['import', 'node', 'module-sync', 'node-addons'],
     });
+    r.format = 'module';
+    return r;
   }
   return nextResolve(specifier, {
     ...context,
@@ -137,25 +142,29 @@ export async function load(url, context, nextLoad) {
 		};
 	}
 
-  // Handle tinygradient CommonJS module
-  if (url.includes('tinygradient') && url.includes('node_modules')) {
-    try {
-      const filePath = fileURLToPath(url);
-      readFileSync(filePath, 'utf8');
-      // Wrap CommonJS in ESM wrapper
-      const wrappedSource = `
-        import { createRequire } from 'module';
-        const require = createRequire(import.meta.url);
-        const mod = require('${filePath}');
-        export default mod;
-      `;
-      return {
-        format: 'module',
-        source: wrappedSource,
-        shortCircuit: true,
-      };
-    } catch (error) {
-      console.error('Error wrapping tinygradient:', error);
+  // Handle CommonJS modules in node_modules
+  if (url.includes('node_modules') && (url.endsWith('.js') || url.endsWith('.cjs'))) {
+    // Only wrap if context indicates it's CommonJS (format: 'commonjs')
+    // or if format is not specified (let require handle detection)
+    console.log('check', url, context);
+    if (!context.format || context.format === 'commonjs') {
+      try {
+        const filePath = fileURLToPath(url);
+        // Wrap as CommonJS - let require handle detection
+        const wrappedSource = `
+          import { createRequire } from 'node:module';
+          const require = createRequire(import.meta.url);
+          const mod = require('${filePath}');
+          export default mod;
+        `;
+        return {
+          format: 'module',
+          source: wrappedSource,
+          shortCircuit: true,
+        };
+      } catch (error) {
+        // If wrapping fails, let Node.js handle it normally
+      }
     }
   }
 
