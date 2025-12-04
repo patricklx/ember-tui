@@ -6,7 +6,8 @@
   "main": "./dist/index.js",
   "files": [
     "dist",
-    "declarations"
+    "declarations",
+    "addon.cjs",
   ],
   "repository": {
     "type": "git",
