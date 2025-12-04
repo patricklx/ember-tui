@@ -279,8 +279,8 @@ importers:
         specifier: ^1.2.7
         version: 1.2.7(@babel/core@7.28.5)
       ember-vitest:
-        specifier: ^0.2.1
-        version: 0.2.1(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(vitest@3.2.4(@types/node@20.19.25)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.21.0))
+        specifier: ^0.3.0
+        version: 0.3.0(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(vitest@3.2.4(@types/node@20.19.25)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.21.0))
       eslint:
         specifier: ^9.27.0
         version: 9.39.1(jiti@2.4.2)
@@ -3557,8 +3557,8 @@ packages:
     engines: {node: 12.* || 14.* || >= 16.*}
     hasBin: true
 
-  ember-vitest@0.2.1:
-    resolution: {integrity: sha512-F6PShNVPWQQI0p2H6RhL3N05gNf1JE4SuXXolK+7NuV2LWXHQWsgidFCvKDx45B+BXKjnNslixisUgJoRINZEw==}
+  ember-vitest@0.3.0:
+    resolution: {integrity: sha512-AwWQ3X12njDD6LtNFu9Qj850DHDlMJ3kI0oMN+7VISqUbodZOiNz9ZuiM37t1alvVyfOXbEIPQ0yFUs99lafIg==}
     engines: {node: ^20.11.0 || ^22 || >=24}
     peerDependencies:
       '@ember/test-helpers': '>=4.0.0'
@@ -11400,7 +11400,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-vitest@0.2.1(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(vitest@3.2.4(@types/node@20.19.25)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.21.0)):
+  ember-vitest@0.3.0(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(vitest@3.2.4(@types/node@20.19.25)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.21.0)):
     dependencies:
       '@ember/test-helpers': 5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3)
       ember-strict-application-resolver: 0.1.0(@babel/core@7.28.5)
