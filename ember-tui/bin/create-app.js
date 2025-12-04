@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+/* eslint-env node */
+/* eslint-disable no-undef */
 
 import { execSync } from 'child_process';
 import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
-import { join } from 'path';
 
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo';
 
@@ -34,7 +35,7 @@ if (args.includes('--pnpm')) {
 // Check for required tools (only package manager needed now)
 try {
   execSync(`command -v ${pkgManager}`, { stdio: 'ignore' });
-} catch (error) {
+} catch {
   console.error(`Error: ${pkgManager} is not installed. Please install it and try again.`);
   process.exit(1);
 }
@@ -80,7 +81,7 @@ async function setup() {
   if (existsSync('./tests/helpers')) {
     try {
       rmSync('./tests/helpers', { recursive: true });
-    } catch (e) {
+    } catch {
       // Directory might not be empty or not exist
     }
   }
@@ -190,7 +191,7 @@ async function setup() {
   try {
     execSync(`${uninstallCmd} testem qunit qunit-dom ember-page-title ember-welcome-page`, { stdio: 'inherit' });
     console.log('✓ Unnecessary packages removed');
-  } catch (error) {
+  } catch {
     // Some packages might not be installed, that's okay
     console.log('✓ Cleanup completed');
   }
