@@ -1,4 +1,7 @@
 import { assert } from '@ember/debug';
+
+// eslint-disable-next-line
+// @ts-ignore
 import contentFor from '.embroider/content-for.json';
 
 const head = contentFor['/index.html'].head;
