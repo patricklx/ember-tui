@@ -279,8 +279,8 @@ importers:
         specifier: ^1.2.7
         version: 1.2.7(@babel/core@7.28.5)
       ember-vitest:
-        specifier: ^0.2.1
-        version: 0.2.1(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(vitest@4.0.15(@types/node@24.10.2)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.21.0))
+        specifier: ^0.3.0
+        version: 0.3.0(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(vitest@4.0.15(@types/node@24.10.2)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.21.0))
       eslint:
         specifier: ^9.27.0
         version: 9.39.1(jiti@2.4.2)
@@ -3531,8 +3531,8 @@ packages:
     peerDependencies:
       '@glimmer/component': '>= 1.1.2'
 
-  ember-strict-application-resolver@0.1.0:
-    resolution: {integrity: sha512-dmVJPLDoltiB5PN4xhUmg9JrUMPJxdeIlwqUtRBvIHpOLrbi069m7AvXGEh0b+Pq7g1HkLwt/lMm6ouHVry7hQ==}
+  ember-strict-application-resolver@0.1.1:
+    resolution: {integrity: sha512-/49JZ2Yk2ggicAGIoFNWcz05llhe2i+/2dpH5Pv1KlwZOBKkqMMJpTKEB4IMg+FjKBiE0r2yxuZzo9Oly9vc1A==}
 
   ember-template-imports@3.4.2:
     resolution: {integrity: sha512-OS8TUVG2kQYYwP3netunLVfeijPoOKIs1SvPQRTNOQX4Pu8xGGBEZmrv0U1YTnQn12Eg+p6w/0UdGbUnITjyzw==}
@@ -3548,8 +3548,8 @@ packages:
     engines: {node: 12.* || 14.* || >= 16.*}
     hasBin: true
 
-  ember-vitest@0.2.1:
-    resolution: {integrity: sha512-F6PShNVPWQQI0p2H6RhL3N05gNf1JE4SuXXolK+7NuV2LWXHQWsgidFCvKDx45B+BXKjnNslixisUgJoRINZEw==}
+  ember-vitest@0.3.0:
+    resolution: {integrity: sha512-AwWQ3X12njDD6LtNFu9Qj850DHDlMJ3kI0oMN+7VISqUbodZOiNz9ZuiM37t1alvVyfOXbEIPQ0yFUs99lafIg==}
     engines: {node: ^20.11.0 || ^22 || >=24}
     peerDependencies:
       '@ember/test-helpers': '>=4.0.0'
@@ -11349,7 +11349,7 @@ snapshots:
       - rsvp
       - supports-color
 
-  ember-strict-application-resolver@0.1.0(@babel/core@7.28.5):
+  ember-strict-application-resolver@0.1.1(@babel/core@7.28.5):
     dependencies:
       '@embroider/addon-shim': 1.10.2
       decorator-transforms: 2.3.0(@babel/core@7.28.5)
@@ -11410,10 +11410,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-vitest@0.2.1(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(vitest@4.0.15(@types/node@24.10.2)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.21.0)):
+  ember-vitest@0.3.0(@babel/core@7.28.5)(@ember/test-helpers@5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3))(vitest@4.0.15(@types/node@24.10.2)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.21.0)):
     dependencies:
       '@ember/test-helpers': 5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3)
-      ember-strict-application-resolver: 0.1.0(@babel/core@7.28.5)
+      ember-strict-application-resolver: 0.1.1(@babel/core@7.28.5)
       vitest: 4.0.15(@types/node@24.10.2)(jiti@2.4.2)(jsdom@26.1.0)(terser@5.44.1)(tsx@4.21.0)
     transitivePeerDependencies:
       - '@babel/core'
