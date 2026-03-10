@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "0.2.4",
-      "newVersion": "0.2.5",
+      "oldVersion": "0.2.5",
+      "newVersion": "0.2.6",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2025-12-04)\n\n* ember-tui 0.2.5 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#21](https://github.com/patricklx/ember-tui/pull/21) add bin ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-03-10)\n\n* ember-tui 0.2.6 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#33](https://github.com/patricklx/ember-tui/pull/33) fix nested text elements ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
