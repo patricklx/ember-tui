@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-03-10)
+
+* ember-tui 0.2.6 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#33](https://github.com/patricklx/ember-tui/pull/33) fix nested text elements ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2025-12-04)
 
 * ember-tui 0.2.5 (patch)
