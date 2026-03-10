@@ -23,6 +23,20 @@ describe("example", () => {
 		await rerender();
 		expect(ctx.element.textContent).toContain("hello world");
 	});
+
+    test("nested text works", async () => {
+		await using ctx = await setupRenderingContext();
+		const state = trackedObject({ value: "hello there" });
+
+		await ctx.render(<template><Text>hi <Text @backgroundColor="green">{{state.value}}</Text></Text></template>);
+
+		expect(ctx.element.textContent).toContain("hello there");
+		render(ctx.element);
+		state.value = "hello world";
+		await rerender();
+		expect(ctx.element.textContent).toContain("hello world");
+        expect(ctx.element.textContent.split('hello')).toEqual(2);
+	});
 });
 
 describe("background color clearing", () => {
