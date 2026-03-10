@@ -3,7 +3,6 @@ import chalk, { ForegroundColorName } from 'chalk';
 import { Styles } from '../styles';
 import colorize from '../colorize';
 import { LiteralUnion } from "type-fest";
-import { elementIterator } from "../nodes/element-iterator";
 
 
 interface Attributes {
@@ -82,27 +81,31 @@ export class TerminaTextElement extends ElementNode<Attributes> {
     const parts: string[] = [];
     const preFormatted = this.getAttribute('pre-formatted');
 
-		for (const child of elementIterator(this)) {
-			if (child === this) continue;
+		// Only iterate direct children, not all descendants
+		// Child TerminaTextElements already have their text computed
+		for (const child of this.childNodes) {
 			if (child instanceof TerminaTextElement) {
-				// If child is pre-formatted, preserve its text as-is
-				const childPreFormatted = child.getAttribute('pre-formatted');
-				if (childPreFormatted) {
-					parts.push(child.text);
-				} else {
-					parts.push((child as any).text || '');
-				}
+				// Child TerminaTextElements already have their text formatted, just use it directly
+				const childText = (child as any).text || '';
+				if (childText) parts.push(childText);
 			} else if ((child as any).text) {
 				const t = (child as any).text;
 				if (!preFormatted) {
-					parts.push(t.split('\n').map((line: string) => line.trim()).filter(Boolean).join(' '));
+					const normalized = t.split('\n').map((line: string) => line.trim()).filter(Boolean).join(' ');
+					if (normalized) parts.push(normalized);
 				} else {
 					parts.push(t);
 				}
 			}
 		}
-    const t = parts.join(' ');
+    // Join with space, but normalize multiple spaces to single space
+    const t = parts.join(' ').replace(/\s+/g, ' ');
     this.text = this.transform(t);
+
+    // Notify parent TerminaTextElement to update if this element's text changed
+    if (this.parentNode instanceof TerminaTextElement) {
+      this.parentNode.updateText();
+    }
   }
 
   transform(text: string): string {
