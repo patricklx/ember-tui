@@ -31,12 +31,21 @@ export default class ViewNode<Attributes = any> {
   page?: any;
   location?: any;
 
-  get textContent() {
+  get textContent(): string {
     const contents = [];
-    for (const el of elementIterator(this)) {
-      contents.push(el.text || el.html);
+    // Collect text from direct children only
+    for (const child of this.childNodes) {
+      if ((child as any).text) {
+        // TerminaTextElement or TextNode with text property
+        contents.push((child as any).text);
+      } else if ((child as any).html) {
+        contents.push((child as any).html);
+      } else if (child.textContent) {
+        // Recursively get text from child elements
+        contents.push(child.textContent);
+      }
     }
-    return contents.filter((c) => !!c).join(' ');
+    return contents.filter((c) => !!c).join('').trim();
   }
 
   getElementById(id: string) {
