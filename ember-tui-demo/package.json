@@ -50,7 +50,7 @@
 		"@rollup/plugin-node-resolve": "^15.2.3",
 		"@types/node": "^25.0.2",
 		"babel-plugin-ember-template-compilation": "^2.2.0",
-		"content-tag": "^4.0.0",
+		"content-tag": "^4.1.0",
 		"decorator-transforms": "^2.0.0",
 		"ember-compatibility-helpers": "^1.2.7",
 		"ember-vitest": "^0.2.1",
