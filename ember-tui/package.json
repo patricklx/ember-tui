@@ -73,7 +73,7 @@
     "cli-boxes": "^4.0.1",
     "slice-ansi": "^7.1.2",
     "string-width": "^8.1.0",
-    "type-fest": "^5.2.0",
+    "type-fest": "^5.4.1",
     "widest-line": "^5.0.0",
     "yoga-layout": "~3.2.1",
     "indent-string": "^5.0.0"
