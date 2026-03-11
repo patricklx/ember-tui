@@ -91,7 +91,11 @@ export class TerminaTextElement extends ElementNode<Attributes> {
 			} else if ((child as any).text) {
 				const t = (child as any).text;
 				if (!preFormatted) {
-					const normalized = t.split('\n').map((line: string) => line.trim()).filter(Boolean).join(' ');
+					const normalized = t.split('\n')
+            .map((line: string) => line.trim())
+            .filter(Boolean)
+            .join(' ')
+            .replace(/\s+/g, ' ');
 					if (normalized) parts.push(normalized);
 				} else {
 					parts.push(t);
@@ -99,7 +103,7 @@ export class TerminaTextElement extends ElementNode<Attributes> {
 			}
 		}
     // Join with space, but normalize multiple spaces to single space
-    const t = parts.join(' ').replace(/\s+/g, ' ');
+    const t = parts.join(' ');
     this.text = this.transform(t);
 
     // Notify parent TerminaTextElement to update if this element's text changed
