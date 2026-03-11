@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "0.2.5",
-      "newVersion": "0.2.6",
+      "oldVersion": "0.2.6",
+      "newVersion": "0.2.7",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2026-03-10)\n\n* ember-tui 0.2.6 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#33](https://github.com/patricklx/ember-tui/pull/33) fix nested text elements ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-03-11)\n\n* ember-tui 0.2.7 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#35](https://github.com/patricklx/ember-tui/pull/35) add missing exports ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }

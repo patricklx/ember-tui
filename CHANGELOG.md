@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-03-11)
+
+* ember-tui 0.2.7 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#35](https://github.com/patricklx/ember-tui/pull/35) add missing exports ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-03-10)
 
 * ember-tui 0.2.6 (patch)
