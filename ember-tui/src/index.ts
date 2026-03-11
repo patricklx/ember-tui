@@ -6,7 +6,7 @@
 // Export setup and render
 export { setup } from './setup';
 export { startRender } from './startRender';
-export { render } from './render/apply-term-updates';
+export { render, hideCursor, showCursor, handleResize } from './render/apply-term-updates';
 
 export { default as DocumentNode } from './dom/nodes/DocumentNode';
 export { default as Text } from './components/Text.gts';
