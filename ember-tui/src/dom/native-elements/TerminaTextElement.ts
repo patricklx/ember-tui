@@ -95,7 +95,7 @@ export class TerminaTextElement extends ElementNode<Attributes> {
             .map((line: string) => line.trim())
             .filter(Boolean)
             .join(' ')
-            .replace(/\s+/g, ' ');
+            .replace(/[ \t\r\n]+/g, ' ');
 					if (normalized) parts.push(normalized);
 				} else {
 					parts.push(t);
