@@ -59,13 +59,6 @@ export function startRender(
   stdin.on('data', function(keyBuffer){
     const key = keyBuffer.toString();
 
-    // Ctrl-C to exit
-    if (key === '\u0003') {
-      // Clean up before exit
-      process.stdout.write('\x1b[?25h'); // Show cursor
-      process.exit();
-    }
-
     // Detect Alt+ key combinations
     // Alt+key produces escape sequence: \x1b followed by the key
     const isAlt = key.length === 2 && key[0] === '\x1b' && key[1] !== '[';
