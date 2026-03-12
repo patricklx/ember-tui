@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "0.2.8",
-      "newVersion": "0.2.9",
+      "oldVersion": "0.2.9",
+      "newVersion": "0.2.10",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2026-03-12)\n\n* ember-tui 0.2.9 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#39](https://github.com/patricklx/ember-tui/pull/39) remove ctrl+c handler ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-03-12)\n\n* ember-tui 0.2.10 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#41](https://github.com/patricklx/ember-tui/pull/41) rename to keydown ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
