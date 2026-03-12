@@ -1,5 +1,17 @@
 # Changelog
 
+## Release (2026-03-12)
+
+* ember-tui 0.2.8 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#38](https://github.com/patricklx/ember-tui/pull/38) use key name ([@patricklx](https://github.com/patricklx))
+  * [#36](https://github.com/patricklx/ember-tui/pull/36) keep pre formatted text ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-03-11)
 
 * ember-tui 0.2.7 (patch)
