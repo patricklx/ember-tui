@@ -88,7 +88,7 @@ export default class DocumentNode extends ViewNode {
       setTimeout(callback, 0);
       return;
     }
-    if (event === 'keypress') {
+    if (event === 'keydown') {
       this.keypressListeners.push(callback);
       return;
     }
@@ -99,7 +99,7 @@ export default class DocumentNode extends ViewNode {
     if (event === 'DOMContentLoaded') {
       return;
     }
-    if (event === 'keypress') {
+    if (event === 'keydown') {
       const index = this.keypressListeners.indexOf(handler);
       if (index > -1) {
         this.keypressListeners.splice(index, 1);
@@ -199,7 +199,7 @@ export default class DocumentNode extends ViewNode {
   }
 
   dispatchEvent(event: any) {
-    if (event.type === 'keypress') {
+    if (event.type === 'keydown') {
       for (const listener of this.keypressListeners) {
         listener(event);
       }
