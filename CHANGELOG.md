@@ -2,6 +2,17 @@
 
 ## Release (2026-03-12)
 
+* ember-tui 0.2.10 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#41](https://github.com/patricklx/ember-tui/pull/41) rename to keydown ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
+## Release (2026-03-12)
+
 * ember-tui 0.2.9 (patch)
 
 #### :bug: Bug Fix
