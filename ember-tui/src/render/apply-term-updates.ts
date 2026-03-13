@@ -699,9 +699,11 @@ function renderInternal(rootNode: ElementNode): void {
 			}
 			state.lines = newLines;
 		} finally {
-			process.stdout.write('\x1b[?25h'); // Show cursor
+			if (state.cursor.state === 'visible') {
+				process.stdout.write('\x1b[?25h'); // Show cursor
+				moveCursorTo(state.cursor.y, state.cursor.x);
+			}
 		}
-		moveCursorTo(state.cursor.y, state.cursor.x);
 		return;
 	}
 	process.stdout.write('\x1b[?25l'); // Hide cursor
