@@ -39,7 +39,7 @@
 		"@babel/plugin-transform-typescript": "^7.23.0",
 		"@ember/test-helpers": "^5.4.1",
 		"@embroider/compat": "^4.1.10",
-		"@embroider/core": "^4.4.0",
+		"@embroider/core": "^4.4.5",
 		"@embroider/macros": "^1.13.0",
 		"@embroider/vite": "^1.4.2",
 		"@glint/template": "^1.7.3",
