@@ -708,9 +708,15 @@ function renderInternal(rootNode: ElementNode): void {
 	}
 	process.stdout.write('\x1b[?25l'); // Hide cursor
 
+	if (newLines.length < oldLines.length) {
+		const m = oldLines.length - newLines.length;
+		for (let i = 0; i < m; i++) {
+			newLines.splice(0, 0, '');
+		}
+	}
+
 	try {
-		// Calculate which lines are visible (after scroll buffer)
-		const scrollBufferSize = Math.max(0, oldLines.length - state.terminalHeight);
+		// Start from the first visible line in the current viewport
 		const visibleStartLine = scrollBufferSize;
 		const maxLines = Math.max(newLines.length, oldLines.length);
 
@@ -719,11 +725,12 @@ function renderInternal(rootNode: ElementNode): void {
 			const oldLine = oldLines[i];
 
 			if (newLine !== oldLine) {
-				// Calculate screen position (relative to visible viewport)
+				// Calculate screen position in CURRENT terminal viewport
+				// This is the line number relative to the top of the visible screen
 				const screenLine = i - scrollBufferSize;
 
-				// Only update lines within visible terminal viewport
-				if (i >= visibleStartLine && i < state.terminalHeight + scrollBufferSize) {
+				// Only update lines within the current visible terminal viewport
+				if (screenLine >= 0 && screenLine < state.terminalHeight) {
 					if (newLine === undefined || newLine === "") {
 						// Line was removed - clear it
 						moveCursorTo(screenLine);
@@ -737,7 +744,7 @@ function renderInternal(rootNode: ElementNode): void {
 						updateLineMinimal(screenLine, oldLine, newLine);
 					}
 				} else if (screenLine >= state.terminalHeight) {
-					// Beyond previous content - just write newline and content
+					// Beyond visible viewport - append with newline
 					moveCursorTo(screenLine);
 					process.stdout.write('\n');
 					if (newLine !== undefined) {
