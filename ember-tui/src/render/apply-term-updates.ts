@@ -40,6 +40,7 @@ interface RenderState {
 	terminalHeight: number;
 	terminalWidth: number;
 	scrollOffset: number;
+	scrollBufferSize: number;
 	cursor: {
 		y: number,
 		x: number,
@@ -52,6 +53,7 @@ const state: RenderState = {
 	terminalHeight: process.stdout.rows || 15,
 	terminalWidth: process.stdout.columns || 80,
 	scrollOffset: 0,
+	scrollBufferSize: 0,
 	cursor: {
 		x: 0,
 		y: 0,
@@ -669,7 +671,8 @@ function renderInternal(rootNode: ElementNode): void {
 	const oldLines = state.lines;
 
 	// Calculate scroll buffer offset (lines that have scrolled off screen)
-	const scrollBufferSize = Math.max(0, oldLines.length - state.terminalHeight);
+	const scrollBufferSize = Math.max(state.scrollBufferSize, oldLines.length - state.terminalHeight);
+	state.scrollBufferSize = scrollBufferSize;
 
 	const newLines = [...result.static, ...result.dynamic];
 	// Check if we need a full redraw:
@@ -779,6 +782,7 @@ export function handleResize(document: DocumentNode): void {
 	const newWidth = process.stdout.columns;
 	state.terminalHeight = newHeight;
 	state.terminalWidth = newWidth;
+	state.scrollBufferSize = 0;
 	clearScreen();
 	if (document.body) {
 		render(document.body);
