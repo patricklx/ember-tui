@@ -1,6 +1,6 @@
 {
   "name": "ember-tui",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "Ember Terminal UI library",
   "type": "module",
   "main": "./dist/index.js",
