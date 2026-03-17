@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-03-17)
+
+* ember-tui 0.2.13 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#52](https://github.com/patricklx/ember-tui/pull/52) keep scrollBufferSize in state ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-03-13)
 
 * ember-tui 0.2.12 (patch)

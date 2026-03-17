@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "0.2.11",
-      "newVersion": "0.2.12",
+      "oldVersion": "0.2.12",
+      "newVersion": "0.2.13",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2026-03-13)\n\n* ember-tui 0.2.12 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#45](https://github.com/patricklx/ember-tui/pull/45) only re show cursor if state is visible ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-03-17)\n\n* ember-tui 0.2.13 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#52](https://github.com/patricklx/ember-tui/pull/52) keep scrollBufferSize in state ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
