@@ -27,7 +27,6 @@ export default class ViewNode<Attributes = any> {
   // Properties used by layout and rendering
   yogaNode?: YogaNode;
   staticRendered?: boolean;
-  nativeView?: any;
   page?: any;
   location?: any;
 

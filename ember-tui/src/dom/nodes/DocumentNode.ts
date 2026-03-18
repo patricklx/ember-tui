@@ -2,8 +2,9 @@ import CommentNode from './CommentNode';
 import ElementNode from './ElementNode';
 import TextNode from './TextNode';
 import ViewNode, { EventListener } from './ViewNode';
-import { createElement } from "../element-registry";
+import { createElement } from '../element-registry';
 import { elementIterator } from './element-iterator';
+import { Edge } from 'yoga-layout';
 
 // Type alias for elements with nativeView property
 type NativeElementNode = ViewNode & { nativeView: any };
@@ -17,12 +18,18 @@ class HeadNode extends ElementNode {
 	append = this.appendChild.bind(this);
   appendChild(childNode: ViewNode) {
     if (childNode.tagName === 'style') {
-      this.document.page.nativeView.addCss(
-        (childNode.childNodes[0]! as any).text,
-      );
       return;
     }
     super.appendChild(childNode);
+  }
+  insertAdjacentHTML() {
+    return null;
+  }
+  addEventListener() {
+    return null;
+  }
+  removeEventListener() {
+
   }
 }
 
@@ -166,8 +173,14 @@ export default class DocumentNode extends ViewNode {
         let width = size.width;
         let height = size.height;
         for (const element of elementIterator(this.startNode)) {
-          const point = element.nativeView.getLocationInWindow();
-          const size = element.nativeView.getActualSize();
+          const point = {
+            x: element.yogaNode?.getPosition(Edge.Left).value || 0,
+            y: element.yogaNode?.getPosition(Edge.Top).value || 0,
+          };
+          const size = {
+            width: element.yogaNode?.getWidth().value || 0,
+            height: element.yogaNode?.getHeight().value || 0,
+          };
           x = Math.min(x, point.x);
           y = Math.min(y, point.y);
           width = point.x + size.width - x;

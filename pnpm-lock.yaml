@@ -48,6 +48,9 @@ importers:
       cli-boxes:
         specifier: ^4.0.1
         version: 4.0.1
+      ember-modifier:
+        specifier: ^4.3.0
+        version: 4.3.0(@babel/core@7.28.5)
       indent-string:
         specifier: ^5.0.0
         version: 5.0.0
@@ -4028,6 +4031,9 @@ packages:
     engines: {node: '>= 18.*'}
     peerDependencies:
       ember-source: '>= 5'
+
+  ember-modifier@4.3.0:
+    resolution: {integrity: sha512-O0rirSLQbGg0VJ/NqoQ4uN1bh2iAekZC/Ykma+FkjCM2ofrO38u+d8n3+AK6uVWeMJmogGX2KL+Is5fofoInJg==}
 
   ember-resolver@13.1.1:
     resolution: {integrity: sha512-rA4RDuTm/F9AzYX2+g7EY3QWU48kyF9+Ck8IE8VQipnlwv2Q42kdRWiw7hfeQbRxx6XoSZCak6nzAG9ePd/+Ug==}
@@ -12495,6 +12501,14 @@ snapshots:
   ember-load-initializers@3.0.1(ember-source@6.9.0(@glimmer/component@2.0.0)(rsvp@4.8.5)):
     dependencies:
       ember-source: 6.9.0(@glimmer/component@2.0.0)(rsvp@4.8.5)
+
+  ember-modifier@4.3.0(@babel/core@7.28.5):
+    dependencies:
+      '@embroider/addon-shim': 1.10.2
+      decorator-transforms: 2.3.0(@babel/core@7.28.5)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - supports-color
 
   ember-resolver@13.1.1:
     dependencies:

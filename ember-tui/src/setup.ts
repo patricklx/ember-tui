@@ -8,6 +8,7 @@ import ViewNode from "./dom/nodes/ViewNode";
 // @ts-expect-error - @glimmer/runtime has no type declarations
 import { SimpleDynamicAttribute } from '@glimmer/runtime';
 import { registerElements } from "./dom/setup-registry";
+import ElementNode from './dom/nodes/ElementNode';
 
 
 SimpleDynamicAttribute.prototype.set = function (dom: any, value: any) {
@@ -24,6 +25,105 @@ SimpleDynamicAttribute.prototype.update = function (value: any) {
 		element.setAttribute(name, normalizedValue as string);
 	}
 };
+
+function setupInspectorSupport() {
+  const globalMessaging: Record<string, ((args: any) => void)[]> = {};
+  const g = globalThis as any;
+
+  class Event {
+    target: any;
+    type: any;
+
+    constructor(type: string, target: any) {
+      this.type = type;
+      this.target = target;
+    }
+
+    preventDefault() {}
+    stopPropagation() {}
+  }
+
+  g.postMessage = (msg: any, origin: string, ports?: any[]) => {
+    globalMessaging['message']?.forEach((listener) =>
+      listener({
+        data: msg,
+        origin,
+        ports,
+      }),
+    );
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  g.triggerEvent = (type: string, element: ElementNode, _data: any) => {
+    const e = new Event(type, element);
+    globalMessaging[type]?.forEach((cb) => {
+      cb(e);
+    });
+  };
+
+  g.addEventListener = (type: any, cb: any) => {
+    globalMessaging[type] = globalMessaging[type] || [];
+    globalMessaging[type].push(cb);
+  };
+
+  g.removeEventListener = (type: any, cb: any) => {
+    if (type === 'message') {
+      const i = globalMessaging[type]?.indexOf(cb) || -1;
+      if (i >= 0) {
+        globalMessaging[type]!.splice(i, 1);
+      }
+    }
+  };
+
+  if (g.document.documentElement && g.document.documentElement.dataset) {
+    // let EmberDebug know that content script has executed
+    g.document.documentElement.dataset['emberExtension'] = '1';
+  }
+
+  class Port {
+    private msgId: number;
+    listeners: any[];
+    private otherPort: keyof MessageChannel;
+    private channel: MessageChannel;
+    constructor(channel: MessageChannel, otherPort: keyof MessageChannel) {
+      this.channel = channel;
+      this.otherPort = otherPort;
+      this.msgId = 20000;
+      this.listeners = [];
+    }
+
+    trigger(msg: any) {
+      this.listeners.forEach((listener) => listener({ data: msg }));
+    }
+
+    get channelPort() {
+      return this.channel[this.otherPort];
+    }
+
+    start() {}
+    addEventListener(_type: string, cb: (args: any) => void) {
+      this.listeners.push(cb);
+    }
+    postMessage(msg: any) {
+      this.channelPort.trigger(msg);
+    }
+  }
+
+  class MessageChannel {
+    port1 = new Port(this, 'port2');
+    port2 = new Port(this, 'port1');
+  }
+
+  (globalThis as any).MessageChannel = MessageChannel;
+
+  (globalThis as any).scrollX = 0;
+  (globalThis as any).scrollY = 0;
+  Object.defineProperty(globalThis as any, 'innerWidth', {
+    get() {
+      return (g.document.body as ElementNode)?.yogaNode?.getWidth() || 0;
+    },
+  });
+}
 
 export function setup() {
   // Create the terminal document
@@ -89,6 +189,8 @@ export function setup() {
       clearTimeout(id);
     };
   }
+
+  setupInspectorSupport();
 
   return document;
 }

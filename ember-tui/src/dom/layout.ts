@@ -45,6 +45,10 @@ export function createYogaNode(element: ElementNode): YogaNode {
 		styles.justifyContent = (element.getAttribute('justifyContent') || element.getAttribute('justify-content')) as any;
 	}
 
+	if (element.hasAttribute('position')) {
+		styles.position = element.getAttribute('position');
+	}
+
 	// Dimensions
 	if (element.hasAttribute('width')) {
 		styles.width = element.getAttribute('width') as any;

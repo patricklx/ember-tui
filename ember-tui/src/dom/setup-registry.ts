@@ -7,4 +7,5 @@ export function registerElements() {
   registerElement('terminal-text', () => new TerminaTextElement());
   registerElement('terminal-box', () => new TerminalBoxElement());
   registerElement('div', () => new ElementNode('div'));
+  registerElement('style', () => new ElementNode('style'));
 }
