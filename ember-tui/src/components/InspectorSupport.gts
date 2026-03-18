@@ -37,7 +37,7 @@ export default class InspectorSupport extends Component<InspectorSupportInterfac
           this.highlight.setAttribute('display', 'flex');
         };
         viewInspection._showHighlight = (node: ViewNode, rect: any) => {
-          this.highlight.style = {};
+          (this.highlight as any).style = {};
           _showHighlight.call(this, node, rect);
           this.highlight.setAttribute('display', 'flex');
           const layout = node.yogaNode!.getComputedLayout();
