@@ -4,7 +4,6 @@ import ViewNode from '../dom/nodes/ViewNode';
 import NativeElementNode from '../dom/nodes/ElementNode';
 import DocumentNode from '../dom/nodes/DocumentNode';
 import Box from './Box.gts';
-import { Edge } from 'yoga-layout';
 
 const ref = modifier(function setRef(element: any, [context, key]: any) {
   // console.log('ref', element, context, key);
