@@ -4,7 +4,6 @@ import TextNode from './TextNode';
 import ViewNode, { EventListener } from './ViewNode';
 import { createElement } from '../element-registry';
 import { elementIterator } from './element-iterator';
-import { Edge } from 'yoga-layout';
 
 // Type alias for elements with nativeView property
 type NativeElementNode = ViewNode & { nativeView: any };
