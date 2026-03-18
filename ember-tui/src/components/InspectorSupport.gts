@@ -85,7 +85,7 @@ export default class InspectorSupport extends Component<InspectorSupportInterfac
   );
   <template>
     <Box @position='absolute' {{ref this 'page'}}>
-      <Box {{this.setupHighlight}} />
+      <Box @borderStyle="single" {{this.setupHighlight}} />
       <Box {{this.setupTooltip}} />
       {{(this.setupInspector)}}
     </Box>

@@ -3,6 +3,7 @@ import chalk, { ForegroundColorName } from 'chalk';
 import { Styles } from '../styles';
 import colorize from '../colorize';
 import { LiteralUnion } from "type-fest";
+import ViewNode from "../nodes/ViewNode";
 
 
 interface Attributes {
@@ -73,6 +74,11 @@ export class TerminaTextElement extends ElementNode<Attributes> {
 
   setAttribute(key: string, value: any) {
     super.setAttribute(key, value);
+    this.updateText();
+  }
+
+  removeChild(childNode: ViewNode) {
+    super.removeChild(childNode);
     this.updateText();
   }
 
