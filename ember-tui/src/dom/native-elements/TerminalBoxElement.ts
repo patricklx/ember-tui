@@ -29,6 +29,8 @@ interface Attributes {
   readonly 'align-self'?: Styles['alignSelf'];
   readonly 'justify-content'?: Styles['justifyContent'];
 
+  readonly position?: Styles['position'];
+
   // Dimensions
   readonly width?: Styles['width'];
   readonly height?: Styles['height'];

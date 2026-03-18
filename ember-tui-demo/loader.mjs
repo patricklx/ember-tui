@@ -6,6 +6,11 @@ import babelConfig from './babel.config.cjs';
 import { resolver, templateTag } from '@embroider/vite';
 import { ResolverLoader } from '@embroider/core';
 
+process.on('uncaughtException', function (err) {
+  console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
+  console.error(err.stack)
+  process.exit(1)
+});
 
 // Helper function to try multiple extensions
 function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', '.gjs']) {

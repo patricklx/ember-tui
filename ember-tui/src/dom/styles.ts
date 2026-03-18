@@ -15,6 +15,11 @@ export type Styles = {
 
 	readonly position?: 'absolute' | 'relative';
 
+	readonly top?: number | '{number}%';
+	readonly bottom?: number | '{number}%';
+	readonly left?: number | '{number}%';
+	readonly right?: number | '{number}%';
+
 	/**
 	Size of the gap between an element's columns.
 	*/
@@ -333,12 +338,26 @@ export type Styles = {
 
 const applyPositionStyles = (node: YogaNode, style: Styles): void => {
 	if ('position' in style) {
-		node.setPositionType(
-			style.position === 'absolute'
-				? Yoga.POSITION_TYPE_ABSOLUTE
-				: Yoga.POSITION_TYPE_RELATIVE,
-		);
+		const mapping = {
+			'absolute': Yoga.POSITION_TYPE_ABSOLUTE,
+			'relative': Yoga.POSITION_TYPE_RELATIVE,
+			'static': Yoga.POSITION_TYPE_STATIC,
+		}
+		node.setPositionType(mapping[style['position'] as keyof typeof mapping] || Yoga.POSITION_TYPE_RELATIVE);
 	}
+	if ('top' in style) {
+		node.setPosition(Yoga.EDGE_TOP, style['top'] as number || 0);
+	}
+	if ('bottom' in style) {
+		node.setPosition(Yoga.EDGE_TOP, style['bottom'] as number || 0);
+	}
+	if ('left' in style) {
+		node.setPosition(Yoga.EDGE_TOP, style['left'] as number || 0);
+	}
+	if ('right' in style) {
+		node.setPosition(Yoga.EDGE_TOP, style['right'] as number || 0);
+	}
+
 };
 
 const applyMarginStyles = (node: YogaNode, style: Styles): void => {

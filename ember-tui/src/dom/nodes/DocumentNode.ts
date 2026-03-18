@@ -2,7 +2,7 @@ import CommentNode from './CommentNode';
 import ElementNode from './ElementNode';
 import TextNode from './TextNode';
 import ViewNode, { EventListener } from './ViewNode';
-import { createElement } from "../element-registry";
+import { createElement } from '../element-registry';
 import { elementIterator } from './element-iterator';
 
 // Type alias for elements with nativeView property
@@ -17,12 +17,18 @@ class HeadNode extends ElementNode {
 	append = this.appendChild.bind(this);
   appendChild(childNode: ViewNode) {
     if (childNode.tagName === 'style') {
-      this.document.page.nativeView.addCss(
-        (childNode.childNodes[0]! as any).text,
-      );
       return;
     }
     super.appendChild(childNode);
+  }
+  insertAdjacentHTML() {
+    return null;
+  }
+  addEventListener() {
+    return null;
+  }
+  removeEventListener() {
+
   }
 }
 
@@ -158,20 +164,25 @@ export default class DocumentNode extends ViewNode {
           return 'nativeView' in node && node.nativeView !== undefined;
         };
         if (!this.startNode || !isNativeElement(this.startNode)) return null;
-        if (!this.startNode?.nativeView) return null;
-        const point = this.startNode.nativeView.getLocationInWindow();
-        const size = this.startNode.nativeView.getActualSize();
+        if (!this.startNode?.yogaNode) return null;
+        const point = {
+          x: this.startNode.yogaNode!.getComputedLeft() || 0,
+          y: this.startNode.yogaNode!.getComputedTop() || 0,
+        };
+        const size = {
+          width: this.startNode.yogaNode!.getComputedWidth() || 0,
+          height: this.startNode.yogaNode!.getComputedHeight() || 0,
+        };
         let x = point.x;
         let y = point.y;
         let width = size.width;
         let height = size.height;
         for (const element of elementIterator(this.startNode)) {
-          const point = element.nativeView.getLocationInWindow();
-          const size = element.nativeView.getActualSize();
-          x = Math.min(x, point.x);
-          y = Math.min(y, point.y);
-          width = point.x + size.width - x;
-          height = point.y + size.height - y;
+          const layout = element.yogaNode!.getComputedLayout();
+          x = Math.min(x, layout.left);
+          y = Math.min(y, layout.top);
+          width = layout.left + layout.width - x;
+          height = layout.top + layout.height - y;
           if (element === this.endNode) {
             break;
           }

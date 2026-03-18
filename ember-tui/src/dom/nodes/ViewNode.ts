@@ -27,7 +27,6 @@ export default class ViewNode<Attributes = any> {
   // Properties used by layout and rendering
   yogaNode?: YogaNode;
   staticRendered?: boolean;
-  nativeView?: any;
   page?: any;
   location?: any;
 
@@ -85,7 +84,7 @@ export default class ViewNode<Attributes = any> {
 
   constructor() {
     this.nodeType = null;
-    this._tagName = null;
+    this._tagName = this.constructor.name;
     this.parentNode = null;
     this.childNodes = [];
 
@@ -318,6 +317,15 @@ export default class ViewNode<Attributes = any> {
     width: number;
     height: number;
   } | null {
+    if (this.yogaNode) {
+      /*return {
+        left: this.yogaNode.getComputedLeft(),
+        top: this.yogaNode.getComputedTop(),
+        bottom: this.yogaNode.getComputedBottom(),
+        width: this.yogaNode.getComputedWidth(),
+        height: this.yogaNode.getComputedHeight()
+      }*/
+    }
     return null;
   }
 

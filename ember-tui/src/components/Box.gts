@@ -22,6 +22,12 @@ interface BoxSignature {
     maxWidth?: Styles['maxWidth'];
     maxHeight?: Styles['maxHeight'];
 
+    position?: Styles['position'];
+    top?: Styles['top'];
+    bottom?: Styles['bottom'];
+    left?: Styles['left'];
+    right?: Styles['right'];
+
     // Spacing
     paddingTop?: Styles['paddingTop'];
     paddingBottom?: Styles['paddingBottom'];
