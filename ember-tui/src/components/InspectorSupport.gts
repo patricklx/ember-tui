@@ -38,22 +38,25 @@ export default class InspectorSupport extends Component<InspectorSupportInterfac
           this.highlight.setAttribute('display', 'flex');
         };
         viewInspection._showHighlight = (node: ViewNode, rect: any) => {
+          this.highlight.style = {};
           _showHighlight.call(this, node, rect);
           this.highlight.setAttribute('display', 'flex');
-          const style = this.highlight.getAttribute('style') as any;
-          style.width = style.width.value;
-          style.height = style.height.value;
-          const pos = {
-            x: this.page.yogaNode?.getPosition(Edge.Left)?.value || 0,
-            y: this.page.yogaNode?.getPosition(Edge.Top)?.value || 0,
-          };
+          const layout = node.yogaNode!.getComputedLayout();
           this.highlight.setAttribute(
             'left',
-            Number(style.left!.replace('px', '')) - pos.x,
+            layout.left,
           );
           this.highlight.setAttribute(
             'top',
-            Number(style.top!.replace('px', '')) - pos.y,
+            layout.top,
+          );
+          this.highlight.setAttribute(
+            'width',
+            layout.width,
+          );
+          this.highlight.setAttribute(
+            'height',
+            layout.height,
           );
         };
         viewInspection.highlight = this.highlight;
