@@ -48,6 +48,18 @@ export function createYogaNode(element: ElementNode): YogaNode {
 	if (element.hasAttribute('position')) {
 		styles.position = element.getAttribute('position');
 	}
+	if (element.hasAttribute('top')) {
+		styles.top = element.getAttribute('top');
+	}
+	if (element.hasAttribute('bottom')) {
+		styles.bottom = element.getAttribute('bottom');
+	}
+	if (element.hasAttribute('left')) {
+		styles.left = element.getAttribute('left');
+	}
+	if (element.hasAttribute('right')) {
+		styles.right = element.getAttribute('right');
+	}
 
 	// Dimensions
 	if (element.hasAttribute('width')) {
