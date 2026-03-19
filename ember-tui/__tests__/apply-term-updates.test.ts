@@ -110,10 +110,10 @@ describe('apply-term-updates - render with fake TTY', () => {
     const minimalUpdateCount = fakeTTY.getOutputSinceClear();
 
     // Minimal update includes cursor management overhead but should still be reasonable
-    // With cursor hide/show (6 chars each) + positioning (~7 chars) + content (1 char) + final positioning (~7 chars)
-    // Total is around 26-27 chars, which is more than a simple full render without cursor management
-    // But this is acceptable as it provides flicker-free updates
-    expect(minimalUpdateCount.length).toBeLessThan(35);
+    // With dirty region tracking and batched writes, we have slightly more overhead
+    // but gain significant flicker reduction benefits
+    // Expected: cursor hide/show (12 chars) + positioning + ANSI resets + content
+    expect(minimalUpdateCount.length).toBeLessThan(45);
 
     // On minimal update, only the changed part is written (just "1")
     const output = fakeTTY.getVisibleOutput();

@@ -71,6 +71,116 @@ export interface TextSegment {
 }
 
 /**
+ * Represents a rectangular region of the screen that needs updating
+ */
+interface DirtyRegion {
+	x: number;      // Column start (0-based)
+	y: number;      // Row start (0-based)
+	width: number;  // Number of columns
+	height: number; // Number of rows
+}
+
+/**
+ * Tracks and manages dirty regions for efficient screen updates
+ */
+class DirtyRegionTracker {
+	private regions: DirtyRegion[] = [];
+
+	/**
+	 * Mark a region as dirty (needs redrawing)
+	 */
+	markDirty(x: number, y: number, width: number, height: number): void {
+		if (width <= 0 || height <= 0) return;
+
+		this.regions.push({ x, y, width, height });
+	}
+
+	/**
+	 * Mark an entire line as dirty
+	 */
+	markLineDirty(line: number, width: number): void {
+		this.markDirty(0, line, width, 1);
+	}
+
+	/**
+	 * Get all dirty regions, merged to minimize updates
+	 */
+	getDirtyRegions(): DirtyRegion[] {
+		if (this.regions.length === 0) return [];
+
+		// Sort regions by y, then x for efficient merging
+		const sorted = [...this.regions].sort((a, b) => {
+			if (a.y !== b.y) return a.y - b.y;
+			return a.x - b.x;
+		});
+
+		const merged: DirtyRegion[] = [];
+		let current = sorted[0];
+
+		for (let i = 1; i < sorted.length; i++) {
+			const next = sorted[i];
+
+			if (this.shouldMerge(current, next)) {
+				current = this.merge(current, next);
+			} else {
+				merged.push(current);
+				current = next;
+			}
+		}
+		merged.push(current);
+
+		return merged;
+	}
+
+	/**
+	 * Clear all dirty regions
+	 */
+	clear(): void {
+		this.regions = [];
+	}
+
+	/**
+	 * Check if two regions should be merged
+	 */
+	private shouldMerge(a: DirtyRegion, b: DirtyRegion): boolean {
+		// Check if regions overlap or are adjacent
+		const aRight = a.x + a.width;
+		const aBottom = a.y + a.height;
+		const bRight = b.x + b.width;
+		const bBottom = b.y + b.height;
+
+		// Horizontal overlap/adjacency
+		const horizontalOverlap = !(aRight < b.x || bRight < a.x);
+		const horizontalAdjacent = aRight === b.x || bRight === a.x;
+
+		// Vertical overlap/adjacency
+		const verticalOverlap = !(aBottom < b.y || bBottom < a.y);
+		const verticalAdjacent = aBottom === b.y || bBottom === a.y;
+
+		// Merge if overlapping or adjacent in both dimensions
+		return (horizontalOverlap || horizontalAdjacent) &&
+		       (verticalOverlap || verticalAdjacent);
+	}
+
+	/**
+	 * Merge two regions into one bounding region
+	 */
+	private merge(a: DirtyRegion, b: DirtyRegion): DirtyRegion {
+		const x = Math.min(a.x, b.x);
+		const y = Math.min(a.y, b.y);
+		const right = Math.max(a.x + a.width, b.x + b.width);
+		const bottom = Math.max(a.y + a.height, b.y + b.height);
+
+		return {
+			x,
+			y,
+			width: right - x,
+			height: bottom - y
+		};
+	}
+}
+
+/**
  * Parse text into tokens, treating ANSI escape sequences as single units
  */
 export interface Token {
@@ -527,6 +637,78 @@ function getVisualLength(text: string): number {
 }
 
 /**
+ * Apply minimal update to a line by writing to a buffer instead of stdout
+ * Used by dirty region tracking for batched updates
+ */
+function updateLineMinimalToBuffer(
+	buffer: string[],
+	line: number,
+	oldText: string,
+	newText: string,
+	region: DirtyRegion
+): void {
+	// Expand tabs to spaces before processing
+	const expandedOldText = expandTabs(oldText);
+	const expandedNewText = expandTabs(newText);
+
+	const segments = findDiffSegments(expandedOldText, expandedNewText);
+
+	// If no segments, strings are identical
+	if (segments.length === 0) {
+		return;
+	}
+
+	const oldVisualLength = getVisualLength(expandedOldText);
+	const newVisualLength = getVisualLength(expandedNewText);
+
+	// Helper to add cursor movement to buffer
+	const addCursorMove = (col: number, row: number) => {
+		buffer.push(`\x1b[${row + 1};${col + 1}H`);
+	};
+
+	// If new line is empty, clear the region
+	if (newVisualLength === 0 && oldVisualLength > 0) {
+		addCursorMove(region.x, line);
+		buffer.push('\x1b[0K'); // Clear from cursor to end of line
+		return;
+	}
+
+	// Apply each segment update to buffer
+	for (let i = 0; i < segments.length; i++) {
+		const segment = segments[i];
+		const isLastSegment = i === segments.length - 1;
+
+		// Skip segments outside the dirty region
+		if (segment.start < region.x || segment.start >= region.x + region.width) {
+			continue;
+		}
+
+		// Move cursor to the visual position of the changed segment
+		addCursorMove(segment.start, line);
+
+		// Reset any previous styling
+		buffer.push('\x1b[0m');
+
+		// Write the new text for this segment
+		if (segment.text.length > 0) {
+			buffer.push(segment.text);
+		}
+
+		// If this is the last segment and new text is shorter, clear to end
+		const needsClearRight = isLastSegment && ((newVisualLength < oldVisualLength) || segment.text === '');
+
+		if (needsClearRight) {
+			const start = newVisualLength < oldVisualLength ? newVisualLength : segment.start;
+			addCursorMove(start, line);
+			buffer.push('\x1b[0K'); // Clear from cursor to end of line
+		}
+	}
+
+	// Reset ANSI codes
+	buffer.push('\x1b[0m');
+}
+
+/**
  * Apply minimal update to a line by only rewriting the changed portions
  * Uses write batching to minimize flicker by accumulating all operations
  * and writing them in a single stdout.write() call
@@ -662,7 +844,7 @@ function renderInternal(rootNode: ElementNode): void {
 	const oldLines = state.lines;
 
 	// Calculate scroll buffer offset (lines that have scrolled off screen)
-	const scrollBufferSize = Math.max(state.scrollBufferSize, oldLines.length - state.terminalHeight);
+	const scrollBufferSize = Math.max(state.scrollBufferSize, oldLines.length - state.terminalHeight, 0);
 	state.scrollBufferSize = scrollBufferSize;
 
 	const newLines = [...result.static, ...result.dynamic];
@@ -700,14 +882,18 @@ function renderInternal(rootNode: ElementNode): void {
 		}
 		return;
 	}
+
+	// Use dirty region tracking for efficient updates
+	const dirtyTracker = new DirtyRegionTracker();
+
 	process.stdout.write('\x1b[?25l'); // Hide cursor
 
 	try {
 		// Calculate which lines are visible (after scroll buffer)
-		const scrollBufferSize = Math.max(0, oldLines.length - state.terminalHeight);
 		const visibleStartLine = scrollBufferSize;
 		const maxLines = Math.max(newLines.length, oldLines.length);
 
+		// First pass: identify all dirty regions
 		for (let i = visibleStartLine; i < maxLines; i++) {
 			const newLine = newLines[i];
 			const oldLine = oldLines[i];
@@ -716,29 +902,62 @@ function renderInternal(rootNode: ElementNode): void {
 				// Calculate screen position (relative to visible viewport)
 				const screenLine = i - scrollBufferSize;
 
-				// Only update lines within visible terminal viewport
-				if (i >= visibleStartLine && i < state.terminalHeight + scrollBufferSize) {
-					if (newLine === undefined || newLine === "") {
-						// Line was removed - clear it
-						moveCursorTo(screenLine);
-						clearEntireLine();
-					} else if (oldLine === undefined || oldLine === "") {
-						// New line - just write it (expand tabs)
-						moveCursorTo(screenLine);
-						process.stdout.write(expandTabs(newLine));
-					} else {
-						// Line changed - apply minimal update
-						updateLineMinimal(screenLine, oldLine, newLine);
-					}
-				} else if (screenLine >= state.terminalHeight) {
-					// Beyond previous content - just write newline and content
-					moveCursorTo(screenLine);
-					process.stdout.write('\n');
-					if (newLine !== undefined) {
-						process.stdout.write(expandTabs(newLine));
-					}
+				// Track lines within visible terminal viewport
+				if (i >= visibleStartLine) {
+					dirtyTracker.markLineDirty(screenLine, state.terminalWidth);
 				}
 			}
+		}
+
+		// Second pass: render dirty regions with batched writes
+		const dirtyRegions = dirtyTracker.getDirtyRegions();
+		const buffer: string[] = [];
+
+		// Handle lines beyond terminal height (need scrolling)
+		const linesNeedingScroll: number[] = [];
+		for (let i = state.terminalHeight + scrollBufferSize; i < newLines.length; i++) {
+			linesNeedingScroll.push(i);
+		}
+
+		for (const region of dirtyRegions) {
+			// Process each line in the region
+			for (let row = 0; row < region.height; row++) {
+				const screenLine = region.y + row;
+				const actualLine = screenLine + scrollBufferSize;
+
+				const newLine = newLines[actualLine];
+				const oldLine = oldLines[actualLine];
+
+				if (newLine === undefined || newLine === "") {
+					// Line was removed - clear it
+					buffer.push(`\x1b[${screenLine + 1};1H`); // Move to line start
+					buffer.push('\x1b[2K'); // Clear entire line
+				} else if (oldLine === undefined || oldLine === "") {
+					// New line - just write it
+					buffer.push(`\x1b[${screenLine + 1};1H`); // Move to line start
+					buffer.push(expandTabs(newLine));
+				} else {
+					// Line changed - apply minimal segment updates
+					updateLineMinimalToBuffer(buffer, screenLine, oldLine, newLine, region);
+				}
+			}
+		}
+
+		// Handle lines that need scrolling (beyond terminal height)
+		if (linesNeedingScroll.length > 0) {
+			// Move to bottom of screen
+			buffer.push(`\x1b[${state.terminalHeight};1H`);
+
+			// Write each line that needs scrolling with newline
+			for (const lineIndex of linesNeedingScroll) {
+				buffer.push('\n');
+				buffer.push(expandTabs(newLines[lineIndex]));
+			}
+		}
+
+		// Single write for all updates
+		if (buffer.length > 0) {
+			process.stdout.write(buffer.join(''));
 		}
 
 		// Update state with all lines (not just visible ones)
