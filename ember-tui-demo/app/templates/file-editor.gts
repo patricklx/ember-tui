@@ -34,7 +34,7 @@ export default class FileEditorTemplate extends Component {
     this.loadFileList();
 
     if (typeof document !== 'undefined') {
-      document.addEventListener('keypress', this.handleKeyPress);
+      document.addEventListener('keydown', this.handleKeyPress);
     }
 
 		showCursor();
@@ -43,7 +43,7 @@ export default class FileEditorTemplate extends Component {
   willDestroy() {
     super.willDestroy();
     if (typeof document !== 'undefined') {
-      document.removeEventListener('keypress', this.handleKeyPress);
+      document.removeEventListener('keydown', this.handleKeyPress);
     }
 		hideCursor();
   }
@@ -132,22 +132,22 @@ export default class FileEditorTemplate extends Component {
     }
   }
 
-  handleListMode(key: string) {
+  handleListMode(key: KeyboardEvent['key']) {
     // Arrow up
 
-    if (key === '\u001b[A') {
+    if (key === 'ArrowUp') {
       if (this.selectedIndex > 0) {
         this.selectedIndex--;
       }
     }
     // Arrow down
-    else if (key === '\u001b[B') {
+    else if (key === 'ArrowDown') {
       if (this.selectedIndex < this.files.length - 1) {
         this.selectedIndex++;
       }
     }
     // Enter
-    else if (key === '\r' || key === '\n') {
+    else if (key === 'Enter') {
       if (this.files[this.selectedIndex]) {
         this.loadFile(this.files[this.selectedIndex]);
       }
@@ -156,19 +156,19 @@ export default class FileEditorTemplate extends Component {
 
   handleEditMode(key: string, event: any) {
     // Arrow keys
-    if (key === '\u001b[A') { // Up
+    if (key === 'ArrowUp') { // Up
       if (this.cursorLine > 0) {
         this.cursorLine--;
         this.cursorCol = Math.min(this.cursorCol, this.fileContent[this.cursorLine].length);
         this.adjustScroll();
       }
-    } else if (key === '\u001b[B') { // Down
+    } else if (key === 'ArrowDown') { // Down
       if (this.cursorLine < this.fileContent.length - 1) {
         this.cursorLine++;
         this.cursorCol = Math.min(this.cursorCol, this.fileContent[this.cursorLine].length);
         this.adjustScroll();
       }
-    } else if (key === '\u001b[C') { // Right
+    } else if (key === 'ArrowRight') { // Right
       const currentLine = this.fileContent[this.cursorLine];
       if (this.cursorCol < currentLine.length) {
         this.cursorCol++;
@@ -177,7 +177,7 @@ export default class FileEditorTemplate extends Component {
         this.cursorCol = 0;
         this.adjustScroll();
       }
-    } else if (key === '\u001b[D') { // Left
+    } else if (key === 'ArrowLeft') { // Left
       if (this.cursorCol > 0) {
         this.cursorCol--;
       } else if (this.cursorLine > 0) {
@@ -187,7 +187,7 @@ export default class FileEditorTemplate extends Component {
       }
     }
     // Backspace
-    else if (key === '\u007f' || key === '\b') {
+    else if (key === 'Backspace' || key === '\b') {
       const currentLine = this.fileContent[this.cursorLine];
       if (this.cursorCol > 0) {
         const newLine = currentLine.slice(0, this.cursorCol - 1) + currentLine.slice(this.cursorCol);
@@ -204,7 +204,7 @@ export default class FileEditorTemplate extends Component {
       this.fileContent = [...this.fileContent];
     }
     // Enter
-    else if (key === '\r' || key === '\n') {
+    else if (key === 'Enter') {
       const currentLine = this.fileContent[this.cursorLine];
       const beforeCursor = currentLine.slice(0, this.cursorCol);
       const afterCursor = currentLine.slice(this.cursorCol);

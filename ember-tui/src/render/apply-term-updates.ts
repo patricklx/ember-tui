@@ -5,7 +5,6 @@
 
 import ElementNode from "../dom/nodes/ElementNode";
 import { extractLines } from "./collect-lines";
-import * as readline from "node:readline";
 import { DocumentNode } from "../index";
 import * as Process from "node:process";
 import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo, setProcess } from "./helpers";
@@ -529,6 +528,8 @@ function getVisualLength(text: string): number {
 
 /**
  * Apply minimal update to a line by only rewriting the changed portions
+ * Uses write batching to minimize flicker by accumulating all operations
+ * and writing them in a single stdout.write() call
  */
 function updateLineMinimal(line: number, oldText: string, newText: string): void {
 	// Expand tabs to spaces before processing
@@ -545,15 +546,19 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 	const oldVisualLength = getVisualLength(expandedOldText);
 	const newVisualLength = getVisualLength(expandedNewText);
 
+	// Write buffer to accumulate all operations
+	const buffer: string[] = [];
+
+	// Helper to add cursor movement to buffer
+	const addCursorMove = (col: number, row: number) => {
+		buffer.push(`\x1b[${row + 1};${col + 1}H`);
+	};
+
 	// If new line is empty, clear the entire line and return
 	if (newVisualLength === 0 && oldVisualLength > 0) {
-		const stdout = process.stdout as any;
-		if (stdout.cursorTo) {
-			stdout.cursorTo(0, line);
-		} else {
-			readline.cursorTo(stdout, 0, line);
-		}
-		clearEntireLine();
+		addCursorMove(0, line);
+		buffer.push('\x1b[2K'); // Clear entire line
+		process.stdout.write(buffer.join(''));
 		return;
 	}
 
@@ -564,52 +569,38 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 		const isLastSegment = i === segments.length - 1;
 
 		// Move cursor to the visual position of the changed segment
-		const stdout = process.stdout as any;
-		if (stdout.cursorTo) {
-			stdout.cursorTo(segment.start, line);
-		} else {
-			readline.cursorTo(stdout, segment.start, line);
-		}
+		addCursorMove(segment.start, line);
 
-		// Optimize clearing strategy based on segment position
 		// Reset any previous styling (background colors, etc.) before writing new content
-		// This ensures old backgrounds don't persist
-		process.stdout.write('\x1b[0m');
+		buffer.push('\x1b[0m');
 
 		if (isFirstSegment && segment.start > 0) {
 			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
 			if (prevStart < segment.start) {
-				if (stdout.cursorTo) {
-					stdout.cursorTo(segment.start, line);
-				} else {
-					readline.cursorTo(stdout, segment.start, line);
-				}
-				clearLineToStart();
+				buffer.push('\x1b[1K'); // Clear from cursor to start of line
 			}
 		}
-
-		// If this is the last segment and new text is visually shorter, clear to end of line
-		// Check if segment is ANSI-only (trailing ANSI codes) - these have 0 visual length
-		const needsClearRight = isLastSegment && ((newVisualLength < oldVisualLength) || segment.text === '');
-
-    const start = newVisualLength < oldVisualLength ? newVisualLength: segment.start;
 
 		// Write the new text for this segment (including any ANSI codes)
 		if (segment.text.length > 0) {
-			process.stdout.write(segment.text);
+			buffer.push(segment.text);
 		}
+
+		// If this is the last segment and new text is visually shorter, clear to end of line
+		const needsClearRight = isLastSegment && ((newVisualLength < oldVisualLength) || segment.text === '');
+
 		if (needsClearRight) {
-			if (stdout.cursorTo) {
-				stdout.cursorTo(start, line);
-			} else {
-				readline.cursorTo(stdout, start, line);
-			}
-			clearLineFromCursor();
+			const start = newVisualLength < oldVisualLength ? newVisualLength : segment.start;
+			addCursorMove(start, line);
+			buffer.push('\x1b[0K'); // Clear from cursor to end of line
 		}
 	}
 
 	// Reset ANSI codes at end of line to prevent color bleeding to next line
-	process.stdout.write('\x1b[0m');
+	buffer.push('\x1b[0m');
+
+	// Single write operation - this is the key to reducing flicker!
+	process.stdout.write(buffer.join(''));
 }
 
 export function cursorTo(y: number, x: number) {
