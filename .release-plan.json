@@ -1,19 +1,19 @@
 {
   "solution": {
     "ember-tui": {
-      "impact": "patch",
-      "oldVersion": "0.2.12",
-      "newVersion": "0.2.13",
+      "impact": "minor",
+      "oldVersion": "0.2.13",
+      "newVersion": "0.3.0",
       "tagName": "latest",
       "constraints": [
         {
-          "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
         }
       ],
       "pkgJSONPath": "./ember-tui/package.json"
     },
     "undefined": {}
   },
-  "description": "## Release (2026-03-17)\n\n* ember-tui 0.2.13 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#52](https://github.com/patricklx/ember-tui/pull/52) keep scrollBufferSize in state ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-03-18)\n\n* ember-tui 0.3.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-tui`\n  * [#53](https://github.com/patricklx/ember-tui/pull/53) add inspector support ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
