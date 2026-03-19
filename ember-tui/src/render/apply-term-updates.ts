@@ -840,7 +840,9 @@ export function render(rootNode: ElementNode, options?: RenderOptions | typeof P
 }
 
 function renderInternal(rootNode: ElementNode): void {
-	const result = extractLines(rootNode, state, process.stdout);
+
+
+	const result = extractLines(rootNode, {}, process.stdout);
 	const oldLines = state.lines;
 
 	// Calculate scroll buffer offset (lines that have scrolled off screen)
@@ -982,17 +984,13 @@ export function clearScreen(): void {
 	process.stdout.write('\x1b[2J\x1b[3J\x1b[H');
 	state.lines = [];
 	state.scrollOffset = 0;
+	state.scrollBufferSize = 0;
 }
 
 /**
  * Handle terminal resize
  */
 export function handleResize(document: DocumentNode): void {
-	const newHeight = process.stdout.rows;
-	const newWidth = process.stdout.columns;
-	state.terminalHeight = newHeight;
-	state.terminalWidth = newWidth;
-	state.scrollBufferSize = 0;
 	clearScreen();
 	if (document.body) {
 		render(document.body);
