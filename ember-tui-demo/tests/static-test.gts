@@ -45,8 +45,8 @@ describe("Static component integration test", () => {
 				<Box @marginTop={{1}}>
 					<Text @dimColor={{true}}>Completed tasks: {{state.tasks.length}} | Counter: {{state.counter}}</Text>
 				</Box>
+				</Box>
 			</Box>
-		</Box>
     </template>);
 
     // Initial render with no tasks
