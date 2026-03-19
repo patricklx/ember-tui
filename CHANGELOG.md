@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-03-19)
+
+* ember-tui 0.4.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-tui`
+  * [#56](https://github.com/patricklx/ember-tui/pull/56) improve render perf ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-03-18)
 
 * ember-tui 0.3.0 (minor)
