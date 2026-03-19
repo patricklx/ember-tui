@@ -31,7 +31,7 @@ export default class AppTemplate extends Component {
 
 		// Set up keyboard listener on the document node
 		if (typeof document !== 'undefined') {
-			document.addEventListener('keypress', this.handleKeyPress);
+			document.addEventListener('keydown', this.handleKeyPress);
 		}
 
 		hideCursor();
@@ -91,9 +91,10 @@ export default class AppTemplate extends Component {
 	}
 
 	<template>
+		{{(this.startCounter)}}
     <Box @flexDirection="column"  @height='100%' @alignItems={{if (eq this.selectedView 'file-editor') 'flex-start' 'center'}}>
       {{#if (eq this.selectedView "menu")}}
-        <Gradient @name="rainbow" >Ember Console Demo - Main Menu</Gradient>
+        <Gradient @name="rainbow" >Ember Console Demo - Main Menu {{this.counter}}</Gradient>
         <Text>---</Text>
         <Text @color="white">[1] Colors Demo</Text>
         <Text @color="white">[2] Lorem Ipsum Generator</Text>
