@@ -528,10 +528,9 @@ function getVisualLength(text: string): number {
 
 /**
  * Apply minimal update to a line by only rewriting the changed portions
- * Uses write batching to minimize flicker by accumulating all operations
- * and writing them in a single stdout.write() call
+ * Appends operations to the provided buffer array
  */
-function updateLineMinimal(line: number, oldText: string, newText: string): void {
+function updateLineMinimal(line: number, oldText: string, newText: string, buffer: string[]): void {
 	// Expand tabs to spaces before processing
 	const expandedOldText = expandTabs(oldText);
 	const expandedNewText = expandTabs(newText);
@@ -546,9 +545,6 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 	const oldVisualLength = getVisualLength(expandedOldText);
 	const newVisualLength = getVisualLength(expandedNewText);
 
-	// Write buffer to accumulate all operations
-	const buffer: string[] = [];
-
 	// Helper to add cursor movement to buffer
 	const addCursorMove = (col: number, row: number) => {
 		buffer.push(`\x1b[${row + 1};${col + 1}H`);
@@ -558,7 +554,6 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 	if (newVisualLength === 0 && oldVisualLength > 0) {
 		addCursorMove(0, line);
 		buffer.push('\x1b[2K'); // Clear entire line
-		process.stdout.write(buffer.join(''));
 		return;
 	}
 
@@ -598,9 +593,6 @@ function updateLineMinimal(line: number, oldText: string, newText: string): void
 
 	// Reset ANSI codes at end of line to prevent color bleeding to next line
 	buffer.push('\x1b[0m');
-
-	// Single write operation - this is the key to reducing flicker!
-	process.stdout.write(buffer.join(''));
 }
 
 export function cursorTo(y: number, x: number) {
@@ -708,6 +700,9 @@ function renderInternal(rootNode: ElementNode): void {
 		const visibleStartLine = scrollBufferSize;
 		const maxLines = Math.max(newLines.length, oldLines.length);
 
+		// Buffer to accumulate all update operations
+		const buffer: string[] = [];
+
 		for (let i = visibleStartLine; i < maxLines; i++) {
 			const newLine = newLines[i];
 			const oldLine = oldLines[i];
@@ -720,25 +715,30 @@ function renderInternal(rootNode: ElementNode): void {
 				if (i >= visibleStartLine && i < state.terminalHeight + scrollBufferSize) {
 					if (newLine === undefined || newLine === "") {
 						// Line was removed - clear it
-						moveCursorTo(screenLine);
-						clearEntireLine();
+						buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
+						buffer.push('\x1b[2K'); // Clear entire line
 					} else if (oldLine === undefined || oldLine === "") {
 						// New line - just write it (expand tabs)
-						moveCursorTo(screenLine);
-						process.stdout.write(expandTabs(newLine));
+						buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
+						buffer.push(expandTabs(newLine));
 					} else {
 						// Line changed - apply minimal update
-						updateLineMinimal(screenLine, oldLine, newLine);
+						updateLineMinimal(screenLine, oldLine, newLine, buffer);
 					}
 				} else if (screenLine >= state.terminalHeight) {
 					// Beyond previous content - just write newline and content
-					moveCursorTo(screenLine);
-					process.stdout.write('\n');
+					buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
+					buffer.push('\n');
 					if (newLine !== undefined) {
-						process.stdout.write(expandTabs(newLine));
+						buffer.push(expandTabs(newLine));
 					}
 				}
 			}
+		}
+
+		// Write all accumulated operations in a single write
+		if (buffer.length > 0) {
+			process.stdout.write(buffer.join(''));
 		}
 
 		// Update state with all lines (not just visible ones)
