@@ -44,7 +44,7 @@ jobs:
         run: pnpm --filter ember-tui test
 
       - name: Test ember-tui-demo
-        run: pnpm --filter ember-tui-demo test
+        run: pnpm --filter ember-tui-demo prebuild && pnpm --filter ember-tui-demo test
 
       - name: Build ember-tui-demo
         run: pnpm --filter ember-tui-demo build
