@@ -176,8 +176,8 @@ importers:
   ember-tui-demo:
     dependencies:
       '@babel/runtime':
-        specifier: ^7.23.0
-        version: 7.28.4
+        specifier: ^7.29.2
+        version: 7.29.2
       '@glimmer/component':
         specifier: ^2.0.0
         version: 2.0.0
@@ -1192,8 +1192,8 @@ packages:
   '@babel/runtime@7.12.18':
     resolution: {integrity: sha512-BogPQ7ciE6SYAUPtlm9tWbgI9+2AgqSam6QivMgXgAT+fKbgppaj4ZX15MHeLC1PVF5sNk70huBu20XxWOs8Cg==}
 
-  '@babel/runtime@7.28.4':
-    resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
+  '@babel/runtime@7.29.2':
+    resolution: {integrity: sha512-JiDShH45zKHWyGe4ZNVRrCjBz8Nh9TMmZG1kh4QTK8hCBTWBi8Da+i7s1fJw7/lYpM4ccepSNfqzZ/QvABBi5g==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.27.2':
@@ -9080,7 +9080,7 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.13.11
 
-  '@babel/runtime@7.28.4': {}
+  '@babel/runtime@7.29.2': {}
 
   '@babel/template@7.27.2':
     dependencies:
@@ -9260,7 +9260,7 @@ snapshots:
       '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.28.5)
       '@babel/plugin-transform-runtime': 7.28.5(@babel/core@7.28.5)
       '@babel/preset-env': 7.28.5(@babel/core@7.28.5)
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.29.2
       '@babel/traverse': 7.28.5
       '@embroider/core': 4.4.5(@glint/template@1.7.3)
       '@embroider/macros': 1.19.5(@glint/template@1.7.3)
@@ -14236,7 +14236,7 @@ snapshots:
 
   is-language-code@3.1.0:
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.29.2
 
   is-map@2.0.3: {}
 
