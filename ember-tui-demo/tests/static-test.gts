@@ -1,6 +1,6 @@
 import "./globalSetup";
-// @ts-expect-error - ember-vitest has no type declarations
 import { setupRenderingContext } from 'ember-vitest';
+import App from '../app/app';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
 import { Text, Box, Static, Spacer, render, FakeTTY, resetStaticCache } from "ember-tui";
 import { rerender } from "@ember/test-helpers";
@@ -25,11 +25,12 @@ describe("Static component integration test", () => {
   });
 
   test("should render static tasks progressively without re-rendering old tasks", async () => {
-    await using ctx = await setupRenderingContext();
+    await using ctx = await setupRenderingContext(App);
 
     const state = trackedObject({ tasks: [] as Task[], counter: 0 });
 
-    await ctx.render(<template>
+    // @ts-expect-error - template type compatibility
+		await ctx.render(<template>
 		<Box @height="100%" @overflow="visible" @flexDirection="column" >
 			<Text @bold={{true}} @color="cyan">Tasks Demo</Text>
 			<Text @color="green">[1] Colors Demo</Text>
@@ -50,12 +51,14 @@ describe("Static component integration test", () => {
     </template>);
 
     // Initial render with no tasks
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     // Add first task
     state.tasks = [...state.tasks, { id: 0, title: 'Task #1' }];
     await rerender();
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     let output = fakeTTY.getCleanOutput();
     console.log('=== First render output ===');
@@ -78,7 +81,8 @@ describe("Static component integration test", () => {
     // Add second task
     state.tasks = [...state.tasks, { id: 1, title: 'Task #2' }];
     await rerender();
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     output = fakeTTY.getCleanOutput();
     expect(output).toContain('Task #2');
@@ -93,7 +97,8 @@ describe("Static component integration test", () => {
     // Add third task
     state.tasks = [...state.tasks, { id: 2, title: 'Task #3' }];
     await rerender();
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     output = fakeTTY.getCleanOutput();
     expect(output).toContain('Task #3');
@@ -101,7 +106,7 @@ describe("Static component integration test", () => {
   });
 
   test("should update dynamic counter without re-rendering static tasks", async () => {
-    await using ctx = await setupRenderingContext();
+    await using ctx = await setupRenderingContext(App);
 
     const state = trackedObject({
       tasks: [
@@ -112,7 +117,8 @@ describe("Static component integration test", () => {
       counter: 0
     });
 
-    await ctx.render(<template>
+    // @ts-expect-error - template type compatibility
+		await ctx.render(<template>
       <Box @flexDirection="column">
         <Static @items={{state.tasks}}>
           <:default as |task|>
@@ -128,7 +134,8 @@ describe("Static component integration test", () => {
       </Box>
     </template>);
 
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     let output = fakeTTY.getCleanOutput();
     expect(output).toContain('Task #1');
@@ -141,7 +148,8 @@ describe("Static component integration test", () => {
     // Update counter only (no new tasks)
     state.counter++;
     await rerender();
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     output = fakeTTY.getCleanOutput();
     expect(output).toContain('Counter: 1');
@@ -155,11 +163,12 @@ describe("Static component integration test", () => {
   });
 
   test("should render all 10 tasks progressively", async () => {
-    await using ctx = await setupRenderingContext();
+    await using ctx = await setupRenderingContext(App);
 
     const state = trackedObject({ tasks: [] as Task[], counter: 0 });
 
-    await ctx.render(<template>
+    // @ts-expect-error - template type compatibility
+		await ctx.render(<template>
       <Box @flexDirection="column">
         <Static @items={{state.tasks}}>
           <:default as |task|>
@@ -175,14 +184,16 @@ describe("Static component integration test", () => {
       </Box>
     </template>);
 
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     // Add all 10 tasks
     for (let i = 0; i < 10; i++) {
       fakeTTY.clear();
       state.tasks = [...state.tasks, { id: i, title: `Task #${i + 1}` }];
       await rerender();
-      render(ctx.element, { stdout: fakeTTY as any });
+      // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
       const output = fakeTTY.getCleanOutput();
       expect(output).toContain(`Task #${i + 1}`);
@@ -193,7 +204,8 @@ describe("Static component integration test", () => {
     fakeTTY.clear();
     state.counter++;
     await rerender();
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     const finalOutput = fakeTTY.getCleanOutput();
     for (let i = 1; i <= 10; i++) {
@@ -203,7 +215,7 @@ describe("Static component integration test", () => {
   });
 
   test("should have checkmarks for all tasks", async () => {
-    await using ctx = await setupRenderingContext();
+    await using ctx = await setupRenderingContext(App);
 
     const state = trackedObject({
       tasks: [
@@ -216,7 +228,8 @@ describe("Static component integration test", () => {
       counter: 0
     });
 
-    await ctx.render(<template>
+    // @ts-expect-error - template type compatibility
+		await ctx.render(<template>
       <Box @flexDirection="column">
         <Static @items={{state.tasks}}>
           <:default as |task|>
@@ -232,7 +245,8 @@ describe("Static component integration test", () => {
       </Box>
     </template>);
 
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     const output = fakeTTY.getCleanOutput();
     const checkmarkCount = (output.match(/✔/g) || []).length;
@@ -240,14 +254,15 @@ describe("Static component integration test", () => {
   });
 
   test("should contain ANSI color codes for tasks", async () => {
-    await using ctx = await setupRenderingContext();
+    await using ctx = await setupRenderingContext(App);
 
     const state = trackedObject({
       tasks: [{ id: 0, title: 'Task #1' }] as Task[],
       counter: 0
     });
 
-    await ctx.render(<template>
+    // @ts-expect-error - template type compatibility
+		await ctx.render(<template>
       <Box @flexDirection="column">
         <Static @items={{state.tasks}}>
           <:default as |task|>
@@ -263,7 +278,8 @@ describe("Static component integration test", () => {
       </Box>
     </template>);
 
-    render(ctx.element, { stdout: fakeTTY as any });
+    // @ts-expect-error - element type compatibility
+		render(ctx.element, { stdout: fakeTTY as any });
 
     const output = fakeTTY.getFullOutput();
     // Should have green color code (32m)

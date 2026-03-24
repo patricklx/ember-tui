@@ -29,6 +29,8 @@ class App extends EmberApplication {
   }
 }
 
+export default App;
+
 function init(
 	Application: typeof EmberApplication,
 	env: any
