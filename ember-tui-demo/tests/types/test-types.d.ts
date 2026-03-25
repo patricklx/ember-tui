@@ -1,0 +1,1 @@
+// This file is intentionally empty - types are now defined in ember-tui package

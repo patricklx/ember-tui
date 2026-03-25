@@ -1,5 +1,4 @@
 import "./globalSetup";
-import "./test-types";
 import { setupRenderingContext } from 'ember-vitest';
 import App from '../app/app';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
