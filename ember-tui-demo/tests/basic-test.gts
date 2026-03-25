@@ -1,4 +1,5 @@
 import "./globalSetup";
+import "./test-types";
 import { setupRenderingContext } from 'ember-vitest';
 import App from '../app/app';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
@@ -15,11 +16,9 @@ describe("example", () => {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ value: "hello there" });
 
-		// @ts-expect-error - template type compatibility
 		await ctx.render(<template><Text @backgroundColor="green">{{state.value}}</Text></template>);
 
 		expect(ctx.element.textContent).toContain("hello there");
-		// @ts-expect-error - element type compatibility
 		render(ctx.element);
 		state.value = "hello world";
 		await rerender();
@@ -30,11 +29,9 @@ describe("example", () => {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ value: "hello there" });
 
-		// @ts-expect-error - template type compatibility
 		await ctx.render(<template><Text>hi<Text @backgroundColor="green">{{state.value}}</Text></Text></template>);
 
 		expect(ctx.element.textContent).toContain("hello there");
-		// @ts-expect-error - element type compatibility
 		render(ctx.element);
 		state.value = "hello world";
 		await rerender();
@@ -57,9 +54,7 @@ describe("background color clearing", () => {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ backgroundColor: "red", text: "Red Background" });
 
-		// @ts-expect-error - template type compatibility
 		await ctx.render(<template><Text @backgroundColor={{state.backgroundColor}}>{{state.text}}</Text></template>);
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		// Clear and force a second render with different content
@@ -69,7 +64,6 @@ describe("background color clearing", () => {
 		state.backgroundColor = "green";
 		state.text = "Green Background";
 		await rerender();
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		// Verify the output contains the new text
@@ -85,9 +79,7 @@ describe("background color clearing", () => {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ text: "Green Text" });
 
-		// @ts-expect-error - template type compatibility
 		await ctx.render(<template><Text @color="green">{{state.text}}</Text></template>);
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		fakeTTY.clear();
@@ -95,7 +87,6 @@ describe("background color clearing", () => {
 		// Change to completely different text (triggers segment at position 0)
 		state.text = "   Plain Text";
 		await rerender();
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		const cleanOutput = fakeTTY.getCleanOutput();
@@ -108,9 +99,7 @@ describe("background color clearing", () => {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ text: "Long text with blue background" });
 
-		// @ts-expect-error - template type compatibility
 		await ctx.render(<template><Text @backgroundColor="blue">{{state.text}}</Text></template>);
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		fakeTTY.clear();
@@ -118,7 +107,6 @@ describe("background color clearing", () => {
 		// Change to much shorter text (triggers clearLineFromCursor for last segment)
 		state.text = "Short";
 		await rerender();
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		// Verify the shorter text is rendered correctly
@@ -131,9 +119,7 @@ describe("background color clearing", () => {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ text: "Some text here" });
 
-		// @ts-expect-error - template type compatibility
 		await ctx.render(<template><Text>{{state.text}}</Text></template>);
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		fakeTTY.clear();
@@ -141,7 +127,6 @@ describe("background color clearing", () => {
 		// Change to empty text (triggers clearEntireLine in updateLineMinimal)
 		state.text = "";
 		await rerender();
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		// Verify the line is cleared (no text remains)
@@ -155,19 +140,15 @@ describe("background color clearing", () => {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ backgroundColor: "red", text: "Text with background" });
 
-		// @ts-expect-error - template type compatibility
 		await ctx.render(<template><Text @backgroundColor={{state.backgroundColor}}>{{state.text}}</Text></template>);
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		fakeTTY.clear();
 
 		// Remove background
-		// @ts-expect-error - undefined is valid for backgroundColor
-		state.backgroundColor = undefined;
+		state.backgroundColor = undefined as any;
 		state.text = "Text without background";
 		await rerender();
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		// Verify the new text is rendered
@@ -183,9 +164,7 @@ describe("background color clearing", () => {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ color: "red", text: "Red" });
 
-		// @ts-expect-error - template type compatibility
 		await ctx.render(<template><Text @color={{state.color}}>{{state.text}}</Text></template>);
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		fakeTTY.clear();
@@ -194,7 +173,6 @@ describe("background color clearing", () => {
 		state.color = "green";
 		state.text = "Green";
 		await rerender();
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		fakeTTY.clear();
@@ -203,7 +181,6 @@ describe("background color clearing", () => {
 		state.color = "blue";
 		state.text = "Blue";
 		await rerender();
-		// @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		// Verify the final text is rendered

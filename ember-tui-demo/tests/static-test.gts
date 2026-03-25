@@ -1,4 +1,5 @@
 import "./globalSetup";
+import "./test-types";
 import { setupRenderingContext } from 'ember-vitest';
 import App from '../app/app';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
@@ -29,7 +30,6 @@ describe("Static component integration test", () => {
 
     const state = trackedObject({ tasks: [] as Task[], counter: 0 });
 
-    // @ts-expect-error - template type compatibility
 		await ctx.render(<template>
 		<Box @height="100%" @overflow="visible" @flexDirection="column" >
 			<Text @bold={{true}} @color="cyan">Tasks Demo</Text>
@@ -51,13 +51,12 @@ describe("Static component integration test", () => {
     </template>);
 
     // Initial render with no tasks
-    // @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
     // Add first task
     state.tasks = [...state.tasks, { id: 0, title: 'Task #1' }];
     await rerender();
-    // @ts-expect-error - element type compatibility
+
 		render(ctx.element, { stdout: fakeTTY as any });
 
     let output = fakeTTY.getCleanOutput();
@@ -81,7 +80,7 @@ describe("Static component integration test", () => {
     // Add second task
     state.tasks = [...state.tasks, { id: 1, title: 'Task #2' }];
     await rerender();
-    // @ts-expect-error - element type compatibility
+
 		render(ctx.element, { stdout: fakeTTY as any });
 
     output = fakeTTY.getCleanOutput();
@@ -97,7 +96,7 @@ describe("Static component integration test", () => {
     // Add third task
     state.tasks = [...state.tasks, { id: 2, title: 'Task #3' }];
     await rerender();
-    // @ts-expect-error - element type compatibility
+
 		render(ctx.element, { stdout: fakeTTY as any });
 
     output = fakeTTY.getCleanOutput();
@@ -117,7 +116,6 @@ describe("Static component integration test", () => {
       counter: 0
     });
 
-    // @ts-expect-error - template type compatibility
 		await ctx.render(<template>
       <Box @flexDirection="column">
         <Static @items={{state.tasks}}>
@@ -134,7 +132,6 @@ describe("Static component integration test", () => {
       </Box>
     </template>);
 
-    // @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
     let output = fakeTTY.getCleanOutput();
@@ -148,7 +145,7 @@ describe("Static component integration test", () => {
     // Update counter only (no new tasks)
     state.counter++;
     await rerender();
-    // @ts-expect-error - element type compatibility
+
 		render(ctx.element, { stdout: fakeTTY as any });
 
     output = fakeTTY.getCleanOutput();
@@ -167,7 +164,6 @@ describe("Static component integration test", () => {
 
     const state = trackedObject({ tasks: [] as Task[], counter: 0 });
 
-    // @ts-expect-error - template type compatibility
 		await ctx.render(<template>
       <Box @flexDirection="column">
         <Static @items={{state.tasks}}>
@@ -184,7 +180,6 @@ describe("Static component integration test", () => {
       </Box>
     </template>);
 
-    // @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
     // Add all 10 tasks
@@ -192,7 +187,7 @@ describe("Static component integration test", () => {
       fakeTTY.clear();
       state.tasks = [...state.tasks, { id: i, title: `Task #${i + 1}` }];
       await rerender();
-      // @ts-expect-error - element type compatibility
+
 		render(ctx.element, { stdout: fakeTTY as any });
 
       const output = fakeTTY.getCleanOutput();
@@ -204,7 +199,7 @@ describe("Static component integration test", () => {
     fakeTTY.clear();
     state.counter++;
     await rerender();
-    // @ts-expect-error - element type compatibility
+
 		render(ctx.element, { stdout: fakeTTY as any });
 
     const finalOutput = fakeTTY.getCleanOutput();
@@ -228,7 +223,6 @@ describe("Static component integration test", () => {
       counter: 0
     });
 
-    // @ts-expect-error - template type compatibility
 		await ctx.render(<template>
       <Box @flexDirection="column">
         <Static @items={{state.tasks}}>
@@ -245,7 +239,6 @@ describe("Static component integration test", () => {
       </Box>
     </template>);
 
-    // @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
     const output = fakeTTY.getCleanOutput();
@@ -261,7 +254,6 @@ describe("Static component integration test", () => {
       counter: 0
     });
 
-    // @ts-expect-error - template type compatibility
 		await ctx.render(<template>
       <Box @flexDirection="column">
         <Static @items={{state.tasks}}>
@@ -278,7 +270,6 @@ describe("Static component integration test", () => {
       </Box>
     </template>);
 
-    // @ts-expect-error - element type compatibility
 		render(ctx.element, { stdout: fakeTTY as any });
 
     const output = fakeTTY.getFullOutput();
