@@ -35,6 +35,8 @@ export default {
     nodeResolve({
       extensions: ['.ts', '.js', '.gts', '.gjs'],
       preferBuiltins: true,
+      exportConditions: ['node', 'import', 'require', 'default'],
+      mainFields: ['module', 'main'],
     }),
 
     // These are the modules that users should be able to import from your
