@@ -45,6 +45,8 @@ export default {
     nodeResolve({
       extensions: ['.js', '.ts', '.gts', '.gjs', '.json'],
       preferBuiltins: true,
+      exportConditions: ['node', 'import', 'require', 'default'],
+      mainFields: ['module', 'main'],
     }),
     commonjs({
       include: /node_modules/,

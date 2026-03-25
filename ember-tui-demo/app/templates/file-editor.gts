@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { readFileSync, readdirSync, writeFileSync, statSync } from 'fs';
 import { join } from 'path';
 import * as process from "node:process";
-import { cursorTo, hideCursor, showCursor } from "ember-tui/render/apply-term-updates";
+import { cursorTo, hideCursor, showCursor } from "ember-tui";
 
 export default class FileEditorTemplate extends Component {
 	// @ts-expect-error - decorator syntax issue in .gts files
