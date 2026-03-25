@@ -1,6 +1,6 @@
 import "./globalSetup";
-// @ts-expect-error - ember-vitest has no type declarations
 import { setupRenderingContext } from 'ember-vitest';
+import App from '../app/app';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
 import { Text, render } from "ember-tui";
 import { rerender } from "@ember/test-helpers";
@@ -12,7 +12,7 @@ const expect = hardExpect.soft;
 
 describe("example", () => {
 	test("it works", async () => {
-		await using ctx = await setupRenderingContext();
+		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ value: "hello there" });
 
 		await ctx.render(<template><Text @backgroundColor="green">{{state.value}}</Text></template>);
@@ -25,7 +25,7 @@ describe("example", () => {
 	});
 
     test("nested text works", async () => {
-		await using ctx = await setupRenderingContext();
+		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ value: "hello there" });
 
 		await ctx.render(<template><Text>hi<Text @backgroundColor="green">{{state.value}}</Text></Text></template>);
@@ -50,7 +50,7 @@ describe("background color clearing", () => {
 	});
 
 	test("should reset ANSI codes when changing background colors", async () => {
-		await using ctx = await setupRenderingContext();
+		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ backgroundColor: "red", text: "Red Background" });
 
 		await ctx.render(<template><Text @backgroundColor={{state.backgroundColor}}>{{state.text}}</Text></template>);
@@ -75,7 +75,7 @@ describe("background color clearing", () => {
 	});
 
 	test("should clear line from start when new text is prefixed with spaces", async () => {
-		await using ctx = await setupRenderingContext();
+		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ text: "Green Text" });
 
 		await ctx.render(<template><Text @color="green">{{state.text}}</Text></template>);
@@ -95,7 +95,7 @@ describe("background color clearing", () => {
 	});
 
 	test("should clear line from cursor when new text is shorter", async () => {
-		await using ctx = await setupRenderingContext();
+		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ text: "Long text with blue background" });
 
 		await ctx.render(<template><Text @backgroundColor="blue">{{state.text}}</Text></template>);
@@ -115,7 +115,7 @@ describe("background color clearing", () => {
 	});
 
 	test("should clear entire line when text becomes empty", async () => {
-		await using ctx = await setupRenderingContext();
+		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ text: "Some text here" });
 
 		await ctx.render(<template><Text>{{state.text}}</Text></template>);
@@ -136,7 +136,7 @@ describe("background color clearing", () => {
 	});
 
 	test("should handle background color removal", async () => {
-		await using ctx = await setupRenderingContext();
+		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ backgroundColor: "red", text: "Text with background" });
 
 		await ctx.render(<template><Text @backgroundColor={{state.backgroundColor}}>{{state.text}}</Text></template>);
@@ -145,8 +145,7 @@ describe("background color clearing", () => {
 		fakeTTY.clear();
 
 		// Remove background
-		// @ts-expect-error - undefined is valid for backgroundColor
-		state.backgroundColor = undefined;
+		state.backgroundColor = undefined as any;
 		state.text = "Text without background";
 		await rerender();
 		render(ctx.element, { stdout: fakeTTY as any });
@@ -161,7 +160,7 @@ describe("background color clearing", () => {
 	});
 
 	test("should handle multiple color changes in sequence", async () => {
-		await using ctx = await setupRenderingContext();
+		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ color: "red", text: "Red" });
 
 		await ctx.render(<template><Text @color={{state.color}}>{{state.text}}</Text></template>);

@@ -3,6 +3,11 @@ import { ember, extensions } from "@embroider/vite";
 import { babel } from "@rollup/plugin-babel";
 
 export default defineConfig({
+	resolve: {
+		alias: {
+			'.embroider': './node_modules/.embroider'
+		}
+	},
 	// Add this config
 	test: {
 		environment: "node",

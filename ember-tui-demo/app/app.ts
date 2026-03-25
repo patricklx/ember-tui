@@ -1,5 +1,4 @@
 import EmberApplication from '@ember/application';
-// @ts-expect-error - ember-resolver types not properly exported
 import Resolver from 'ember-resolver/index.js';
 import ENV from './config/environment.ts';
 import compatModules from '@embroider/virtual/compat-modules';
@@ -28,6 +27,8 @@ class App extends EmberApplication {
     return instance;
   }
 }
+
+export default App;
 
 function init(
 	Application: typeof EmberApplication,
@@ -80,14 +81,16 @@ async function startApp() {
   return App;
 }
 
-// Start the Ember application
-startApp()
-  .then(() => {
-    // Start rendering to terminal
-  })
-  .catch((error) => {
-    console.error('Failed to start ember-tui application:', error);
-    process.exit(1);
-  });
+// Start the Ember application only if not in test mode
+if (!process.env.VITEST) {
+  startApp()
+    .then(() => {
+      // Start rendering to terminal
+    })
+    .catch((error) => {
+      console.error('Failed to start ember-tui application:', error);
+      process.exit(1);
+    });
+}
 
 

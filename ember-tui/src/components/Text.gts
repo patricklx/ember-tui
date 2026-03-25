@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import type ElementNode from '../dom/nodes/ElementNode';
 
-interface TextSignature {
+export interface TextSignature {
   Args: {
     color?: string;
     backgroundColor?: string;

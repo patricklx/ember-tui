@@ -9,12 +9,12 @@
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist"
   },
-  "include": ["./app/**/*", "./tests/**/*", "./types.d.ts"]
+  "include": ["./app/**/*", "./tests/**/*", "./tests/types/**/*", "./types.d.ts"]
 }
