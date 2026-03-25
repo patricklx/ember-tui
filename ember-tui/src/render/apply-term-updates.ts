@@ -616,7 +616,7 @@ export function showCursor() {
 /**
  * Render with line-by-line diffing using layout-based rendering
  */
-export function render(rootNode: ElementNode | Element, options?: RenderOptions | typeof Process): void {
+export function render(rootNode: ElementNode, options?: RenderOptions | typeof Process): void {
 	// Support both old API (debugProcess) and new API (options)
 	if (options && 'stdout' in options) {
 		// New API with RenderOptions
@@ -649,11 +649,7 @@ export function render(rootNode: ElementNode | Element, options?: RenderOptions 
 	}
 }
 
-function renderInternal(rootNode: ElementNode | Element): void {
-	// If it's a regular DOM Element, we can't render it - this is a type compatibility layer
-	if (!(rootNode instanceof ElementNode)) {
-		return;
-	}
+function renderInternal(rootNode: ElementNode): void {
 	const result = extractLines(rootNode, state, process.stdout);
 	const oldLines = state.lines;
 
