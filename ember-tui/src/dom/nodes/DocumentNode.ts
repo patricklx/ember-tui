@@ -1,7 +1,7 @@
 import CommentNode from './CommentNode';
 import ElementNode from './ElementNode';
 import TextNode from './TextNode';
-import ViewNode, { EventListener } from './ViewNode';
+import ViewNode, { type EventListener } from './ViewNode';
 import { createElement } from '../element-registry';
 import { elementIterator } from './element-iterator';
 

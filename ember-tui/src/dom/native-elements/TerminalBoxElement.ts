@@ -1,7 +1,7 @@
 import ElementNode from '../nodes/ElementNode';
-import { Styles } from '../styles';
-import { LiteralUnion } from 'type-fest';
-import { ForegroundColorName } from 'chalk';
+import type { Styles } from '../styles';
+import type { LiteralUnion } from 'type-fest';
+import type { ForegroundColorName } from 'chalk';
 
 interface Attributes {
   /**

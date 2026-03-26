@@ -27,7 +27,7 @@
 		"ember-tui": "link:../ember-tui",
 		"ember-load-initializers": "^3.0.1",
 		"ember-resolver": "^13.1.1",
-		"ember-source": "^6.8.2"
+		"ember-source": "^6.11.0"
 	},
 	"devDependencies": {
         "globals": "^16.5.0",
@@ -38,10 +38,10 @@
 		"@babel/plugin-transform-runtime": "^7.23.0",
 		"@babel/plugin-transform-typescript": "^7.23.0",
 		"@ember/test-helpers": "^5.4.1",
-		"@embroider/compat": "^4.1.10",
-		"@embroider/core": "^4.4.5",
-		"@embroider/macros": "^1.13.0",
-		"@embroider/vite": "^1.4.2",
+		"@embroider/compat": "^4.1.16",
+		"@embroider/core": "^4.4.7",
+		"@embroider/macros": "^1.20.2",
+		"@embroider/vite": "^1.7.1",
 		"@glint/template": "^1.7.3",
 		"@glint/tsserver-plugin": "^2.0.8",
 		"@rollup/plugin-babel": "^6.0.4",

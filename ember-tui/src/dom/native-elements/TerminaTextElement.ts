@@ -1,8 +1,8 @@
 import ElementNode from '../nodes/ElementNode';
-import chalk, { ForegroundColorName } from 'chalk';
-import { Styles } from '../styles';
+import chalk, { type ForegroundColorName } from 'chalk';
+import type { Styles } from '../styles';
 import colorize from '../colorize';
-import { LiteralUnion } from "type-fest";
+import type { LiteralUnion } from "type-fest";
 import ViewNode from "../nodes/ViewNode";
 
 

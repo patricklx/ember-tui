@@ -1,8 +1,8 @@
 import path, { resolve as resolvePath } from 'path';
 import { fileURLToPath } from 'url';
 import { existsSync, statSync, readFileSync, realpathSync } from 'fs';
-import { transformSync } from '@babel/core';
-import babelConfig from './babel.config.cjs';
+import { transformAsync } from '@babel/core';
+import babelConfig from './babel.config.mjs';
 import { resolver, templateTag } from '@embroider/vite';
 import { ResolverLoader } from '@embroider/core';
 
@@ -13,7 +13,7 @@ process.on('uncaughtException', function (err) {
 });
 
 // Helper function to try multiple extensions
-function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', '.gjs']) {
+function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', 'gjs']) {
   // Try with extensions first
   basePath = basePath
     .replace('.js', '')
@@ -56,6 +56,12 @@ const emberResolver = resolver();
 const emberTemplateTag = templateTag();
 const resolverloader = new ResolverLoader(process.cwd());
 
+// Track files currently being transformed to prevent re-entrant calls
+const transformingFiles = new Set();
+
+// Global flag to track if ANY babel transform is in progress
+let babelTransformInProgress = 0;
+
 
 const emberResolverContext = (nextResolve) => ({
   async resolve(spec, from) {
@@ -88,65 +94,92 @@ const emberResolverContext = (nextResolve) => ({
 });
 
 export async function resolve(specifier, context, nextResolve) {
-  if (specifier.startsWith('node:')) {
-    return nextResolve(specifier, context);
-  }
-  if (specifier.endsWith('-embroider-implicit-modules.js')) {
-    return {
-      url: `file://${specifier}`,
-      format: 'module',
-      shortCircuit: true,
-    };
-  }
-
-  if (specifier.startsWith('node:')) {
-    return nextResolve(specifier, context);
-  }
-
-  if (specifier.includes('.embroider/content-for.json')) {
-    specifier = path.resolve('.', 'node_modules', specifier);
-  }
-
-  // Force emoji-regex to use ESM (.mjs) instead of CommonJS (.js)
-  if (specifier === 'emoji-regex') {
-    const resolved = await nextResolve(specifier, {
-      ...context,
-      conditions: ['import', 'node', 'module-sync', 'node-addons'],
-    });
-    if (resolved.url.endsWith('/index.js')) {
+  try {
+    if (specifier.startsWith('node:')) {
+      return nextResolve(specifier, context);
+    }
+    if (specifier.endsWith('-embroider-implicit-modules.js')) {
       return {
-        ...resolved,
-        url: resolved.url.replace('/index.js', '/index.mjs'),
+        url: `file://${specifier}`,
+        format: 'module',
         shortCircuit: true,
       };
     }
-    return resolved;
-  }
 
-  const emberContext = emberResolverContext(nextResolve);
-  const res = await emberResolver.resolveId.call(emberContext, specifier, context.parentURL?.replace('file://', '') || path.resolve('./package.json'), {});
-  if (res?.id.includes('-embroider')) {
-    return {
-      url: `file://${res.id}`,
-      format: 'module',
-      shortCircuit: true,
-    };
-  }
-  if (res) {
-    const r = await nextResolve(res.id, {
+    if (specifier.includes('.embroider/content-for.json')) {
+      specifier = path.resolve('.', 'node_modules', specifier);
+    }
+
+    if (specifier === 'emoji-regex') {
+      const resolved = await nextResolve(specifier, {
+        ...context,
+        conditions: ['import', 'node', 'module-sync', 'node-addons'],
+      });
+      if (resolved.url.endsWith('/index.js')) {
+        return {
+          ...resolved,
+          url: resolved.url.replace('/index.js', '/index.mjs'),
+          shortCircuit: true,
+        };
+      }
+      return resolved;
+    }
+
+1
+
+    // Handle relative imports
+    if (specifier.startsWith('.')) {
+      const parentPath = fileURLToPath(context.parentURL);
+      const parentDir = path.dirname(parentPath);
+      const fullPath = path.resolve(parentDir, specifier);
+
+      const resolvedPath = tryExtensions(fullPath);
+      if (resolvedPath) {
+        return {
+          url: `file://${resolvedPath}`,
+          format: 'module',
+          shortCircuit: true,
+        };
+      }
+    }
+
+    const emberContext = emberResolverContext(nextResolve);
+    const res = await emberResolver.resolveId.call(emberContext, specifier, context.parentURL?.replace('file://', '') || path.resolve('./package.json'), {});
+    if (res?.id.includes('-embroider')) {
+      return {
+        url: `file://${res.id}`,
+        format: 'module',
+        shortCircuit: true,
+      };
+    }
+    if (res && (res.id.includes('app') || res.id.includes('node_modules'))) {
+      const r = await nextResolve(res.id, {
+        ...context,
+        conditions: ['import', 'module', 'node', 'commonjs'],
+      });
+      const f = r.url.replace('file://', '');
+      const pkg = resolverloader.resolver.packageCache.ownerOfFile(f);
+      const isEmber = pkg?.isEmberAddon() || pkg?.packageJSON.ember;
+      const isWarpDrive = f.includes('/@warp-drive/');
+
+      // Force module format for ember addons EXCEPT @warp-drive packages
+      // @warp-drive packages are ember addons but use CommonJS format
+      if (isEmber && !isWarpDrive) {
+        r.format = 'module';
+      }
+      r.shortCircuit = true;
+      return r;
+    }
+    return nextResolve(specifier, {
       ...context,
-      conditions: ['import', 'node', 'module-sync', 'node-addons'],
+      conditions: ['import', 'module', 'node', 'commonjs'],
     });
-    const f = r.url.replace('file://', '');
-    const pkg = resolverloader.resolver.packageCache.ownerOfFile(f);
-    const isEmber = pkg?.isEmberAddon() || pkg?.packageJSON.ember;
-    r.format = isEmber ? 'module' : r.format ;
-    return r;
+  } catch (e) {
+    console.error(e);
+    return nextResolve(specifier, {
+      ...context,
+    });
   }
-  return nextResolve(specifier, {
-    ...context,
-    conditions: ['import', 'node', 'module-sync', 'node-addons'],
-  });
 }
 
 export async function load(url, context, nextLoad) {
@@ -159,6 +192,12 @@ export async function load(url, context, nextLoad) {
     }
   }
 
+  // If babel is currently transforming, don't intercept - let Node.js handle it
+  // This prevents deadlock when babel tries to resolve imports during transformation
+  if (babelTransformInProgress > 0) {
+    return nextLoad(url, context);
+  }
+
   if (url.endsWith('-embroider-implicit-modules.js')) {
     return {
       format: 'module',
@@ -167,37 +206,20 @@ export async function load(url, context, nextLoad) {
     };
   }
 
-  // Handle CommonJS modules in node_modules
-  if (url.includes('node_modules') && (url.endsWith('.js') || url.endsWith('.cjs'))) {
-    // Only wrap if context indicates it's CommonJS (format: 'commonjs')
-    // or if format is not specified (let require handle detection)
-    if (!context.format || context.format === 'commonjs') {
-      try {
-        const filePath = fileURLToPath(url);
-        // Wrap as CommonJS - let require handle detection
-        const wrappedSource = `
-          import { createRequire } from 'node:module';
-          const require = createRequire(import.meta.url);
-          const mod = require('${filePath}');
-          export default mod;
-        `;
-        return {
-          format: 'module',
-          source: wrappedSource,
-          shortCircuit: true,
-        };
-      } catch {
-        // If wrapping fails, let Node.js handle it normally
-      }
-    }
-  }
-
   let filePath = url;
   try {
     filePath = fileURLToPath(url);
     filePath = realpathSync(filePath);
   } catch {
     // Ignore errors
+  }
+
+  // Don't intercept @warp-drive packages - let Node.js handle them naturally
+  // They are pre-compiled and should work as-is
+  
+  // Don't transform gradient-string or tinygradient - let Node.js handle module resolution
+  if (filePath.includes('/gradient-string/') || filePath.includes('/tinygradient/')) {
+    return nextLoad(url, context);
   }
 
 
@@ -215,20 +237,66 @@ export async function load(url, context, nextLoad) {
     };
   }
 
-  content = (await emberTemplateTag.transform(content, filePath))?.code || content;
+  try {
+    content = (await emberTemplateTag.transform.handler(content, filePath))?.code || content;
+  } catch (e) {
+    console.error(e);
+  }
 
-  const result = transformSync(content, {
-    ...babelConfig,
-    filename: filePath,
-    sourceMaps: 'inline',
-  });
 
-  if (result && result.code) {
+  // Transform app code, .embroider files, and Ember ecosystem packages that use @embroider/macros
+  // ember-source, @ember, @embroider packages have macro imports that need Babel processing
+  // ember-tui needs transformation for .gts template compilation
+  const shouldTransform = !filePath.includes('node_modules') ||
+    filePath.includes('.embroider') ||
+    filePath.includes('-embroider-') ||
+    filePath.includes('/ember-source/') ||
+    filePath.includes('/@ember/') ||
+    filePath.includes('/@embroider/') ||
+    filePath.includes('/ember-tui/');
+
+  if (!shouldTransform) {
+    return nextLoad(url, context);
+  }
+
+  // Check if we're already transforming this file (circular dependency)
+  if (transformingFiles.has(filePath)) {
+    // Return untransformed content to break the cycle
     return {
       format: 'module',
-      source: result.code,
+      source: content,
       shortCircuit: true,
     };
+  }
+
+  try {
+    transformingFiles.add(filePath);
+    babelTransformInProgress++;
+    const result = await transformAsync(content, {
+      ...babelConfig,
+      babelrc: false,
+      configFile: false,
+      filename: filePath,
+      sourceMaps: 'inline',
+    });
+
+    if (result && result.code) {
+      if (result.code.includes('type-fest')) {
+        console.log('here');
+      }
+      return {
+        format: 'module',
+        source: result.code,
+        shortCircuit: true,
+      };
+    }
+  } catch (e) {
+    console.error('Transform error for', filePath, ':', e);
+    // Don't silently continue - rethrow or return error
+    throw e;
+  } finally {
+    babelTransformInProgress--;
+    transformingFiles.delete(filePath);
   }
 
   return nextLoad(url, context);

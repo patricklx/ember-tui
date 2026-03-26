@@ -1,5 +1,5 @@
 import {type Boxes, type BoxStyle} from 'cli-boxes';
-import {type LiteralUnion} from 'type-fest';
+import type { LiteralUnion } from 'type-fest';
 import Yoga, {type Node as YogaNode} from 'yoga-layout';
 import { type ForegroundColorName } from "chalk";
 
