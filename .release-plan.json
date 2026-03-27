@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "minor",
-      "oldVersion": "0.4.0",
-      "newVersion": "0.5.0",
+      "oldVersion": "0.5.0",
+      "newVersion": "0.6.0",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2026-03-24)\n\n* ember-tui 0.5.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-tui`\n  * [#60](https://github.com/patricklx/ember-tui/pull/60) improve render perf ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-03-27)\n\n* ember-tui 0.6.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-tui`\n  * [#63](https://github.com/patricklx/ember-tui/pull/63) improve rendering on overflow ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
