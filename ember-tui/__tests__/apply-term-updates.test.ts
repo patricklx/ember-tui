@@ -154,8 +154,8 @@ describe('apply-term-updates - render with fake TTY', () => {
     render(root, global.process);
 
     const output = fakeTTY.getOutputSinceClear();
-    // Should contain clear line sequences
-    expect(output).toContain('\x1b[2K');
+    // Should fill removed line with spaces instead of clear code
+    expect(output).toContain('      '); // 6 spaces to clear "Line 3"
   });
 
   it('should handle empty content', () => {
@@ -337,8 +337,8 @@ describe('apply-term-updates - render with fake TTY', () => {
     render(root, global.process);
 
     const output = fakeTTY.getOutputSinceClear();
-    // Should clear the trailing spaces
-    expect(output).toContain('\x1b[0K'); // Clear from cursor
+    // Should fill trailing spaces with spaces instead of clear code
+    expect(output).toContain('                     '); // Spaces to clear trailing whitespace
   });
 
   it('should handle complete line replacement', () => {
