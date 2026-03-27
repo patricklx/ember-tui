@@ -56,7 +56,7 @@ export default {
     babel({
       babelHelpers: 'runtime',
       extensions: ['.js', '.ts', '.gts', '.gjs'],
-      configFile: path.resolve('./babel.config.cjs'),
+      configFile: path.resolve('./babel.config.mjs'),
     }),
   ],
 };

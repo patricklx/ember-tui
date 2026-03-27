@@ -550,10 +550,10 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		buffer.push(`\x1b[${row + 1};${col + 1}H`);
 	};
 
-	// If new line is empty, clear the entire line and return
+	// If new line is empty, fill with spaces instead of clear code
 	if (newVisualLength === 0 && oldVisualLength > 0) {
 		addCursorMove(0, line);
-		buffer.push('\x1b[2K'); // Clear entire line
+		buffer.push(' '.repeat(oldVisualLength)); // Fill with spaces
 		return;
 	}
 
@@ -572,7 +572,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		if (isFirstSegment && segment.start > 0) {
 			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
 			if (prevStart < segment.start) {
-				buffer.push('\x1b[1K'); // Clear from cursor to start of line
+				buffer.push(' '.repeat(segment.start - prevStart)); // Fill with spaces
 			}
 		}
 
@@ -581,13 +581,16 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 			buffer.push(segment.text);
 		}
 
-		// If this is the last segment and new text is visually shorter, clear to end of line
+		// If this is the last segment and new text is visually shorter, fill with spaces
 		const needsClearRight = isLastSegment && ((newVisualLength < oldVisualLength) || segment.text === '');
 
 		if (needsClearRight) {
 			const start = newVisualLength < oldVisualLength ? newVisualLength : segment.start;
-			addCursorMove(start, line);
-			buffer.push('\x1b[0K'); // Clear from cursor to end of line
+			const spacesToFill = oldVisualLength - start;
+			if (spacesToFill > 0) {
+				addCursorMove(start, line);
+				buffer.push(' '.repeat(spacesToFill)); // Fill with spaces
+			}
 		}
 	}
 
@@ -653,11 +656,12 @@ function renderInternal(rootNode: ElementNode): void {
 	const result = extractLines(rootNode, state, process.stdout);
 	const oldLines = state.lines;
 
-	// Calculate scroll buffer offset (lines that have scrolled off screen)
+	const newLines = [...result.static, ...result.dynamic];
+
+	// Calculate scroll buffer offset based on NEW content size
+	// This represents how many lines of NEW content are above the visible viewport
 	const scrollBufferSize = Math.max(state.scrollBufferSize, oldLines.length - state.terminalHeight);
 	state.scrollBufferSize = scrollBufferSize;
-
-	const newLines = [...result.static, ...result.dynamic];
 	// Check if we need a full redraw:
 	// Only check lines in the scroll buffer (before the visible viewport)
 	// If any line in scroll buffer changed, we need full redraw
@@ -690,13 +694,13 @@ function renderInternal(rootNode: ElementNode): void {
 				moveCursorTo(state.cursor.y, state.cursor.x);
 			}
 		}
+		state.scrollBufferSize = 0;
 		return;
 	}
 	process.stdout.write('\x1b[?25l'); // Hide cursor
 
 	try {
 		// Calculate which lines are visible (after scroll buffer)
-		const scrollBufferSize = Math.max(0, oldLines.length - state.terminalHeight);
 		const visibleStartLine = scrollBufferSize;
 		const maxLines = Math.max(newLines.length, oldLines.length);
 
@@ -714,9 +718,12 @@ function renderInternal(rootNode: ElementNode): void {
 				// Only update lines within visible terminal viewport
 				if (i >= visibleStartLine && i < state.terminalHeight + scrollBufferSize) {
 					if (newLine === undefined || newLine === "") {
-						// Line was removed - clear it
+						// Line was removed - fill with spaces
 						buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
-						buffer.push('\x1b[2K'); // Clear entire line
+						const oldLineLength = getVisualLength(oldLine || '');
+						if (oldLineLength > 0) {
+							buffer.push(' '.repeat(oldLineLength)); // Fill with spaces
+						}
 					} else if (oldLine === undefined || oldLine === "") {
 						// New line - just write it (expand tabs)
 						buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
