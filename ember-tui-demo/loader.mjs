@@ -3,8 +3,9 @@ import { fileURLToPath } from 'url';
 import { existsSync, statSync, readFileSync, realpathSync } from 'fs';
 import { transformAsync } from '@babel/core';
 import babelConfig from './babel.config.mjs';
-import { resolver, templateTag } from '@embroider/vite';
+import { resolver } from '@embroider/vite';
 import { ResolverLoader } from '@embroider/core';
+import { Preprocessor } from "content-tag";
 
 process.on('uncaughtException', function (err) {
   console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
@@ -53,7 +54,7 @@ function tryExtensions(basePath, extensions = ['js', 'ts', 'gts', 'gjs']) {
 }
 
 const emberResolver = resolver();
-const emberTemplateTag = templateTag();
+let preprocessor = new Preprocessor();
 const resolverloader = new ResolverLoader(process.cwd());
 
 // Track files currently being transformed to prevent re-entrant calls
@@ -238,7 +239,10 @@ export async function load(url, context, nextLoad) {
   }
 
   try {
-    content = (await emberTemplateTag.transform.handler(content, filePath))?.code || content;
+    content = (await preprocessor.process(content, {
+      filename: filePath,
+      inline_source_map: true,
+    }))?.code || content;
   } catch (e) {
     console.error(e);
   }
@@ -281,9 +285,6 @@ export async function load(url, context, nextLoad) {
     });
 
     if (result && result.code) {
-      if (result.code.includes('type-fest')) {
-        console.log('here');
-      }
       return {
         format: 'module',
         source: result.code,
