@@ -1,27 +1,23 @@
 import { appendFileSync } from 'fs';
 import babelConfig from './babel.config.mjs';
-import { resolver, templateTag } from '@embroider/vite';
-import { ResolverLoader } from '@embroider/core';
-import { hmr } from 'ember-vite-hmr';
 import pkg from './package.json' with { type: 'json' };
 import {
   createResolveFunction,
   createLoadFunction,
-  createTransformRequest,
 } from 'ember-tui/loader-utils';
+import {
+  createDefaultPlugins,
+} from 'ember-tui/loader-plugins';
 
 // Debug logging to file
 const logFile = 'log.txt';
 const log = (msg) => process.env.LOADER_DEBUG && appendFileSync(logFile, `${new Date().toISOString()} ${msg}\n`);
 log('[LOADER] Initializing loader.mjs');
 
-// Initialize plugins
-const hmrPlugin = hmr();
-const emberResolver = resolver();
-const emberTemplateTag = templateTag();
-const resolverLoader = new ResolverLoader(process.cwd());
-
-log('[LOADER] HMR plugin initialized');
+// Create plugins (includes babel plugin)
+const { hmrPlugin, emberResolver, emberTemplateTag, babelPlugin, resolverLoader } = createDefaultPlugins(process.cwd(), babelConfig);
+const plugins = [babelPlugin, hmrPlugin, emberResolver, emberTemplateTag];
+log('[LOADER] Plugins initialized');
 
 // Enable HMR
 process.env['EMBER_VITE_HMR_ENABLED'] = 'true';
@@ -33,29 +29,20 @@ process.on('uncaughtException', function (err) {
   process.exit(1)
 });
 
-// Create resolve function with all necessary plugins
+// Create resolve function with plugins
 export const resolve = createResolveFunction({
-  emberResolver,
-  hmrPlugin,
+  plugins,
   resolverLoader,
   log,
 });
 
-// Create load function with all necessary plugins
+// Create load function with plugins (auto-configures HMR)
 export const load = createLoadFunction({
-  emberResolver,
-  emberTemplateTag,
-  hmrPlugin,
-  babelConfig,
+  plugins,
   resolveFunction: resolve,
+  packageName: pkg.name,
   log,
   shouldSkip: () => {
     // Don't intercept bob-harness or bob-agent
   },
-});
-
-// Register transformRequest with HMR plugin
-const transformRequestFn = createTransformRequest(load, resolve, pkg.name, log);
-hmrPlugin.configureServer({
-  transformRequest: transformRequestFn,
 });

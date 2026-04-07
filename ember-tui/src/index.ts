@@ -31,12 +31,23 @@ export { initializeHMR } from './hmr-init';
 export {
   tryExtensions,
   createEmberResolverContext,
-  transformCode,
   shouldTransformFile,
   createTransformContext,
   createTransformRequest,
   normalizeFilePath,
+  createResolveFunction,
+  createLoadFunction,
 } from './loader-utils';
+
+// Loader plugins
+export {
+  createHMRPlugin,
+  createEmberResolverPlugin,
+  createEmberTemplateTagPlugin,
+  createResolverLoader,
+  createDefaultPlugins,
+} from './loader-plugins';
+export type { LoaderPlugin, ResolveContext, LoadContext, TransformContext } from './loader-plugins';
 
 // Test utilities
 export { FakeTTY } from './test-utils/FakeTTY';

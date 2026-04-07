@@ -6,7 +6,6 @@
 import path from 'path';
 import { existsSync, statSync, readFileSync, realpathSync } from 'fs';
 import { fileURLToPath } from 'url';
-import { transformAsync } from '@babel/core';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -96,39 +95,7 @@ export function createEmberResolverContext(nextResolve: any) {
   };
 }
 
-/**
- * Transform code using Babel with the provided configuration
- */
-export async function transformCode(
-  content: string,
-  filePath: string,
-  babelConfig: any,
-  transformingFiles: Set<string>
-): Promise<string | null> {
-  // Check if we're already transforming this file (circular dependency)
-  if (transformingFiles.has(filePath)) {
-    return content;
-  }
 
-  try {
-    transformingFiles.add(filePath);
-
-    const result = await transformAsync(content, {
-      ...babelConfig,
-      babelrc: false,
-      configFile: false,
-      filename: filePath,
-      sourceMaps: 'inline',
-    });
-
-    return result?.code || null;
-  } catch (e) {
-    console.error('Transform error for', filePath, ':', e);
-    throw e;
-  } finally {
-    transformingFiles.delete(filePath);
-  }
-}
 
 /**
  * Determine if a file should be transformed based on its path
@@ -356,13 +323,12 @@ export function handleRelativeImports(
  * Create a minimal resolve function with customizable hooks
  */
 export function createResolveFunction(options: {
-  emberResolver: any;
-  hmrPlugin: any;
+  plugins: Array<any>;
   resolverLoader: any;
   log?: (msg: string) => void;
   customResolvers?: Array<(specifier: string, context: any, nextResolve: any) => Promise<any>>;
 }) {
-  const { emberResolver, hmrPlugin, resolverLoader, log = () => {}, customResolvers = [] } = options;
+  const { plugins, resolverLoader, log = () => {}, customResolvers = [] } = options;
 
   return async function resolve(specifier: string, context: any, nextResolve: any) {
     log(`[RESOLVE] ${specifier}`);
@@ -413,14 +379,6 @@ export function createResolveFunction(options: {
         };
       }
 
-      // Handle relative imports in ember-tui/src
-      const srcResult = handleRelativeImports(context, resolvedSpecifier, 'ember-tui/src');
-      if (srcResult) return srcResult;
-
-      // Handle relative imports in ember-tui/dist
-      const distResult = handleRelativeImports(context, resolvedSpecifier, 'ember-tui/dist', ['js', 'mjs']);
-      if (distResult) return distResult;
-
       // Force emoji-regex to use ESM
       if (resolvedSpecifier === 'emoji-regex') {
         const resolved = await nextResolve(resolvedSpecifier, {
@@ -443,58 +401,67 @@ export function createResolveFunction(options: {
         if (result) return result;
       }
 
-      // Try HMR plugin resolveId
-      if (hmrPlugin.resolveId) {
-        const hmrContext = createHMRResolveContext(nextResolve, context);
-        const hmrRes = await hmrPlugin.resolveId.call(
-          hmrContext,
-          resolvedSpecifier,
-          context.parentURL?.replace('file://', '') || path.resolve('./package.json')
-        );
-        if (hmrRes) {
-          return {
-            url: `file://${hmrRes.id || hmrRes}`,
-            format: 'module',
-            shortCircuit: true,
-          };
-        }
-      }
+      // Try plugins in order
+      for (const plugin of plugins) {
+        if (plugin.resolveId) {
+          let pluginContext;
 
-      // Try Ember resolver
-      const emberContext = createEmberResolverContext(nextResolve);
-      try {
-        const res = await emberResolver.resolveId.call(
-          emberContext,
-          specifier,
-          context.parentURL?.replace('file://', '') || path.resolve('./package.json'),
-          {}
-        );
-        if (res?.id.includes('-embroider')) {
-          return {
-            url: `file://${res.id}`,
-            format: 'module',
-            shortCircuit: true,
-          };
-        }
-        if (res && (res.id.includes('app') || res.id.includes('node_modules'))) {
-          const r = await nextResolve(res.id, {
-            ...context,
-            conditions: ['import', 'module', 'node', 'commonjs'],
-          });
-          const f = r.url.replace('file://', '');
-          const pkg = resolverLoader.resolver.packageCache.ownerOfFile(f);
-          const isEmber = pkg?.isEmberAddon() || pkg?.packageJSON.ember;
-          const isWarpDrive = f.includes('/@warp-drive/');
-
-          // Force module format for ember addons EXCEPT @warp-drive packages
-          if (isEmber && !isWarpDrive) {
-            r.format = 'module';
+          // Create appropriate context based on plugin type
+          if (plugin.name === 'hmr' || typeof plugin.resolveId === 'function') {
+            pluginContext = createHMRResolveContext(nextResolve, context);
+          } else {
+            pluginContext = createEmberResolverContext(nextResolve);
           }
-          r.shortCircuit = true;
-          return r;
+
+          try {
+            const res = await plugin.resolveId.call(
+              pluginContext,
+              resolvedSpecifier,
+              context.parentURL?.replace('file://', '') || path.resolve('./package.json'),
+              {}
+            );
+
+            if (res) {
+              // Handle HMR plugin response
+              if (res.id || typeof res === 'string') {
+                return {
+                  url: `file://${res.id || res}`,
+                  format: 'module',
+                  shortCircuit: true,
+                };
+              }
+
+              // Handle Ember resolver response
+              if (res?.id?.includes('-embroider')) {
+                return {
+                  url: `file://${res.id}`,
+                  format: 'module',
+                  shortCircuit: true,
+                };
+              }
+
+              if (res?.id && (res.id.includes('app') || res.id.includes('node_modules'))) {
+                const r = await nextResolve(res.id, {
+                  ...context,
+                  conditions: ['import', 'module', 'node', 'commonjs'],
+                });
+                const f = r.url.replace('file://', '');
+                const pkg = resolverLoader.resolver.packageCache.ownerOfFile(f);
+                const isEmber = pkg?.isEmberAddon() || pkg?.packageJSON.ember;
+                const isWarpDrive = f.includes('/@warp-drive/');
+
+                // Force module format for ember addons EXCEPT @warp-drive packages
+                if (isEmber && !isWarpDrive) {
+                  r.format = 'module';
+                }
+                r.shortCircuit = true;
+                return r;
+              }
+            }
+          } catch {
+            // Continue to next plugin
+          }
         }
-      } catch {
-        // skip
       }
 
       return nextResolve(specifier, {
@@ -514,28 +481,22 @@ export function createResolveFunction(options: {
  * Create a minimal load function with customizable hooks
  */
 export function createLoadFunction(options: {
-  emberResolver: any;
-  emberTemplateTag: any;
-  hmrPlugin: any;
-  babelConfig: any;
+  plugins: Array<any>;
   resolveFunction: any;
+  packageName?: string;
   log?: (msg: string) => void;
   shouldSkip?: (url: string) => boolean;
 }) {
   const {
-    emberResolver,
-    emberTemplateTag,
-    hmrPlugin,
-    babelConfig,
+    plugins,
     resolveFunction,
+    packageName,
     log = () => {},
     shouldSkip = () => false,
   } = options;
 
-  const transformingFiles = new Set<string>();
-  let babelTransformInProgress = 0;
 
-  return async function load(url: string, context: any, nextLoad: any) {
+  const loadFunction = async function load(url: string, context: any, nextLoad: any) {
     log(`[LOAD] ${url}`);
 
     const cleanUrl = url.split('?')[0];
@@ -554,11 +515,6 @@ export function createLoadFunction(options: {
       return nextLoad(cleanUrl, context);
     }
 
-    // If babel is currently transforming, don't intercept
-    if (babelTransformInProgress > 0) {
-      return nextLoad(url, context);
-    }
-
     // Embroider implicit modules
     if (cleanUrl.endsWith('-embroider-implicit-modules.js')) {
       return {
@@ -573,12 +529,17 @@ export function createLoadFunction(options: {
 
     let content = '';
 
-    // Try HMR plugin load first
-    if (hmrPlugin.load) {
-      content = await hmrPlugin.load.call(transformContext, filePath);
+    // Try plugins' load methods in order
+    for (const plugin of plugins) {
+      if (plugin.load) {
+        log(`plugin load: ${plugin.name}`);
+        const result = await plugin.load.call(transformContext, filePath);
+        if (result) {
+          content = result;
+          break;
+        }
+      }
     }
-
-    content = content || (await emberResolver.load(filePath));
 
     if (!content) {
       if (existsSync(filePath) && statSync(filePath).isFile()) {
@@ -597,11 +558,30 @@ export function createLoadFunction(options: {
       };
     }
 
-    // Apply template tag transform
-    try {
-      content = (await emberTemplateTag.transform.handler(content, filePath))?.code || content;
-    } catch (e) {
-      console.error(e);
+    // Apply plugin transforms in order
+    for (const plugin of plugins) {
+      if (plugin.transform) {
+        log(`plugin transform: ${plugin.name}`);
+        try {
+          if (plugin.transform?.handler) {
+            const result = await plugin.transform?.handler(content, filePath);
+            if (result?.code) {
+              content = result.code;
+            }
+            continue;
+          }
+          if (plugin.transform) {
+            const result = await plugin.transform?.(content, filePath);
+            log(`plugin ${plugin.name} transform result: ${result.code}`);
+            if (result?.code) {
+              content = result.code;
+            }
+          }
+        } catch (e) {
+          log(`Transform error in plugin: ${e}`);
+          console.error(`Transform error in plugin:`, e);
+        }
+      }
     }
 
     log(`[LOAD] shouldTransform ${filePath} ${shouldTransformFile(filePath)}`);
@@ -609,48 +589,25 @@ export function createLoadFunction(options: {
       return nextLoad(cleanUrl, context);
     }
 
-    // Check if we're already transforming this file (circular dependency)
-    if (transformingFiles.has(filePath)) {
-      return {
-        format: 'module',
-        source: content,
-        shortCircuit: true,
-      };
-    }
 
-    try {
-      babelTransformInProgress++;
 
-      const transformedCode = await transformCode(content, filePath, babelConfig, transformingFiles);
-
-      if (transformedCode) {
-        let resultCode = transformedCode;
-
-        // Apply HMR transform
-        if (hmrPlugin.transform) {
-          try {
-            const hmrResult = await hmrPlugin.transform.call(transformContext, resultCode, filePath);
-            if (hmrResult) {
-              resultCode = hmrResult.code || hmrResult;
-            }
-          } catch (e) {
-            console.error('HMR transform error:', e);
-          }
-        }
-
-        return {
-          format: 'module',
-          source: resultCode,
-          shortCircuit: true,
-        };
-      }
-    } catch (e) {
-      console.error('Transform error for', filePath, ':', e);
-      throw e;
-    } finally {
-      babelTransformInProgress--;
-    }
-
-    return nextLoad(cleanUrl, context);
+    return {
+      format: 'module',
+      source: content,
+      shortCircuit: true,
+    };
   };
+
+  // Auto-configure HMR plugin if present and packageName is provided
+  if (packageName) {
+    const hmrPlugin = plugins.find(p => p.name === 'hmr' || p.configureServer);
+    if (hmrPlugin?.configureServer) {
+      const transformRequestFn = createTransformRequest(loadFunction, resolveFunction, packageName, log);
+      hmrPlugin.configureServer({
+        transformRequest: transformRequestFn,
+      });
+    }
+  }
+
+  return loadFunction;
 }
