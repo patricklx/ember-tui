@@ -45,21 +45,21 @@ async function transformCode(
 /**
  * Create HMR plugin
  */
-export function createHMRPlugin() {
+export function createHMRPlugin(): any {
   return hmr();
 }
 
 /**
  * Create Ember resolver plugin
  */
-export function createEmberResolverPlugin() {
+export function createEmberResolverPlugin(): any {
   return resolver();
 }
 
 /**
  * Create Ember template tag plugin
  */
-export function createEmberTemplateTagPlugin() {
+export function createEmberTemplateTagPlugin(): any {
   return templateTag();
 }
 

@@ -47,7 +47,7 @@ export {
   createResolverLoader,
   createDefaultPlugins,
 } from './loader-plugins';
-export type { LoaderPlugin, ResolveContext, LoadContext, TransformContext } from './loader-plugins';
+
 
 // Test utilities
 export { FakeTTY } from './test-utils/FakeTTY';
