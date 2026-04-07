@@ -1,93 +1,145 @@
-# TODO for PR #69 - HMR Support Refactoring
+# TODO: Loader Refactoring - Babel Load Hook Recursion Issue
 
-## Session Context
-- **PR**: #69 (add-hmr branch)
-- **Repository**: patricklx/ember-tui
-- **Task**: Minimize/cleanup/refactor code changes, make loader.mjs minimal and extract helper functions into ember-tui
-- **Session Date**: 2026-04-07
-- **Time Spent**: ~6 minutes
+## Session: 2026-04-07 14:14-14:23 UTC (9 minutes)
 
-## Completed in This Session ✅
-1. Analyzed full PR diff (3491 additions, 313 deletions, 27 files changed)
-2. Ran `pnpm install` successfully
-3. Refactored `ember-tui-demo/loader.mjs`:
-   - Reduced from 335 lines to ~60 lines
-   - Extracted resolve/load logic to helper functions
-   - Made loader more maintainable and customizable
-4. Enhanced `ember-tui/src/loader-utils.ts`:
-   - Added `createResolveFunction()` helper
-   - Added `createLoadFunction()` helper
-   - Added `createHMRResolveContext()` helper
-   - Added `handleRelativeImports()` helper
-5. All tests pass (99 tests in ember-tui)
-6. All lint checks pass
-7. Committed changes with clear message
+## Current Status
+**INCOMPLETE** - App still hangs with no output when running
 
-## Next Steps for Future Sessions 📋
+## Problem Analysis
+The babel plugin in the loader causes **recursive load hook calls** when transforming files:
+1. Load hook calls babel transform on `app/app.ts`
+2. Babel loads its plugins (e.g., `babel-plugin-ember-template-compilation`)
+3. Loading babel plugins triggers the load hook again
+4. This creates recursion
 
-### High Priority
-1. **Test the refactored loader in demo app**
-   - Run `cd ember-tui-demo && pnpm start`
-   - Verify HMR functionality works correctly
-   - Test file watching and hot reload
+## Changes Made This Session
 
-2. **Review and optimize loader-utils.ts**
-   - Consider splitting into multiple files if it grows too large
-   - Add JSDoc comments for better documentation
-   - Consider adding unit tests for helper functions
+### 1. Reverted to Clean State
+- Reset to commit bd1e67d (wip refactor)
+- Removed last 2 commits with investigation notes
+- Ran pnpm install successfully
 
-3. **Documentation**
-   - Update README with loader customization examples
-   - Document the new helper functions
-   - Add migration guide for existing custom loaders
+### 2. Added Recursion Prevention (ember-tui/src/loader-plugins.ts)
+```typescript
+export function createBabelPlugin(babelConfig: any) {
+  const transformingFiles = new Set<string>();
+  let isTransforming = false;
 
-### Medium Priority
-4. **Further cleanup opportunities**
-   - Review other files in the PR for potential refactoring
-   - Check if babel.config.mjs can be simplified
-   - Look for duplicate code patterns
+  return {
+    name: 'babel',
+    get isTransforming() {
+      return isTransforming;
+    },
+    async transform(code: string, id: string) {
+      try {
+        isTransforming = true;
+        // ... transform code
+      } finally {
+        isTransforming = false;
+      }
+    },
+  };
+}
+```
 
-5. **Performance testing**
-   - Benchmark loader performance before/after refactoring
-   - Test with large codebases
-   - Profile HMR reload times
+### 3. Modified Load Hook (ember-tui/src/loader-utils.ts)
+Added early checks in `createLoadFunction`:
+- Skip babel's own dependencies during transform to prevent recursion
+- Only skip `node_modules/@babel` and `babel-plugin-*` modules
+- Still process app files and ember/embroider packages
 
-### Low Priority
-6. **Consider extracting more patterns**
-   - Error handling utilities
-   - Logging utilities
-   - Configuration management
+```typescript
+// CRITICAL: Skip babel's own dependencies during transform to prevent recursion
+const babelPlugin = plugins.find(p => p.name === 'babel');
+if (babelPlugin?.isTransforming && (
+  filePath.includes('node_modules/@babel') ||
+  filePath.includes('node_modules/babel-plugin-')
+)) {
+  log(`[LOAD] Skipping babel dependencies during transform: ${filePath}`);
+  return nextLoad(url, context);
+}
+```
 
-## Technical Notes 📝
+## Current Issue
+**App produces NO output and hangs**
+- Running `pnpm start` or direct node command produces no output
+- Even with LOADER_DEBUG=1, no log messages appear
+- Timeout kills the process after 10 seconds
+- The loader may not be executing at all, or hanging before any logs
 
-### Key Changes Made
-- **loader.mjs**: Now uses `createResolveFunction()` and `createLoadFunction()` from loader-utils
-- **loader-utils.ts**: Added 6 new helper functions (656 lines total)
-- All existing functionality preserved
-- No breaking changes
+## Possible Root Causes
+1. **Loader not initializing**: The loader.mjs might have a syntax error or initialization issue
+2. **Babel hanging silently**: The isTransforming flag might prevent ALL transforms
+3. **Load hook blocking**: The early return logic might be too aggressive
+4. **Missing dependencies**: Some babel plugin might not be loading correctly
 
-### Helper Functions Added
-1. `createResolveFunction(options)` - Creates customizable resolve function
-2. `createLoadFunction(options)` - Creates customizable load function
-3. `createHMRResolveContext(nextResolve, context)` - Creates HMR resolve context
-4. `handleRelativeImports(context, specifier, pattern, extensions?)` - Handles relative imports
+## Next Steps (Priority Order)
 
-### Testing Status
-- ✅ ember-tui tests: 99 passed
-- ✅ ember-tui lint: all checks passed
-- ⏳ ember-tui-demo: not tested yet (needs manual verification)
+### 1. Debug Why No Output (CRITICAL)
+- Add console.log statements BEFORE any async operations in loader.mjs
+- Check if loader.mjs is even being loaded
+- Verify babel plugin is being created correctly
+- Test without babel plugin entirely to isolate issue
+
+### 2. Test Simpler Approach
+- Try removing babel plugin from plugins array temporarily
+- See if app runs without TypeScript transformation
+- This will confirm if babel is the blocker
+
+### 3. Alternative Solutions
+
+#### Option A: Use esbuild Instead of Babel
+```typescript
+import { transformSync } from 'esbuild';
+
+export function createTypeScriptPlugin() {
+  return {
+    name: 'typescript',
+    transform(code: string, id: string) {
+      if (!id.endsWith('.ts') && !id.endsWith('.tsx')) {
+        return null;
+      }
+      const result = transformSync(code, {
+        loader: 'ts',
+        format: 'esm',
+        target: 'esnext',
+      });
+      return { code: result.code };
+    },
+  };
+}
+```
+
+#### Option B: Pre-compile TypeScript
+- Use tsc or esbuild to compile TS → JS before loader runs
+- Loader only handles module resolution and HMR
+- Cleaner separation of concerns
+
+#### Option C: Isolate Babel in Worker Thread
+- Run babel transform in a worker thread with its own context
+- Prevents load hook recursion by isolating execution
+- More complex but keeps babel functionality
 
 ## Files Modified
-- `ember-tui/src/loader-utils.ts` (enhanced with new helpers)
-- `ember-tui-demo/loader.mjs` (simplified from 335 to 60 lines)
+- `ember-tui/src/loader-plugins.ts` - Added isTransforming flag
+- `ember-tui/src/loader-utils.ts` - Added recursion prevention logic
 
-## Git Status
-- Branch: add-hmr
-- Last commit: "refactor: simplify loader.mjs and enhance loader-utils"
-- Ready to push: YES
+## Testing Commands
+```bash
+# Basic test
+cd ember-tui-demo && timeout 10 pnpm start
 
-## Important Considerations
-- The loader is now more modular and easier to customize
-- Custom loaders can override specific behaviors via options
-- All helper functions are exported and reusable
-- Backward compatibility maintained
+# With debug logging
+cd ember-tui-demo && LOADER_DEBUG=1 timeout 10 node --enable-source-maps --loader ./loader.mjs app/app.ts
+
+# Check for specific logs
+cd ember-tui-demo && LOADER_DEBUG=1 timeout 5 node --enable-source-maps --loader ./loader.mjs app/app.ts 2>&1 | grep -E "\[LOAD\]|\[LOADER\]"
+```
+
+## Time Spent
+9 minutes of 10 minute budget (stopped at deadline)
+
+## References
+- PR #69: https://github.com/patricklx/ember-tui/pull/69
+- Base commit: bd1e67d (wip refactor)
+- Current commit: 510f6c6 (WIP: Add babel recursion prevention)
