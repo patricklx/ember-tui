@@ -68,17 +68,24 @@ export function createEmberTemplateTagPlugin() {
  */
 export function createBabelPlugin(babelConfig: any) {
   const transformingFiles = new Set<string>();
+  let isTransforming = false;
 
   return {
     name: 'babel',
+    get isTransforming() {
+      return isTransforming;
+    },
     async transform(code: string, id: string) {
       try {
+        isTransforming = true;
         const transformedCode = await transformCode(code, id, babelConfig, transformingFiles);
         if (transformedCode) {
           return { code: transformedCode };
         }
       } catch (e) {
         console.error('Babel transform error:', e);
+      } finally {
+        isTransforming = false;
       }
       return null;
     },

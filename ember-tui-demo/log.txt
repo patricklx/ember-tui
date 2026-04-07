@@ -1,0 +1,71 @@
+(node:253) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+file:///tmp/tmpco59emnc/repo/ember-tui-demo/app/app.ts:15
+    let prevCompatModules = Object.assign({}, compatModules) as any;
+                                                             ^^
+
+SyntaxError: Unexpected identifier 'as'
+    at compileSourceTextModule (node:internal/modules/esm/utils:318:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:99:18)
+    at #translate (node:internal/modules/esm/loader:473:20)
+    at afterLoad (node:internal/modules/esm/loader:529:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:534:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:577:36)
+    at afterResolve (node:internal/modules/esm/loader:625:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:631:12)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:650:32)
+    at TracingChannel.tracePromise (node:diagnostics_channel:350:14)
+
+Node.js v24.14.1
+2026-04-07T14:21:17.391Z [LOADER] Initializing loader.mjs
+2026-04-07T14:21:17.394Z [LOADER] Plugins initialized
+2026-04-07T14:21:17.399Z [RESOLVE] file:///tmp/tmpco59emnc/repo/ember-tui-demo/app/app.ts
+2026-04-07T14:21:17.415Z [LOAD] file:///tmp/tmpco59emnc/repo/ember-tui-demo/app/app.ts
+2026-04-07T14:21:17.416Z plugin load: hmr-plugin
+2026-04-07T14:21:17.416Z plugin load: embroider-resolver
+2026-04-07T14:21:17.417Z plugin transform: babel
+2026-04-07T14:21:17.930Z [RESOLVE] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/ember-source@6.11.0_@glimmer+component@2.0.0_rsvp@4.8.5/node_modules/ember-source/dist/packages/ember-template-compiler/index.js
+2026-04-07T14:21:17.935Z [LOAD] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/ember-source@6.11.0_@glimmer+component@2.0.0_rsvp@4.8.5/node_modules/ember-source/dist/packages/ember-template-compiler/index.js
+2026-04-07T14:21:17.936Z [LOAD] Skipping node_modules during babel transform: /tmp/tmpco59emnc/repo/node_modules/.pnpm/ember-source@6.11.0_@glimmer+component@2.0.0_rsvp@4.8.5/node_modules/ember-source/dist/packages/ember-template-compiler/index.js
+2026-04-07T14:21:17.982Z [RESOLVE] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/@embroider+compat@4.1.17_@embroider+core@4.4.7_@glint+template@1.7.3__@glint+template@1.7.3/node_modules/@embroider/compat/dist/src/resolver-transform.js
+2026-04-07T14:21:17.985Z [LOAD] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/@embroider+compat@4.1.17_@embroider+core@4.4.7_@glint+template@1.7.3__@glint+template@1.7.3/node_modules/@embroider/compat/dist/src/resolver-transform.js
+2026-04-07T14:21:17.985Z [LOAD] Skipping node_modules during babel transform: /tmp/tmpco59emnc/repo/node_modules/.pnpm/@embroider+compat@4.1.17_@embroider+core@4.4.7_@glint+template@1.7.3__@glint+template@1.7.3/node_modules/@embroider/compat/dist/src/resolver-transform.js
+2026-04-07T14:21:17.990Z Transform error in plugin: TypeError: Cannot read properties of null (reading 'code')
+2026-04-07T14:21:17.991Z plugin transform: hmr-plugin
+2026-04-07T14:21:18.197Z plugin hmr-plugin transform result: undefined
+2026-04-07T14:21:18.199Z plugin transform: embroider-template-tag
+2026-04-07T14:21:18.286Z [LOAD] shouldTransform /tmp/tmpco59emnc/repo/ember-tui-demo/app/app.ts true
+2026-04-07T14:21:29.897Z [LOADER] Initializing loader.mjs
+2026-04-07T14:21:29.899Z [LOADER] Plugins initialized
+2026-04-07T14:21:29.901Z [RESOLVE] file:///tmp/tmpco59emnc/repo/ember-tui-demo/app/app.ts
+2026-04-07T14:21:29.913Z [LOAD] file:///tmp/tmpco59emnc/repo/ember-tui-demo/app/app.ts
+2026-04-07T14:21:29.913Z plugin load: hmr-plugin
+2026-04-07T14:21:29.913Z plugin load: embroider-resolver
+2026-04-07T14:21:29.914Z plugin transform: babel
+2026-04-07T14:21:30.222Z [RESOLVE] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/ember-source@6.11.0_@glimmer+component@2.0.0_rsvp@4.8.5/node_modules/ember-source/dist/packages/ember-template-compiler/index.js
+2026-04-07T14:21:30.225Z [LOAD] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/ember-source@6.11.0_@glimmer+component@2.0.0_rsvp@4.8.5/node_modules/ember-source/dist/packages/ember-template-compiler/index.js
+2026-04-07T14:21:30.226Z [LOAD] Skipping node_modules during babel transform: /tmp/tmpco59emnc/repo/node_modules/.pnpm/ember-source@6.11.0_@glimmer+component@2.0.0_rsvp@4.8.5/node_modules/ember-source/dist/packages/ember-template-compiler/index.js
+2026-04-07T14:21:30.250Z [RESOLVE] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/@embroider+compat@4.1.17_@embroider+core@4.4.7_@glint+template@1.7.3__@glint+template@1.7.3/node_modules/@embroider/compat/dist/src/resolver-transform.js
+2026-04-07T14:21:30.277Z [LOAD] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/@embroider+compat@4.1.17_@embroider+core@4.4.7_@glint+template@1.7.3__@glint+template@1.7.3/node_modules/@embroider/compat/dist/src/resolver-transform.js
+2026-04-07T14:21:30.278Z [LOAD] Skipping node_modules during babel transform: /tmp/tmpco59emnc/repo/node_modules/.pnpm/@embroider+compat@4.1.17_@embroider+core@4.4.7_@glint+template@1.7.3__@glint+template@1.7.3/node_modules/@embroider/compat/dist/src/resolver-transform.js
+2026-04-07T14:21:30.284Z Transform error in plugin: TypeError: Cannot read properties of null (reading 'code')
+2026-04-07T14:21:30.284Z plugin transform: hmr-plugin
+2026-04-07T14:21:30.396Z plugin hmr-plugin transform result: undefined
+2026-04-07T14:21:30.397Z plugin transform: embroider-template-tag
+2026-04-07T14:21:30.441Z [LOAD] shouldTransform /tmp/tmpco59emnc/repo/ember-tui-demo/app/app.ts true
+2026-04-07T14:21:43.092Z [LOADER] Initializing loader.mjs
+2026-04-07T14:21:43.094Z [LOADER] Plugins initialized
+2026-04-07T14:21:43.097Z [RESOLVE] file:///tmp/tmpco59emnc/repo/ember-tui-demo/app/app.ts
+2026-04-07T14:21:43.111Z [LOAD] file:///tmp/tmpco59emnc/repo/ember-tui-demo/app/app.ts
+2026-04-07T14:21:43.112Z plugin load: hmr-plugin
+2026-04-07T14:21:43.112Z plugin load: embroider-resolver
+2026-04-07T14:21:43.113Z plugin transform: babel
+2026-04-07T14:21:43.597Z [RESOLVE] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/ember-source@6.11.0_@glimmer+component@2.0.0_rsvp@4.8.5/node_modules/ember-source/dist/packages/ember-template-compiler/index.js
+2026-04-07T14:21:43.602Z [LOAD] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/ember-source@6.11.0_@glimmer+component@2.0.0_rsvp@4.8.5/node_modules/ember-source/dist/packages/ember-template-compiler/index.js
+2026-04-07T14:21:43.603Z [LOAD] Skipping node_modules during babel transform: /tmp/tmpco59emnc/repo/node_modules/.pnpm/ember-source@6.11.0_@glimmer+component@2.0.0_rsvp@4.8.5/node_modules/ember-source/dist/packages/ember-template-compiler/index.js
+2026-04-07T14:21:43.631Z [RESOLVE] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/@embroider+compat@4.1.17_@embroider+core@4.4.7_@glint+template@1.7.3__@glint+template@1.7.3/node_modules/@embroider/compat/dist/src/resolver-transform.js
+2026-04-07T14:21:43.635Z [LOAD] file:///tmp/tmpco59emnc/repo/node_modules/.pnpm/@embroider+compat@4.1.17_@embroider+core@4.4.7_@glint+template@1.7.3__@glint+template@1.7.3/node_modules/@embroider/compat/dist/src/resolver-transform.js
+2026-04-07T14:21:43.635Z [LOAD] Skipping node_modules during babel transform: /tmp/tmpco59emnc/repo/node_modules/.pnpm/@embroider+compat@4.1.17_@embroider+core@4.4.7_@glint+template@1.7.3__@glint+template@1.7.3/node_modules/@embroider/compat/dist/src/resolver-transform.js
+2026-04-07T14:21:43.640Z Transform error in plugin: TypeError: Cannot read properties of null (reading 'code')
+2026-04-07T14:21:43.641Z plugin transform: hmr-plugin

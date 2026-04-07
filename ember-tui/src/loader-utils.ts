@@ -500,6 +500,7 @@ export function createLoadFunction(options: {
     log(`[LOAD] ${url}`);
 
     const cleanUrl = url.split('?')[0];
+    const filePath = normalizeFilePath(cleanUrl);
 
     // Skip built-in Node.js modules
     if (cleanUrl.startsWith('node:')) {
@@ -515,6 +516,25 @@ export function createLoadFunction(options: {
       return nextLoad(cleanUrl, context);
     }
 
+    // CRITICAL: Skip babel's own dependencies during transform to prevent recursion
+    // When babel is transforming, it loads its plugins from node_modules/@babel
+    // We must skip the load hook for those specific modules to prevent infinite recursion
+    const babelPlugin = plugins.find(p => p.name === 'babel');
+    if (babelPlugin?.isTransforming && (
+      filePath.includes('node_modules/@babel') ||
+      filePath.includes('node_modules/babel-plugin-')
+    )) {
+      log(`[LOAD] Skipping babel dependencies during transform: ${filePath}`);
+      return nextLoad(url, context);
+    }
+
+    // Skip node_modules that don't need transformation
+    // This prevents processing most node_modules but allows ember/embroider packages
+    if (!shouldTransformFile(filePath)) {
+      log(`[LOAD] Skipping node_modules: ${filePath}`);
+      return nextLoad(cleanUrl, context);
+    }
+
     // Embroider implicit modules
     if (cleanUrl.endsWith('-embroider-implicit-modules.js')) {
       return {
@@ -524,7 +544,6 @@ export function createLoadFunction(options: {
       };
     }
 
-    const filePath = normalizeFilePath(cleanUrl);
     const transformContext = createTransformContext(resolveFunction);
 
     let content = '';
