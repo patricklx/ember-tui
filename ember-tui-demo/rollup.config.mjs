@@ -40,6 +40,16 @@ export default {
   ].map(x => [x, `node:${x}`]).flat(),
   plugins: [
 		compat,
+    // Custom plugin to skip resolution for node: prefixed modules - must run before resolver()
+    {
+      name: 'skip-node-builtins',
+      resolveId(source) {
+        if (source.startsWith('node:')) {
+          return { id: source, external: true };
+        }
+        return null;
+      }
+    },
     resolver(),
     templateTag(),
     nodeResolve({
