@@ -1,4 +1,4 @@
-/**
+/** do we need this?
  * Fake TTY implementation for testing terminal output
  * Simulates actual terminal behavior with a 2D character buffer
  */
