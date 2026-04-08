@@ -16,6 +16,32 @@ export { default as Newline } from './components/Newline.gts';
 export { default as Spacer } from './components/Spacer.gts';
 export { default as Static } from './components/Static.gts';
 
+export {
+  createHotContext,
+  getModuleCallbacks,
+  handleModuleUpdate,
+  normalizeModuleId,
+  resolveDepPath,
+} from './hmr';
+export { createHotContextInjectionPlugin } from './hmr-babel';
+export { FileWatcher, startFileWatcher, stopFileWatcher } from './file-watcher';
+export { initializeHMR } from './hmr-init';
+
+// Loader utilities for Node.js loader customization
+export {
+  tryExtensions,
+  createEmberResolverContext,
+  transformCode,
+  shouldTransformFile,
+  createTransformContext,
+  createTransformRequest,
+  configureLoaderHMR,
+  createResolveFunction,
+  createLoadFunction,
+  createLoaderHelpers,
+  normalizeFilePath,
+} from './loader-utils';
+
 // Test utilities
 export { FakeTTY } from './test-utils/FakeTTY';
 export { resetStaticCache } from './render/collect-lines';

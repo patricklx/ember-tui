@@ -40,7 +40,14 @@ export function startRender(
 ): void {
   // Initial clear and render
   clearScreen();
+  
+  // Force immediate render
   render(document.body!);
+  
+  // Force flush to ensure output is written
+  if (process.stdout && typeof (process.stdout as any).flush === 'function') {
+    (process.stdout as any).flush();
+  }
 
   // Set up reactive rendering on backburner end
   _backburner.on('end', () => render(document.body!));
@@ -51,49 +58,49 @@ export function startRender(
   // Set up raw mode for input (only if stdin is a TTY)
   if (stdin.isTTY && typeof stdin.setRawMode === 'function') {
     stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+
+    // Handle keyboard input - only when stdin is a TTY
+    stdin.on('data', function(keyBuffer){
+      const key = keyBuffer.toString();
+
+      // Detect Alt+ key combinations
+      // Alt+key produces escape sequence: \x1b followed by the key
+      const isAlt = key.length === 2 && key[0] === '\x1b' && key[1] !== '[';
+      
+      // Detect Ctrl+ key combinations
+      // Ctrl+key produces ASCII codes 1-26 (Ctrl+A = 1, Ctrl+B = 2, etc.)
+      // But exclude \r (13) and \n (10) which are Enter/newline
+      const charCode = key.charCodeAt(0);
+      const isCtrl = charCode >= 1 && charCode <= 26 && key !== '\r' && key !== '\n';
+      
+      // Extract the actual key (without modifiers)
+      let actualKey: string;
+      if (isAlt) {
+        actualKey = key[1];
+      } else if (isCtrl) {
+        actualKey = String.fromCharCode(charCode + 96);
+      } else {
+        actualKey = key;
+      }
+      
+      // Map to standard key name
+      const keyName = mapKeyName(actualKey);
+
+      // Dispatch keydown event to document
+      const event = {
+        type: 'keydown',
+        key: keyName,
+        keyCode: key.charCodeAt(0),
+        ctrlKey: isCtrl,
+        altKey: isAlt,
+        preventDefault: () => {},
+        stopPropagation: () => {}
+      };
+      document.dispatchEvent(event);
+    });
   }
-  stdin.resume();
-  stdin.setEncoding('utf8');
-
-  // Handle keyboard input
-  stdin.on('data', function(keyBuffer){
-    const key = keyBuffer.toString();
-
-    // Detect Alt+ key combinations
-    // Alt+key produces escape sequence: \x1b followed by the key
-    const isAlt = key.length === 2 && key[0] === '\x1b' && key[1] !== '[';
-    
-    // Detect Ctrl+ key combinations
-    // Ctrl+key produces ASCII codes 1-26 (Ctrl+A = 1, Ctrl+B = 2, etc.)
-    // But exclude \r (13) and \n (10) which are Enter/newline
-    const charCode = key.charCodeAt(0);
-    const isCtrl = charCode >= 1 && charCode <= 26 && key !== '\r' && key !== '\n';
-    
-    // Extract the actual key (without modifiers)
-    let actualKey: string;
-    if (isAlt) {
-      actualKey = key[1];
-    } else if (isCtrl) {
-      actualKey = String.fromCharCode(charCode + 96);
-    } else {
-      actualKey = key;
-    }
-    
-    // Map to standard key name
-    const keyName = mapKeyName(actualKey);
-
-    // Dispatch keydown event to document
-    const event = {
-      type: 'keydown',
-      key: keyName,
-      keyCode: key.charCodeAt(0),
-      ctrlKey: isCtrl,
-      altKey: isAlt,
-      preventDefault: () => {},
-      stopPropagation: () => {}
-    };
-    document.dispatchEvent(event);
-  });
 
   // Handle terminal resize
   stdout.on('resize', () => {

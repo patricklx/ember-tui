@@ -56,7 +56,6 @@ async function downloadFile(url, destination) {
 }
 
 async function setup() {
-  console.log(`Creating new Ember app: ${appName}...`);
 
   // Create new Ember app with TypeScript
   try {

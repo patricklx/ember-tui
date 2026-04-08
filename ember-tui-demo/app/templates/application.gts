@@ -5,6 +5,7 @@ import { service } from '@ember/service';
 import type RouterService from '@ember/routing/router-service';
 import { hideCursor } from "ember-tui";
 import Gradient from "../components/Gradient.gts";
+import HmrTest from "../components/HmrTest.gts";
 
 
 const eq = (a: any, b: any) => a === b;
@@ -43,7 +44,7 @@ export default class AppTemplate extends Component {
 	willDestroy() {
 		super.willDestroy();
 		if (typeof document !== 'undefined') {
-			document.removeEventListener('keypress', this.handleKeyPress);
+			document.removeEventListener('keydown', this.handleKeyPress);
 		}
 	}
 
@@ -85,16 +86,17 @@ export default class AppTemplate extends Component {
 	}
 
 	startCounter = () => {
-		setInterval(() => {
-			this.counter += 1;
-		}, 1000);
+		// setInterval(() => {
+		// 	this.counter += 1;
+		// }, 1000);
 	}
 
 	<template>
 		{{(this.startCounter)}}
     <Box @flexDirection="column"  @height='100%' @alignItems={{if (eq this.selectedView 'file-editor') 'flex-start' 'center'}}>
+      <HmrTest />
       {{#if (eq this.selectedView "menu")}}
-        <Gradient @name="rainbow" >Ember Console Demo - Main Menu {{this.counter}}</Gradient>
+        <Gradient @name="rainbow" >Ember Console Demo - Main Menu {{14}}</Gradient>
         <Text>---</Text>
         <Text @color="white">[1] Colors Demo</Text>
         <Text @color="white">[2] Lorem Ipsum Generator</Text>

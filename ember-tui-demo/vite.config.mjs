@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import { ember, extensions } from "@embroider/vite";
 import { babel } from "@rollup/plugin-babel";
+import { hmr } from "ember-vite-hmr";
 
 export default defineConfig({
 	resolve: {
@@ -35,5 +36,6 @@ export default defineConfig({
 			babelHelpers: "runtime",
 			extensions,
 		}),
+		hmr(),
 	],
 });

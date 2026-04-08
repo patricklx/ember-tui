@@ -49,8 +49,8 @@ interface RenderState {
 
 const state: RenderState = {
 	lines: [],
-	terminalHeight: process.stdout.rows || 15,
-	terminalWidth: process.stdout.columns || 80,
+	terminalHeight: process.stdout.rows ?? 24,
+	terminalWidth: process.stdout.columns ?? 80,
 	scrollOffset: 0,
 	scrollBufferSize: 0,
 	cursor: {
@@ -59,6 +59,32 @@ const state: RenderState = {
 		state: 'visible'
 	}
 };
+
+// Force flush stdout after writes in non-TTY environments
+function flushStdout() {
+	// Try multiple methods to flush stdout in non-TTY environments
+	const stdout = process.stdout as any;
+	
+	// Method 1: Direct _handle flush
+	if (typeof stdout._handle?.flush === 'function') {
+		stdout._handle.flush();
+	}
+	
+	// Method 2: Cork/uncork to force flush
+	if (typeof stdout.uncork === 'function') {
+		stdout.uncork();
+	}
+	
+	// Method 3: Write empty buffer to trigger flush
+	if (!process.stdout.isTTY) {
+		process.stdout.write('');
+	}
+	
+	// Method 4: For Node.js streams, call internal flush
+	if (typeof stdout.flush === 'function') {
+		stdout.flush();
+	}
+}
 
 
 /**
@@ -688,6 +714,7 @@ function renderInternal(rootNode: ElementNode): void {
 				process.stdout.write(expandTabs(newLines[i]));
 			}
 			state.lines = newLines;
+			flushStdout(); // Flush output in non-TTY environments
 		} finally {
 			if (state.cursor.state === 'visible') {
 				process.stdout.write('\x1b[?25h'); // Show cursor
@@ -750,6 +777,9 @@ function renderInternal(rootNode: ElementNode): void {
 
 		// Update state with all lines (not just visible ones)
 		state.lines = newLines;
+		
+		// Always flush after render to ensure output is visible in non-TTY mode
+		flushStdout();
 
 	} finally {
 		// Show cursor again
@@ -767,7 +797,9 @@ function renderInternal(rootNode: ElementNode): void {
  */
 export function clearScreen(): void {
 	// Clear screen and scrollback buffer
+	// Write even in non-TTY mode for testing purposes
 	process.stdout.write('\x1b[2J\x1b[3J\x1b[H');
+	flushStdout(); // Flush output in non-TTY environments
 	state.lines = [];
 	state.scrollOffset = 0;
 }
