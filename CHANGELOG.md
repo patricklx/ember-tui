@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-04-08)
+
+* ember-tui 0.7.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-tui`
+  * [#69](https://github.com/patricklx/ember-tui/pull/69) add hmr support  ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-03-27)
 
 * ember-tui 0.6.0 (minor)
