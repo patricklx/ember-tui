@@ -16,4 +16,20 @@ declare global {
       _TEMPLATE_ONLY_GLIMMER_COMPONENTS?: boolean;
     };
   }
+
+  interface ImportMetaHot {
+    data: any;
+    accept(deps: string, cb: (mod: any) => void): void;
+    accept(deps: readonly string[], cb: (mod: any) => void): void;
+    accept(cb: (mod: any) => void): void;
+    accept(): void;
+    dispose(cb: (data: any) => void): void;
+    decline(): void;
+    invalidate(): void;
+    on(event: string, cb: (...args: any[]) => void): void;
+  }
+
+  interface ImportMeta {
+    hot?: ImportMetaHot;
+  }
 }

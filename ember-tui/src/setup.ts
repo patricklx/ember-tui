@@ -80,6 +80,8 @@ function setupInspectorSupport() {
     g.document.documentElement.dataset['emberExtension'] = '1';
   }
 
+  g.document.body.cloneNode = () => g.document.body;
+
   class Port {
     private msgId: number;
     listeners: any[];

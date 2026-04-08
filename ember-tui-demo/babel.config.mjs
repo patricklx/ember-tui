@@ -4,9 +4,25 @@ import {
   babelCompatSupport,
   templateCompatSupport,
 } from '@embroider/compat/babel';
+import { hotAstProcessor } from 'ember-vite-hmr/lib/babel-plugin';
+import { createHotContextInjectionPlugin } from 'ember-tui/hmr-babel';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+
+const hotContextInjectionPlugin = (babel) =>
+  createHotContextInjectionPlugin(babel, {
+    hmrRuntimeImport: require.resolve('ember-tui/hmr'),
+    exclude: (filename) =>
+      filename.endsWith('/hmr.ts') ||
+      filename.endsWith('/hmr.js') ||
+      filename.includes('node_modules') && !filename.includes('ember-vite-hmr'),
+  });
 
 export default {
   plugins: [
+    ['ember-vite-hmr/lib/babel-plugin'],
+    hotContextInjectionPlugin,
     [
       '@babel/plugin-transform-typescript',
       {
@@ -23,7 +39,7 @@ export default {
           'ember-cli-htmlbars-inline-precompile',
           'htmlbars-inline-precompile',
         ],
-        transforms: [...templateCompatSupport()],
+        transforms: [...templateCompatSupport(), hotAstProcessor.transform],
       },
     ],
     [
