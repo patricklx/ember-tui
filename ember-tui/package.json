@@ -116,7 +116,7 @@
     "eslint-plugin-ember-template-lint": "^0.21.0",
     "eslint-plugin-n": "^17.21.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-qunit": "^8.1.1",
+    "eslint-plugin-qunit": "^8.2.6",
     "fix-bad-declaration-output": "^1.1.4",
     "globals": "^16.5.0",
     "rollup": "^4.9.0",
