@@ -161,6 +161,8 @@ export async function transformCode(
 export function shouldTransformFile(filePath: string): boolean {
   return (
     !filePath.includes('node_modules') ||
+    filePath.includes('@embroider/macros') ||
+    filePath.includes('@embroider/router') ||
     filePath.includes('.embroider') ||
     filePath.includes('-embroider-') ||
     filePath.includes('/ember-source/') ||

@@ -98,6 +98,11 @@ export default class Box extends Component<BoxSignature> {
       align-items={{@alignItems}}
       align-self={{@alignSelf}}
       justify-content={{@justifyContent}}
+      position={{@position}}
+      top={{@top}}
+      bottom={{@bottom}}
+      left={{@left}}
+      right={{@right}}
       width={{@width}}
       height={{@height}}
       min-width={{@minWidth}}
