@@ -15,6 +15,7 @@ export { default as Transform } from './components/Transform.gts';
 export { default as Newline } from './components/Newline.gts';
 export { default as Spacer } from './components/Spacer.gts';
 export { default as Static } from './components/Static.gts';
+export { default as InspectorSupport } from './components/InspectorSupport.gts';
 
 export {
   createHotContext,

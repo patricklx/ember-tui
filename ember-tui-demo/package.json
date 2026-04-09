@@ -4,7 +4,7 @@
 	"description": "Demo application for ember-tui",
 	"private": true,
 	"scripts": {
-		"start": "NODE_ENV=development node ${NODE_INSPECT:+--inspect=${NODE_INSPECT}} --enable-source-maps --loader ./loader.mjs app/app.ts",
+		"start": "NODE_ENV=development node --inspect=9231 --enable-source-maps --loader ./loader.mjs app/app.ts",
 		"dev": "rollup -c -w",
 		"build": "rollup -c",
 		"lint": "concurrently 'pnpm:lint:*(!fix)' --names 'lint:'",
@@ -14,7 +14,8 @@
 		"lint:types": "ember-tsc --noEmit",
 		"prebuild": "EMBROIDER_PREBUILD=true pnpm ember build",
 		"test": "FORCE_COLOR=2 vitest --run --no-file-parallelism ./tests",
-		"test:update": "vitest --run --update"
+		"test:update": "vitest --run --update",
+		"inspect": "ember-inspector-server"
 	},
 	"exports": {
 		"./*": "./app/*",
@@ -24,7 +25,9 @@
 		"@babel/runtime": "^7.29.2",
 		"@glimmer/component": "^2.0.0",
 		"chalk": "^5.3.0",
+		"ember-inspector": "github:emberjs/ember-inspector#main",
 		"ember-load-initializers": "^3.0.1",
+		"ember-native-devtools": "^3.0.1",
 		"ember-resolver": "^13.2.0",
 		"ember-source": "^6.11.0",
 		"ember-tui": "link:../ember-tui",
@@ -41,6 +44,7 @@
 		"@ember/test-helpers": "^5.4.1",
 		"@embroider/compat": "^4.1.17",
 		"@embroider/core": "^4.4.7",
+		"@embroider/legacy-inspector-support": "^0.1.3",
 		"@embroider/macros": "^1.20.2",
 		"@embroider/vite": "^1.7.1",
 		"@eslint/js": "^9.28.0",

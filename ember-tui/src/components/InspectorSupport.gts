@@ -34,7 +34,7 @@ export default class InspectorSupport extends Component<InspectorSupportInterfac
         viewInspection._showTooltip = () => {};
         const _showHighlight = viewInspection._showHighlight;
         viewInspection._hideHighlight = () => {
-          this.highlight.setAttribute('display', 'flex');
+          this.highlight.setAttribute('display', 'none');
         };
         viewInspection._showHighlight = (node: ViewNode, rect: any) => {
           (this.highlight as any).style = {};

@@ -30,6 +30,10 @@ interface Attributes {
   readonly 'justify-content'?: Styles['justifyContent'];
 
   readonly position?: Styles['position'];
+  readonly top?: Styles['top'];
+  readonly left?: Styles['left'];
+  readonly right?: Styles['right'];
+  readonly bottom?: Styles['bottom'];
 
   // Dimensions
   readonly width?: Styles['width'];

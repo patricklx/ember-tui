@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
-import { Text, Box } from 'ember-tui';
+import { Text, Box, InspectorSupport } from 'ember-tui';
 import { tracked } from "@glimmer/tracking";
-import { service } from '@ember/service';
+import { service } from "@ember/service";
 import type RouterService from '@ember/routing/router-service';
 import { hideCursor } from "ember-tui";
 import Gradient from "../components/Gradient.gts";
@@ -117,5 +117,6 @@ export default class AppTemplate extends Component {
         </Box>
       {{/if}}
     </Box>
+		<InspectorSupport />
 	</template>
 }

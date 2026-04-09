@@ -342,13 +342,15 @@ export type LoaderHelpers = {
 /**
  * Create default loader plugins and resolver helpers
  */
-export function createLoaderHelpers(): LoaderHelpers {
+export function createLoaderHelpers(enableHMR = false): LoaderHelpers {
   const hmrPlugin = hmr();
   const emberResolver = resolver();
   const emberTemplateTag = templateTag();
   const resolverLoader = new ResolverLoader(process.cwd());
 
-  process.env['EMBER_VITE_HMR_ENABLED'] = 'true';
+  if (enableHMR) {
+    process.env['EMBER_VITE_HMR_ENABLED'] = 'true';
+  }
 
   return {
     hmrPlugin,

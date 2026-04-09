@@ -4,13 +4,17 @@ import Resolver from 'ember-resolver/index.js';
 import ENV from './config/environment.ts';
 import compatModules from '@embroider/virtual/compat-modules';
 import ApplicationInstance from "@ember/application/instance";
-import { setup, DocumentNode, startRender, initializeHMR } from 'ember-tui';
+import { setup, DocumentNode, startRender, initializeHMR, hideCursor } from 'ember-tui';
+import { setupEmberInspector, loadEmberDebug } from 'ember-native-devtools/client';
+import setupInspector from '@embroider/legacy-inspector-support/ember-source-4.12';
 import loadInitializers from 'ember-load-initializers';
 
 // Set up Ember globals
 if (typeof window !== 'undefined') {
   window.EmberENV = ENV.EmberENV;
 }
+
+hideCursor();
 
 
 if (import.meta.hot) {
@@ -35,6 +39,7 @@ class App extends EmberApplication {
   modulePrefix = ENV.modulePrefix;
   podModulePrefix = `${ENV.modulePrefix}/pods`;
   Resolver = Resolver.withModules(compatModules);
+  inspector = setupInspector(this);
 
   buildInstance() {
     const instance = super.buildInstance();
@@ -102,6 +107,8 @@ async function startApp() {
   (globalThis as any).app = app;
 
   startRender(document as any as DocumentNode);
+  setupEmberInspector();
+  await loadEmberDebug();
 
   // Force initial render to complete and flush output
   await new Promise(resolve => setTimeout(resolve, 100));
