@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "plugins": [{
       "name": "@glint/tsserver-plugin"
     }],

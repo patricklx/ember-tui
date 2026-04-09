@@ -14,13 +14,9 @@ const eq = (a: any, b: any) => a === b;
  * Main application template with keyboard navigation
  */
 export default class AppTemplate extends Component {
-	// @ts-expect-error - decorator syntax issue in .gts files
 	@service declare router: RouterService;
-	// @ts-expect-error - decorator syntax issue in .gts files
 	@tracked selectedView: 'colors' | 'lorem' | 'tomster' | 'box-demo' | 'static-test' | 'file-editor' | 'menu' | 'component-test' = 'menu';
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked counter = 0;
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked debug = [];
 
   get debugMessages() {

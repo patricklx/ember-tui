@@ -6,7 +6,6 @@ import { tracked } from '@glimmer/tracking';
  * Simple component for testing HMR functionality
  */
 export default class HmrTest extends Component {
-  // @ts-expect-error - decorator syntax issue in .gts files
   @tracked message = 'Initial HMR Test Message';
 
   <template>

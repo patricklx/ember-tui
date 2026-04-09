@@ -9,9 +9,7 @@ interface Task {
 }
 
 class StaticTest extends Component {
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked tasks: Task[] = [];
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked counter = 0;
 
   constructor(owner: unknown, args: any) {

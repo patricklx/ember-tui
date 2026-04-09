@@ -7,9 +7,7 @@ import chalk from 'chalk';
  * Lorem Ipsum generator view with incremental text generation
  */
 export default class LoremTemplate extends Component {
-	// @ts-expect-error - decorator syntax issue in .gts files
 	@tracked loremText = '';
-	// @ts-expect-error - decorator syntax issue in .gts files
 	@tracked loremIndex = 0;
 	loremIntervalId: number | null = null;
 

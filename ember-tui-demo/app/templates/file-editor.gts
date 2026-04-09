@@ -7,23 +7,14 @@ import * as process from "node:process";
 import { cursorTo, hideCursor, showCursor } from "ember-tui";
 
 export default class FileEditorTemplate extends Component {
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked mode: 'list' | 'edit' = 'list';
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked files: string[] = [];
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked selectedIndex = 0;
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked currentFile: string | null = null;
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked fileContent: string[] = [];
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked cursorLine = 0;
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked cursorCol = 0;
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked scrollOffset = 0;
-	// @ts-expect-error - decorator syntax issue in .gts files
   @tracked statusMessage = '';
 
 	maxVisibleLines = (process.stdout.rows || 22) - 3 - 7;
