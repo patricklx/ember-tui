@@ -114,7 +114,7 @@ async function startApp() {
 if (!process.env.VITEST || process.env.TEST_MODE) {
   startApp()
     .then(() => {
-      console.error('[main] App started successfully, entering event loop');
+      // console.error('[main] App started successfully, entering event loop');
       // Start rendering to terminal
     })
     .catch((error) => {

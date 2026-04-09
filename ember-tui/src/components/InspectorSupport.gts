@@ -40,7 +40,7 @@ export default class InspectorSupport extends Component<InspectorSupportInterfac
           (this.highlight as any).style = {};
           _showHighlight.call(this, node, rect);
           this.highlight.setAttribute('display', 'flex');
-          const layout = node.yogaNode!.getComputedLayout();
+          const layout = rect;
           this.highlight.setAttribute(
             'left',
             layout.left,
@@ -86,9 +86,9 @@ export default class InspectorSupport extends Component<InspectorSupportInterfac
     }.bind(this),
   );
   <template>
+    <Box @position='absolute' @borderStyle="single" {{this.setupHighlight}} />
+    <Box @position='absolute' {{this.setupTooltip}} />
     <Box @position='absolute' {{ref this 'page'}}>
-      <Box @borderStyle="single" {{this.setupHighlight}} />
-      <Box {{this.setupTooltip}} />
       {{(this.setupInspector)}}
     </Box>
   </template>

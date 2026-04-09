@@ -318,13 +318,27 @@ export default class ViewNode<Attributes = any> {
     height: number;
   } | null {
     if (this.yogaNode) {
-      /*return {
-        left: this.yogaNode.getComputedLeft(),
-        top: this.yogaNode.getComputedTop(),
-        bottom: this.yogaNode.getComputedBottom(),
-        width: this.yogaNode.getComputedWidth(),
-        height: this.yogaNode.getComputedHeight()
-      }*/
+      let left = 0;
+      let top = 0;
+
+      // Traverse up the parent chain to calculate absolute position
+      let current = this.yogaNode as typeof this.yogaNode | null;
+      while (current) {
+        const layout = current.getComputedLayout();
+        left += layout.left;
+        top += layout.top;
+        current = current.getParent();
+      }
+
+      const layout = this.yogaNode.getComputedLayout();
+
+      return {
+        left: left,
+        top: top,
+        bottom: top + layout.height,
+        width: layout.width,
+        height: layout.height
+      };
     }
     return null;
   }

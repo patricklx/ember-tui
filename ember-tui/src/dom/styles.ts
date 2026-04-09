@@ -349,13 +349,13 @@ const applyPositionStyles = (node: YogaNode, style: Styles): void => {
 		node.setPosition(Yoga.EDGE_TOP, style['top'] as number || 0);
 	}
 	if ('bottom' in style) {
-		node.setPosition(Yoga.EDGE_TOP, style['bottom'] as number || 0);
+		node.setPosition(Yoga.EDGE_BOTTOM, style['bottom'] as number || 0);
 	}
 	if ('left' in style) {
-		node.setPosition(Yoga.EDGE_TOP, style['left'] as number || 0);
+		node.setPosition(Yoga.EDGE_LEFT, style['left'] as number || 0);
 	}
 	if ('right' in style) {
-		node.setPosition(Yoga.EDGE_TOP, style['right'] as number || 0);
+		node.setPosition(Yoga.EDGE_RIGHT, style['right'] as number || 0);
 	}
 
 };
