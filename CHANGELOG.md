@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-04-09)
+
+* ember-tui 0.7.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#73](https://github.com/patricklx/ember-tui/pull/73) fixes absolute positioning and loading issues in some cases ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-04-08)
 
 * ember-tui 0.7.0 (minor)
