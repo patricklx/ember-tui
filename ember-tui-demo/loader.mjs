@@ -17,7 +17,7 @@ const log = createDebugLogger('log.txt');
 log('[LOADER] Initializing loader.mjs');
 
 // Create shared loader helpers (plugins and resolver)
-const helpers = createLoaderHelpers();
+const helpers = createLoaderHelpers(true);
 log('[LOADER] Plugins initialized');
 
 // Create resolve and load functions with shared helpers
