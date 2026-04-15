@@ -3,7 +3,7 @@ import chalk, { type ForegroundColorName } from 'chalk';
 import type { Styles } from '../styles';
 import colorize from '../colorize';
 import type { LiteralUnion } from "type-fest";
-import ViewNode from "../nodes/ViewNode";
+import type ViewNode from "../nodes/ViewNode";
 
 
 interface Attributes {

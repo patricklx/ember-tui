@@ -1,6 +1,6 @@
-import DocumentNode from './DocumentNode';
-import { getViewMeta } from "../element-registry";
+import type DocumentNode from './DocumentNode';
 import {type Node as YogaNode} from 'yoga-layout';
+import { getViewMeta } from "../view-meta";
 
 function* elementIterator(el: any): Generator<any, void, unknown> {
   yield el;

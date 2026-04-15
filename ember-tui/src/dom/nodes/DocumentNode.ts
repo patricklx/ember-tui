@@ -4,6 +4,7 @@ import TextNode from './TextNode';
 import ViewNode, { type EventListener } from './ViewNode';
 import { createElement } from '../element-registry';
 import { elementIterator } from './element-iterator';
+import type { NativeElementsTagNameMap } from '../native-elements-tag-name-map';
 
 // Type alias for elements with nativeView property
 type NativeElementNode = ViewNode & { nativeView: any };
@@ -78,7 +79,7 @@ export default class DocumentNode extends ViewNode {
   }
 
 	createElement(tagName: string): ElementNode {
-		return createElement(tagName as keyof import('../native-elements-tag-name-map').NativeElementsTagNameMap) as ElementNode;
+		return createElement(tagName as keyof NativeElementsTagNameMap) as ElementNode;
 	}
 
   createComment(text: string) {
@@ -207,6 +208,7 @@ export default class DocumentNode extends ViewNode {
         },
       };
     }
+    return [];
   }
 
   dispatchEvent(event: any) {

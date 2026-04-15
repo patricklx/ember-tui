@@ -1,8 +1,8 @@
 import Component from '@glimmer/component';
 import { modifier } from 'ember-modifier';
-import ViewNode from '../dom/nodes/ViewNode';
-import NativeElementNode from '../dom/nodes/ElementNode';
-import DocumentNode from '../dom/nodes/DocumentNode';
+import type ViewNode from '../dom/nodes/ViewNode';
+import type NativeElementNode from '../dom/nodes/ElementNode';
+import type DocumentNode from '../dom/nodes/DocumentNode';
 import Box from './Box.gts';
 
 const ref = modifier(function setRef(element: any, [context, key]: any) {

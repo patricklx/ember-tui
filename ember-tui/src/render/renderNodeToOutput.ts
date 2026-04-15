@@ -1,7 +1,7 @@
 import Yoga from 'yoga-layout';
 import widestLine from 'widest-line';
 import indentString from 'indent-string';
-import ElementNode from '../dom/nodes/ElementNode';
+import type ElementNode from '../dom/nodes/ElementNode';
 import { TerminaTextElement } from '../dom/native-elements/TerminaTextElement';
 import { TerminalBoxElement } from '../dom/native-elements/TerminalBoxElement';
 import type Output from './Output';

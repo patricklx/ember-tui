@@ -1,8 +1,8 @@
 import Component from '@glimmer/component';
 import { Text, Box, Spacer } from 'ember-tui';
 import { tracked } from '@glimmer/tracking';
-import { readFileSync, readdirSync, writeFileSync, statSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, readdirSync, writeFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
 import * as process from "node:process";
 import { cursorTo, hideCursor, showCursor } from "ember-tui";
 
