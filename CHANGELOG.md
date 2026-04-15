@@ -1,5 +1,10 @@
 # Changelog
 
+
+
+
+
+
 ## Release (2026-04-15)
 
 * ember-tui 1.0.0 (major)
