@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-04-15)
+
+* ember-tui 1.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-tui`
+  * [#75](https://github.com/patricklx/ember-tui/pull/75) refactoring to vite dev server ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-04-09)
 
 * ember-tui 0.7.1 (patch)
