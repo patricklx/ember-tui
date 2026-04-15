@@ -1,10 +1,9 @@
-import 'ember-tui/hmr-init';
 import EmberApplication from '@ember/application';
 import Resolver from 'ember-resolver/index.js';
 import ENV from './config/environment.ts';
 import compatModules from '@embroider/virtual/compat-modules';
 import ApplicationInstance from "@ember/application/instance";
-import { setup, DocumentNode, startRender, initializeHMR, hideCursor } from 'ember-tui';
+import { setup, DocumentNode, startRender, hideCursor } from 'ember-tui';
 import { setupEmberInspector, loadEmberDebug } from 'ember-native-devtools/client';
 import setupInspector from '@embroider/legacy-inspector-support/ember-source-4.12';
 import loadInitializers from 'ember-load-initializers';
@@ -15,7 +14,6 @@ if (typeof window !== 'undefined') {
 }
 
 hideCursor();
-
 
 if (import.meta.hot) {
   let prevCompatModules = Object.assign({}, compatModules) as any;
@@ -29,9 +27,8 @@ if (import.meta.hot) {
       }
     }
     prevCompatModules = newModule.default;
-  })
+  });
 }
-
 
 class App extends EmberApplication {
   rootElement = ENV.rootElement;
@@ -47,7 +44,7 @@ class App extends EmberApplication {
       options.isInteractive = true;
       options.document = globalThis.document;
       ApplicationInstance.prototype.setupRegistry.call(instance, options);
-    }
+    };
     return instance;
   }
 }
@@ -57,17 +54,17 @@ loadInitializers(App, ENV.modulePrefix, compatModules);
 export default App;
 
 function init(
-	Application: typeof EmberApplication,
-	env: any
+  Application: typeof EmberApplication,
+  env: any
 ) {
-	env.rootElement = DocumentNode.getInstance().body;
+  env.rootElement = DocumentNode.getInstance().body;
 
-	const app = Application.create() as any;
-	app.ENV = env;
+  const app = Application.create() as any;
+  app.ENV = env;
 
-	app.register('config:environment', env);
+  app.register('config:environment', env);
 
-	return app;
+  return app;
 }
 
 async function boot() {
@@ -75,11 +72,6 @@ async function boot() {
     try {
       // Set up the terminal environment (creates document, window, etc.)
       setup();
-
-      // Initialize HMR (file watching and hot reload)
-      if (process.env.NODE_ENV !== 'production') {
-        initializeHMR();
-      }
 
       console.error('🚀 Starting ember-tui Application...\n');
 
@@ -96,7 +88,7 @@ async function startApp() {
 
   const document = globalThis.document;
 
-	const app = init(App, ENV)
+  const app = init(App, ENV);
   // Visit the static-test route to test Static component
   await app.visit('/', {
     document: document as any,
@@ -129,5 +121,3 @@ if (!process.env.VITEST || process.env.TEST_MODE) {
       process.exit(1);
     });
 }
-
-

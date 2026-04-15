@@ -2,7 +2,7 @@ import ElementNode from "../dom/nodes/ElementNode";
 import { calculateLayout } from "../dom/layout";
 import Output from "./Output";
 import { renderNodeToOutput } from "./renderNodeToOutput";
-import { TerminalBoxElement } from "../dom/native-elements/TerminalBoxElement";
+import type { TerminalBoxElement } from "../dom/native-elements/TerminalBoxElement";
 
 // Cache for static element output
 let staticOutputCache: string[] = [];

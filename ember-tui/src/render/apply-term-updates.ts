@@ -3,10 +3,10 @@
  * Renders components to terminal output using layout-based rendering
  */
 
-import ElementNode from "../dom/nodes/ElementNode";
+import type ElementNode from "../dom/nodes/ElementNode";
 import { extractLines } from "./collect-lines";
-import { DocumentNode } from "../index";
-import * as Process from "node:process";
+import type { DocumentNode } from "../index";
+import type * as Process from "node:process";
 import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo, setProcess } from "./helpers";
 
 // Re-export helper functions for testing

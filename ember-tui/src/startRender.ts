@@ -1,5 +1,5 @@
 import { _backburner } from "@ember/runloop";
-import { DocumentNode } from "./index";
+import type { DocumentNode } from "./index";
 import { clearScreen, handleResize, render } from "./render/apply-term-updates";
 
 /**

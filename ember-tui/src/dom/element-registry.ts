@@ -1,8 +1,8 @@
 import type { NativeElementsTagNameMap } from './native-elements-tag-name-map';
-import ElementNode from "./nodes/ElementNode";
+import type ElementNode from "./nodes/ElementNode";
+import { normalizeElementName } from "./view-meta";
 
 const elementMap: Record<string, any> = {};
-const dashRegExp = /-/g;
 
 const defaultViewMeta = {
   skipAddToDom: false,
@@ -12,9 +12,7 @@ const defaultViewMeta = {
   component: null,
 };
 
-export function normalizeElementName(elementName: string) {
-  return `${elementName.replace(dashRegExp, '').toLowerCase()}`;
-}
+
 
 export function registerElement(
   elementName: string,
@@ -60,18 +58,7 @@ export function getViewClass(elementName: string) {
   }
 }
 
-export function getViewMeta(elementName: string) {
-  const normalizedName = normalizeElementName(elementName);
 
-  let meta = defaultViewMeta;
-  const entry = elementMap[normalizedName];
-
-  if (entry && entry.meta) {
-    meta = entry.meta;
-  }
-
-  return meta;
-}
 
 export function isKnownView(elementName: string) {
   return elementMap[normalizeElementName(elementName)];

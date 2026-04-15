@@ -1,5 +1,5 @@
-import { TerminaTextElement } from "./native-elements/TerminaTextElement";
-import { TerminalBoxElement } from "./native-elements/TerminalBoxElement";
+import type { TerminaTextElement } from "./native-elements/TerminaTextElement";
+import type { TerminalBoxElement } from "./native-elements/TerminalBoxElement";
 
 export interface NativeElementsTagNameMap {
   "terminal-text": TerminaTextElement;

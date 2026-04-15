@@ -1,5 +1,5 @@
 import colorize from '../dom/colorize';
-import ElementNode from '../dom/nodes/ElementNode';
+import type ElementNode from '../dom/nodes/ElementNode';
 import type Output from './Output';
 
 /**

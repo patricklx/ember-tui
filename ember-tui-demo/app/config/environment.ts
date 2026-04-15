@@ -2,7 +2,7 @@ import { assert } from '@ember/debug';
 
 // eslint-disable-next-line
 // @ts-ignore
-import contentFor from '.embroider/content-for.json';
+import contentFor from '.embroider/content-for.json' with { type: 'json' };
 
 const head = contentFor['/index.html'].head;
 const rawConfig = head.substring(head.indexOf('content="') + 'content="'.length, head.indexOf('" />'))

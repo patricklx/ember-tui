@@ -5,24 +5,11 @@ import {
   templateCompatSupport,
 } from '@embroider/compat/babel';
 import { hotAstProcessor } from 'ember-vite-hmr/lib/babel-plugin';
-import { createHotContextInjectionPlugin } from 'ember-tui/hmr-babel';
-import { createRequire } from 'node:module';
-
-const require = createRequire(import.meta.url);
-
-const hotContextInjectionPlugin = (babel) =>
-  createHotContextInjectionPlugin(babel, {
-    hmrRuntimeImport: require.resolve('ember-tui/hmr'),
-    exclude: (filename) =>
-      filename.endsWith('/hmr.ts') ||
-      filename.endsWith('/hmr.js') ||
-      filename.includes('node_modules') && !filename.includes('ember-vite-hmr'),
-  });
 
 export default {
+  sourceType: 'module',
   plugins: [
     ['ember-vite-hmr/lib/babel-plugin'],
-    hotContextInjectionPlugin,
     [
       '@babel/plugin-transform-typescript',
       {
