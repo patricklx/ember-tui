@@ -13,7 +13,7 @@
 		"lint:js:fix": "eslint . --fix",
 		"lint:types": "ember-tsc --noEmit",
 		"prebuild": "EMBROIDER_PREBUILD=true pnpm ember build",
-		"test": "FORCE_COLOR=2 vitest --run --no-file-parallelism ./tests",
+		"test": "NODE_OPTIONS=\"--expose-gc\" FORCE_COLOR=2 vitest --run --no-file-parallelism ./tests",
 		"test:update": "vitest --run --update",
 		"inspect": "ember-inspector-server"
 	},
