@@ -110,11 +110,16 @@ export class TerminaTextElement extends ElementNode<Attributes> {
 		}
     // Join with space, but normalize multiple spaces to single space
     const t = parts.join(' ');
-    this.text = this.transform(t);
-
-    // Notify parent TerminaTextElement to update if this element's text changed
-    if (this.parentNode instanceof TerminaTextElement) {
-      this.parentNode.updateText();
+    const newText = this.transform(t);
+    
+    // Only update and propagate if text actually changed to prevent unnecessary updates
+    if (this.text !== newText) {
+      this.text = newText;
+      
+      // Notify parent TerminaTextElement to update if this element's text changed
+      if (this.parentNode instanceof TerminaTextElement) {
+        this.parentNode.updateText();
+      }
     }
   }
 

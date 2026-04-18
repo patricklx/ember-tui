@@ -9,13 +9,16 @@ import measureText from '../render/measure-text';
  */
 export function createYogaNode(element: ElementNode): YogaNode {
 	const yogaNode = Yoga.Node.create();
-	return updateYogaNodeFromElement(yogaNode, element);
+	return updateYogaNodeFromElement(yogaNode, element, true);
 }
 
 /**
  * Updates an existing Yoga node with styles from element attributes
+ * @param yogaNode - The Yoga node to update
+ * @param element - The element to read styles from
+ * @param setMeasureFunc - Whether to set the measure function (only on creation, not updates)
  */
-function updateYogaNodeFromElement(yogaNode: YogaNode, element: ElementNode): YogaNode {
+function updateYogaNodeFromElement(yogaNode: YogaNode, element: ElementNode, setMeasureFunc = false): YogaNode {
 	// Apply styles from the element's attributes
 	const styleAttr = element.getAttribute('style');
 	if (styleAttr && typeof styleAttr === 'object') {
@@ -174,8 +177,9 @@ function updateYogaNodeFromElement(yogaNode: YogaNode, element: ElementNode): Yo
 		applyStyles(yogaNode, styles);
 	}
 
-	// Set measure function for text elements
-	if (element.tagName === 'terminal-text') {
+	// Set measure function for text elements ONLY on initial creation
+	// This prevents memory leaks from creating new closures on every render
+	if (setMeasureFunc && element.tagName === 'terminal-text') {
 		yogaNode.setMeasureFunc(() => {
 			const text = (element as any).text || '';
 			const dimensions = measureText(text);
@@ -208,8 +212,8 @@ function buildYogaTree(node: ViewNode): void {
 	if (!element.yogaNode) {
 		element.yogaNode = createYogaNode(element);
 	} else {
-		// Update existing node with current element styles
-		updateYogaNodeFromElement(element.yogaNode, element);
+		// Update existing node with current element styles (without resetting measure function)
+		updateYogaNodeFromElement(element.yogaNode, element, false);
 	}
 
 	// terminal-text elements are leaf nodes in Yoga tree (they have measure functions)
