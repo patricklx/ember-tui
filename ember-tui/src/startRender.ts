@@ -31,6 +31,7 @@ function mapKeyName(rawKey: string): string {
   return keyMap[rawKey] || rawKey;
 }
 
+let disposeActiveRender: (() => void) | undefined;
 
 /**
  * Render a Glimmer component to the terminal
@@ -38,43 +39,49 @@ function mapKeyName(rawKey: string): string {
 export function startRender(
   document: DocumentNode,
 ): void {
+  disposeActiveRender?.();
+
   // Initial clear and render
   clearScreen();
-  
+
   // Force immediate render
   render(document.body!);
-  
+
   // Force flush to ensure output is written
   if (process.stdout && typeof (process.stdout as any).flush === 'function') {
     (process.stdout as any).flush();
   }
 
-  // Set up reactive rendering on backburner end
-  _backburner.on('end', () => render(document.body!));
+  const renderOnEnd = () => render(document.body!);
+  _backburner.on('end', renderOnEnd);
 
   const stdout = process.stdout;
   const stdin = process.stdin;
 
+  let restoreRawMode = false;
+  let stdinDataHandler: ((keyBuffer: string | Buffer) => void) | undefined;
+
   // Set up raw mode for input (only if stdin is a TTY)
   if (stdin.isTTY && typeof stdin.setRawMode === 'function') {
     stdin.setRawMode(true);
+    restoreRawMode = true;
     stdin.resume();
     stdin.setEncoding('utf8');
 
     // Handle keyboard input - only when stdin is a TTY
-    stdin.on('data', function(keyBuffer){
+    stdinDataHandler = function (keyBuffer) {
       const key = keyBuffer.toString();
 
       // Detect Alt+ key combinations
       // Alt+key produces escape sequence: \x1b followed by the key
       const isAlt = key.length === 2 && key[0] === '\x1b' && key[1] !== '[';
-      
+
       // Detect Ctrl+ key combinations
       // Ctrl+key produces ASCII codes 1-26 (Ctrl+A = 1, Ctrl+B = 2, etc.)
       // But exclude \r (13) and \n (10) which are Enter/newline
       const charCode = key.charCodeAt(0);
       const isCtrl = charCode >= 1 && charCode <= 26 && key !== '\r' && key !== '\n';
-      
+
       // Extract the actual key (without modifiers)
       let actualKey: string;
       if (isAlt) {
@@ -84,7 +91,7 @@ export function startRender(
       } else {
         actualKey = key;
       }
-      
+
       // Map to standard key name
       const keyName = mapKeyName(actualKey);
 
@@ -99,11 +106,12 @@ export function startRender(
         stopPropagation: () => {}
       };
       document.dispatchEvent(event);
-    });
+    };
+
+    stdin.on('data', stdinDataHandler);
   }
 
-  // Handle terminal resize
-  stdout.on('resize', () => {
+  const resizeHandler = () => {
     handleResize(document);
     // Dispatch resize event to document
     const event = {
@@ -112,5 +120,21 @@ export function startRender(
       stopPropagation: () => {}
     };
     document.dispatchEvent(event);
-  });
+  };
+
+  // Handle terminal resize
+  stdout.on('resize', resizeHandler);
+
+  disposeActiveRender = () => {
+    if (stdinDataHandler) {
+      stdin.off('data', stdinDataHandler);
+    }
+
+    stdout.off('resize', resizeHandler);
+    _backburner.off('end', renderOnEnd);
+
+    if (restoreRawMode && stdin.isTTY && typeof stdin.setRawMode === 'function') {
+      stdin.setRawMode(false);
+    }
+  };
 }

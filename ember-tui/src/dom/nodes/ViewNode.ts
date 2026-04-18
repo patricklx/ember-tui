@@ -1,6 +1,7 @@
 import type DocumentNode from './DocumentNode';
 import {type Node as YogaNode} from 'yoga-layout';
 import { getViewMeta } from "../view-meta";
+import { cleanupYogaTree } from '../layout';
 
 function* elementIterator(el: any): Generator<any, void, unknown> {
   yield el;
@@ -192,7 +193,12 @@ export default class ViewNode<Attributes = any> {
   onInsertedChild(_childNode: ViewNode, _index: number) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onRemovedChild(_childNode: ViewNode) {}
+  onRemovedChild(_childNode: ViewNode) {
+    // Clean up Yoga tree when child is removed to prevent memory leaks
+    if (_childNode.nodeType === 1) {
+      cleanupYogaTree(_childNode);
+    }
+  }
 
   insertBefore(childNode: ViewNode, referenceNode: ViewNode) {
     if (!childNode) {
@@ -281,10 +287,17 @@ export default class ViewNode<Attributes = any> {
       throw new Error(`Can't remove child, because its already removed`);
     }
 
+    if (this.yogaNode && childNode.yogaNode && childNode.yogaNode.getParent() === this.yogaNode) {
+      this.yogaNode.removeChild(childNode.yogaNode);
+    }
+
     childNode.parentNode = null;
-
-
     this.childNodes = this.childNodes.filter((node) => node !== childNode);
+
+    if (childNode.nodeType === 1) {
+      cleanupYogaTree(childNode);
+    }
+
     this.onRemovedChild(childNode);
   }
 

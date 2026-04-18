@@ -4,12 +4,29 @@ import type ElementNode from './nodes/ElementNode';
 import type ViewNode from './nodes/ViewNode';
 import measureText from '../render/measure-text';
 
+// WeakMap to store element references - allows GC when elements are removed
+const yogaNodeToElement = new WeakMap<YogaNode, ElementNode>();
+
 /**
  * Creates a Yoga node for an element and applies styles from attributes
  */
 export function createYogaNode(element: ElementNode): YogaNode {
 	const yogaNode = Yoga.Node.create();
+	return updateYogaNodeFromElement(yogaNode, element, true);
+}
 
+/**
+ * Updates an existing Yoga node with styles from element attributes
+ * @param yogaNode - The Yoga node to update
+ * @param element - The element to read styles from
+ * @param setMeasureFunc - Whether to set the measure function (only on creation, not updates)
+ */
+function updateYogaNodeFromElement(yogaNode: YogaNode, element: ElementNode, setMeasureFunc = false): YogaNode {
+	// Always update WeakMap for terminal-text elements to ensure measure function has current element
+	// WeakMap allows GC when elements are removed, preventing memory leaks
+	if (element.tagName === 'terminal-text') {
+		yogaNodeToElement.set(yogaNode, element);
+	}
 	// Apply styles from the element's attributes
 	const styleAttr = element.getAttribute('style');
 	if (styleAttr && typeof styleAttr === 'object') {
@@ -168,10 +185,13 @@ export function createYogaNode(element: ElementNode): YogaNode {
 		applyStyles(yogaNode, styles);
 	}
 
-	// Set measure function for text elements
-	if (element.tagName === 'terminal-text') {
+	// Set measure function for text elements ONLY on initial creation
+	// This prevents memory leaks from creating new closures on every render
+	if (setMeasureFunc && element.tagName === 'terminal-text') {
 		yogaNode.setMeasureFunc(() => {
-			const text = (element as any).text || '';
+			// Get current element from WeakMap (updated on each render)
+			const elem = yogaNodeToElement.get(yogaNode);
+			const text = elem ? (elem as any).text || '' : '';
 			const dimensions = measureText(text);
 			return {
 				width: dimensions.width,
@@ -198,8 +218,13 @@ function buildYogaTree(node: ViewNode): void {
 
 	const element = node as ElementNode;
 
-	// Create Yoga node if it doesn't exist
-  element.yogaNode = createYogaNode(element);
+	// Reuse existing Yoga node to prevent memory leaks from creating new nodes every render
+	if (!element.yogaNode) {
+		element.yogaNode = createYogaNode(element);
+	} else {
+		// Update existing node with current element styles (without resetting measure function)
+		updateYogaNodeFromElement(element.yogaNode, element, false);
+	}
 
 	// terminal-text elements are leaf nodes in Yoga tree (they have measure functions)
 	// They cannot have Yoga children, but can have DOM children for text aggregation
@@ -207,18 +232,56 @@ function buildYogaTree(node: ViewNode): void {
 		return;
 	}
 
+	// Build children recursively first
 	for (let i = 0; i < element.childNodes.length; i++) {
 		const child = element.childNodes[i];
 
 		if (child && child.nodeType === 1 && !child.staticRendered) {
 			const childElement = child as ElementNode;
-
-			// Build child's Yoga tree
 			buildYogaTree(childElement);
+		}
+	}
 
+	// Sync Yoga tree with DOM tree efficiently
+	// Build map of expected children for quick lookup
+	const expectedYogaNodes = new Set<YogaNode>();
+	const expectedOrder: YogaNode[] = [];
+	
+	for (let i = 0; i < element.childNodes.length; i++) {
+		const child = element.childNodes[i];
+		if (child && child.nodeType === 1 && !child.staticRendered) {
+			const childElement = child as ElementNode;
 			if (childElement.yogaNode) {
-				element.yogaNode.insertChild(childElement.yogaNode, element.yogaNode.getChildCount());
+				expectedYogaNodes.add(childElement.yogaNode);
+				expectedOrder.push(childElement.yogaNode);
 			}
+		}
+	}
+
+	// Remove Yoga children that are no longer in DOM (in reverse to avoid index shifts)
+	for (let i = element.yogaNode.getChildCount() - 1; i >= 0; i--) {
+		const yogaChild = element.yogaNode.getChild(i);
+		if (!expectedYogaNodes.has(yogaChild)) {
+			element.yogaNode.removeChild(yogaChild);
+		}
+	}
+
+	// Ensure all expected children are present and in correct order
+	for (let i = 0; i < expectedOrder.length; i++) {
+		const expectedChild = expectedOrder[i];
+		const currentChild: YogaNode | null = i < element.yogaNode.getChildCount() ? element.yogaNode.getChild(i) : null;
+		
+		if (currentChild !== expectedChild) {
+			// Remove from current position if it exists elsewhere
+			const currentParent: YogaNode | null = expectedChild.getParent();
+			if (currentParent === element.yogaNode) {
+				element.yogaNode.removeChild(expectedChild);
+			} else if (currentParent) {
+				// Should not happen, but handle it
+				currentParent.removeChild(expectedChild);
+			}
+			// Insert at correct position
+			element.yogaNode.insertChild(expectedChild, i);
 		}
 	}
 }
@@ -271,15 +334,21 @@ export function cleanupYogaTree(node: ViewNode): void {
 
 	const element = node as ElementNode;
 
-	// Clean up children first
+	// Detach and clean up children first so removed subtrees can be freed eagerly
 	for (const child of element.childNodes) {
 		cleanupYogaTree(child);
 	}
 
-	// Clean up this node
+	// Clean up only this node. Children are already cleaned up recursively.
 	if (element.yogaNode) {
+		const parent = element.yogaNode.getParent();
+		if (parent) {
+			parent.removeChild(element.yogaNode);
+		}
+		// Explicitly delete WeakMap entry to help GC
+		yogaNodeToElement.delete(element.yogaNode);
 		element.yogaNode.unsetMeasureFunc();
-		element.yogaNode.freeRecursive();
+		element.yogaNode.free();
 		element.yogaNode = undefined;
 	}
 }

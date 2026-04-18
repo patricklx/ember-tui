@@ -128,8 +128,9 @@ function setupInspectorSupport() {
 }
 
 export function setup() {
-  // Create the terminal document
+  // Reuse the singleton document, but reset retained DOM/listener state
   const document = TerminalDocumentNode.getInstance();
+  document.reset();
 
 	registerElements();
 

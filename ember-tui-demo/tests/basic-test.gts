@@ -40,6 +40,109 @@ describe("example", () => {
 	});
 });
 
+describe("render pipeline memory usage", () => {
+	test("should not significantly grow heap when rendering the same element repeatedly", async () => {
+		await using ctx = await setupRenderingContext(App);
+
+		await ctx.render(
+			<template>
+				<Text @backgroundColor="green">memory test content</Text>
+			</template>,
+		);
+
+		const iterations = 1000;
+		const warmupIterations = 50;
+
+		for (let i = 0; i < warmupIterations; i++) {
+			render(ctx.element);
+		}
+
+		if (typeof globalThis.gc === "function") {
+			globalThis.gc();
+		}
+
+		const heapBefore = process.memoryUsage().heapUsed;
+
+		for (let i = 0; i < iterations; i++) {
+			render(ctx.element);
+		}
+
+		if (typeof globalThis.gc === "function") {
+			globalThis.gc();
+		}
+
+		const heapAfter = process.memoryUsage().heapUsed;
+		const heapGrowth = heapAfter - heapBefore;
+		const allowedGrowthBytes = 1 * 1024 * 1024;
+
+		expect(heapGrowth).toBeLessThan(allowedGrowthBytes);
+	});
+
+	test("should not leak memory when toggling template elements", async () => {
+		await using ctx = await setupRenderingContext(App);
+		const state = trackedObject({ showFirst: true });
+
+		await ctx.render(
+			<template>
+				{{#if state.showFirst}}
+					<Text @backgroundColor="green">First element</Text>
+				{{else}}
+					<Text @backgroundColor="blue">Second element</Text>
+				{{/if}}
+			</template>,
+		);
+
+		const iterations = 2000;
+		const warmupIterations = 50;
+
+		// Warmup phase
+		for (let i = 0; i < warmupIterations; i++) {
+			state.showFirst = !state.showFirst;
+			await rerender();
+			render(ctx.element);
+		}
+
+		if (typeof globalThis.gc === "function") {
+			globalThis.gc();
+		}
+
+		// Write heap snapshot before test
+		if (typeof (globalThis as any).writeHeapSnapshot === "function") {
+			const beforeSnapshot = (globalThis as any).writeHeapSnapshot('./heap-before.heapsnapshot');
+			console.log('Heap snapshot before:', beforeSnapshot);
+		}
+
+		const heapBefore = process.memoryUsage().heapUsed;
+		console.log('Heap before:', heapBefore);
+
+		// Test phase - toggle elements repeatedly
+		for (let i = 0; i < iterations; i++) {
+			state.showFirst = !state.showFirst;
+			await rerender();
+			render(ctx.element);
+		}
+
+		if (typeof globalThis.gc === "function") {
+			globalThis.gc();
+		}
+
+		const heapAfter = process.memoryUsage().heapUsed;
+		const heapGrowth = heapAfter - heapBefore;
+		console.log('Heap after:', heapAfter);
+		console.log('Heap growth:', heapGrowth, 'bytes (', (heapGrowth / 1024 / 1024).toFixed(2), 'MB)');
+		
+		// Write heap snapshot after test
+		if (typeof (globalThis as any).writeHeapSnapshot === "function") {
+			const afterSnapshot = (globalThis as any).writeHeapSnapshot('./heap-after.heapsnapshot');
+			console.log('Heap snapshot after:', afterSnapshot);
+		}
+
+		const allowedGrowthBytes = 2 * 1024 * 1024;
+
+		expect(heapGrowth).toBeLessThan(allowedGrowthBytes);
+	});
+});
+
 describe("background color clearing", () => {
 	let fakeTTY: FakeTTY;
 
