@@ -4,6 +4,9 @@ import type ElementNode from './nodes/ElementNode';
 import type ViewNode from './nodes/ViewNode';
 import measureText from '../render/measure-text';
 
+// WeakMap to store element references for measure functions without memory leaks
+const yogaNodeToElement = new WeakMap<YogaNode, ElementNode>();
+
 /**
  * Creates a Yoga node for an element and applies styles from attributes
  */
@@ -180,8 +183,11 @@ function updateYogaNodeFromElement(yogaNode: YogaNode, element: ElementNode, set
 	// Set measure function for text elements ONLY on initial creation
 	// This prevents memory leaks from creating new closures on every render
 	if (setMeasureFunc && element.tagName === 'terminal-text') {
-		yogaNode.setMeasureFunc(() => {
-			const text = (element as any).text || '';
+		// Store element reference in WeakMap to avoid memory leaks
+		yogaNodeToElement.set(yogaNode, element);
+		yogaNode.setMeasureFunc((width: number) => {
+			const elem = yogaNodeToElement.get(yogaNode);
+			const text = elem ? (elem as any).text || '' : '';
 			const dimensions = measureText(text);
 			return {
 				width: dimensions.width,
