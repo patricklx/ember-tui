@@ -40,6 +40,45 @@ describe("example", () => {
 	});
 });
 
+describe("render pipeline memory usage", () => {
+	test("should not significantly grow heap when rendering the same element repeatedly", async () => {
+		await using ctx = await setupRenderingContext(App);
+
+		await ctx.render(
+			<template>
+				<Text @backgroundColor="green">memory test content</Text>
+			</template>,
+		);
+
+		const iterations = 500;
+		const warmupIterations = 50;
+
+		for (let i = 0; i < warmupIterations; i++) {
+			render(ctx.element);
+		}
+
+		if (typeof globalThis.gc === "function") {
+			globalThis.gc();
+		}
+
+		const heapBefore = process.memoryUsage().heapUsed;
+
+		for (let i = 0; i < iterations; i++) {
+			render(ctx.element);
+		}
+
+		if (typeof globalThis.gc === "function") {
+			globalThis.gc();
+		}
+
+		const heapAfter = process.memoryUsage().heapUsed;
+		const heapGrowth = heapAfter - heapBefore;
+		const allowedGrowthBytes = 5 * 1024 * 1024;
+
+		expect(heapGrowth).toBeLessThan(allowedGrowthBytes);
+	});
+});
+
 describe("background color clearing", () => {
 	let fakeTTY: FakeTTY;
 
