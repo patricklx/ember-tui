@@ -220,4 +220,18 @@ export default class DocumentNode extends ViewNode {
     }
     return false;
   }
+
+  reset() {
+    this.keypressListeners = [];
+    this.config = undefined;
+    this.page = undefined;
+    this.location = undefined;
+    this.documentElement = {
+      dataset: {},
+    };
+
+    this.head.removeChildren();
+    this.body?.removeChildren();
+    this.nodeMap?.clear();
+  }
 }
