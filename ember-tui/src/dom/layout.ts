@@ -22,9 +22,9 @@ export function createYogaNode(element: ElementNode): YogaNode {
  * @param setMeasureFunc - Whether to set the measure function (only on creation, not updates)
  */
 function updateYogaNodeFromElement(yogaNode: YogaNode, element: ElementNode, setMeasureFunc = false): YogaNode {
-	// Only update Map when setting measure function (on creation)
-	// This prevents memory leaks from constantly updating the Map on every render
-	if (setMeasureFunc && element.tagName === 'terminal-text') {
+	// Always update WeakMap for terminal-text elements to ensure measure function has current element
+	// WeakMap allows GC when elements are removed, preventing memory leaks
+	if (element.tagName === 'terminal-text') {
 		yogaNodeToElement.set(yogaNode, element);
 	}
 	// Apply styles from the element's attributes
@@ -345,7 +345,8 @@ export function cleanupYogaTree(node: ViewNode): void {
 		if (parent) {
 			parent.removeChild(element.yogaNode);
 		}
-		// WeakMap entries are automatically cleaned up by GC
+		// Explicitly delete WeakMap entry to help GC
+		yogaNodeToElement.delete(element.yogaNode);
 		element.yogaNode.unsetMeasureFunc();
 		element.yogaNode.free();
 		element.yogaNode = undefined;
