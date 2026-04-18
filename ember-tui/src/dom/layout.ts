@@ -259,11 +259,11 @@ function buildYogaTree(node: ViewNode): void {
 	// Ensure all expected children are present and in correct order
 	for (let i = 0; i < expectedOrder.length; i++) {
 		const expectedChild = expectedOrder[i];
-		const currentChild = i < element.yogaNode.getChildCount() ? element.yogaNode.getChild(i) : null;
+		const currentChild: YogaNode | null = i < element.yogaNode.getChildCount() ? element.yogaNode.getChild(i) : null;
 		
 		if (currentChild !== expectedChild) {
 			// Remove from current position if it exists elsewhere
-			const currentParent = expectedChild.getParent();
+			const currentParent: YogaNode | null = expectedChild.getParent();
 			if (currentParent === element.yogaNode) {
 				element.yogaNode.removeChild(expectedChild);
 			} else if (currentParent) {
