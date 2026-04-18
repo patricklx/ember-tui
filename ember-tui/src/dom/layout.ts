@@ -9,7 +9,13 @@ import measureText from '../render/measure-text';
  */
 export function createYogaNode(element: ElementNode): YogaNode {
 	const yogaNode = Yoga.Node.create();
+	return updateYogaNodeFromElement(yogaNode, element);
+}
 
+/**
+ * Updates an existing Yoga node with styles from element attributes
+ */
+function updateYogaNodeFromElement(yogaNode: YogaNode, element: ElementNode): YogaNode {
 	// Apply styles from the element's attributes
 	const styleAttr = element.getAttribute('style');
 	if (styleAttr && typeof styleAttr === 'object') {
@@ -198,8 +204,13 @@ function buildYogaTree(node: ViewNode): void {
 
 	const element = node as ElementNode;
 
-	// Create Yoga node if it doesn't exist
-  element.yogaNode = createYogaNode(element);
+	// Reuse existing Yoga node to prevent memory leaks from creating new nodes every render
+	if (!element.yogaNode) {
+		element.yogaNode = createYogaNode(element);
+	} else {
+		// Update existing node with current element styles
+		updateYogaNodeFromElement(element.yogaNode, element);
+	}
 
 	// terminal-text elements are leaf nodes in Yoga tree (they have measure functions)
 	// They cannot have Yoga children, but can have DOM children for text aggregation
@@ -207,18 +218,53 @@ function buildYogaTree(node: ViewNode): void {
 		return;
 	}
 
+	// Build children recursively first
 	for (let i = 0; i < element.childNodes.length; i++) {
 		const child = element.childNodes[i];
 
 		if (child && child.nodeType === 1 && !child.staticRendered) {
 			const childElement = child as ElementNode;
-
-			// Build child's Yoga tree
 			buildYogaTree(childElement);
+		}
+	}
 
+	// Sync Yoga tree with DOM tree - only update if structure changed
+	const expectedChildren: ElementNode[] = [];
+	for (let i = 0; i < element.childNodes.length; i++) {
+		const child = element.childNodes[i];
+		if (child && child.nodeType === 1 && !child.staticRendered) {
+			const childElement = child as ElementNode;
 			if (childElement.yogaNode) {
-				element.yogaNode.insertChild(childElement.yogaNode, element.yogaNode.getChildCount());
+				expectedChildren.push(childElement);
 			}
+		}
+	}
+
+	// Remove children that are no longer in DOM
+	for (let i = element.yogaNode.getChildCount() - 1; i >= 0; i--) {
+		const yogaChild = element.yogaNode.getChild(i);
+		const stillExists = expectedChildren.some(e => e.yogaNode === yogaChild);
+		if (!stillExists) {
+			element.yogaNode.removeChild(yogaChild);
+		}
+	}
+
+	// Add or reorder children to match DOM order
+	for (let i = 0; i < expectedChildren.length; i++) {
+		const childElement = expectedChildren[i];
+		const childYogaNode = childElement.yogaNode!;
+		
+		// Check if child is already at correct position
+		const currentChild = i < element.yogaNode.getChildCount() ? element.yogaNode.getChild(i) : null;
+		
+		if (currentChild !== childYogaNode) {
+			// Remove from old position if exists
+			const currentParent = childYogaNode.getParent();
+			if (currentParent) {
+				currentParent.removeChild(childYogaNode);
+			}
+			// Insert at correct position
+			element.yogaNode.insertChild(childYogaNode, i);
 		}
 	}
 }
