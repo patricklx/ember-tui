@@ -106,7 +106,14 @@ describe("render pipeline memory usage", () => {
 			globalThis.gc();
 		}
 
+		// Write heap snapshot before test
+		if (typeof (globalThis as any).writeHeapSnapshot === "function") {
+			const beforeSnapshot = (globalThis as any).writeHeapSnapshot('./heap-before.heapsnapshot');
+			console.log('Heap snapshot before:', beforeSnapshot);
+		}
+
 		const heapBefore = process.memoryUsage().heapUsed;
+		console.log('Heap before:', heapBefore);
 
 		// Test phase - toggle elements repeatedly
 		for (let i = 0; i < iterations; i++) {
@@ -121,6 +128,15 @@ describe("render pipeline memory usage", () => {
 
 		const heapAfter = process.memoryUsage().heapUsed;
 		const heapGrowth = heapAfter - heapBefore;
+		console.log('Heap after:', heapAfter);
+		console.log('Heap growth:', heapGrowth, 'bytes (', (heapGrowth / 1024 / 1024).toFixed(2), 'MB)');
+		
+		// Write heap snapshot after test
+		if (typeof (globalThis as any).writeHeapSnapshot === "function") {
+			const afterSnapshot = (globalThis as any).writeHeapSnapshot('./heap-after.heapsnapshot');
+			console.log('Heap snapshot after:', afterSnapshot);
+		}
+
 		const allowedGrowthBytes = 2 * 1024 * 1024;
 
 		expect(heapGrowth).toBeLessThan(allowedGrowthBytes);
