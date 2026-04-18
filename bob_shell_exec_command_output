@@ -1,0 +1,219 @@
+
+> ember-tui-demo@0.1.0 test /tmp/tmpvxv13gtm/repo/ember-tui-demo
+> NODE_OPTIONS="--expose-gc" FORCE_COLOR=2 vitest --run --no-file-parallelism ./tests basic-test.gts
+
+
+[1m[46m RUN [49m[22m [36mv4.0.17 [39m[90m/tmp/tmpvxv13gtm/repo/ember-tui-demo[39m
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ [31m❯[39m tests/basic-test.gts [2m([22m[2m0 test[22m[2m)[22m
+ [31m❯[39m tests/static-test.gts [2m([22m[2m0 test[22m[2m)[22m
+
+> ember-tui-demo@0.1.0 prebuild /tmp/tmpvxv13gtm/repo/ember-tui-demo
+> EMBROIDER_PREBUILD=true pnpm ember build
+
+- [32mBuilding[39m
+Environment: development
+- [32mBuilding[39m
+[33mWARNING: ember-compatibility-helpers: You are using an unsupported ember-cli-babel version, compatibility helper tranforms will not be included automatically[39m
+- [32mBuilding[39m
+- [32mbuilding... [39m
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+- cleaning up
+- cleaning up
+cleaning up...
+[32mBuilt project successfully. Stored in "dist/".[39m
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mSTDERR CHARS: [
+   [33m68[39m, [33m101[39m,  [33m98[39m, [33m117[39m, [33m103[39m, [33m103[39m, [33m101[39m, [33m114[39m,  [33m32[39m, [33m108[39m, [33m105[39m, [33m115[39m,
+  [33m116[39m, [33m101[39m, [33m110[39m, [33m105[39m, [33m110[39m, [33m103[39m,  [33m32[39m, [33m111[39m, [33m110[39m,  [33m32[39m, [33m119[39m, [33m115[39m,
+   [33m58[39m,  [33m47[39m,  [33m47[39m,  [33m49[39m,  [33m50[39m,  [33m55[39m,  [33m46[39m,  [33m48[39m,  [33m46[39m,  [33m48[39m,  [33m46[39m,  [33m49[39m,
+   [33m58[39m,  [33m57[39m,  [33m50[39m,  [33m51[39m,  [33m49[39m,  [33m47[39m,  [33m55[39m,  [33m97[39m,  [33m48[39m,  [33m49[39m,  [33m49[39m,  [33m98[39m,
+   [33m97[39m,  [33m56[39m,  [33m45[39m, [33m102[39m,  [33m97[39m,  [33m98[39m,  [33m97[39m,  [33m45[39m,  [33m52[39m,  [33m97[39m,  [33m99[39m,  [33m97[39m,
+   [33m45[39m,  [33m57[39m, [33m102[39m, [33m100[39m,  [33m98[39m,  [33m45[39m,  [33m98[39m,  [33m97[39m, [33m101[39m,  [33m49[39m,  [33m50[39m,  [33m53[39m,
+   [33m52[39m,  [33m98[39m, [33m102[39m,  [33m98[39m,  [33m54[39m,  [33m50[39m,  [33m10[39m,  [33m70[39m, [33m111[39m, [33m114[39m,  [33m32[39m, [33m104[39m,
+  [33m101[39m, [33m108[39m, [33m112[39m,  [33m44[39m,  [33m32[39m, [33m115[39m, [33m101[39m, [33m101[39m,  [33m58[39m,  [33m32[39m, [33m104[39m, [33m116[39m,
+  [33m116[39m, [33m112[39m, [33m115[39m,  [33m58[39m,
+  ... 31 more items
+]
+STDERR STRING: "Debugger listening on ws://127.0.0.1:9231/7a011ba8-faba-4aca-9fdb-bae1254bfb62\nFor help, see: https://nodejs.org/en/docs/inspector\n"
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mChecking output... stdout length: [33m0[39m stderr length: [33m131[39m fakeTTY: [33m130[39m
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mTIMEOUT - Final stdout: 
+TIMEOUT - Final stderr: Debugger listening on ws://127.0.0.1:9231/7a011ba8-faba-4aca-9fdb-bae1254bfb62
+For help, see: https://nodejs.org/en/docs/inspector
+
+TIMEOUT - FakeTTY output: Debugger listening on ws://127.0.0.1:9231/7a011ba8-faba-4aca-9fdb-bae1254bfb62
+For help, see: https://nodejs.org/en/docs/inspector
+
+[90mstdout[2m | tests/hmr-render-output-test.gts[2m > [22m[2mHMR Render Output Verification
+[22m[39mProcess exited early with code: [1mnull[22m signal: SIGTERM
+Final stdout: 
+Final stderr: Debugger listening on ws://127.0.0.1:9231/7a011ba8-faba-4aca-9fdb-bae1254bfb62
+For help, see: https://nodejs.org/en/docs/inspector
+
+
+ [31m❯[39m tests/hmr-render-output-test.gts [2m([22m[2m3 tests[22m[2m | [22m[33m3 skipped[39m[2m)[22m[33m 43997[2mms[22m[39m
+     [2m[90m↓[39m[22m should capture initial render output from terminal
+     [2m[90m↓[39m[22m should update rendered output when component is modified (ACTUAL HMR TEST)
+     [2m[90m↓[39m[22m should show different content in output after HMR update
+ [32m✓[39m tests/hmr-test.gts [2m([22m[2m3 tests[22m[2m)[22m[33m 17587[2mms[22m[39m
+     [33m[2m✓[22m[39m should handle component modification without crashing (HMR stability test) [33m 6014[2mms[22m[39m
+     [33m[2m✓[22m[39m should handle template modification without crashing (HMR stability test) [33m 6003[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Suites 3 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/basic-test.gts[2m [ tests/basic-test.gts ][22m
+[41m[1m FAIL [22m[49m tests/static-test.gts[2m [ tests/static-test.gts ][22m
+[31m[1mError[22m: Cannot find module '/node_modules/.embroider/content-for.json' imported from '/tmp/tmpvxv13gtm/repo/ember-tui-demo/app/config/environment.ts'[39m
+[36m [2m❯[22m app/config/environment.ts:[2m5:1[22m[39m
+    [90m  3| [39m[90m// eslint-disable-next-line[39m
+    [90m  4| [39m[90m// @ts-ignore[39m
+    [90m  5| [39mimport contentFor from '.embroider/content-for.json' with { type: 'jso…
+    [90m   | [39m[31m^[39m
+    [90m  6| [39m
+    [90m  7| [39m[35mconst[39m head [33m=[39m contentFor[[32m'/index.html'[39m][33m.[39mhead[33m;[39m
+[90m [2m❯[22m app/app.ts:[2m3:1[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m tests/hmr-render-output-test.gts[2m > [22mHMR Render Output Verification
+[31m[1mError[22m: App failed to render within 20 seconds[39m
+[36m [2m❯[22m Timeout._onTimeout tests/hmr-render-output-test.gts:[2m118:18[22m[39m
+    [90m116| [39m          console.log('TIMEOUT - Final stderr:', stderr);
+    [90m117| [39m          console.log('TIMEOUT - FakeTTY output:', fakeTTY.getCleanOut…
+    [90m118| [39m          reject(new Error('App failed to render within 20 seconds'));
+    [90m   | [39m                 [31m^[39m
+    [90m119| [39m        }
+    [90m120| [39m      }, 20000);
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m3 passed[39m[22m[2m | [22m[33m3 skipped[39m[90m (6)[39m
+[2m   Start at [22m 20:35:03
+[2m   Duration [22m 81.87s[2m (transform 14.13s, setup 0ms, import 372ms, tests 61.58s, environment 1ms)[22m
+
+[36m[plugin:embroider-resolver] [39m[33mcontext method [1memitFile()[22m is not supported in serve mode. This plugin is likely not vite-compatible.[39m
+[36m[plugin:embroider-resolver] [39m[33mcontext method [1memitFile()[22m is not supported in serve mode. This plugin is likely not vite-compatible.[39m
+[36m[plugin:embroider-resolver] [39m[33mcontext method [1memitFile()[22m is not supported in serve mode. This plugin is likely not vite-compatible.[39m
+[36m[plugin:embroider-resolver] [39m[33mcontext method [1memitFile()[22m is not supported in serve mode. This plugin is likely not vite-compatible.[39m
+ ELIFECYCLE  Test failed. See above for more details.

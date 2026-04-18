@@ -193,7 +193,12 @@ export default class ViewNode<Attributes = any> {
   onInsertedChild(_childNode: ViewNode, _index: number) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onRemovedChild(_childNode: ViewNode) {}
+  onRemovedChild(_childNode: ViewNode) {
+    // Clean up Yoga tree when child is removed to prevent memory leaks
+    if (_childNode.nodeType === 1) {
+      cleanupYogaTree(_childNode);
+    }
+  }
 
   insertBefore(childNode: ViewNode, referenceNode: ViewNode) {
     if (!childNode) {
