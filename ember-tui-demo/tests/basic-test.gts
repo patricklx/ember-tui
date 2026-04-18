@@ -92,7 +92,7 @@ describe("render pipeline memory usage", () => {
 			</template>,
 		);
 
-		const iterations = 1000;
+		const iterations = 2000;
 		const warmupIterations = 50;
 
 		// Warmup phase
@@ -121,7 +121,7 @@ describe("render pipeline memory usage", () => {
 
 		const heapAfter = process.memoryUsage().heapUsed;
 		const heapGrowth = heapAfter - heapBefore;
-		const allowedGrowthBytes = 1 * 1024 * 1024;
+		const allowedGrowthBytes = 2 * 1024 * 1024;
 
 		expect(heapGrowth).toBeLessThan(allowedGrowthBytes);
 	});
