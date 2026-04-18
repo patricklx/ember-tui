@@ -73,7 +73,7 @@ describe("render pipeline memory usage", () => {
 
 		const heapAfter = process.memoryUsage().heapUsed;
 		const heapGrowth = heapAfter - heapBefore;
-		const allowedGrowthBytes = 5 * 1024 * 1024;
+		const allowedGrowthBytes = 1 * 1024 * 1024;
 
 		expect(heapGrowth).toBeLessThan(allowedGrowthBytes);
 	});
@@ -121,7 +121,7 @@ describe("render pipeline memory usage", () => {
 
 		const heapAfter = process.memoryUsage().heapUsed;
 		const heapGrowth = heapAfter - heapBefore;
-		const allowedGrowthBytes = 5 * 1024 * 1024;
+		const allowedGrowthBytes = 1 * 1024 * 1024;
 
 		expect(heapGrowth).toBeLessThan(allowedGrowthBytes);
 	});
