@@ -317,15 +317,19 @@ export function cleanupYogaTree(node: ViewNode): void {
 
 	const element = node as ElementNode;
 
-	// Clean up children first
+	// Detach and clean up children first so removed subtrees can be freed eagerly
 	for (const child of element.childNodes) {
 		cleanupYogaTree(child);
 	}
 
-	// Clean up this node
+	// Clean up only this node. Children are already cleaned up recursively.
 	if (element.yogaNode) {
+		const parent = element.yogaNode.getParent();
+		if (parent) {
+			parent.removeChild(element.yogaNode);
+		}
 		element.yogaNode.unsetMeasureFunc();
-		element.yogaNode.freeRecursive();
+		element.yogaNode.free();
 		element.yogaNode = undefined;
 	}
 }
