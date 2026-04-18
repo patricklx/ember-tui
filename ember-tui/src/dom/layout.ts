@@ -4,9 +4,8 @@ import type ElementNode from './nodes/ElementNode';
 import type ViewNode from './nodes/ViewNode';
 import measureText from '../render/measure-text';
 
-// Map to store element references for measure functions
-// Using Map instead of WeakMap to ensure proper cleanup
-const yogaNodeToElement = new Map<YogaNode, ElementNode>();
+// WeakMap to store element references - allows GC when elements are removed
+const yogaNodeToElement = new WeakMap<YogaNode, ElementNode>();
 
 /**
  * Creates a Yoga node for an element and applies styles from attributes
@@ -23,8 +22,9 @@ export function createYogaNode(element: ElementNode): YogaNode {
  * @param setMeasureFunc - Whether to set the measure function (only on creation, not updates)
  */
 function updateYogaNodeFromElement(yogaNode: YogaNode, element: ElementNode, setMeasureFunc = false): YogaNode {
-	// Update WeakMap reference even when reusing node to prevent stale references
-	if (element.tagName === 'terminal-text') {
+	// Only update Map when setting measure function (on creation)
+	// This prevents memory leaks from constantly updating the Map on every render
+	if (setMeasureFunc && element.tagName === 'terminal-text') {
 		yogaNodeToElement.set(yogaNode, element);
 	}
 	// Apply styles from the element's attributes
@@ -345,8 +345,7 @@ export function cleanupYogaTree(node: ViewNode): void {
 		if (parent) {
 			parent.removeChild(element.yogaNode);
 		}
-		// Remove from Map to prevent memory leak
-		yogaNodeToElement.delete(element.yogaNode);
+		// WeakMap entries are automatically cleaned up by GC
 		element.yogaNode.unsetMeasureFunc();
 		element.yogaNode.free();
 		element.yogaNode = undefined;
