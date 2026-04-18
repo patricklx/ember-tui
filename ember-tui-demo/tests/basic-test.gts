@@ -50,7 +50,7 @@ describe("render pipeline memory usage", () => {
 			</template>,
 		);
 
-		const iterations = 500;
+		const iterations = 1000;
 		const warmupIterations = 50;
 
 		for (let i = 0; i < warmupIterations; i++) {
