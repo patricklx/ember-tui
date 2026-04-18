@@ -188,7 +188,7 @@ function updateYogaNodeFromElement(yogaNode: YogaNode, element: ElementNode, set
 	// Set measure function for text elements ONLY on initial creation
 	// This prevents memory leaks from creating new closures on every render
 	if (setMeasureFunc && element.tagName === 'terminal-text') {
-		yogaNode.setMeasureFunc((width: number) => {
+		yogaNode.setMeasureFunc(() => {
 			// Get current element from WeakMap (updated on each render)
 			const elem = yogaNodeToElement.get(yogaNode);
 			const text = elem ? (elem as any).text || '' : '';
