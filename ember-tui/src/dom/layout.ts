@@ -232,43 +232,46 @@ function buildYogaTree(node: ViewNode): void {
 		}
 	}
 
-	// Sync Yoga tree with DOM tree - only update if structure changed
-	const expectedChildren: ElementNode[] = [];
+	// Sync Yoga tree with DOM tree efficiently
+	// Build map of expected children for quick lookup
+	const expectedYogaNodes = new Set<YogaNode>();
+	const expectedOrder: YogaNode[] = [];
+	
 	for (let i = 0; i < element.childNodes.length; i++) {
 		const child = element.childNodes[i];
 		if (child && child.nodeType === 1 && !child.staticRendered) {
 			const childElement = child as ElementNode;
 			if (childElement.yogaNode) {
-				expectedChildren.push(childElement);
+				expectedYogaNodes.add(childElement.yogaNode);
+				expectedOrder.push(childElement.yogaNode);
 			}
 		}
 	}
 
-	// Remove children that are no longer in DOM
+	// Remove Yoga children that are no longer in DOM (in reverse to avoid index shifts)
 	for (let i = element.yogaNode.getChildCount() - 1; i >= 0; i--) {
 		const yogaChild = element.yogaNode.getChild(i);
-		const stillExists = expectedChildren.some(e => e.yogaNode === yogaChild);
-		if (!stillExists) {
+		if (!expectedYogaNodes.has(yogaChild)) {
 			element.yogaNode.removeChild(yogaChild);
 		}
 	}
 
-	// Add or reorder children to match DOM order
-	for (let i = 0; i < expectedChildren.length; i++) {
-		const childElement = expectedChildren[i];
-		const childYogaNode = childElement.yogaNode!;
-		
-		// Check if child is already at correct position
+	// Ensure all expected children are present and in correct order
+	for (let i = 0; i < expectedOrder.length; i++) {
+		const expectedChild = expectedOrder[i];
 		const currentChild = i < element.yogaNode.getChildCount() ? element.yogaNode.getChild(i) : null;
 		
-		if (currentChild !== childYogaNode) {
-			// Remove from old position if exists
-			const currentParent = childYogaNode.getParent();
-			if (currentParent) {
-				currentParent.removeChild(childYogaNode);
+		if (currentChild !== expectedChild) {
+			// Remove from current position if it exists elsewhere
+			const currentParent = expectedChild.getParent();
+			if (currentParent === element.yogaNode) {
+				element.yogaNode.removeChild(expectedChild);
+			} else if (currentParent) {
+				// Should not happen, but handle it
+				currentParent.removeChild(expectedChild);
 			}
 			// Insert at correct position
-			element.yogaNode.insertChild(childYogaNode, i);
+			element.yogaNode.insertChild(expectedChild, i);
 		}
 	}
 }

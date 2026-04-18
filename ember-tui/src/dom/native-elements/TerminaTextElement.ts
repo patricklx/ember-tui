@@ -66,6 +66,7 @@ interface Attributes {
 
 export class TerminaTextElement extends ElementNode<Attributes> {
   text: string = '';
+  private _isUpdating: boolean = false;
 
 
   constructor() {
@@ -79,6 +80,11 @@ export class TerminaTextElement extends ElementNode<Attributes> {
 
   removeChild(childNode: ViewNode) {
     super.removeChild(childNode);
+    this.updateText();
+  }
+
+  onInsertedChild(childNode: ViewNode, index: number) {
+    super.onInsertedChild(childNode, index);
     this.updateText();
   }
 
@@ -117,8 +123,11 @@ export class TerminaTextElement extends ElementNode<Attributes> {
       this.text = newText;
       
       // Notify parent TerminaTextElement to update if this element's text changed
-      if (this.parentNode instanceof TerminaTextElement) {
+      // Use a flag to prevent infinite recursion during cascading updates
+      if (this.parentNode instanceof TerminaTextElement && !this._isUpdating) {
+        this._isUpdating = true;
         this.parentNode.updateText();
+        this._isUpdating = false;
       }
     }
   }
