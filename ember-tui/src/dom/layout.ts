@@ -5,10 +5,38 @@ import type ViewNode from './nodes/ViewNode';
 import measureText from '../render/measure-text';
 
 /**
+ * Global list to track all created Yoga nodes and their elements for cleanup
+ */
+const createdYogaNodes: Array<{ node: YogaNode; element: ElementNode }> = [];
+
+/**
+ * Free all previously created Yoga nodes to prevent memory leaks
+ */
+export function freeAllYogaNodes(): void {
+	// Free nodes in reverse order to avoid issues with parent-child relationships
+	for (let i = createdYogaNodes.length - 1; i >= 0; i--) {
+		const { node, element } = createdYogaNodes[i];
+		try {
+			node.unsetMeasureFunc();
+			node.free();
+			// Clear the reference on the element to allow GC
+			element.yogaNode = undefined;
+		} catch {
+			// Node might already be freed, ignore
+		}
+	}
+	// Clear the array to allow garbage collection of freed node references
+	createdYogaNodes.length = 0;
+}
+
+/**
  * Creates a Yoga node for an element and applies styles from attributes
  */
 export function createYogaNode(element: ElementNode): YogaNode {
 	const yogaNode = Yoga.Node.create();
+	
+	// Track this node and its element for cleanup
+	createdYogaNodes.push({ node: yogaNode, element });
 
 	// Apply styles from the element's attributes
 	const styleAttr = element.getAttribute('style');

@@ -17,5 +17,6 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist"
   },
-  "include": ["./app/**/*", "./tests/**/*", "./tests/types/**/*", "./types.d.ts"]
+  "include": ["./app/**/*", "./tests/**/*", "./tests/types/**/*", "./types.d.ts"],
+  "exclude": ["../ember-tui"]
 }

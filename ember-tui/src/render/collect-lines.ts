@@ -1,5 +1,5 @@
 import ElementNode from "../dom/nodes/ElementNode";
-import { calculateLayout } from "../dom/layout";
+import { calculateLayout, freeAllYogaNodes } from "../dom/layout";
 import Output from "./Output";
 import { renderNodeToOutput } from "./renderNodeToOutput";
 import type { TerminalBoxElement } from "../dom/native-elements/TerminalBoxElement";
@@ -43,6 +43,9 @@ export function extractLines(rootNode: ElementNode, {
 	static: string[],
 	dynamic: string[],
 } {
+
+	// Free all previously created Yoga nodes before creating new ones
+	freeAllYogaNodes();
 
 	// Calculate layout for the entire tree
 	const availableHeight = Math.max(0, terminalHeight - staticOutputCache.length);

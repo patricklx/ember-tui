@@ -7,6 +7,7 @@ import {
 	styledCharsToString,
 	tokenize,
 } from '@alcalzone/ansi-tokenize';
+import { debugLogger } from '../utils/debug-logger';
 
 /**
  * "Virtual" output class
@@ -98,8 +99,16 @@ export default class Output {
 	}
 
 	get(): {output: string; height: number} {
+		debugLogger.log(`Output.get(): operations count=${this.operations.length}`);
+		
 		// Initialize output array - start with terminal height but allow growth
 		const output: StyledChar[][] = [];
+		
+		// Store operations to process, then clear the array to prevent memory leaks
+		const operationsToProcess = this.operations.slice();
+		this.operations.length = 0;
+		
+		debugLogger.log(`  -> Processing ${operationsToProcess.length} operations`);
 
 		// Helper function to ensure row exists
 		const ensureRow = (y: number) => {
@@ -124,7 +133,7 @@ export default class Output {
 
 		const clips: Clip[] = [];
 
-		for (const operation of this.operations) {
+		for (const operation of operationsToProcess) {
 			if (operation.type === 'clip') {
 				clips.push(operation.clip);
 			}
