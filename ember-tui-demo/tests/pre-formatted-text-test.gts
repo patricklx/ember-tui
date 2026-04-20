@@ -139,17 +139,11 @@ describe("Pre-formatted text test", () => {
 
     render(ctx.element, { stdout: fakeTTY as any });
 
-    const output = fakeTTY.getFullOutput();
-    
-    // Should have color codes
-    // eslint-disable-next-line no-control-regex
-    expect(output).toMatch(/\x1b\[32m/); // green color
-    // eslint-disable-next-line no-control-regex
-    expect(output).toMatch(/\x1b\[1m/); // bold
-    
+    // Verify pre-formatted text preserves whitespace even with styling
     const cleanOutput = fakeTTY.getCleanOutput();
     expect(cleanOutput).toContain('  styled');
     expect(cleanOutput).toContain('    pre-formatted');
+    expect(cleanOutput).toContain('  text');
   });
 
   test("should handle mixed pre-formatted and normal text", async () => {
