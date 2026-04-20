@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-04-20)
+
+* ember-tui 1.0.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#82](https://github.com/patricklx/ember-tui/pull/82) fix memory leak ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-04-15)
 
 * ember-tui 1.0.0 (major)
