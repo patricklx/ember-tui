@@ -8,6 +8,7 @@ import type Output from './Output';
 import type { OutputTransformer } from './Output';
 import renderBorder from './render-border';
 import renderBackground from './render-background';
+import { debugLogger } from '../utils/debug-logger';
 
 /**
  * Get maximum width for text wrapping
@@ -108,19 +109,24 @@ export function renderNodeToOutput(
 		skipStaticElements = false,
 	} = options;
 
+	debugLogger.log(`renderNodeToOutput: node=${node.tagName || node.nodeType}, type=${node.nodeType}`);
+
 	// Skip static elements if requested
 	if (skipStaticElements && (node as any).internal_static) {
+		debugLogger.log('  -> Skipping static element');
 		return;
 	}
 
 	const yogaNode = node.yogaNode;
 
 	if (!yogaNode) {
+		debugLogger.log('  -> No yoga node, skipping');
 		return;
 	}
 
 	// Skip hidden elements
 	if (yogaNode.getDisplay() === Yoga.DISPLAY_NONE) {
+		debugLogger.log('  -> Display none, skipping');
 		return;
 	}
 

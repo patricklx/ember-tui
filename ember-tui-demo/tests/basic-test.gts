@@ -24,7 +24,7 @@ describe("example", () => {
 		expect(ctx.element.textContent).toContain("hello world");
 	});
 
-    test("nested text works", async () => {
+	test("nested text works", async () => {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ value: "hello there" });
 
@@ -75,7 +75,7 @@ describe("background color clearing", () => {
 	});
 
 	test("should clear line from start when new text is prefixed with spaces", async () => {
-		await using ctx = await setupRenderingContext(App);
+			await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ text: "Green Text" });
 
 		await ctx.render(<template><Text @color="green">{{state.text}}</Text></template>);

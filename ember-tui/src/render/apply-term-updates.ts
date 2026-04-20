@@ -238,6 +238,16 @@ class StateRangeBuilder {
 	private pendingAnsiCodes = '';
 	private static readonly RESET_CODE = '\x1b[0m';
 
+	reset(): void {
+		this.ranges = [];
+		this.currentAnsiState = '';
+		this.currentText = '';
+		this.currentFullText = '';
+		this.rangeStart = 0;
+		this.visualPos = 0;
+		this.pendingAnsiCodes = '';
+	}
+
 	addAnsiCode(code: string): void {
 		this.pendingAnsiCodes += code;
 
@@ -305,6 +315,13 @@ class DiffSegmentBuilder {
 	private currentSegmentStart = -1;
 	private currentSegmentText = '';
 	private currentSegmentAnsiState = '';
+
+	reset(): void {
+		this.segments = [];
+		this.currentSegmentStart = -1;
+		this.currentSegmentText = '';
+		this.currentSegmentAnsiState = '';
+	}
 
 	addDifference(visualPos: number, newChar: string | undefined, newState: string): void {
 		if (this.currentSegmentStart === -1) {
@@ -386,7 +403,11 @@ class DiffSegmentBuilder {
  * Range Lookup - Efficient range finding
  */
 class RangeLookup {
-	constructor(private ranges: StateRange[]) {}
+	private ranges: StateRange[] = [];
+
+	reset(ranges: StateRange[]): void {
+		this.ranges = ranges;
+	}
 
 	findRangeAt(visualPos: number): StateRange | undefined {
 		return this.ranges.find(r => visualPos >= r.visualStart && visualPos < r.visualEnd);
@@ -411,14 +432,14 @@ class RangeLookup {
  * Diff Analyzer - Main diffing logic
  */
 class DiffAnalyzer {
-	private oldLookup: RangeLookup;
-	private newLookup: RangeLookup;
-	private builder: DiffSegmentBuilder;
+	private oldLookup = new RangeLookup();
+	private newLookup = new RangeLookup();
+	private builder = new DiffSegmentBuilder();
 
-	constructor(oldRanges: StateRange[], newRanges: StateRange[]) {
-		this.oldLookup = new RangeLookup(oldRanges);
-		this.newLookup = new RangeLookup(newRanges);
-		this.builder = new DiffSegmentBuilder();
+	reset(oldRanges: StateRange[], newRanges: StateRange[]): void {
+		this.oldLookup.reset(oldRanges);
+		this.newLookup.reset(newRanges);
+		this.builder.reset();
 	}
 
 	analyze(): TextSegment[] {
@@ -477,6 +498,10 @@ class DiffAnalyzer {
 	}
 }
 
+// Global reusable instances to prevent memory leaks from repeated allocations
+const globalStateRangeBuilder = new StateRangeBuilder();
+const globalDiffAnalyzer = new DiffAnalyzer();
+
 /**
  * Find all segments that differ between old and new text, considering ANSI color codes
  */
@@ -484,11 +509,30 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 	const oldTokens = tokenize(oldText);
 	const newTokens = tokenize(newText);
 
-	const oldRanges = extractStateRanges(oldTokens);
-	const newRanges = extractStateRanges(newTokens);
+	// Reuse global builder instance
+	globalStateRangeBuilder.reset();
+	for (const token of oldTokens) {
+		if (token.isAnsi) {
+			globalStateRangeBuilder.addAnsiCode(token.value);
+		} else {
+			globalStateRangeBuilder.addCharacter(token.value);
+		}
+	}
+	const oldRanges = globalStateRangeBuilder.build();
 
-	const analyzer = new DiffAnalyzer(oldRanges, newRanges);
-	const segments = analyzer.analyze();
+	globalStateRangeBuilder.reset();
+	for (const token of newTokens) {
+		if (token.isAnsi) {
+			globalStateRangeBuilder.addAnsiCode(token.value);
+		} else {
+			globalStateRangeBuilder.addCharacter(token.value);
+		}
+	}
+	const newRanges = globalStateRangeBuilder.build();
+
+	// Reuse global analyzer instance
+	globalDiffAnalyzer.reset(oldRanges, newRanges);
+	const segments = globalDiffAnalyzer.analyze();
 
 	// Handle trailing ANSI codes
 	const oldTrailingAnsi = getTrailingAnsi(oldTokens);
