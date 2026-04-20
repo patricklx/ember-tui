@@ -1,19 +1,19 @@
 {
   "solution": {
     "ember-tui": {
-      "impact": "major",
-      "oldVersion": "0.7.1",
-      "newVersion": "1.0.0",
+      "impact": "patch",
+      "oldVersion": "1.0.0",
+      "newVersion": "1.0.1",
       "tagName": "latest",
       "constraints": [
         {
-          "impact": "major",
-          "reason": "Appears in changelog section :boom: Breaking Change"
+          "impact": "patch",
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./ember-tui/package.json"
     },
     "undefined": {}
   },
-  "description": "## Release (2026-04-15)\n\n* ember-tui 1.0.0 (major)\n\n#### :boom: Breaking Change\n* `ember-tui`\n  * [#75](https://github.com/patricklx/ember-tui/pull/75) refactoring to vite dev server ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-04-20)\n\n* ember-tui 1.0.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#82](https://github.com/patricklx/ember-tui/pull/82) fix memory leak ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
