@@ -10,7 +10,7 @@ export default class HmrTest extends Component {
 
   <template>
     <Box @flexDirection="column" @borderStyle="single" @borderColor="green" @paddingLeft={{1}} @paddingRight={{1}}>
-      <Text @color="green" @bold={{true}}>HMR_TEST_MARKER_1776722246800 - Modified Content</Text>
+      <Text @color="green" @bold={{true}}>HMR Test Component</Text>
       <Text @color="white">{{this.message}}</Text>
     </Box>
   </template>
