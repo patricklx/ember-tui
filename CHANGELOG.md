@@ -2,6 +2,17 @@
 
 ## Release (2026-04-21)
 
+* ember-tui 1.0.4 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#92](https://github.com/patricklx/ember-tui/pull/92) fix: handle non-contiguous color segments by resetting before each segment ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
+## Release (2026-04-21)
+
 * ember-tui 1.0.3 (patch)
 
 #### :bug: Bug Fix
