@@ -346,11 +346,15 @@ class DiffSegmentBuilder {
 	}
 
 	closeCurrentSegment(): void {
-		if (this.currentSegmentStart !== -1 && this.currentSegmentText.length > 0) {
-			this.segments.push({
-				start: this.currentSegmentStart,
-				text: this.currentSegmentAnsiState + this.currentSegmentText
-			});
+		if (this.currentSegmentStart !== -1) {
+			// Always include the segment if we have a start position, even if text is empty
+			// This ensures ANSI state changes are preserved
+			if (this.currentSegmentText.length > 0 || this.currentSegmentAnsiState !== '') {
+				this.segments.push({
+					start: this.currentSegmentStart,
+					text: this.currentSegmentAnsiState + this.currentSegmentText
+				});
+			}
 		}
 		this.resetCurrentSegment();
 	}
@@ -662,9 +666,13 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		// Move cursor to the visual position of the changed segment
 		addCursorMove(segment.start, line);
 
-		// Reset before each segment to ensure clean color state
-		// This is necessary when segments are non-contiguous
-		buffer.push('\x1b[0m');
+		// Only reset before non-contiguous segments
+		// Check if this segment starts where the previous one ended
+		const needsReset = i === 0 || (i > 0 && segments[i - 1].start + getVisualLength(segments[i - 1].text) !== segment.start);
+		
+		if (needsReset) {
+			buffer.push('\x1b[0m');
+		}
 
 		if (isFirstSegment && segment.start > 0) {
 			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
