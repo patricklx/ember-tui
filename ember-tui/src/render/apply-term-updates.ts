@@ -474,6 +474,32 @@ class DiffAnalyzer {
 	}
 
 	private lookAheadForNextDiff(currentPos: number, maxVisualLength: number, currentState: string): boolean {
+		// If we have an active color state, we should continue including matching characters
+		// to maintain color continuity, even if they match the old text
+		if (currentState !== '') {
+			// Check if there are more characters with the same color state ahead
+			for (let lookAhead = currentPos + 1; lookAhead < maxVisualLength; lookAhead++) {
+				const nextNewState = this.newLookup.getStateAt(lookAhead);
+				const nextNewChar = this.newLookup.getCharAt(lookAhead);
+				
+				// If the color state changes or we run out of characters, stop
+				if (nextNewState !== currentState || nextNewChar === undefined) {
+					return false;
+				}
+				
+				// If we find a difference with the same color state, include this character
+				const nextOldChar = this.oldLookup.getCharAt(lookAhead);
+				const nextOldState = this.oldLookup.getStateAt(lookAhead);
+				if (nextOldChar !== nextNewChar || nextOldState !== nextNewState) {
+					return true;
+				}
+			}
+			// If we reach here, all remaining characters match and have the same color
+			// Include them to maintain color continuity
+			return true;
+		}
+		
+		// Original logic for non-colored text
 		for (let lookAhead = currentPos + 1; lookAhead < maxVisualLength; lookAhead++) {
 			const nextOldChar = this.oldLookup.getCharAt(lookAhead);
 			const nextNewChar = this.newLookup.getCharAt(lookAhead);
@@ -636,8 +662,11 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		// Move cursor to the visual position of the changed segment
 		addCursorMove(segment.start, line);
 
-		// Reset any previous styling (background colors, etc.) before writing new content
-		buffer.push('\x1b[0m');
+		// Only reset before first segment to clear any previous styling
+		// Don't reset between segments to preserve color continuity
+		if (isFirstSegment) {
+			buffer.push('\x1b[0m');
+		}
 
 		if (isFirstSegment && segment.start > 0) {
 			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
