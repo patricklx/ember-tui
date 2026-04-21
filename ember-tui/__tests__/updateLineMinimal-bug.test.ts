@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render } from '../src/render/apply-term-updates';
 import ElementNode from '../src/dom/nodes/ElementNode';
 import { extractLines } from '../src/render/collect-lines';
