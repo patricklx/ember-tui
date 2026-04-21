@@ -147,7 +147,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 6,
-          "text": "[32m[1mIpsum ",
+          "text": "[32m[1mIpsum Generator",
         },
       ]
     `);
