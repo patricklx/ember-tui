@@ -2,6 +2,17 @@
 
 ## Release (2026-04-21)
 
+* ember-tui 1.0.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#91](https://github.com/patricklx/ember-tui/pull/91) fix color missing bug ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
+## Release (2026-04-21)
+
 * ember-tui 1.0.2 (patch)
 
 #### :bug: Bug Fix
