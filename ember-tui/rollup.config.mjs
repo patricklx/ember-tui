@@ -28,6 +28,8 @@ export default {
   // You can augment this if you need to.
   output: addon.output(),
 
+  external: [/node_modules/],
+
   treeshake: true,
 
   plugins: [
