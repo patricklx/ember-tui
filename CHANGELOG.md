@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2026-04-21)
+
+* ember-tui 1.0.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#89](https://github.com/patricklx/ember-tui/pull/89) fix bundle ([@patricklx](https://github.com/patricklx))
+
+#### :house: Internal
+* `ember-tui`
+  * [#87](https://github.com/patricklx/ember-tui/pull/87) pre formatted text test ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-04-20)
 
 * ember-tui 1.0.1 (patch)
