@@ -2,18 +2,22 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "1.0.0",
-      "newVersion": "1.0.1",
+      "oldVersion": "1.0.1",
+      "newVersion": "1.0.2",
       "tagName": "latest",
       "constraints": [
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
+        },
+        {
+          "impact": "patch",
+          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./ember-tui/package.json"
     },
     "undefined": {}
   },
-  "description": "## Release (2026-04-20)\n\n* ember-tui 1.0.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#82](https://github.com/patricklx/ember-tui/pull/82) fix memory leak ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-04-21)\n\n* ember-tui 1.0.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#89](https://github.com/patricklx/ember-tui/pull/89) fix bundle ([@patricklx](https://github.com/patricklx))\n\n#### :house: Internal\n* `ember-tui`\n  * [#87](https://github.com/patricklx/ember-tui/pull/87) pre formatted text test ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
