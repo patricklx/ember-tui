@@ -108,8 +108,8 @@ export class TerminaTextElement extends ElementNode<Attributes> {
 				}
 			}
 		}
-    // Join with space, but normalize multiple spaces to single space
-    const t = parts.join(' ');
+    // Join parts - preserve structure for pre-formatted text
+    const t = preFormatted ? parts.join('') : parts.join(' ');
     this.text = this.transform(t);
 
     // Notify parent TerminaTextElement to update if this element's text changed
