@@ -346,11 +346,15 @@ class DiffSegmentBuilder {
 	}
 
 	closeCurrentSegment(): void {
-		if (this.currentSegmentStart !== -1 && this.currentSegmentText.length > 0) {
-			this.segments.push({
-				start: this.currentSegmentStart,
-				text: this.currentSegmentAnsiState + this.currentSegmentText
-			});
+		if (this.currentSegmentStart !== -1) {
+			// Always include the segment if we have a start position, even if text is empty
+			// This ensures ANSI state changes are preserved
+			if (this.currentSegmentText.length > 0 || this.currentSegmentAnsiState !== '') {
+				this.segments.push({
+					start: this.currentSegmentStart,
+					text: this.currentSegmentAnsiState + this.currentSegmentText
+				});
+			}
 		}
 		this.resetCurrentSegment();
 	}
@@ -653,25 +657,17 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		return;
 	}
 
-	// Apply each segment update
+	// Apply each segment update - always reset before each chunk to avoid color bleeding
 	for (let i = 0; i < segments.length; i++) {
 		const segment = segments[i];
-		const isFirstSegment = i === 0;
 		const isLastSegment = i === segments.length - 1;
 
 		// Move cursor to the visual position of the changed segment
 		addCursorMove(segment.start, line);
 
-		// Reset before each segment to ensure clean color state
-		// This is necessary when segments are non-contiguous
+		// Always reset ANSI codes before writing each segment
+		// This prevents color bleeding from previous segments
 		buffer.push('\x1b[0m');
-
-		if (isFirstSegment && segment.start > 0) {
-			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
-			if (prevStart < segment.start) {
-				buffer.push(' '.repeat(segment.start - prevStart)); // Fill with spaces
-			}
-		}
 
 		// Write the new text for this segment (including any ANSI codes)
 		if (segment.text.length > 0) {
@@ -686,6 +682,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 			const spacesToFill = oldVisualLength - start;
 			if (spacesToFill > 0) {
 				addCursorMove(start, line);
+				buffer.push('\x1b[0m'); // Reset before clearing
 				buffer.push(' '.repeat(spacesToFill)); // Fill with spaces
 			}
 		}
