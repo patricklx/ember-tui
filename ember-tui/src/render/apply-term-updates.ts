@@ -853,9 +853,58 @@ function renderInternal(rootNode: ElementNode): void {
 		// CRITICAL: Update state.lines to reflect what's actually on the terminal
 		// After partial updates via updateLineMinimal, we need to sync the actual
 		// line content so the next render knows the correct baseline for diffing
-		// Only update lines that were actually written to the terminal
+		// 
+		// The key issue: updateLineMinimal inserts \x1b[0m reset codes before each segment,
+		// but newLines contains the original content without these inserted codes.
+		// We need to reconstruct what's actually in the terminal by applying the same
+		// logic that updateLineMinimal uses.
 		for (const lineIndex of updatedLines) {
-			state.lines[lineIndex] = newLines[lineIndex];
+			const newLine = newLines[lineIndex];
+			const oldLine = oldLines[lineIndex];
+			
+			// If line was completely rewritten (new line or empty old line), use newLine as-is
+			if (oldLine === undefined || oldLine === "" || newLine === undefined || newLine === "") {
+				state.lines[lineIndex] = newLine;
+			} else {
+				// Line was partially updated - reconstruct what's in terminal
+				// by simulating what updateLineMinimal wrote
+				const expandedOldText = expandTabs(oldLine);
+				const expandedNewText = expandTabs(newLine);
+				const segments = findDiffSegments(expandedOldText, expandedNewText);
+				
+				if (segments.length === 0) {
+					// No changes, keep old line
+					state.lines[lineIndex] = oldLine;
+				} else {
+					// Reconstruct the line with inserted reset codes
+					// Start with the new line content
+					let reconstructed = expandedNewText;
+					
+					// For each segment that was written, we know a \x1b[0m was inserted before it
+					// We need to insert these reset codes at the same positions in our reconstructed line
+					const tokens = tokenize(reconstructed);
+					let result = '';
+					let visualPos = 0;
+					let segmentIndex = 0;
+					
+					for (const token of tokens) {
+						// Check if we're at a segment start position
+						while (segmentIndex < segments.length && segments[segmentIndex].start === visualPos) {
+							// Insert reset code before this segment
+							result += '\x1b[0m';
+							segmentIndex++;
+						}
+						
+						result += token.value;
+						visualPos += token.visualLength;
+					}
+					
+					// Add final reset code (updateLineMinimal always adds one at the end)
+					result += '\x1b[0m';
+					
+					state.lines[lineIndex] = result;
+				}
+			}
 		}
 		
 		// Ensure state.lines has the correct length
