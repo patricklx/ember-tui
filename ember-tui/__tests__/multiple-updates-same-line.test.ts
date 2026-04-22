@@ -149,7 +149,6 @@ describe('Multiple updates to same line - Color sync issue', () => {
     expect(output).toContain('Green');
     
     // Verify line 1 wasn't touched
-    const fullOutput = fakeTTY.getFullOutput();
     // Line 1 should not be in the update since it didn't change
     const updatesSinceClear = fakeTTY.getOutputSinceClear();
     expect(updatesSinceClear).not.toContain('Line 1');
