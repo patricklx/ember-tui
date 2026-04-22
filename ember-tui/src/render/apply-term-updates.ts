@@ -843,7 +843,9 @@ function renderInternal(rootNode: ElementNode): void {
 			process.stdout.write(buffer.join(''));
 		}
 
-		// Update state with all lines (not just visible ones)
+		// CRITICAL: Update state.lines to reflect what's actually on the terminal
+		// After partial updates via updateLineMinimal, we need to sync the actual
+		// line content so the next render knows the correct baseline for diffing
 		state.lines = newLines;
 		
 		// Always flush after render to ensure output is visible in non-TTY mode
