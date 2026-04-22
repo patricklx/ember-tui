@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "1.0.3",
-      "newVersion": "1.0.4",
+      "oldVersion": "1.0.4",
+      "newVersion": "1.0.5",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2026-04-21)\n\n* ember-tui 1.0.4 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#92](https://github.com/patricklx/ember-tui/pull/92) fix: handle non-contiguous color segments by resetting before each segment ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-04-22)\n\n* ember-tui 1.0.5 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#94](https://github.com/patricklx/ember-tui/pull/94) Fix color bug ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
