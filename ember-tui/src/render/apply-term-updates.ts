@@ -801,6 +801,9 @@ function renderInternal(rootNode: ElementNode): void {
 
 		// Buffer to accumulate all update operations
 		const buffer: string[] = [];
+		
+		// Track which lines were actually updated
+		const updatedLines = new Set<number>();
 
 		for (let i = visibleStartLine; i < maxLines; i++) {
 			const newLine = newLines[i];
@@ -819,13 +822,16 @@ function renderInternal(rootNode: ElementNode): void {
 						if (oldLineLength > 0) {
 							buffer.push(' '.repeat(oldLineLength)); // Fill with spaces
 						}
+						updatedLines.add(i);
 					} else if (oldLine === undefined || oldLine === "") {
 						// New line - just write it (expand tabs)
 						buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
 						buffer.push(expandTabs(newLine));
+						updatedLines.add(i);
 					} else {
 						// Line changed - apply minimal update
 						updateLineMinimal(screenLine, oldLine, newLine, buffer);
+						updatedLines.add(i);
 					}
 				} else if (screenLine >= state.terminalHeight) {
 					// Beyond previous content - just write newline and content
@@ -834,6 +840,7 @@ function renderInternal(rootNode: ElementNode): void {
 					if (newLine !== undefined) {
 						buffer.push(expandTabs(newLine));
 					}
+					updatedLines.add(i);
 				}
 			}
 		}
@@ -846,7 +853,15 @@ function renderInternal(rootNode: ElementNode): void {
 		// CRITICAL: Update state.lines to reflect what's actually on the terminal
 		// After partial updates via updateLineMinimal, we need to sync the actual
 		// line content so the next render knows the correct baseline for diffing
-		state.lines = newLines;
+		// Only update lines that were actually written to the terminal
+		for (const lineIndex of updatedLines) {
+			state.lines[lineIndex] = newLines[lineIndex];
+		}
+		
+		// Ensure state.lines has the correct length
+		if (newLines.length !== state.lines.length) {
+			state.lines.length = newLines.length;
+		}
 		
 		// Always flush after render to ensure output is visible in non-TTY mode
 		flushStdout();
