@@ -18,7 +18,6 @@ export function freeAllYogaNodes(): void {
 		const { node, element } = createdYogaNodes[i];
 		try {
 			node.unsetMeasureFunc();
-			node.free();
 			// Clear the reference on the element to allow GC
 			element.yogaNode = undefined;
 		} catch {
@@ -34,7 +33,7 @@ export function freeAllYogaNodes(): void {
  */
 export function createYogaNode(element: ElementNode): YogaNode {
 	const yogaNode = Yoga.Node.create();
-	
+
 	// Track this node and its element for cleanup
 	createdYogaNodes.push({ node: yogaNode, element });
 
