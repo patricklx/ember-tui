@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "1.0.4",
-      "newVersion": "1.0.5",
+      "oldVersion": "1.0.5",
+      "newVersion": "1.0.6",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2026-04-22)\n\n* ember-tui 1.0.5 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#94](https://github.com/patricklx/ember-tui/pull/94) Fix color bug ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-04-23)\n\n* ember-tui 1.0.6 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#97](https://github.com/patricklx/ember-tui/pull/97) fix color bug again ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
