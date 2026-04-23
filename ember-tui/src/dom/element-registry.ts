@@ -70,6 +70,9 @@ export function createElement<T extends keyof NativeElementsTagNameMap>(
   const normalizedName = normalizeElementName(elementName);
   const elementDefinition = elementMap[normalizedName];
   if (!elementDefinition) {
+    if (process.env.NODE_ENV === 'development') {
+      return createElement('div' as any);
+    }
     throw new TypeError(`No known component for element ${elementName}.`);
   }
   return elementDefinition.resolver();

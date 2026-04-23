@@ -636,9 +636,6 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		// Move cursor to the visual position of the changed segment
 		addCursorMove(segment.start, line);
 
-		// Reset any previous styling (background colors, etc.) before writing new content
-		buffer.push('\x1b[0m');
-
 		if (isFirstSegment && segment.start > 0) {
 			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
 			if (prevStart < segment.start) {
