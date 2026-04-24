@@ -2,6 +2,17 @@
 
 ## Release (2026-04-24)
 
+* ember-tui 1.1.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#102](https://github.com/patricklx/ember-tui/pull/102) Improve key handling ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
+## Release (2026-04-24)
+
 * ember-tui 1.1.0 (minor)
 
 #### :rocket: Enhancement
