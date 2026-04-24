@@ -2,6 +2,17 @@
 
 ## Release (2026-04-24)
 
+* ember-tui 1.1.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#107](https://github.com/patricklx/ember-tui/pull/107) fix box attributes ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
+## Release (2026-04-24)
+
 * ember-tui 1.1.2 (patch)
 
 #### :bug: Bug Fix
