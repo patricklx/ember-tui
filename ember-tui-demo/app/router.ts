@@ -15,4 +15,5 @@ Router.map(function () {
   this.route('component-test');
   this.route('static-test');
   this.route('file-editor');
+  this.route('overlay-demo');
 });

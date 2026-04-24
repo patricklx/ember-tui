@@ -223,9 +223,16 @@ export default class Output {
 							const existingChar = currentLine[offsetX];
 							if (existingChar && existingChar.value && existingChar.value.trim() !== '') {
 								// Keep the existing character value but apply new background styles
-								// Filter out old background styles and apply new ones from overlay
-								const existingStyles = existingChar.styles.filter(s => s.type !== 'bgColor');
-								const newBackgroundStyles = character.styles.filter(s => s.type === 'bgColor');
+								// Filter out old background styles (ANSI codes 40-49 for standard, 100-107 for bright)
+								const isBgColorCode = (code: string) => {
+									return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
+								};
+								const existingStyles = existingChar.styles.filter(s => 
+									s.type !== 'ansi' || !isBgColorCode(s.code)
+								);
+								const newBackgroundStyles = character.styles.filter(s => 
+									s.type === 'ansi' && isBgColorCode(s.code)
+								);
 								
 								currentLine[offsetX] = {
 									...existingChar,
