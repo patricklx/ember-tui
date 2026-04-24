@@ -37,6 +37,10 @@ const renderBorder = (
 			? cliBoxes[borderStyle as keyof typeof cliBoxes]
 			: borderStyle;
 
+	if (!box) {
+		return;
+	}
+
 	const topBorderColor = node.getAttribute('border-top-color') ?? node.getAttribute('border-color');
 	const bottomBorderColor = node.getAttribute('border-bottom-color') ?? node.getAttribute('border-color');
 	const leftBorderColor = node.getAttribute('border-left-color') ?? node.getAttribute('border-color');
