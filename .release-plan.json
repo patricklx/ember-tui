@@ -1,15 +1,11 @@
 {
   "solution": {
     "ember-tui": {
-      "impact": "minor",
-      "oldVersion": "1.0.6",
-      "newVersion": "1.1.0",
+      "impact": "patch",
+      "oldVersion": "1.1.0",
+      "newVersion": "1.1.1",
       "tagName": "latest",
       "constraints": [
-        {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        },
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
@@ -19,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2026-04-24)\n\n* ember-tui 1.1.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-tui`\n  * [#101](https://github.com/patricklx/ember-tui/pull/101) improve key handling ([@patricklx](https://github.com/patricklx))\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#99](https://github.com/patricklx/ember-tui/pull/99) try free node ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-04-24)\n\n* ember-tui 1.1.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#102](https://github.com/patricklx/ember-tui/pull/102) Improve key handling ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
