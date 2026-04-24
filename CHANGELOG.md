@@ -2,6 +2,18 @@
 
 ## Release (2026-04-24)
 
+* ember-tui 1.1.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#106](https://github.com/patricklx/ember-tui/pull/106) fix missing properties for box ([@patricklx](https://github.com/patricklx))
+  * [#104](https://github.com/patricklx/ember-tui/pull/104) better error handling if bad border style ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
+## Release (2026-04-24)
+
 * ember-tui 1.1.1 (patch)
 
 #### :bug: Bug Fix
