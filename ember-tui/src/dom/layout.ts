@@ -25,7 +25,7 @@ function extractStylesFromElement(element: ElementNode): Record<string, any> {
 	}
 
 	// Get all attributes from the element
-	const attributes = element.attributes;
+	const attributes = element.attributesObject;
 	for (const attrName in attributes) {
 		const value = attributes[attrName];
 		
