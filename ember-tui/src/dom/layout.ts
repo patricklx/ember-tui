@@ -20,6 +20,7 @@ export function freeAllYogaNodes(): void {
 			node.unsetMeasureFunc();
 			// Clear the reference on the element to allow GC
 			element.yogaNode = undefined;
+			node.free();
 		} catch {
 			// Node might already be freed, ignore
 		}
