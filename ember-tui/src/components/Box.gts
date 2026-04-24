@@ -16,7 +16,7 @@ interface BoxSignature {
  * Provides flexbox layout capabilities similar to div with display: flex
  */
 export default class Box extends Component<BoxSignature> {
-  applyStyles = modifier((element: ElementNode) => {
+  applyStyles = modifier((element: any) => {
     // Apply all args as attributes on the element
     for (const [key, value] of Object.entries(this.args)) {
       if (value !== undefined && value !== null) {
