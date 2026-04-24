@@ -98,6 +98,15 @@ export function startRender(
       // Check for ambiguous keys (could be either Tab/Ctrl+I, Enter/Ctrl+M, etc.)
       const isAmbiguous = rawInput === '\t' || rawInput === '\r' || rawInput === '\n';
       
+      // Check for special keys that should use their mapped names
+      // (Backspace, Delete, Escape, Arrow keys, etc.)
+      const mappedName = mapKeyName(rawInput);
+      const isSpecialKey = mappedName !== rawInput && 
+        (rawInput.startsWith('\x1b') || // Escape sequences
+         rawInput === '\x7f' ||          // Backspace (DEL)
+         rawInput === '\b' ||            // Backspace
+         rawInput === ' ');              // Space
+      
       // Detect Shift modifier
       const isShift = isShiftTab || (rawInput.length === 1 && isShiftedChar(rawInput));
       
@@ -114,16 +123,15 @@ export function startRender(
         const baseLetter = String.fromCharCode(charCode + 96);
         key = rawInput;  // Keep the actual control character
         code = baseLetter;  // Provide the base letter for reference
-      } else if (isAmbiguous) {
-        // Ambiguous keys: use the mapped name for clarity
-        // e.g., '\t' becomes 'Tab', '\r' becomes 'Enter'
-        const mappedName = mapKeyName(rawInput);
+      } else if (isAmbiguous || isSpecialKey) {
+        // Ambiguous or special keys: use the mapped name for clarity
+        // e.g., '\t' becomes 'Tab', '\x7f' becomes 'Backspace', '\x1b[A' becomes 'ArrowUp'
         key = mappedName;
         code = mappedName;
       } else {
-        // Regular key or special sequence
+        // Regular printable character
         key = rawInput;
-        code = mapKeyName(rawInput);
+        code = mappedName;
       }
 
       // Dispatch keydown event to document
