@@ -107,7 +107,6 @@ export default class AppTemplate extends Component {
         <Text @bold={{true}} @color="cyan">{{this.selectedView}}</Text>
         <Text>---</Text>
         {{outlet}}
-        {{! @glint-expect-error: paddingX is not in Box signature but works at runtime }}
         <Box @borderStyle="single" @borderColor="gray" @paddingX={{1}}>
           <Text @color="yellow">Press Ctrl+B to go back to menu</Text>
         </Box>

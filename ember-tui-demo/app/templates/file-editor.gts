@@ -256,7 +256,6 @@ export default class FileEditorTemplate extends Component {
 					<Text @color="white">  {{file}}</Text>
 				{{/if}}
 			{{/each}}
-			{{! @glint-expect-error: paddingX is not in Box signature but works at runtime }}
 			<Box @borderStyle="single" @borderColor="gray" @paddingX={{1}}>
 				<Text @color="gray">↑↓: Navigate | Enter: Open | Ctrl+B: Back to menu</Text>
 			</Box>
@@ -272,7 +271,6 @@ export default class FileEditorTemplate extends Component {
 				<Text @color="green">{{this.statusMessage}}</Text>
 			{{/if}}
 			<Spacer></Spacer>
-			{{! @glint-expect-error: paddingX is not in Box signature but works at runtime }}
 			<Box @borderStyle="single" @borderColor="gray" @paddingX={{1}}>
 				<Text @color="gray">Ctrl+S: Save | Ctrl+X: File list</Text>
 			</Box>

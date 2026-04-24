@@ -4,7 +4,6 @@ import { Text, Box, Spacer, Newline } from 'ember-tui';
  * Test template for Newline and Spacer components
  */
 const ComponentTestTemplate = <template>
-  {{! @glint-expect-error: padding is not in Box signature but works at runtime }}
   <Box @flexDirection="column" @borderStyle="single" @borderColor="green" @padding={{1}}>
     <Text @bold={{true}} @color="cyan">Component Test: Newline & Spacer</Text>
     
@@ -12,7 +11,6 @@ const ComponentTestTemplate = <template>
       <Text @color="yellow">Testing Spacer component:</Text>
     </Box>
     
-    {{! @glint-expect-error: padding is not in Box signature but works at runtime }}
     <Box @flexDirection="row" @width={{60}} @borderStyle="round" @borderColor="blue" @padding={{1}}>
       <Text @color="green">Left</Text>
       <Spacer />
