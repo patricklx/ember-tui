@@ -662,6 +662,37 @@ describe("Box component", () => {
 			expect(rawOutput).toMatch(/\x1b\[41m/);
 		});
 
+		test("should overlay background without overlay flag replacing content", async () => {
+			await using ctx = await setupRenderingContext(App);
+			
+			await ctx.render(<template>
+				<Box>
+					<Text>AAAA BBBB CCCC</Text>
+				</Box>
+				<Box 
+					@backgroundColor="blue"
+					@position="absolute"
+					@top={{0}}
+					@left={{5}}
+					@width={{5}}
+					@height={{1}}
+				/>
+			</template>);
+
+			render(ctx.element, { stdout: fakeTTY as any });
+			const cleanOutput = fakeTTY.getCleanOutput();
+			const rawOutput = fakeTTY.output.join('');
+
+			// Without overlay flag (default behavior), the box background covers text with spaces
+			// "AAAA " should be visible (first 5 chars)
+			expect(cleanOutput).toContain("AAAA");
+			// Middle section (5 chars at position 5-9) should be covered with spaces
+			// "CCCC" at the end should still be visible
+			expect(cleanOutput).toContain("CCCC");
+			// Should have blue background (44)
+			expect(rawOutput).toMatch(/\x1b\[44m/);
+		});
+
 		test("should dynamically toggle overlay mode", async () => {
 			await using ctx = await setupRenderingContext(App);
 			const state = trackedObject({ overlay: false });
