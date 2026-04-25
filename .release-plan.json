@@ -1,11 +1,15 @@
 {
   "solution": {
     "ember-tui": {
-      "impact": "patch",
-      "oldVersion": "1.1.2",
-      "newVersion": "1.1.3",
+      "impact": "minor",
+      "oldVersion": "1.1.3",
+      "newVersion": "1.2.0",
       "tagName": "latest",
       "constraints": [
+        {
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
+        },
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
@@ -15,5 +19,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2026-04-24)\n\n* ember-tui 1.1.3 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#107](https://github.com/patricklx/ember-tui/pull/107) fix box attributes ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-04-25)\n\n* ember-tui 1.2.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-tui`\n  * [#109](https://github.com/patricklx/ember-tui/pull/109) add overlay ([@patricklx](https://github.com/patricklx))\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#110](https://github.com/patricklx/ember-tui/pull/110) clear lines ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
