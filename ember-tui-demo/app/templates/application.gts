@@ -49,7 +49,7 @@ export default class AppTemplate extends Component {
         this.counter += 1;
 
 		// Handle Ctrl+B to go back to menu
-		if (event.ctrlKey && key === 'b') {
+		if (event.ctrlKey && event.code === 'b') {
 			this.selectedView = 'menu';
 			return;
 		}
