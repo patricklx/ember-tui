@@ -286,7 +286,7 @@ describe("Box component", () => {
 			expect(cleanOutput).toMatch(/[┌┐└┘│─]/);
 
 			fakeTTY.clear();
-			state.borderStyle = "double";
+			state.borderStyle = "double" as const;
 			await rerender();
 			render(ctx.element, { stdout: fakeTTY as any });
 
@@ -600,7 +600,7 @@ describe("Box component", () => {
 		test("should dynamically update multiple properties", async () => {
 			await using ctx = await setupRenderingContext(App);
 			const state = trackedObject({ 
-				borderStyle: "single" as any,
+				borderStyle: "single" as const,
 				borderColor: "red",
 				bgColor: "blue"
 			});
@@ -621,7 +621,7 @@ describe("Box component", () => {
 			expect(rawOutput).toMatch(/\x1b\[44m/); // Blue background
 
 			fakeTTY.clear();
-			state.borderStyle = "double";
+			state.borderStyle = "double" as const;
 			state.borderColor = "green";
 			state.bgColor = "yellow";
 			await rerender();
