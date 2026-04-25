@@ -600,7 +600,7 @@ function getVisualLength(text: string): number {
  * Apply minimal update to a line by only rewriting the changed portions
  * Appends operations to the provided buffer array
  */
-function updateLineMinimal(line: number, oldText: string, newText: string, buffer: string[]): void {
+function updateLineMinimal(line: number, oldText: string, newText: string, buffer: string[], isLastLine: boolean = false): void {
 	// Expand tabs to spaces before processing
 	const expandedOldText = expandTabs(oldText);
 	const expandedNewText = expandTabs(newText);
@@ -620,10 +620,10 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		buffer.push(`\x1b[${row + 1};${col + 1}H`);
 	};
 
-	// If new line is empty, fill with spaces instead of clear code
+	// If new line is empty, clear the entire line and return
 	if (newVisualLength === 0 && oldVisualLength > 0) {
 		addCursorMove(0, line);
-		buffer.push(' '.repeat(oldVisualLength)); // Fill with spaces
+		buffer.push(isLastLine ? '\x1b[2K ' : '\x1b[2K'); // Clear entire line, add space for last line
 		return;
 	}
 
@@ -639,7 +639,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		if (isFirstSegment && segment.start > 0) {
 			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
 			if (prevStart < segment.start) {
-				buffer.push(' '.repeat(segment.start - prevStart)); // Fill with spaces
+				buffer.push(isLastLine ? '\x1b[1K ' : '\x1b[1K'); // Clear from cursor to start, add space for last line
 			}
 		}
 
@@ -656,7 +656,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 			const spacesToFill = oldVisualLength - start;
 			if (spacesToFill > 0) {
 				addCursorMove(start, line);
-				buffer.push(' '.repeat(spacesToFill)); // Fill with spaces
+				buffer.push(isLastLine ? '\x1b[0K ' : '\x1b[0K'); // Clear from cursor to end, add space for last line
 			}
 		}
 	}
@@ -772,6 +772,9 @@ function renderInternal(rootNode: ElementNode): void {
 		const visibleStartLine = scrollBufferSize;
 		const maxLines = Math.max(newLines.length, oldLines.length);
 
+		// Find the last line that will be rendered
+		const lastRenderedLineIndex = maxLines - 1;
+
 		// Buffer to accumulate all update operations
 		const buffer: string[] = [];
 
@@ -786,19 +789,18 @@ function renderInternal(rootNode: ElementNode): void {
 				// Only update lines within visible terminal viewport
 				if (i >= visibleStartLine && i < state.terminalHeight + scrollBufferSize) {
 					if (newLine === undefined || newLine === "") {
-						// Line was removed - fill with spaces
+						// Line was removed - clear it
+						const isLastLine = (i === lastRenderedLineIndex);
 						buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
-						const oldLineLength = getVisualLength(oldLine || '');
-						if (oldLineLength > 0) {
-							buffer.push(' '.repeat(oldLineLength)); // Fill with spaces
-						}
+						buffer.push(isLastLine ? '\x1b[2K ' : '\x1b[2K'); // Clear entire line, add space for last line
 					} else if (oldLine === undefined || oldLine === "") {
 						// New line - just write it (expand tabs)
 						buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
 						buffer.push(expandTabs(newLine));
 					} else {
 						// Line changed - apply minimal update
-						updateLineMinimal(screenLine, oldLine, newLine, buffer);
+						const isLastLine = (i === lastRenderedLineIndex);
+						updateLineMinimal(screenLine, oldLine, newLine, buffer, isLastLine);
 					}
 				} else if (screenLine >= state.terminalHeight) {
 					// Beyond previous content - just write newline and content
