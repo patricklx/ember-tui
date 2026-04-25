@@ -29,7 +29,7 @@ import { Box, Text } from 'ember-tui';
           />
         </Box>
 
-        <Text @color="gray" @marginTop={{1}}>With overlay=true (text preserved with new background):</Text>
+        <Text @color="gray">With overlay=true (text preserved with new background):</Text>
         <Box @position="relative" @height={{3}}>
           <Box @padding={{1}}>
             <Text>████ Base Text Content Here ████</Text>
