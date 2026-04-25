@@ -273,7 +273,7 @@ describe("Box component", () => {
 
 		test("should change border style dynamically", async () => {
 			await using ctx = await setupRenderingContext(App);
-			const state = trackedObject({ borderStyle: "single" as const });
+			const state = trackedObject({ borderStyle: "single" as any });
 
 			await ctx.render(<template>
 				<Box @borderStyle={{state.borderStyle}}>
