@@ -10,7 +10,7 @@ import { Box, Text } from 'ember-tui';
     </Box>
 
     {{! Demo 1: Basic Overlay vs No Overlay }}
-    <Box @marginTop={{1}} @flexDirection="column" @gap={{1}}>
+    <Box @flexDirection="column" @gap={{1}}>
       <Text @bold={{true}} @color="green">1. Basic Overlay Comparison</Text>
       
       <Box @flexDirection="column" @gap={{1}}>
