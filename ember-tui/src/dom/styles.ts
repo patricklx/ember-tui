@@ -334,6 +334,15 @@ export type Styles = {
 	Accepts the same values as `color` in the `<Text>` component.
 	*/
 	readonly backgroundColor?: LiteralUnion<ForegroundColorName, string>;
+
+	/**
+	When true, the background color will be overlaid on existing content,
+	preserving characters but replacing their background color.
+	Useful for absolute positioned boxes that need to overlay other elements.
+
+	@default false
+	*/
+	readonly overlay?: boolean;
 };
 
 const applyPositionStyles = (node: YogaNode, style: Styles): void => {

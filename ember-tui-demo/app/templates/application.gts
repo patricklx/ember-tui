@@ -15,7 +15,7 @@ const eq = (a: any, b: any) => a === b;
  */
 export default class AppTemplate extends Component {
 	@service declare router: RouterService;
-	@tracked selectedView: 'colors' | 'lorem' | 'tomster' | 'box-demo' | 'static-test' | 'file-editor' | 'menu' | 'component-test' = 'menu';
+	@tracked selectedView: 'colors' | 'lorem' | 'tomster' | 'box-demo' | 'static-test' | 'file-editor' | 'menu' | 'component-test' | 'overlay-demo' = 'menu';
   @tracked counter = 0;
   @tracked debug = [];
 
@@ -77,6 +77,9 @@ export default class AppTemplate extends Component {
 			} else if (key === '7') {
 				this.selectedView = 'file-editor';
 				this.router.transitionTo('file-editor');
+			} else if (key === '8') {
+				this.selectedView = 'overlay-demo';
+				this.router.transitionTo('overlay-demo');
 			}
 		}
 	}
@@ -101,8 +104,9 @@ export default class AppTemplate extends Component {
         <Text @color="white">[5] Component Test (Newline & Spacer)</Text>
         <Text @color="white">[6] Static Component Test</Text>
         <Text @color="white">[7] File Editor</Text>
+        <Text @color="white">[8] Overlay Feature Demo</Text>
         <Text>---</Text>
-        <Text @color="gray">Press 1-7 to select a demo</Text>
+        <Text @color="gray">Press 1-8 to select a demo</Text>
       {{else}}
         <Text @bold={{true}} @color="cyan">{{this.selectedView}}</Text>
         <Text>---</Text>

@@ -43,6 +43,9 @@ const renderBackground = (
 		return;
 	}
 
+	// Check if overlay mode is enabled
+	const overlay = node.getAttribute('overlay') === true || node.getAttribute('overlay') === 'true';
+
 	// Create background fill for each row
 	const backgroundLine = colorize(
 		' '.repeat(contentWidth),
@@ -55,7 +58,7 @@ const renderBackground = (
 			x + leftBorderWidth,
 			y + topBorderHeight + row,
 			backgroundLine,
-			{transformers: []},
+			{transformers: [], overlay},
 		);
 	}
 };

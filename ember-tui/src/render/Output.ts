@@ -33,6 +33,7 @@ type WriteOperation = {
 	y: number;
 	text: string;
 	transformers: OutputTransformer[];
+	overlay?: boolean;
 };
 
 type ClipOperation = {
@@ -68,9 +69,9 @@ export default class Output {
 		x: number,
 		y: number,
 		text: string,
-		options: {transformers: OutputTransformer[]},
+		options: {transformers: OutputTransformer[]; overlay?: boolean},
 	): void {
-		const {transformers} = options;
+		const {transformers, overlay} = options;
 
 		if (!text) {
 			return;
@@ -82,6 +83,7 @@ export default class Output {
 			y,
 			text,
 			transformers,
+			overlay,
 		});
 	}
 
@@ -143,7 +145,7 @@ export default class Output {
 			}
 
 			if (operation.type === 'write') {
-				const {text, transformers} = operation;
+				const {text, transformers, overlay} = operation;
 				let {x, y} = operation;
 				let lines = text.split('\n');
 
@@ -216,7 +218,34 @@ export default class Output {
 					let offsetX = x;
 
 					for (const character of characters) {
-						currentLine[offsetX] = character;
+						if (overlay) {
+							// In overlay mode, preserve existing character but apply new background styles
+							const existingChar = currentLine[offsetX];
+							if (existingChar && existingChar.value && existingChar.value.trim() !== '') {
+								// Keep the existing character value but apply new background styles
+								// Filter out old background styles (ANSI codes 40-49 for standard, 100-107 for bright)
+								const isBgColorCode = (code: string) => {
+									return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
+								};
+								const existingStyles = existingChar.styles.filter(s => 
+									s.type !== 'ansi' || !isBgColorCode(s.code)
+								);
+								const newBackgroundStyles = character.styles.filter(s => 
+									s.type === 'ansi' && isBgColorCode(s.code)
+								);
+								
+								currentLine[offsetX] = {
+									...existingChar,
+									styles: [...existingStyles, ...newBackgroundStyles],
+								};
+							} else {
+								// No existing character, just write the overlay character
+								currentLine[offsetX] = character;
+							}
+						} else {
+							// Normal mode: just replace the character
+							currentLine[offsetX] = character;
+						}
 
 						// Determine printed width using string-width to align with measurement
 						const characterWidth = Math.max(1, stringWidth(character.value));
