@@ -600,7 +600,7 @@ describe("Box component", () => {
 		test("should dynamically update multiple properties", async () => {
 			await using ctx = await setupRenderingContext(App);
 			const state = trackedObject({ 
-				borderStyle: "single" as const,
+				borderStyle: "single" as any,
 				borderColor: "red",
 				bgColor: "blue"
 			});
