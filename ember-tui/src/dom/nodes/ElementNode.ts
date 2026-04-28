@@ -23,6 +23,11 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
    * Override setAttribute to update Yoga styles when style attributes change
    */
   setAttribute(key: string, value: any): void {
+    if (key === '__attrs__') {
+      for (const [k, v] of Object.entries(value || {})) {
+        this.setAttribute(k, v);
+      }
+    }
 		if (key === 'internal_transform') {
 			this.internal_transform = value;
 			return;
