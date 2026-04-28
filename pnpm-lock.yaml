@@ -104,8 +104,8 @@ importers:
         specifier: ^7.28.3
         version: 7.28.3(@babel/core@7.28.5)
       '@babel/plugin-transform-typescript':
-        specifier: ^7.28.5
-        version: 7.28.5(@babel/core@7.28.5)
+        specifier: ^7.28.6
+        version: 7.28.6(@babel/core@7.28.5)
       '@babel/types':
         specifier: ^7.29.0
         version: 7.29.0
@@ -219,7 +219,7 @@ importers:
         version: 5.6.2
       ember-inspector:
         specifier: github:emberjs/ember-inspector#main
-        version: https://codeload.github.com/emberjs/ember-inspector/tar.gz/2ba511dd0d9b6a9efdda0a2f1c1e8b61d7959df2
+        version: https://codeload.github.com/emberjs/ember-inspector/tar.gz/83329b6e8529e3993a405d08219114560f0adfc1
       ember-load-initializers:
         specifier: ^3.0.1
         version: 3.0.1(ember-source@6.12.0(@glimmer/component@2.0.0)(rsvp@4.8.5))
@@ -258,8 +258,8 @@ importers:
         specifier: ^7.29.0
         version: 7.29.0(@babel/core@7.28.5)
       '@babel/plugin-transform-typescript':
-        specifier: ^7.23.0
-        version: 7.28.5(@babel/core@7.28.5)
+        specifier: ^7.28.6
+        version: 7.28.6(@babel/core@7.28.5)
       '@ember/test-helpers':
         specifier: ^5.4.1
         version: 5.4.1(@babel/core@7.28.5)(@glint/template@1.7.3)
@@ -1158,12 +1158,6 @@ packages:
 
   '@babel/plugin-transform-typeof-symbol@7.27.1':
     resolution: {integrity: sha512-RiSILC+nRJM7FY5srIyc4/fGIwUhyDuuBSdWn4y6yT6gm652DpCHZjIipgn6B7MQ1ITOUnAKWixEUjQRIBIcLw==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
-  '@babel/plugin-transform-typescript@7.28.5':
-    resolution: {integrity: sha512-x2Qa+v/CuEoX7Dr31iAfr0IhInrVOWZU/2vJMJ00FOR/2nM0BcBEclpaf9sWCDc+v5e9dMrhSH8/atq/kX7+bA==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
@@ -4351,13 +4345,13 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  ember-inspector@4.15.1:
-    resolution: {integrity: sha512-x7469pBhXuuf1MANO2iHL2Hzgg2YdQH5Hw5BDhzpnysEKDZLQel6GKja+WnhHAawAcG8MolUWq5aVgBV9mAkGA==}
+  ember-inspector@4.17.0:
+    resolution: {integrity: sha512-wRV2xA/C9FeokwKXoD09HKcL9qlPNXg4A58+Vmo3epffk4t+QwiipOwESM2pxjjC5y4ta8qb/X+x5m8Ke/8EUA==}
     engines: {node: '>= 22', pnpm: ^9.0.0}
 
-  ember-inspector@https://codeload.github.com/emberjs/ember-inspector/tar.gz/2ba511dd0d9b6a9efdda0a2f1c1e8b61d7959df2:
-    resolution: {tarball: https://codeload.github.com/emberjs/ember-inspector/tar.gz/2ba511dd0d9b6a9efdda0a2f1c1e8b61d7959df2}
-    version: 4.15.1
+  ember-inspector@https://codeload.github.com/emberjs/ember-inspector/tar.gz/83329b6e8529e3993a405d08219114560f0adfc1:
+    resolution: {tarball: https://codeload.github.com/emberjs/ember-inspector/tar.gz/83329b6e8529e3993a405d08219114560f0adfc1}
+    version: 4.17.0
     engines: {node: '>= 22', pnpm: ^9.0.0}
 
   ember-load-initializers@3.0.1:
@@ -4867,9 +4861,6 @@ packages:
 
   fb-watchman@2.0.2:
     resolution: {integrity: sha512-p5161BqbuCaSnB8jIbzQHOlpgsPmK5rJVDfDKO91Axs5NC1uu3HRQm6wt9cd9/+GtQQIO53JdGXXoyDpTAsgYA==}
-
-  fd-slicer@1.1.0:
-    resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
 
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
@@ -6799,8 +6790,8 @@ packages:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
     engines: {node: '>= 0.4'}
 
-  postcss@8.5.10:
-    resolution: {integrity: sha512-pMMHxBOZKFU6HgAZ4eyGnwXF/EvPGGqUr0MnZ5+99485wwW41kW91A4LOGxSHhgugZmSChL5AlElNdwlNgcnLQ==}
+  postcss@8.5.12:
+    resolution: {integrity: sha512-W62t/Se6rA0Az3DfCL0AqJwXuKwBeYg6nOaIgzP+xZ7N5BFCI7DYi1qs6ygUYT6rvfi6t9k65UMLJC+PHZpDAA==}
     engines: {node: ^10 || ^12 || >=14}
 
   postcss@8.5.6:
@@ -8467,9 +8458,6 @@ packages:
     resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==}
     engines: {node: '>=12'}
 
-  yauzl@2.10.0:
-    resolution: {integrity: sha512-p4a9I6X6nu6IhoGmBqAcbJy1mlC4j27vEPZX9F4L4/vZT3Lyq1VkFHw/V/PUcB9Buo+DG3iHkT0x3Qya58zc3g==}
-
   yauzl@3.3.0:
     resolution: {integrity: sha512-PtGEvEP30p7sbIBJKUBjUnqgTVOyMURc4dLo9iNyAJnNIEz9pm88cCXF21w94Kg3k6RXkeZh5DHOGS0qEONvNQ==}
     engines: {node: '>=12'}
@@ -9406,17 +9394,6 @@ snapshots:
       '@babel/core': 7.28.5
       '@babel/helper-plugin-utils': 7.28.6
 
-  '@babel/plugin-transform-typescript@7.28.5(@babel/core@7.28.5)':
-    dependencies:
-      '@babel/core': 7.28.5
-      '@babel/helper-annotate-as-pure': 7.27.3
-      '@babel/helper-create-class-features-plugin': 7.28.5(@babel/core@7.28.5)
-      '@babel/helper-plugin-utils': 7.27.1
-      '@babel/helper-skip-transparent-expression-wrappers': 7.27.1
-      '@babel/plugin-syntax-typescript': 7.28.6(@babel/core@7.28.5)
-    transitivePeerDependencies:
-      - supports-color
-
   '@babel/plugin-transform-typescript@7.28.6(@babel/core@7.28.5)':
     dependencies:
       '@babel/core': 7.28.5
@@ -9636,7 +9613,7 @@ snapshots:
       '@babel/helper-validator-option': 7.27.1
       '@babel/plugin-syntax-jsx': 7.27.1(@babel/core@7.28.5)
       '@babel/plugin-transform-modules-commonjs': 7.27.1(@babel/core@7.28.5)
-      '@babel/plugin-transform-typescript': 7.28.5(@babel/core@7.28.5)
+      '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.28.5)
     transitivePeerDependencies:
       - supports-color
 
@@ -12163,7 +12140,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-syntax-decorators': 7.28.6(@babel/core@7.28.5)
-      '@babel/plugin-transform-typescript': 7.28.5(@babel/core@7.28.5)
+      '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.28.5)
       prettier: 2.8.8
     transitivePeerDependencies:
       - supports-color
@@ -13247,7 +13224,7 @@ snapshots:
       '@babel/plugin-transform-class-static-block': 7.28.3(@babel/core@7.28.5)
       '@babel/plugin-transform-modules-amd': 7.27.1(@babel/core@7.28.5)
       '@babel/plugin-transform-runtime': 7.29.0(@babel/core@7.28.5)
-      '@babel/plugin-transform-typescript': 7.28.5(@babel/core@7.28.5)
+      '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.28.5)
       '@babel/preset-env': 7.28.5(@babel/core@7.28.5)
       '@babel/runtime': 7.12.18
       amd-name-resolver: 1.3.1
@@ -13280,7 +13257,7 @@ snapshots:
       '@babel/plugin-transform-private-methods': 7.28.6(@babel/core@7.28.5)
       '@babel/plugin-transform-private-property-in-object': 7.28.6(@babel/core@7.28.5)
       '@babel/plugin-transform-runtime': 7.29.0(@babel/core@7.28.5)
-      '@babel/plugin-transform-typescript': 7.28.5(@babel/core@7.28.5)
+      '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.28.5)
       '@babel/preset-env': 7.29.0(@babel/core@7.28.5)
       '@babel/runtime': 7.12.18
       amd-name-resolver: 1.3.1
@@ -13526,13 +13503,13 @@ snapshots:
       - eslint
       - typescript
 
-  ember-inspector@4.15.1:
+  ember-inspector@4.17.0:
     dependencies:
       got: 11.8.6
       rimraf: 5.0.10
-      yauzl: 2.10.0
+      yauzl: 3.3.0
 
-  ember-inspector@https://codeload.github.com/emberjs/ember-inspector/tar.gz/2ba511dd0d9b6a9efdda0a2f1c1e8b61d7959df2:
+  ember-inspector@https://codeload.github.com/emberjs/ember-inspector/tar.gz/83329b6e8529e3993a405d08219114560f0adfc1:
     dependencies:
       got: 11.8.6
       rimraf: 5.0.10
@@ -13552,7 +13529,7 @@ snapshots:
 
   ember-native-devtools@3.0.2(socket.io-client@4.8.3):
     dependencies:
-      ember-inspector: 4.15.1
+      ember-inspector: 4.17.0
       express: 5.2.1
       socket.io: 4.8.1
       socket.io-client: 4.8.3
@@ -14468,10 +14445,6 @@ snapshots:
   fb-watchman@2.0.2:
     dependencies:
       bser: 2.1.1
-
-  fd-slicer@1.1.0:
-    dependencies:
-      pend: 1.2.0
 
   fdir@6.5.0(picomatch@4.0.3):
     optionalDependencies:
@@ -16217,7 +16190,7 @@ snapshots:
     dependencies:
       growly: 1.3.0
       is-wsl: 2.2.0
-      semver: 7.7.4
+      semver: 7.7.3
       shellwords: 0.1.1
       uuid: 8.3.2
       which: 2.0.2
@@ -16601,7 +16574,7 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss@8.5.10:
+  postcss@8.5.12:
     dependencies:
       nanoid: 3.3.11
       picocolors: 1.1.1
@@ -16868,7 +16841,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-syntax-decorators': 7.28.6(@babel/core@7.28.5)
-      '@babel/plugin-transform-typescript': 7.28.5(@babel/core@7.28.5)
+      '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.28.5)
       prettier: 2.8.8
     transitivePeerDependencies:
       - supports-color
@@ -18193,7 +18166,7 @@ snapshots:
       esbuild: 0.27.7
       fdir: 6.5.0(picomatch@4.0.4)
       picomatch: 4.0.4
-      postcss: 8.5.10
+      postcss: 8.5.12
       rollup: 4.60.2
       tinyglobby: 0.2.16
     optionalDependencies:
@@ -18534,11 +18507,6 @@ snapshots:
       string-width: 4.2.3
       y18n: 5.0.8
       yargs-parser: 21.1.1
-
-  yauzl@2.10.0:
-    dependencies:
-      buffer-crc32: 0.2.13
-      fd-slicer: 1.1.0
 
   yauzl@3.3.0:
     dependencies:
