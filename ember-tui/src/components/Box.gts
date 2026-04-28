@@ -17,6 +17,7 @@ interface BoxSignature {
 // eslint-disable-next-line ember/no-empty-glimmer-component-classes
 export default class Box extends Component<BoxSignature> {
   <template>
+    {{! @glint-ignore }}
     <terminal-box __attrs__={{this.args}} ...attributes>{{yield}}</terminal-box>
   </template>
 }
