@@ -7,7 +7,7 @@ import { FakeTTY } from 'ember-tui/test-utils/FakeTTY';
 describe('HMR Render Output Verification', () => {
   let demoProcess: ChildProcess;
   let fakeTTY: FakeTTY;
-  const timeout = 120000; // 2 minutes max
+  const timeout = 60000; // 1 minute max
 
   const componentPath = join(__dirname, '../app/components/HmrTest.gts');
 
@@ -108,14 +108,14 @@ describe('HMR Render Output Verification', () => {
         }
       }, 500);
 
-      // Timeout after 20 seconds
+      // Timeout after 10 seconds
       setTimeout(() => {
         clearInterval(checkInterval);
         if (!resolved) {
           console.log('TIMEOUT - Final stdout:', stdout);
           console.log('TIMEOUT - Final stderr:', stderr);
           console.log('TIMEOUT - FakeTTY output:', fakeTTY.getCleanOutput());
-          reject(new Error('App failed to render within 20 seconds'));
+          reject(new Error('App failed to render within 10 seconds'));
         }
       }, 20000);
 
@@ -206,7 +206,7 @@ describe('HMR Render Output Verification', () => {
     writeFileSync(componentPath, originalComponentContent);
 
     // Wait for HMR to process restoration
-    await new Promise(resolve => setTimeout(resolve, 6000));
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
     // Verify the marker is GONE after restoration
     const restoredOutput = fakeTTY.getCleanOutput();
@@ -240,6 +240,6 @@ describe('HMR Render Output Verification', () => {
 
     // Restore
     writeFileSync(componentPath, originalComponentContent);
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 6000));
   }, timeout);
 });

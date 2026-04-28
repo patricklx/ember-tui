@@ -185,7 +185,7 @@ export default class ViewNode<Attributes = any> {
   /* istanbul ignore next */
   setAttribute(key: string, value: any) {
     this.attributesObject[key] = value;
-    this[key as keyof this] = value;
+	  this[key as keyof this] = value;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

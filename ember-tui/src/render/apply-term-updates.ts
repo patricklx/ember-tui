@@ -10,7 +10,7 @@ import type * as Process from "node:process";
 import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo, setProcess } from "./helpers";
 
 // Re-export helper functions for testing
-export { clearEntireLine, clearLineFromCursor, clearLineToStart };
+export { clearEntireLine, clearLineFromCursor, clearLineToStart, updateLineMinimal };
 
 let process = globalThis.process;
 
