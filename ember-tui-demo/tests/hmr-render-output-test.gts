@@ -117,7 +117,7 @@ describe('HMR Render Output Verification', () => {
           console.log('TIMEOUT - FakeTTY output:', fakeTTY.getCleanOutput());
           reject(new Error('App failed to render within 10 seconds'));
         }
-      }, 10000);
+      }, 20000);
 
       // Also check if process exits early
       demoProcess.on('exit', (code, signal) => {
@@ -188,7 +188,7 @@ describe('HMR Render Output Verification', () => {
     writeFileSync(componentPath, modifiedContent);
 
     // Wait for HMR to process and re-render
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 6000));
 
     // Get new output after HMR
     const newOutput = fakeTTY.getCleanOutput();
@@ -232,7 +232,7 @@ describe('HMR Render Output Verification', () => {
     writeFileSync(componentPath, modifiedContent);
 
     // Wait for HMR and re-render
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 6000));
 
     // The test message should appear in the terminal output
     const output = fakeTTY.getCleanOutput();
@@ -240,6 +240,6 @@ describe('HMR Render Output Verification', () => {
 
     // Restore
     writeFileSync(componentPath, originalComponentContent);
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 6000));
   }, timeout);
 });

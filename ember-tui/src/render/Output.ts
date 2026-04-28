@@ -217,36 +217,56 @@ export default class Output {
 				const characters = styledCharsFromTokens(tokenize(transformedLine));
 					let offsetX = x;
 
-					for (const character of characters) {
-						if (overlay) {
-							// In overlay mode, preserve existing character but apply new background styles
-							const existingChar = currentLine[offsetX];
-							if (existingChar && existingChar.value && existingChar.value.trim() !== '') {
-								// Keep the existing character value but apply new background styles
-								// Filter out old background styles (ANSI codes 40-49 for standard, 100-107 for bright)
-								const isBgColorCode = (code: string) => {
-									return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
-								};
-								const existingStyles = existingChar.styles.filter(s => 
-									s.type !== 'ansi' || !isBgColorCode(s.code)
-								);
-								const newBackgroundStyles = character.styles.filter(s => 
-									s.type === 'ansi' && isBgColorCode(s.code)
-								);
-								
-								currentLine[offsetX] = {
-									...existingChar,
-									styles: [...existingStyles, ...newBackgroundStyles],
-								};
-							} else {
-								// No existing character, just write the overlay character
-								currentLine[offsetX] = character;
-							}
-						} else {
-							// Normal mode: just replace the character
-							currentLine[offsetX] = character;
-						}
-
+									for (const character of characters) {
+										if (overlay) {
+											// In overlay mode, preserve existing character but apply new styles
+											const existingChar = currentLine[offsetX];
+											
+											// Check if the new character is a space (typically used for background colors)
+											const isSpace = character.value === ' ' || character.value.trim() === '';
+											
+											if (existingChar && isSpace) {
+												// Preserve existing character value but apply new background styles
+												// Filter out old background styles (ANSI codes 40-49 for standard, 100-107 for bright)
+												const isBgColorCode = (code: string) => {
+													return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
+												};
+												const existingStyles = existingChar.styles.filter(s => 
+													s.type !== 'ansi' || !isBgColorCode(s.code)
+												);
+												const newBackgroundStyles = character.styles.filter(s => 
+													s.type === 'ansi' && isBgColorCode(s.code)
+												);
+												
+												currentLine[offsetX] = {
+													...existingChar,
+													styles: [...existingStyles, ...newBackgroundStyles],
+												};
+											} else if (existingChar && !isSpace) {
+												// New character is not a space, so it should replace the existing one
+												// but still preserve any existing background if new char doesn't have one
+												const isBgColorCode = (code: string) => {
+													return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
+												};
+												const existingBgStyles = existingChar.styles.filter(s => 
+													s.type === 'ansi' && isBgColorCode(s.code)
+												);
+												const newHasBg = character.styles.some(s => 
+													s.type === 'ansi' && isBgColorCode(s.code)
+												);
+												
+												currentLine[offsetX] = {
+													...character,
+													styles: newHasBg ? character.styles : [...character.styles, ...existingBgStyles],
+												};
+											} else {
+												// No existing character, just write the overlay character
+												currentLine[offsetX] = character;
+											}
+										} else {
+											// Normal mode: just replace the character
+											currentLine[offsetX] = character;
+										}
 						// Determine printed width using string-width to align with measurement
 						const characterWidth = Math.max(1, stringWidth(character.value));
 

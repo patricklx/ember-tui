@@ -20,13 +20,23 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
 	declare internal_transform?: OutputTransformer;
 
   /**
+   * Convert camelCase to kebab-case
+   */
+  private camelToKebab(str: string): string {
+    return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  }
+
+  /**
    * Override setAttribute to update Yoga styles when style attributes change
    */
   setAttribute(key: string, value: any): void {
     if (key === '__attrs__') {
       for (const [k, v] of Object.entries(value || {})) {
-        this.setAttribute(k, v);
+        // Convert camelCase to kebab-case for attributes
+        const kebabKey = this.camelToKebab(k);
+        this.setAttribute(kebabKey, v);
       }
+      return;
     }
 		if (key === 'internal_transform') {
 			this.internal_transform = value;

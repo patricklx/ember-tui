@@ -14,10 +14,15 @@ interface BoxSignature {
  * Box component for terminal rendering
  * Provides flexbox layout capabilities similar to div with display: flex
  */
-// eslint-disable-next-line ember/no-empty-glimmer-component-classes
+
 export default class Box extends Component<BoxSignature> {
+
+  get attrs() {
+    return Object.assign({}, this.args);
+  }
+
   <template>
     {{! @glint-ignore }}
-    <terminal-box __attrs__={{this.args}} ...attributes>{{yield}}</terminal-box>
+    <terminal-box __attrs__={{this.attrs}} ...attributes>{{yield}}</terminal-box>
   </template>
 }
