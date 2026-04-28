@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-04-28)
+
+* ember-tui 1.2.1 (patch)
+
+#### :house: Internal
+* `ember-tui`
+  * [#117](https://github.com/patricklx/ember-tui/pull/117) pass __attrs__ to terminal-box node ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-04-25)
 
 * ember-tui 1.2.0 (minor)
