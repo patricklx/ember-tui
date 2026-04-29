@@ -9,7 +9,7 @@ import type { DocumentNode } from "../index";
 import type * as Process from "node:process";
 import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo, setProcess } from "./helpers";
 import { tokenize as ansiTokenize, styledCharsFromTokens, styledCharsToString } from '@alcalzone/ansi-tokenize';
-import type { StyledChar, Token as AnsiToken } from '@alcalzone/ansi-tokenize';
+import type { StyledChar } from '@alcalzone/ansi-tokenize';
 import { appendFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -34,7 +34,7 @@ function debugLog(message: string, data?: any): void {
 		}
 		logMessage += '\n---\n';
 		appendFileSync(DEBUG_LOG_PATH, logMessage, 'utf-8');
-	} catch (err) {
+	} catch {
 		// Silently fail if logging fails
 	}
 }
@@ -94,6 +94,15 @@ const state: RenderState = {
 		state: 'visible'
 	}
 };
+
+/**
+ * Reset the render state - used in tests to prevent stale state between test runs
+ */
+export function resetState(): void {
+	state.lines = [];
+	state.scrollOffset = 0;
+	state.scrollBufferSize = 0;
+}
 
 // Force flush stdout after writes in non-TTY environments
 function flushStdout() {
@@ -200,14 +209,6 @@ export function getActiveAnsiCodes(tokens: Token[], upToVisualPos: number): stri
 function styledCharsToAnsiString(chars: StyledChar[]): string {
 	return styledCharsToString(chars);
 }
-
-/**
- * Get visual length of styled chars (number of visible characters)
- */
-function getStyledCharsVisualLength(chars: StyledChar[]): number {
-	return chars.length;
-}
-
 /**
  * Extract the active ANSI codes for a styled character
  */
@@ -223,30 +224,10 @@ function getActiveAnsiCodesFromChar(char: StyledChar): string {
 }
 
 /**
- * Check if ANSI codes contain background color
- */
-function hasBackgroundColor(ansiCodes: string): boolean {
-	if (!ansiCodes) return false;
-	
-	// Match background color codes: 40-47, 100-107, 48;5;n, 48;2;r;g;b
-	const bgPattern = /\x1b\[(?:4[0-7]|10[0-7]|48;[25];[\d;]+)m/;
-	return bgPattern.test(ansiCodes);
-}
-
-/**
- * Extract background color codes from ANSI string
- */
-function extractBackgroundCodes(ansiCodes: string): string {
-	if (!ansiCodes) return '';
-	
-	const matches = ansiCodes.match(/\x1b\[(?:4[0-7]|10[0-7]|48;[25];[\d;]+)m/g);
-	return matches ? matches.join('') : '';
-}
-
-/**
  * Find all segments that differ between old and new text using @alcalzone/ansi-tokenize
  */
 export function findDiffSegments(oldText: string, newText: string): TextSegment[] {
+	const logPath = '/tmp/ember-tui-debug.log';
 	debugLog('findDiffSegments called', { oldText, newText });
 	
 	// Tokenize both strings using the native @alcalzone tokenizer
@@ -261,6 +242,12 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 	// Convert to styled characters
 	const oldChars = styledCharsFromTokens(oldTokens);
 	const newChars = styledCharsFromTokens(newTokens);
+
+	try {
+		appendFileSync(logPath, `\n=== findDiffSegments ===\n`, 'utf-8');
+		appendFileSync(logPath, `oldText len=${oldChars.length}: ${JSON.stringify(oldText.substring(0, 80))}\n`, 'utf-8');
+		appendFileSync(logPath, `newText len=${newChars.length}: ${JSON.stringify(newText.substring(0, 80))}\n`, 'utf-8');
+	} catch {}
 	
 	debugLog('Styled chars created', {
 		oldCharsCount: oldChars.length,
@@ -363,6 +350,11 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 	}
 	
 	debugLog('findDiffSegments result', { segments });
+
+	try {
+		appendFileSync(logPath, `segments (${segments.length}): ${JSON.stringify(segments.map(s => ({ start: s.start, textLen: s.text.length, textPreview: s.text.replace(/\x1b/g, '\\x1b').substring(0, 40) })))}\n`, 'utf-8');
+	} catch {}
+
 	return segments;
 }
 
@@ -370,7 +362,7 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
  * Expand tabs to spaces based on column position
  * Tabs move to the next multiple of tabWidth (default 8)
  */
-function expandTabs(text: string, _startColumn: number = 0, tabWidth: number = 8): string {
+function expandTabs(text: string, tabWidth: number = 8): string {
 	return text.replace(/\t/g, ' '.repeat(tabWidth));
 }
 
@@ -395,7 +387,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		appendFileSync(logPath, `\n=== updateLineMinimal line=${line} ===\n`, 'utf-8');
 		appendFileSync(logPath, `oldText: ${JSON.stringify(oldText)}\n`, 'utf-8');
 		appendFileSync(logPath, `newText: ${JSON.stringify(newText)}\n`, 'utf-8');
-	} catch (e) {}
+	} catch {}
 	
 	debugLog('updateLineMinimal called', { line, oldText, newText });
 	
@@ -407,7 +399,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 	
 	try {
 		appendFileSync(logPath, `segments: ${JSON.stringify(segments)}\n`, 'utf-8');
-	} catch (e) {}
+	} catch {}
 
 	// If no segments, strings are identical
 	if (segments.length === 0) {
@@ -639,6 +631,11 @@ function renderInternal(rootNode: ElementNode): void {
 					} else {
 						// Line changed - apply minimal update
 						debugLog('Applying minimal update', { screenLine });
+						try {
+							appendFileSync('/tmp/ember-tui-debug.log', `\n--- renderInternal: line ${i} (screen ${screenLine}) changed ---\n`, 'utf-8');
+							appendFileSync('/tmp/ember-tui-debug.log', `  old: ${JSON.stringify((oldLine ?? '').substring(0, 100))}\n`, 'utf-8');
+							appendFileSync('/tmp/ember-tui-debug.log', `  new: ${JSON.stringify((newLine ?? '').substring(0, 100))}\n`, 'utf-8');
+						} catch {}
 						updateLineMinimal(screenLine, oldLine, newLine, buffer);
 					}
 				} else if (screenLine >= state.terminalHeight) {

@@ -8,7 +8,7 @@ describe('updateLineMinimal - background color handling', () => {
   let tty: FakeTTY;
 
   beforeEach(() => {
-    tty = new FakeTTY(80, 24);
+    tty = new FakeTTY();
   });
 
   it('should handle adding background color to plain text', () => {

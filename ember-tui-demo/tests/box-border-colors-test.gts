@@ -4,7 +4,7 @@ import "./globalSetup";
 import { setupRenderingContext } from 'ember-vitest';
 import App from '../app/app';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
-import { Text, Box, render } from "ember-tui";
+import { Text, Box, render, resetState } from "ember-tui";
 import { rerender } from "@ember/test-helpers";
 import { trackedObject } from "@ember/reactive/collections";
 import { FakeTTY } from "ember-tui/test-utils/FakeTTY";
@@ -18,6 +18,7 @@ describe("Box component", () => {
 			fakeTTY = new FakeTTY();
 			fakeTTY.rows = 1000;
 			fakeTTY.columns = 80;
+			resetState();
 		});
 
 	describe("border colors", () => {
@@ -27,6 +28,7 @@ describe("Box component", () => {
 			fakeTTY = new FakeTTY();
 			fakeTTY.rows = 1000;
 			fakeTTY.columns = 80;
+			resetState();
 		});
 
 		test("should render box with colored border", async () => {

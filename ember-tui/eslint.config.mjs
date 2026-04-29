@@ -107,7 +107,8 @@ export default ts.config(
       '@typescript-eslint/no-unnecessary-type-assertion': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
-      'no-control-regex': 'off'
+      'no-control-regex': 'off',
+      'no-empty': ['error', { allowEmptyCatch: true }]
     }
   },
   /**

@@ -4,7 +4,7 @@ import "./globalSetup";
 import { setupRenderingContext } from 'ember-vitest';
 import App from '../app/app';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
-import { Text, Box, render } from "ember-tui";
+import { Text, Box, render, resetState } from "ember-tui";
 import { rerender } from "@ember/test-helpers";
 import { trackedObject } from "@ember/reactive/collections";
 import { FakeTTY } from "ember-tui/test-utils/FakeTTY";
@@ -18,6 +18,8 @@ describe("Box overlay - incremental rendering", () => {
 		fakeTTY = new FakeTTY();
 		fakeTTY.rows = 1000;
 		fakeTTY.columns = 80;
+		// Reset module-level render state to prevent stale state from previous tests
+		resetState();
 	});
 
 	test("should add overlay after initial render with single text element", async () => {
