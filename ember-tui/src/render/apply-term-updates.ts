@@ -14,6 +14,7 @@ import { appendFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
+
 // Re-export helper functions for testing
 export { clearEntireLine, clearLineFromCursor, clearLineToStart, updateLineMinimal };
 
@@ -227,7 +228,6 @@ function getActiveAnsiCodesFromChar(char: StyledChar): string {
  * Find all segments that differ between old and new text using @alcalzone/ansi-tokenize
  */
 export function findDiffSegments(oldText: string, newText: string): TextSegment[] {
-	const logPath = '/tmp/ember-tui-debug.log';
 	debugLog('findDiffSegments called', { oldText, newText });
 	
 	// Tokenize both strings using the native @alcalzone tokenizer
@@ -243,12 +243,12 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 	const oldChars = styledCharsFromTokens(oldTokens);
 	const newChars = styledCharsFromTokens(newTokens);
 
-	try {
-		appendFileSync(logPath, `\n=== findDiffSegments ===\n`, 'utf-8');
-		appendFileSync(logPath, `oldText len=${oldChars.length}: ${JSON.stringify(oldText.substring(0, 80))}\n`, 'utf-8');
-		appendFileSync(logPath, `newText len=${newChars.length}: ${JSON.stringify(newText.substring(0, 80))}\n`, 'utf-8');
-	} catch {}
-	
+	debugLog('findDiffSegments chars', {
+		oldTextLen: oldChars.length,
+		oldTextPreview: oldText.substring(0, 80),
+		newTextLen: newChars.length,
+		newTextPreview: newText.substring(0, 80),
+	});
 	debugLog('Styled chars created', {
 		oldCharsCount: oldChars.length,
 		newCharsCount: newChars.length,
@@ -349,11 +349,10 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 		debugLog('Added clear segment', { start: newChars.length });
 	}
 	
-	debugLog('findDiffSegments result', { segments });
-
-	try {
-		appendFileSync(logPath, `segments (${segments.length}): ${JSON.stringify(segments.map(s => ({ start: s.start, textLen: s.text.length, textPreview: s.text.replace(/\x1b/g, '\\x1b').substring(0, 40) })))}\n`, 'utf-8');
-	} catch {}
+	debugLog('findDiffSegments result', {
+		segmentCount: segments.length,
+		segments: segments.map(s => ({ start: s.start, textLen: s.text.length, textPreview: s.text.replace(/\x1b/g, '\\x1b').substring(0, 40) })),
+	});
 
 	return segments;
 }
@@ -382,13 +381,6 @@ function getVisualLength(text: string): number {
  * Appends operations to the provided buffer array
  */
 function updateLineMinimal(line: number, oldText: string, newText: string, buffer: string[]): void {
-	const logPath = '/tmp/ember-tui-debug.log';
-	try {
-		appendFileSync(logPath, `\n=== updateLineMinimal line=${line} ===\n`, 'utf-8');
-		appendFileSync(logPath, `oldText: ${JSON.stringify(oldText)}\n`, 'utf-8');
-		appendFileSync(logPath, `newText: ${JSON.stringify(newText)}\n`, 'utf-8');
-	} catch {}
-	
 	debugLog('updateLineMinimal called', { line, oldText, newText });
 	
 	// Expand tabs to spaces before processing
@@ -397,9 +389,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 
 	const segments = findDiffSegments(expandedOldText, expandedNewText);
 	
-	try {
-		appendFileSync(logPath, `segments: ${JSON.stringify(segments)}\n`, 'utf-8');
-	} catch {}
+	debugLog('updateLineMinimal segments', { segments });
 
 	// If no segments, strings are identical
 	if (segments.length === 0) {
@@ -630,12 +620,7 @@ function renderInternal(rootNode: ElementNode): void {
 						debugLog('New line added', { screenLine });
 					} else {
 						// Line changed - apply minimal update
-						debugLog('Applying minimal update', { screenLine });
-						try {
-							appendFileSync('/tmp/ember-tui-debug.log', `\n--- renderInternal: line ${i} (screen ${screenLine}) changed ---\n`, 'utf-8');
-							appendFileSync('/tmp/ember-tui-debug.log', `  old: ${JSON.stringify((oldLine ?? '').substring(0, 100))}\n`, 'utf-8');
-							appendFileSync('/tmp/ember-tui-debug.log', `  new: ${JSON.stringify((newLine ?? '').substring(0, 100))}\n`, 'utf-8');
-						} catch {}
+					debugLog('Applying minimal update', { screenLine, oldLine: (oldLine ?? '').substring(0, 100), newLine: (newLine ?? '').substring(0, 100) });
 						updateLineMinimal(screenLine, oldLine, newLine, buffer);
 					}
 				} else if (screenLine >= state.terminalHeight) {
