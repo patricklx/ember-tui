@@ -102,14 +102,14 @@ export default class Output {
 
 	get(): {output: string; height: number} {
 		debugLogger.log(`Output.get(): operations count=${this.operations.length}`);
-		
+
 		// Initialize output array - start with terminal height but allow growth
 		const output: StyledChar[][] = [];
-		
+
 		// Store operations to process, then clear the array to prevent memory leaks
 		const operationsToProcess = this.operations.slice();
 		this.operations.length = 0;
-		
+
 		debugLogger.log(`  -> Processing ${operationsToProcess.length} operations`);
 
 		// Helper function to ensure row exists
@@ -217,59 +217,41 @@ export default class Output {
 				const characters = styledCharsFromTokens(tokenize(transformedLine));
 					let offsetX = x;
 
-									for (const character of characters) {
-										if (overlay) {
-											// In overlay mode, preserve existing character but apply new styles
-											const existingChar = currentLine[offsetX];
-											
-											// Helper function to check if an ANSI style is a background color
-											// Background colors: 40-49 (standard), 100-107 (bright)
-											const isBgColorCode = (code: string) => {
-												// Match patterns like \x1b[41m, \x1b[44m, \x1b[100m, etc.
-												return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
-											};
-											
-											// Check if the new character is a space (typically used for background colors)
-											const isSpace = character.value === ' ' || character.value.trim() === '';
-											
-											if (existingChar && isSpace) {
-												// Preserve existing character value but apply new background styles
-												// Filter out old background styles from existing character
-												const existingNonBgStyles = existingChar.styles.filter(s => 
-													s.type !== 'ansi' || !isBgColorCode(s.code)
-												);
-												// Get new background styles from overlay character
-												const newBgStyles = character.styles.filter(s => 
-													s.type === 'ansi' && isBgColorCode(s.code)
-												);
-												
-												// Merge: keep existing non-background styles + add new background styles
-												currentLine[offsetX] = {
-													...existingChar,
-													styles: [...existingNonBgStyles, ...newBgStyles],
-												};
-											} else if (existingChar && !isSpace) {
-												// New character is not a space, so it should replace the existing one
-												// but still preserve any existing background if new char doesn't have one
-												const existingBgStyles = existingChar.styles.filter(s => 
-													s.type === 'ansi' && isBgColorCode(s.code)
-												);
-												const newHasBg = character.styles.some(s => 
-													s.type === 'ansi' && isBgColorCode(s.code)
-												);
-												
-												currentLine[offsetX] = {
-													...character,
-													styles: newHasBg ? character.styles : [...character.styles, ...existingBgStyles],
-												};
-											} else {
-												// No existing character, just write the overlay character
-												currentLine[offsetX] = character;
-											}
-										} else {
-											// Normal mode: just replace the character
-											currentLine[offsetX] = character;
-										}
+					for (const character of characters) {
+						if (overlay) {
+							// In overlay mode, preserve existing character but apply new background styles
+							const existingChar = currentLine[offsetX];
+							
+							// Check if new character has background color
+							const isBgColorCode = (code: string) => {
+								return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
+							};
+							const newBackgroundStyles = character.styles.filter(s =>
+								s.type === 'ansi' && isBgColorCode(s.code)
+							);
+							
+							// If new character is just a space with background color (overlay background)
+							const isBackgroundSpace = character.value === ' ' && newBackgroundStyles.length > 0;
+							
+							if (isBackgroundSpace && existingChar) {
+								// Preserve existing character, only add background color
+								const existingStyles = existingChar.styles.filter(s =>
+									s.type !== 'ansi' || !isBgColorCode(s.code)
+								);
+								
+								currentLine[offsetX] = {
+									...existingChar,
+									styles: [...existingStyles, ...newBackgroundStyles],
+								};
+							} else {
+								// Not a background-only overlay, write the character normally
+								currentLine[offsetX] = character;
+							}
+						} else {
+							// Normal mode: just replace the character
+							currentLine[offsetX] = character;
+						}
+
 						// Determine printed width using string-width to align with measurement
 						const characterWidth = Math.max(1, stringWidth(character.value));
 
@@ -298,7 +280,7 @@ export default class Output {
 				// See https://github.com/vadimdemedes/ink/pull/564#issuecomment-1637022742
 				const lineWithoutEmptyItems = line.filter(item => item !== undefined);
 
-				return styledCharsToString(lineWithoutEmptyItems).trimEnd();
+				return styledCharsToString(lineWithoutEmptyItems).replace(/[ \t]+$/g, '');
 			})
 			.join('\n');
 

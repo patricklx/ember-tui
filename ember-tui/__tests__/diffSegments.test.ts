@@ -248,6 +248,45 @@ describe('findDiffSegments', () => {
     expect(segments.length).toBeGreaterThan(0);
   });
 
+  it('should keep a background segment open across unchanged text until background reset', () => {
+    const oldText = '\x1b[36mAuto-approve: \x1b[37m\x1b[1moff\x1b[0m';
+    const newText = '\x1b[46m \x1b[36mAuto-approve: \x1b[37m\x1b[1moff\x1b[49m\x1b[39m\x1b[22m';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    expect(segments).toMatchInlineSnapshot(`
+      [
+        {
+          "start": 0,
+          "text": "[46m ",
+        },
+        {
+          "start": 1,
+          "text": "[36mAuto-approve: ",
+        },
+        {
+          "start": 15,
+          "text": "[37m[1moff",
+        },
+        {
+          "start": 18,
+          "text": "[37m[1m[49m[39m[22m",
+        },
+      ]
+    `);
+  });
+
+  it('should preserve appended background content when ansi state changes inside the same line', () => {
+    const oldText = '\x1b[36mAuto-approve: \x1b[37m\x1b[1moff\x1b[0m';
+    const newText = '\x1b[46m \x1b[36mAuto-approve: \x1b[37m\x1b[1moff\x1b[46m \x1b[90m| \x1b[33m$500.18\x1b[49m\x1b[39m';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    expect(segments[0]?.text).toContain('\x1b[46m');
+    expect(segments.some((segment) => segment.text.includes('\x1b[90m| '))).toBe(true);
+    expect(segments.some((segment) => segment.text.includes('\x1b[33m$500.18'))).toBe(true);
+  });
+
   it('should handle text with leading spaces replacing colored text', () => {
     // Old text with color
     const oldText = '\x1b[32mGreen Text\x1b[0m';

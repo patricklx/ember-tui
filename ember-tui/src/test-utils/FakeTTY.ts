@@ -374,7 +374,9 @@ export class FakeTTY {
   getCleanOutput(): string {
     const bufferOutput = this.getBufferOutput();
     // Remove ANSI color codes for clean comparison
-    return bufferOutput.replace(/\x1b\[[0-9;]*m/g, '');
+    const cleaned = bufferOutput.replace(/\x1b\[[0-9;]*m/g, '');
+    // Trim trailing whitespace to match visual terminal output
+    return cleaned.trimEnd();
   }
 
   /**

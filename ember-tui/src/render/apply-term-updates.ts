@@ -64,22 +64,22 @@ const state: RenderState = {
 function flushStdout() {
 	// Try multiple methods to flush stdout in non-TTY environments
 	const stdout = process.stdout as any;
-	
+
 	// Method 1: Direct _handle flush
 	if (typeof stdout._handle?.flush === 'function') {
 		stdout._handle.flush();
 	}
-	
+
 	// Method 2: Cork/uncork to force flush
 	if (typeof stdout.uncork === 'function') {
 		stdout.uncork();
 	}
-	
+
 	// Method 3: Write empty buffer to trigger flush
 	if (!process.stdout.isTTY) {
 		process.stdout.write('');
 	}
-	
+
 	// Method 4: For Node.js streams, call internal flush
 	if (typeof stdout.flush === 'function') {
 		stdout.flush();
@@ -315,19 +315,34 @@ class DiffSegmentBuilder {
 	private currentSegmentStart = -1;
 	private currentSegmentText = '';
 	private currentSegmentAnsiState = '';
+	private currentSegmentBackgroundState = '';
 
 	reset(): void {
 		this.segments = [];
 		this.currentSegmentStart = -1;
 		this.currentSegmentText = '';
 		this.currentSegmentAnsiState = '';
+		this.currentSegmentBackgroundState = '';
 	}
 
-	addDifference(visualPos: number, newChar: string | undefined, newState: string): void {
+	addDifference(
+		visualPos: number,
+		newChar: string | undefined,
+		newState: string,
+		options?: {
+			continueSegment?: boolean;
+			segmentState?: string;
+		}
+	): void {
+		const continueSegment = options?.continueSegment ?? false;
+		const segmentState = options?.segmentState ?? newState;
+
 		if (this.currentSegmentStart === -1) {
-			this.startNewSegment(visualPos, newState);
-		} else if (this.currentSegmentAnsiState !== newState) {
-			this.closeAndStartNewSegment(visualPos, newState);
+			this.startNewSegment(visualPos, segmentState);
+		} else if (!continueSegment && this.currentSegmentAnsiState !== segmentState) {
+			this.closeAndStartNewSegment(visualPos, segmentState);
+		} else if (continueSegment && this.currentSegmentBackgroundState) {
+			this.currentSegmentAnsiState = mergeAnsiStateWithBackground(newState, this.currentSegmentBackgroundState);
 		}
 
 		if (newChar !== undefined) {
@@ -335,9 +350,24 @@ class DiffSegmentBuilder {
 		}
 	}
 
-	addMatchingCharacter(visualPos: number, char: string | undefined, hasNextDiffWithSameState: boolean): void {
+	addMatchingCharacter(
+		visualPos: number,
+		char: string | undefined,
+		hasNextDiffWithSameState: boolean,
+		charState?: string
+	): void {
 		if (this.currentSegmentStart !== -1) {
-			if (hasNextDiffWithSameState && char !== undefined) {
+			const effectiveState = this.currentSegmentBackgroundState
+				? mergeAnsiStateWithBackground(charState ?? '', this.currentSegmentBackgroundState)
+				: (charState ?? '');
+			const shouldContinueSegment =
+				char !== undefined && (hasNextDiffWithSameState || effectiveState === this.currentSegmentAnsiState);
+
+			if (shouldContinueSegment) {
+				if (effectiveState !== this.currentSegmentAnsiState) {
+					this.closeAndStartNewSegment(visualPos, effectiveState);
+				}
+
 				this.currentSegmentText += char;
 			} else {
 				this.closeCurrentSegment();
@@ -384,6 +414,7 @@ class DiffSegmentBuilder {
 	private startNewSegment(visualPos: number, newState: string): void {
 		this.currentSegmentStart = visualPos;
 		this.currentSegmentAnsiState = newState;
+		this.currentSegmentBackgroundState = extractBackgroundState(newState);
 		this.currentSegmentText = '';
 	}
 
@@ -396,7 +427,59 @@ class DiffSegmentBuilder {
 		this.currentSegmentStart = -1;
 		this.currentSegmentText = '';
 		this.currentSegmentAnsiState = '';
+		this.currentSegmentBackgroundState = '';
 	}
+}
+
+function extractBackgroundState(ansiState: string): string {
+	const codes = ansiState.match(/\x1b\[[0-9;]*m/g) ?? [];
+	let backgroundState = '';
+
+	for (const code of codes) {
+		if (isBackgroundAnsiCode(code)) {
+			backgroundState = code;
+		}
+	}
+
+	return backgroundState;
+}
+
+function isBackgroundAnsiCode(code: string): boolean {
+	const params = code.slice(2, -1).split(';').filter(Boolean);
+
+	if (params.length === 0) {
+		return false;
+	}
+
+	for (let i = 0; i < params.length; i++) {
+		const value = Number(params[i]);
+
+		if (Number.isNaN(value)) {
+			continue;
+		}
+
+		if (value === 0 || value === 49 || (value >= 40 && value <= 47) || (value >= 100 && value <= 107)) {
+			return true;
+		}
+
+		if ((value === 48 || value === 58) && i + 1 < params.length) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function mergeAnsiStateWithBackground(baseState: string, backgroundState: string): string {
+	if (!backgroundState) {
+		return baseState;
+	}
+
+	if (!baseState) {
+		return backgroundState;
+	}
+
+	return `${backgroundState}${baseState}`;
 }
 
 /**
@@ -435,11 +518,13 @@ class DiffAnalyzer {
 	private oldLookup = new RangeLookup();
 	private newLookup = new RangeLookup();
 	private builder = new DiffSegmentBuilder();
+	private propagatedBackgroundState = '';
 
 	reset(oldRanges: StateRange[], newRanges: StateRange[]): void {
 		this.oldLookup.reset(oldRanges);
 		this.newLookup.reset(newRanges);
 		this.builder.reset();
+		this.propagatedBackgroundState = '';
 	}
 
 	analyze(): TextSegment[] {
@@ -461,19 +546,62 @@ class DiffAnalyzer {
 		const oldChar = this.oldLookup.getCharAt(visualPos);
 		const newChar = this.newLookup.getCharAt(visualPos);
 		const oldState = this.oldLookup.getStateAt(visualPos);
-		const newState = this.newLookup.getStateAt(visualPos);
+		const newState = this.oldLookup.getStateAt(visualPos);
+		const explicitNewBackground = extractBackgroundState(this.newLookup.getStateAt(visualPos));
 
-		const positionMatches = oldChar === newChar && oldState === newState;
+		if (explicitNewBackground) {
+			this.propagatedBackgroundState = explicitNewBackground;
+		} else if (oldState === '' || oldState.includes('\x1b[49m') || oldState.includes('\x1b[0m')) {
+			this.propagatedBackgroundState = '';
+		}
+
+		const effectiveNewState = this.propagatedBackgroundState
+			? mergeAnsiStateWithBackground(this.newLookup.getStateAt(visualPos), this.propagatedBackgroundState)
+			: this.newLookup.getStateAt(visualPos);
+
+		// Position matches if both character AND ANSI state are identical
+		const positionMatches = oldChar === newChar && oldState === effectiveNewState;
 
 		if (!positionMatches) {
-			this.builder.addDifference(visualPos, newChar, newState);
+			const newBackground = extractBackgroundState(effectiveNewState);
+			if (oldChar === newChar && newBackground) {
+				const hasNextWithSameBackground = this.lookAheadForNextDiff(visualPos, maxVisualLength, effectiveNewState);
+				this.builder.addDifference(visualPos, newChar, effectiveNewState, {
+					continueSegment: hasNextWithSameBackground
+				});
+			} else {
+				this.builder.addDifference(visualPos, newChar, effectiveNewState);
+			}
 		} else {
-			const hasNextDiffWithSameState = this.lookAheadForNextDiff(visualPos, maxVisualLength, newState);
-			this.builder.addMatchingCharacter(visualPos, newChar, hasNextDiffWithSameState);
+			const hasNextDiffWithSharedBackground = this.lookAheadForNextDiff(visualPos, maxVisualLength, effectiveNewState);
+			this.builder.addMatchingCharacter(visualPos, newChar, hasNextDiffWithSharedBackground, effectiveNewState);
 		}
 	}
 
 	private lookAheadForNextDiff(currentPos: number, maxVisualLength: number, currentState: string): boolean {
+		const currentBackground = extractBackgroundState(currentState);
+
+		// If we have a background, we need to span it across all characters until it changes
+		if (currentBackground) {
+			for (let lookAhead = currentPos + 1; lookAhead < maxVisualLength; lookAhead++) {
+				const nextNewState = this.newLookup.getStateAt(lookAhead);
+				const nextBackground = extractBackgroundState(nextNewState);
+
+				// Continue spanning if background is the same
+				if (nextBackground === currentBackground) {
+					return true;
+				}
+
+				// Stop if background changes or ends
+				if (nextBackground !== currentBackground) {
+					return false;
+				}
+			}
+			// Reached end of line with same background
+			return false;
+		}
+
+		// No background - use original logic for foreground-only changes
 		for (let lookAhead = currentPos + 1; lookAhead < maxVisualLength; lookAhead++) {
 			const nextOldChar = this.oldLookup.getCharAt(lookAhead);
 			const nextNewChar = this.newLookup.getCharAt(lookAhead);
@@ -481,7 +609,11 @@ class DiffAnalyzer {
 			const nextNewState = this.newLookup.getStateAt(lookAhead);
 
 			if (nextOldChar !== nextNewChar || nextOldState !== nextNewState) {
-				return nextNewState === currentState;
+				if (nextNewState === currentState) {
+					return true;
+				}
+
+				return false;
 			}
 		}
 		return false;
@@ -600,7 +732,7 @@ function getVisualLength(text: string): number {
  * Apply minimal update to a line by only rewriting the changed portions
  * Appends operations to the provided buffer array
  */
-function updateLineMinimal(line: number, oldText: string, newText: string, buffer: string[], isLastLine: boolean = false): void {
+function updateLineMinimal(line: number, oldText: string, newText: string, buffer: string[]): void {
 	// Expand tabs to spaces before processing
 	const expandedOldText = expandTabs(oldText);
 	const expandedNewText = expandTabs(newText);
@@ -623,7 +755,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 	// If new line is empty, clear the entire line and return
 	if (newVisualLength === 0 && oldVisualLength > 0) {
 		addCursorMove(0, line);
-		buffer.push(isLastLine ? '\x1b[2K ' : '\x1b[2K'); // Clear entire line, add space for last line
+		buffer.push('\x1b[2K'); // Clear entire line, add space for last line
 		return;
 	}
 
@@ -639,7 +771,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 		if (isFirstSegment && segment.start > 0) {
 			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
 			if (prevStart < segment.start) {
-				buffer.push(isLastLine ? '\x1b[1K ' : '\x1b[1K'); // Clear from cursor to start, add space for last line
+				buffer.push('\x1b[1K'); // Clear from cursor to start, add space for last line
 			}
 		}
 
@@ -656,7 +788,7 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 			const spacesToFill = oldVisualLength - start;
 			if (spacesToFill > 0) {
 				addCursorMove(start, line);
-				buffer.push(isLastLine ? '\x1b[0K ' : '\x1b[0K'); // Clear from cursor to end, add space for last line
+				buffer.push('\x1b[0K'); // Clear from cursor to end, add space for last line
 			}
 		}
 	}
@@ -799,8 +931,7 @@ function renderInternal(rootNode: ElementNode): void {
 						buffer.push(expandTabs(newLine));
 					} else {
 						// Line changed - apply minimal update
-						const isLastLine = (i === lastRenderedLineIndex);
-						updateLineMinimal(screenLine, oldLine, newLine, buffer, isLastLine);
+						updateLineMinimal(screenLine, oldLine, newLine, buffer);
 					}
 				} else if (screenLine >= state.terminalHeight) {
 					// Beyond previous content - just write newline and content
@@ -820,7 +951,7 @@ function renderInternal(rootNode: ElementNode): void {
 
 		// Update state with all lines (not just visible ones)
 		state.lines = newLines;
-		
+
 		// Always flush after render to ensure output is visible in non-TTY mode
 		flushStdout();
 
