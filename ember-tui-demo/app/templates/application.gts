@@ -117,14 +117,5 @@ export default class AppTemplate extends Component {
       {{/if}}
     </Box>
 		<InspectorSupport />
-		<Box
-			@backgroundColor="yellowBright"
-			@overlay={{true}}
-			@position="absolute"
-			@top={{30}}
-			@left={{30}}
-			@width={{70}}
-			@height={{100}}
-		/>8
 	</template>
 }

@@ -1,4 +1,16 @@
 import { Box, Text } from 'ember-tui';
+import { trackedObject } from "@ember/reactive/collections";
+
+
+const state = trackedObject({
+  show: false
+});
+
+setInterval(() => {
+  state.show = !state.show;
+}, 5000);
+
+
 
 <template>
   <Box @flexDirection="column" @gap={{1}} @width={{30}}>
@@ -9,125 +21,10 @@ import { Box, Text } from 'ember-tui';
       </Text>
     </Box>
 
-    {{! Demo 1: Basic Overlay vs No Overlay }}
-    <Box @marginTop={{1}} @flexDirection="column" @gap={{1}}>
-      <Text @bold={{true}} @color="green">1. Basic Overlay Comparison</Text>
-      
-      <Box @flexDirection="column" @gap={{1}}>
-        <Text @color="gray">Without overlay (default - text gets covered):</Text>
-        <Box @position="relative" @height={{3}}>
-          <Box @padding={{1}}>
-            <Text>████ Base Text Content Here ████</Text>
-          </Box>
-          <Box 
-            @backgroundColor="red"
-            @position="absolute"
-            @top={{1}}
-            @left={{10}}
-            @width={{15}}
-            @height={{1}}
-          />
-        </Box>
-
-        <Text @color="gray">With overlay=true (text preserved with new background):</Text>
-        <Box @position="relative" @height={{3}}>
-          <Box @padding={{1}}>
-            <Text>████ Base Text Content Here ████</Text>
-          </Box>
-          <Box 
-            @backgroundColor="blue"
-            @overlay={{true}}
-            @position="absolute"
-            @top={{1}}
-            @left={{10}}
-            @width={{15}}
-            @height={{1}}
-          />
-        </Box>
-      </Box>
-    </Box>
-
-    {{! Demo 2: Multiple Overlays }}
-    <Box @marginTop={{1}} @flexDirection="column" @gap={{1}}>
-      <Text @bold={{true}} @color="green">2. Multiple Colored Overlays</Text>
-      
-      <Box @position="relative" @height={{5}}>
-        <Box @padding={{1}}>
-          <Text>┌─────────────────────────────────────────┐</Text>
-          <Text>│ Original Content With Multiple Lines   │</Text>
-          <Text>│ Each Line Can Have Different Overlays  │</Text>
-          <Text>└─────────────────────────────────────────┘</Text>
-        </Box>
-
-        {{! Red overlay on first line }}
-        <Box 
-          @backgroundColor="red"
-          @overlay={{true}}
-          @position="absolute"
-          @top={{1}}
-          @left={{5}}
-          @width={{20}}
-          @height={{1}}
-        />
-
-        {{! Green overlay on second line }}
-        <Box 
-          @backgroundColor="green"
-          @overlay={{true}}
-          @position="absolute"
-          @top={{2}}
-          @left={{10}}
-          @width={{25}}
-          @height={{1}}
-        />
-
-        {{! Yellow overlay on third line }}
-        <Box 
-          @backgroundColor="yellow"
-          @overlay={{true}}
-          @position="absolute"
-          @top={{3}}
-          @left={{15}}
-          @width={{20}}
-          @height={{1}}
-        />
-      </Box>
-    </Box>
-
-    {{! Demo 3: Overlay with Borders }}
-    <Box @marginTop={{1}} @flexDirection="column" @gap={{1}}>
-      <Text @bold={{true}} @color="green">3. Overlay with Borders</Text>
-      
-      <Box @position="relative" @height={{7}}>
-        <Box @padding={{1}}>
-          <Text @color="cyan">╔══════════════════════════════════╗</Text>
-          <Text @color="cyan">║  Background Content Text Here    ║</Text>
-          <Text @color="cyan">║  Can Be Any Length or Format     ║</Text>
-          <Text @color="cyan">║  123456789 ABCDEFG !@#$%^&*()    ║</Text>
-          <Text @color="cyan">╚══════════════════════════════════╝</Text>
-        </Box>
-
-        {{! Overlay box with border }}
-        <Box 
-          @backgroundColor="magenta"
-          @overlay={{true}}
-          @borderStyle="round"
-          @borderColor="white"
-          @position="absolute"
-          @top={{2}}
-          @left={{10}}
-          @width={{20}}
-          @height={{3}}
-        >
-          <Text @color="white" @bold={{true}}>Overlay Box</Text>
-        </Box>
-      </Box>
-    </Box>
-
     {{! Demo 4: Highlight Effect }}
     <Box @marginTop={{1}} @flexDirection="column" @gap={{1}}>
       <Text @bold={{true}} @color="green">4. Text Highlighting Effect</Text>
-      
+
       <Box @position="relative" @height={{8}}>
         <Box @padding={{1}} @flexDirection="column">
           <Text>The overlay feature is perfect for:</Text>
@@ -139,10 +36,10 @@ import { Box, Text } from 'ember-tui';
         </Box>
 
         {{! Highlight "important text" }}
-        <Box 
+        <Box
           @backgroundColor="yellow"
           @overlay={{true}}
-          @position="absolute"
+          @position={{if state.show 'absolute'}}
           @top={{3}}
           @left={{15}}
           @width={{14}}
@@ -150,10 +47,10 @@ import { Box, Text } from 'ember-tui';
         />
 
         {{! Highlight "focus effects" }}
-        <Box 
+        <Box
           @backgroundColor="green"
           @overlay={{true}}
-          @position="absolute"
+          @position={{if state.show 'absolute'}}
           @top={{4}}
           @left={{12}}
           @width={{13}}
@@ -161,10 +58,10 @@ import { Box, Text } from 'ember-tui';
         />
 
         {{! Highlight "color overlays" }}
-        <Box 
+        <Box
           @backgroundColor="cyan"
           @overlay={{true}}
-          @position="absolute"
+          @position={{if state.show 'absolute'}}
           @top={{5}}
           @left={{12}}
           @width={{10}}
@@ -173,68 +70,6 @@ import { Box, Text } from 'ember-tui';
       </Box>
     </Box>
 
-    {{! Demo 5: Multiple Styled Text Elements with Overlay }}
-    <Box @marginTop={{1}} @flexDirection="column" @gap={{1}}>
-      <Text @bold={{true}} @color="green">5. Multiple Styled Text Elements + Overlay</Text>
-      <Text @color="gray" @dimColor={{true}}>Overlay preserves bold, colors, and other styles</Text>
-      
-      <Box @position="relative" @height={{5}}>
-        <Box @flexDirection="row" @justifyContent="space-between" @paddingLeft={{1}} >
-          <Box>
-            <Text @bold={{true}} @color="red">Bold Red</Text>
-            <Text> | </Text>
-            <Text @color="green" @backgroundColor="black">Green on Black</Text>
-            <Text> | </Text>
-            <Text @dimColor={{true}} @color="blue">Dim Blue</Text>
-            <Text> | </Text>
-            <Text @bold={{true}} @color="yellow">Bold Yellow</Text>
-          </Box>
-          <Text> </Text>
-          <Box>
-            <Text @color="cyan">Cyan Text</Text>
-            <Text> • </Text>
-            <Text @bold={{true}} @color="magenta">Bold Magenta</Text>
-            <Text> • </Text>
-            <Text @color="white" @backgroundColor="red">White on Red</Text>
-          </Box>
-        </Box>
-      
-      <Text @color="gray" @dimColor={{true}}>
-        ↑ Yellow overlay preserves all text styles while adding background
-      </Text>
-    </Box>
-
-    {{! Demo 6: Dynamic Styled Content with Partial Overlay }}
-    <Box @marginTop={{1}} @flexDirection="column" @gap={{1}}>
-      <Text @bold={{true}} @color="green">6. Partial Overlay on Styled Content</Text>
-      
-      <Box @position="relative" @height={{4}}>
-        <Box @padding={{1}} @flexDirection="column">
-          <Text @bold={{true}} @color="cyan">🎨 Styled Text: </Text>
-          <Text @color="red">Red </Text>
-          <Text @color="green">Green </Text>
-          <Text @color="blue">Blue </Text>
-          <Text @color="yellow">Yellow </Text>
-          <Text @color="magenta">Magenta </Text>
-          <Text @color="cyan">Cyan</Text>
-        </Box>
-
-        {{! Partial overlay covering middle section }}
-        <Box 
-          @backgroundColor="white"
-          @overlay={{true}}
-          @position="absolute"
-          @top={{2}}
-          @left={{20}}
-          @width={{25}}
-          @height={{1}}
-        />
-      </Box>
-      
-      <Text @color="gray" @dimColor={{true}}>
-        ↑ White overlay on center portion only - colors preserved with new background
-      </Text>
-    </Box>
 
     {{! Footer Instructions }}
     <Box @marginTop={{2}} @borderStyle="single" @borderColor="gray" @padding={{1}}>
@@ -246,5 +81,4 @@ import { Box, Text } from 'ember-tui';
 
     {{! Overlay with semi-transparent effect via different background }}
 
-  </Box>
 </template>

@@ -289,9 +289,17 @@ describe('apply-term-updates - render with fake TTY', () => {
       dynamic: ['   Indented Text']
     });
 
+    // Enable debug logging before render
+    import('../src/render/apply-term-updates.js').then(mod => {
+      mod.enableDebugLogging();
+    });
+
     render(root, global.process);
 
-    const output = fakeTTY.getVisibleOutput();
+    console.log('Raw output:', JSON.stringify(fakeTTY.output));
+    console.log('Buffer:', fakeTTY.buffer[0]?.map((c, i) => `${i}:${c.char}`).join(' '));
+    const output = fakeTTY.getCleanOutput();
+    console.log('Clean output:', JSON.stringify(output));
     expect(output).toContain('   Indented Text');
   });
 

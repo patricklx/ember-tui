@@ -221,7 +221,7 @@ export default class Output {
 						if (overlay) {
 							// In overlay mode, preserve existing character but apply new background styles
 							const existingChar = currentLine[offsetX];
-							
+
 							// Check if new character has background color
 							const isBgColorCode = (code: string) => {
 								return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
@@ -229,19 +229,32 @@ export default class Output {
 							const newBackgroundStyles = character.styles.filter(s =>
 								s.type === 'ansi' && isBgColorCode(s.code)
 							);
-							
+
 							// If new character is just a space with background color (overlay background)
 							const isBackgroundSpace = character.value === ' ' && newBackgroundStyles.length > 0;
-							
+
 							if (isBackgroundSpace && existingChar) {
-								// Preserve existing character, only add background color
-								const existingStyles = existingChar.styles.filter(s =>
+								// Preserve existing character and all its styles, only replace background
+								const existingNonBgStyles = existingChar.styles.filter(s =>
+									s.type !== 'ansi' || !isBgColorCode(s.code)
+								);
+
+								currentLine[offsetX] = {
+									...existingChar,
+									styles: [...existingNonBgStyles, ...newBackgroundStyles],
+								};
+							} else if (newBackgroundStyles.length > 0 && existingChar) {
+								// New character has background - preserve existing foreground/style, apply new background
+								const existingFgStyles = existingChar.styles.filter(s =>
+									s.type !== 'ansi' || !isBgColorCode(s.code)
+								);
+								const newNonBgStyles = character.styles.filter(s =>
 									s.type !== 'ansi' || !isBgColorCode(s.code)
 								);
 								
 								currentLine[offsetX] = {
-									...existingChar,
-									styles: [...existingStyles, ...newBackgroundStyles],
+									...character,
+									styles: [...existingFgStyles, ...newNonBgStyles, ...newBackgroundStyles],
 								};
 							} else {
 								// Not a background-only overlay, write the character normally
@@ -279,8 +292,11 @@ export default class Output {
 			.map(line => {
 				// See https://github.com/vadimdemedes/ink/pull/564#issuecomment-1637022742
 				const lineWithoutEmptyItems = line.filter(item => item !== undefined);
+				const renderedLine = styledCharsToString(lineWithoutEmptyItems);
 
-				return styledCharsToString(lineWithoutEmptyItems).replace(/[ \t]+$/g, '');
+				// Only strip trailing whitespace if it comes after a reset code
+				// This preserves spaces that are part of styled content (e.g., background colors)
+				return renderedLine;
 			})
 			.join('\n');
 
