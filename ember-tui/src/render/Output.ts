@@ -222,32 +222,35 @@ export default class Output {
 											// In overlay mode, preserve existing character but apply new styles
 											const existingChar = currentLine[offsetX];
 											
+											// Helper function to check if an ANSI style is a background color
+											// Background colors: 40-49 (standard), 100-107 (bright)
+											const isBgColorCode = (code: string) => {
+												// Match patterns like \x1b[41m, \x1b[44m, \x1b[100m, etc.
+												return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
+											};
+											
 											// Check if the new character is a space (typically used for background colors)
 											const isSpace = character.value === ' ' || character.value.trim() === '';
 											
 											if (existingChar && isSpace) {
 												// Preserve existing character value but apply new background styles
-												// Filter out old background styles (ANSI codes 40-49 for standard, 100-107 for bright)
-												const isBgColorCode = (code: string) => {
-													return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
-												};
-												const existingStyles = existingChar.styles.filter(s => 
+												// Filter out old background styles from existing character
+												const existingNonBgStyles = existingChar.styles.filter(s => 
 													s.type !== 'ansi' || !isBgColorCode(s.code)
 												);
-												const newBackgroundStyles = character.styles.filter(s => 
+												// Get new background styles from overlay character
+												const newBgStyles = character.styles.filter(s => 
 													s.type === 'ansi' && isBgColorCode(s.code)
 												);
 												
+												// Merge: keep existing non-background styles + add new background styles
 												currentLine[offsetX] = {
 													...existingChar,
-													styles: [...existingStyles, ...newBackgroundStyles],
+													styles: [...existingNonBgStyles, ...newBgStyles],
 												};
 											} else if (existingChar && !isSpace) {
 												// New character is not a space, so it should replace the existing one
 												// but still preserve any existing background if new char doesn't have one
-												const isBgColorCode = (code: string) => {
-													return /\x1b\[(4[0-9]|10[0-7])m/.test(code);
-												};
 												const existingBgStyles = existingChar.styles.filter(s => 
 													s.type === 'ansi' && isBgColorCode(s.code)
 												);

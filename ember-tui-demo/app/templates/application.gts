@@ -95,7 +95,7 @@ export default class AppTemplate extends Component {
     <Box @flexDirection="column"  @height='100%' @alignItems={{if (eq this.selectedView 'file-editor') 'flex-start' 'center'}}>
       <HmrTest />
       {{#if (eq this.selectedView "menu")}}
-        <Gradient @name="rainbow" >Ember Console Demo - Main Menu {{23}}</Gradient>
+        <Gradient @name="rainbow" >Ember Console Demo - Main Menu {{29}}</Gradient>
         <Text>---</Text>
         <Text @color="white">[1] Colors Demo</Text>
         <Text @color="white">[2] Lorem Ipsum Generator</Text>
@@ -117,5 +117,14 @@ export default class AppTemplate extends Component {
       {{/if}}
     </Box>
 		<InspectorSupport />
+		<Box
+			@backgroundColor="yellowBright"
+			@overlay={{true}}
+			@position="absolute"
+			@top={{30}}
+			@left={{30}}
+			@width={{70}}
+			@height={{100}}
+		/>8
 	</template>
 }

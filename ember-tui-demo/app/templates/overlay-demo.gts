@@ -1,7 +1,7 @@
 import { Box, Text } from 'ember-tui';
 
 <template>
-  <Box @flexDirection="column" @gap={{1}}>
+  <Box @flexDirection="column" @gap={{1}} @width={{30}}>
     {{! Header }}
     <Box @borderStyle="double" @borderColor="cyan" @padding={{1}}>
       <Text @bold={{true}} @color="cyan">
@@ -101,9 +101,9 @@ import { Box, Text } from 'ember-tui';
       <Box @position="relative" @height={{7}}>
         <Box @padding={{1}}>
           <Text @color="cyan">╔══════════════════════════════════╗</Text>
-          <Text @color="cyan">║  Background Content Text Here   ║</Text>
+          <Text @color="cyan">║  Background Content Text Here    ║</Text>
           <Text @color="cyan">║  Can Be Any Length or Format     ║</Text>
-          <Text @color="cyan">║  123456789 ABCDEFG !@#$%^&*()   ║</Text>
+          <Text @color="cyan">║  123456789 ABCDEFG !@#$%^&*()    ║</Text>
           <Text @color="cyan">╚══════════════════════════════════╝</Text>
         </Box>
 
@@ -167,10 +167,73 @@ import { Box, Text } from 'ember-tui';
           @position="absolute"
           @top={{5}}
           @left={{12}}
-          @width={{14}}
+          @width={{10}}
           @height={{1}}
         />
       </Box>
+    </Box>
+
+    {{! Demo 5: Multiple Styled Text Elements with Overlay }}
+    <Box @marginTop={{1}} @flexDirection="column" @gap={{1}}>
+      <Text @bold={{true}} @color="green">5. Multiple Styled Text Elements + Overlay</Text>
+      <Text @color="gray" @dimColor={{true}}>Overlay preserves bold, colors, and other styles</Text>
+      
+      <Box @position="relative" @height={{5}}>
+        <Box @flexDirection="row" @justifyContent="space-between" @paddingLeft={{1}} >
+          <Box>
+            <Text @bold={{true}} @color="red">Bold Red</Text>
+            <Text> | </Text>
+            <Text @color="green" @backgroundColor="black">Green on Black</Text>
+            <Text> | </Text>
+            <Text @dimColor={{true}} @color="blue">Dim Blue</Text>
+            <Text> | </Text>
+            <Text @bold={{true}} @color="yellow">Bold Yellow</Text>
+          </Box>
+          <Text> </Text>
+          <Box>
+            <Text @color="cyan">Cyan Text</Text>
+            <Text> • </Text>
+            <Text @bold={{true}} @color="magenta">Bold Magenta</Text>
+            <Text> • </Text>
+            <Text @color="white" @backgroundColor="red">White on Red</Text>
+          </Box>
+        </Box>
+      
+      <Text @color="gray" @dimColor={{true}}>
+        ↑ Yellow overlay preserves all text styles while adding background
+      </Text>
+    </Box>
+
+    {{! Demo 6: Dynamic Styled Content with Partial Overlay }}
+    <Box @marginTop={{1}} @flexDirection="column" @gap={{1}}>
+      <Text @bold={{true}} @color="green">6. Partial Overlay on Styled Content</Text>
+      
+      <Box @position="relative" @height={{4}}>
+        <Box @padding={{1}} @flexDirection="column">
+          <Text @bold={{true}} @color="cyan">🎨 Styled Text: </Text>
+          <Text @color="red">Red </Text>
+          <Text @color="green">Green </Text>
+          <Text @color="blue">Blue </Text>
+          <Text @color="yellow">Yellow </Text>
+          <Text @color="magenta">Magenta </Text>
+          <Text @color="cyan">Cyan</Text>
+        </Box>
+
+        {{! Partial overlay covering middle section }}
+        <Box 
+          @backgroundColor="white"
+          @overlay={{true}}
+          @position="absolute"
+          @top={{2}}
+          @left={{20}}
+          @width={{25}}
+          @height={{1}}
+        />
+      </Box>
+      
+      <Text @color="gray" @dimColor={{true}}>
+        ↑ White overlay on center portion only - colors preserved with new background
+      </Text>
     </Box>
 
     {{! Footer Instructions }}
@@ -179,5 +242,9 @@ import { Box, Text } from 'ember-tui';
         Press Ctrl+B to return to main menu
       </Text>
     </Box>
+  </Box>
+
+    {{! Overlay with semi-transparent effect via different background }}
+
   </Box>
 </template>
