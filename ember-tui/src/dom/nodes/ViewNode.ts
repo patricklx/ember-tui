@@ -1,7 +1,7 @@
 import type DocumentNode from './DocumentNode';
 import {type Node as YogaNode} from 'yoga-layout';
 import { getViewMeta } from "../view-meta";
-import { registerListenerNode, unregisterListenerNode } from '../../input/listener-nodes';
+import { registerListenerNode, unregisterListenerNode, registerKeyListenerNode, unregisterKeyListenerNode } from '../../input/listener-nodes';
 
 function* elementIterator(el: any): Generator<any, void, unknown> {
   yield el;
@@ -323,31 +323,65 @@ export default class ViewNode<Attributes = any> {
     'mouseenter', 'mouseleave',
   ]);
 
+  // ---------------------------------------------------------------------------
+  // Per-node keyboard event listeners
+  // ---------------------------------------------------------------------------
+
+  private _keyListeners?: Map<string, EventListener[]>;
+  private _keyListenerCount = 0;
+
+  private static readonly KEY_EVENTS = new Set(['keydown']);
+
   addEventListener(type: string, callback: EventListener): void {
-    if (!ViewNode.MOUSE_EVENTS.has(type)) return;
+    if (ViewNode.MOUSE_EVENTS.has(type)) {
+      if (!this._mouseListeners) this._mouseListeners = new Map();
+      if (!this._mouseListeners.has(type)) this._mouseListeners.set(type, []);
+      this._mouseListeners.get(type)!.push(callback);
+      if (this._mouseListenerCount++ === 0) registerListenerNode(this);
+      return;
+    }
 
-    if (!this._mouseListeners) this._mouseListeners = new Map();
-    if (!this._mouseListeners.has(type)) this._mouseListeners.set(type, []);
-    this._mouseListeners.get(type)!.push(callback);
-
-    if (this._mouseListenerCount++ === 0) registerListenerNode(this);
+    if (ViewNode.KEY_EVENTS.has(type)) {
+      if (!this._keyListeners) this._keyListeners = new Map();
+      if (!this._keyListeners.has(type)) this._keyListeners.set(type, []);
+      this._keyListeners.get(type)!.push(callback);
+      if (this._keyListenerCount++ === 0) registerKeyListenerNode(this);
+      return;
+    }
   }
 
   removeEventListener(type: string, callback: EventListener): void {
-    const list = this._mouseListeners?.get(type);
-    if (!list) return;
-    const idx = list.indexOf(callback);
-    if (idx === -1) return;
-    list.splice(idx, 1);
-    if (list.length === 0) this._mouseListeners!.delete(type);
+    if (ViewNode.MOUSE_EVENTS.has(type)) {
+      const list = this._mouseListeners?.get(type);
+      if (!list) return;
+      const idx = list.indexOf(callback);
+      if (idx === -1) return;
+      list.splice(idx, 1);
+      if (list.length === 0) this._mouseListeners!.delete(type);
+      if (--this._mouseListenerCount === 0) unregisterListenerNode(this);
+      return;
+    }
 
-    if (--this._mouseListenerCount === 0) unregisterListenerNode(this);
+    if (ViewNode.KEY_EVENTS.has(type)) {
+      const list = this._keyListeners?.get(type);
+      if (!list) return;
+      const idx = list.indexOf(callback);
+      if (idx === -1) return;
+      list.splice(idx, 1);
+      if (list.length === 0) this._keyListeners!.delete(type);
+      if (--this._keyListenerCount === 0) unregisterKeyListenerNode(this);
+      return;
+    }
   }
 
   dispatchNodeEvent(event: any): void {
-    const list = this._mouseListeners?.get(event.type);
-    if (list) {
-      for (const cb of [...list]) cb(event);
+    const mouseList = this._mouseListeners?.get(event.type);
+    if (mouseList) {
+      for (const cb of [...mouseList]) cb(event);
+    }
+    const keyList = this._keyListeners?.get(event.type);
+    if (keyList) {
+      for (const cb of [...keyList]) cb(event);
     }
   }
 
