@@ -112,15 +112,6 @@ export default ts.config(
     }
   },
   /**
-   * Production files whose names happen to contain "test"
-   */
-  {
-    files: ['src/input/hit-test.ts'],
-    rules: {
-      'ember/no-test-import-export': 'off',
-    },
-  },
-  /**
    * CJS node files
    */
   {
