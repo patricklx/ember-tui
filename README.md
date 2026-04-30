@@ -706,6 +706,23 @@ Accepts the same values as [`color`](#color) in the `<Text>` component.
 
 The background color fills the entire `<Box>` area and is inherited by child `<Text>` components unless they specify their own `backgroundColor`.
 
+##### overlay
+
+Type: `boolean`\
+Default: `false`
+
+When `true`, the box's background color is drawn on top of existing content without erasing the characters underneath.
+Only the background color of each cell is replaced; the character and its foreground styles are preserved.
+
+This is primarily useful for absolutely-positioned boxes (see `position: absolute` via Yoga) that need to tint a region of the screen without obscuring the text already rendered there.
+
+```glimmer-ts
+<Box @position="absolute" @backgroundColor="blue" @overlay={{true}} @width={{10}} @height={{3}}>
+</Box>
+```
+
+> **Note:** `overlay` only has a visible effect when a `backgroundColor` is also set. Without a background color there is nothing to overlay.
+
 ### `<Newline>`
 
 Adds one or more newline (`\n`) characters.
