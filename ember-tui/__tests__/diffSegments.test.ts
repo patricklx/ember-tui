@@ -22,7 +22,8 @@ describe('tokenize', () => {
       { value: 'r', isAnsi: false, visualLength: 1, start: 0 },
       { value: 'e', isAnsi: false, visualLength: 1, start: 1 },
       { value: 'd', isAnsi: false, visualLength: 1, start: 2 },
-      { value: '\x1b[0m', isAnsi: true, visualLength: 0, start: 8 },
+      // Note: ANSI tokens use visual position (3 chars of 'red'), not byte position
+      { value: '\x1b[0m', isAnsi: true, visualLength: 0, start: 3 },
     ]);
   });
 
@@ -30,11 +31,13 @@ describe('tokenize', () => {
     const tokens = tokenize('\x1b[31m\x1b[1mred\x1b[0m');
     expect(tokens).toEqual([
       { value: '\x1b[31m', isAnsi: true, visualLength: 0, start: 0 },
-      { value: '\x1b[1m', isAnsi: true, visualLength: 0, start: 5 },
+      // Note: consecutive ANSI tokens before any char all get start: 0 (visual pos)
+      { value: '\x1b[1m', isAnsi: true, visualLength: 0, start: 0 },
       { value: 'r', isAnsi: false, visualLength: 1, start: 0 },
       { value: 'e', isAnsi: false, visualLength: 1, start: 1 },
       { value: 'd', isAnsi: false, visualLength: 1, start: 2 },
-      { value: '\x1b[0m', isAnsi: true, visualLength: 0, start: 12 },
+      // Note: ANSI tokens use visual position (3 chars of 'red'), not byte position
+      { value: '\x1b[0m', isAnsi: true, visualLength: 0, start: 3 },
     ]);
   });
 });
@@ -72,7 +75,15 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 0,
-          "text": "[32m[1mColors Demo View",
+          "text": "[32m[1mC[22m[39m",
+        },
+        {
+          "start": 2,
+          "text": "[32m[1mlors Demo[22m[39m",
+        },
+        {
+          "start": 12,
+          "text": "[32m[1mView[22m[39m",
         },
         {
           "start": 16,
@@ -92,7 +103,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 21,
-          "text": "[32m[1m Second",
+          "text": "[32m[1m Second[22m[39m",
         },
       ]
     `);
@@ -108,7 +119,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 0,
-          "text": "[32m[1mColors Demo View",
+          "text": "[32m[1mColors Demo View[22m[39m",
         },
         {
           "start": 16,
@@ -128,7 +139,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 12,
-          "text": "[32m[1mGenerator",
+          "text": "[1m[32mGenerator[39m[22m",
         },
       ]
     `);
@@ -147,7 +158,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 6,
-          "text": "[32m[1mIpsum ",
+          "text": "[1m[32mIpsum [39m[22m",
         },
       ]
     `);
@@ -248,6 +259,41 @@ describe('findDiffSegments', () => {
     expect(segments.length).toBeGreaterThan(0);
   });
 
+  it('should keep a background segment open across unchanged text until background reset', () => {
+    const oldText = '\x1b[36mAuto-approve: \x1b[37m\x1b[1moff\x1b[0m';
+    const newText = '\x1b[46m \x1b[36mAuto-approve: \x1b[37m\x1b[1moff\x1b[49m\x1b[39m\x1b[22m';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    expect(segments).toMatchInlineSnapshot(`
+      [
+        {
+          "start": 0,
+          "text": "[46m [49m",
+        },
+        {
+          "start": 1,
+          "text": "[46m[36mAuto-approve: [39m[49m",
+        },
+        {
+          "start": 15,
+          "text": "[46m[37m[1moff[22m[39m[49m",
+        },
+      ]
+    `);
+  });
+
+  it('should preserve appended background content when ansi state changes inside the same line', () => {
+    const oldText = '\x1b[36mAuto-approve: \x1b[37m\x1b[1moff\x1b[0m';
+    const newText = '\x1b[46m \x1b[36mAuto-approve: \x1b[37m\x1b[1moff\x1b[46m \x1b[90m| \x1b[33m$500.18\x1b[49m\x1b[39m';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    expect(segments[0]?.text).toContain('\x1b[46m');
+    expect(segments.some((segment) => segment.text.includes('\x1b[90m| '))).toBe(true);
+    expect(segments.some((segment) => segment.text.includes('\x1b[33m$500.18'))).toBe(true);
+  });
+
   it('should handle text with leading spaces replacing colored text', () => {
     // Old text with color
     const oldText = '\x1b[32mGreen Text\x1b[0m';
@@ -296,7 +342,7 @@ describe('findDiffSegments', () => {
       [
         {
           "start": 0,
-          "text": "[42mShort",
+          "text": "[42mShort[49m",
         },
         {
           "start": 5,
@@ -379,10 +425,6 @@ describe('updateLineMinimal - clear function behavior', () => {
 			  {
 			    "start": 30,
 			    "text": "",
-			  },
-			  {
-			    "start": 51,
-			    "text": "[44m[0m",
 			  },
 			]
 		`);

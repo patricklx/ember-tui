@@ -1,3 +1,5 @@
+import 'ember-vite-hmr/setup-ember-hmr';
+import 'ember-tui/hmr-init';
 import EmberApplication from '@ember/application';
 import Resolver from 'ember-resolver/index.js';
 import ENV from './config/environment.ts';

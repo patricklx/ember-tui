@@ -20,3 +20,4 @@ export { default as InspectorSupport } from './components/InspectorSupport.gts';
 // Test utilities
 export { FakeTTY } from './test-utils/FakeTTY';
 export { resetStaticCache } from './render/collect-lines';
+export { resetState } from './render/apply-term-updates';

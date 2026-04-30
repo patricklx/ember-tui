@@ -58,7 +58,6 @@ function withoutQuery(value) {
 const devServer = await createServer({
   configFile: path.join(root, 'vite.config.mjs'),
   root,
-  logLevel: 'silent',
   server: {
     middlewareMode: true,
     watch: {

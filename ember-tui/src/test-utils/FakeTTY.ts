@@ -372,9 +372,40 @@ export class FakeTTY {
    * This is what tests should use to verify output
    */
   getCleanOutput(): string {
-    const bufferOutput = this.getBufferOutput();
-    // Remove ANSI color codes for clean comparison
-    return bufferOutput.replace(/\x1b\[[0-9;]*m/g, '');
+    const lines: string[] = [];
+
+    for (let y = 0; y < this.buffer.length; y++) {
+      const line = this.buffer[y];
+
+      if (line.length === 0) {
+        lines.push('');
+        continue;
+      }
+
+      let lineStr = '';
+      for (let x = 0; x < line.length; x++) {
+        lineStr += line[x].char;
+      }
+
+      // Only trim trailing whitespace if those characters had NO ANSI styling
+      let trimEnd = line.length;
+      for (let x = line.length - 1; x >= 0; x--) {
+        if (line[x].char === ' ' && !line[x].ansi) {
+          trimEnd = x;
+        } else {
+          break;
+        }
+      }
+
+      lines.push(lineStr.substring(0, trimEnd));
+    }
+
+    // Trim trailing empty lines
+    while (lines.length > 0 && lines[lines.length - 1] === '') {
+      lines.pop();
+    }
+
+    return lines.join('\n');
   }
 
   /**
