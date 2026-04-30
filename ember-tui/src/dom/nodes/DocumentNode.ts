@@ -6,7 +6,7 @@ import { createElement } from '../element-registry';
 import { elementIterator } from './element-iterator';
 import type { NativeElementsTagNameMap } from '../native-elements-tag-name-map';
 import { hitTest } from '../../input/hit-detection';
-import { getKeyListenerNodes } from '../../input/listener-nodes';
+import { getListenerNodes } from '../../input/listener-nodes';
 
 // Type alias for elements with nativeView property
 type NativeElementNode = ViewNode & { nativeView: any };
@@ -238,7 +238,7 @@ export default class DocumentNode extends ViewNode {
         listener(event);
       }
       // Dispatch to individual DOM nodes that called addEventListener('keydown', …)
-      for (const node of getKeyListenerNodes()) {
+      for (const node of getListenerNodes()) {
         node.dispatchNodeEvent(event);
       }
       return true;
