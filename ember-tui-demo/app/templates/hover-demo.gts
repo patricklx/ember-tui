@@ -1,5 +1,6 @@
 import { Box, Text } from 'ember-tui';
 import HoverBox from '../components/HoverBox.gts';
+import ClickBox from '../components/ClickBox.gts';
 
 <template>
   <Box @flexDirection="column" @gap={{1}} @padding={{1}}>
@@ -32,6 +33,13 @@ import HoverBox from '../components/HoverBox.gts';
       @width={{52}}
       @height={{5}}
     />
+
+    {{! Click demo }}
+    <Box @flexDirection="column" @marginTop={{1}} @gap={{1}}>
+      <Text @bold={{true}} @color="cyan">Click Demo</Text>
+      <Text @color="gray">Click the box below — it changes with every click</Text>
+      <ClickBox />
+    </Box>
 
     <Box @marginTop={{1}} @borderStyle="single" @borderColor="gray" @paddingX={{1}}>
       <Text @color="gray">Press Ctrl+B to return to menu</Text>

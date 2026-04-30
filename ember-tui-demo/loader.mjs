@@ -252,7 +252,7 @@ export async function load(url, context, nextLoad) {
     return nextLoad(url, context);
   }
 
-  if (url.includes('node_modules') && !url.includes('vite/dist/client') && !url.includes('.json')) {
+  if (url.includes('node_modules') && !url.includes('vite/dist/client') && !url.includes('.json') && !url.includes('ember-vite-hmr')) {
     const filePath = fromFileUrl(cleanUrl);
     try {
       if (existsSync(filePath)) {

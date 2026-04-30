@@ -1,5 +1,3 @@
-/* eslint-disable no-control-regex */
-
 import "./globalSetup";
 import { setupRenderingContext } from 'ember-vitest';
 import App from '../app/app';
