@@ -36,6 +36,7 @@ that will create the app with emberjs blueprint and adjust some files for ember-
   - [`<Static>`](#static)
   - [`<Transform>`](#transform)
 - [Mouse Events](#mouse-events)
+- [Keyboard Events](#keyboard-events)
 - [API](#api)
 - [Examples](#examples)
 
@@ -976,6 +977,108 @@ export default class HoverBox extends Component {
       <Text @color="white" @bold={{this.isHovered}}>
         {{if this.isHovered "▶ Hover!" "  Hover!"}}
       </Text>
+    </Box>
+  </template>
+}
+```
+
+## Keyboard Events
+
+Ember TUI surfaces terminal keyboard input as browser-like `keydown` events.
+Use Ember's standard `{{on}}` modifier on any `<Box>` to start receiving keystrokes — no special API is required.
+
+> **Note:** Unlike mouse events, `keydown` is **broadcast** to every registered listener regardless of which element has visual focus.
+> There is no hit-testing; all `<Box>` elements that registered a `keydown` listener will receive every keystroke.
+
+### Enabling keyboard input
+
+Raw-mode is enabled automatically by `render()` when `stdin` is a TTY, so no extra setup is needed.
+
+### Attaching a listener
+
+```glimmer-ts
+import { on } from '@ember/modifier';
+import { Box, Text } from 'ember-tui';
+
+<template>
+  <Box {{on "keydown" this.handleKey}}>
+    <Text>Press any key…</Text>
+  </Box>
+</template>
+```
+
+### `TerminalKeyEvent`
+
+Every listener receives a `TerminalKeyEvent` object with the following properties:
+
+| Property           | Type      | Description                                                                                   |
+|--------------------|-----------|-----------------------------------------------------------------------------------------------|
+| `type`             | `string`  | Always `"keydown"`                                                                            |
+| `key`              | `string`  | Logical key value: `'a'`, `'A'`, `'ArrowUp'`, `'Enter'`, etc.                               |
+| `code`             | `string`  | Mapped key name / code (same as `key` for most keys)                                         |
+| `keyCode`          | `number`  | Numeric char-code of the first byte                                                           |
+| `ctrlKey`          | `boolean` | `true` when a Ctrl+key combination was pressed                                                |
+| `altKey`           | `boolean` | `true` when an Alt / Meta combination was pressed                                             |
+| `shiftKey`         | `boolean` | `true` when Shift was held (uppercase letters and symbols)                                    |
+| `ambiguous`        | `boolean` | `true` when the sequence maps to two keys, e.g. `\t` → Tab **or** Ctrl+I                    |
+| `rawInput`         | `string`  | Raw terminal escape sequence (useful for debugging)                                           |
+| `preventDefault()` | `function`| No-op stub for API compatibility                                                              |
+| `stopPropagation()`| `function`| No-op stub for API compatibility                                                              |
+
+### Recognized key names
+
+The following special keys are mapped to their standard names:
+
+| Terminal sequence | `key` / `code`  |
+|-------------------|-----------------|
+| Arrow keys        | `ArrowUp` `ArrowDown` `ArrowLeft` `ArrowRight` |
+| `\r` / `\n`       | `Enter`         |
+| `\t`              | `Tab`           |
+| `\x1b[Z`          | `Tab` (Shift+Tab, `shiftKey: true`) |
+| `\x7f` / `\b`     | `Backspace`     |
+| `\x1b`            | `Escape`        |
+| ` `               | `Space`         |
+| `\x1b[H`          | `Home`          |
+| `\x1b[F`          | `End`           |
+| `\x1b[5~`         | `PageUp`        |
+| `\x1b[6~`         | `PageDown`      |
+| `\x1b[3~`         | `Delete`        |
+| `\x1b[2~`         | `Insert`        |
+| Ctrl+`<letter>`   | raw control char; `ctrlKey: true`, `code` = base letter |
+| Alt+`<key>`       | `altKey: true`, `key` = the character after ESC |
+
+### Example — key logger
+
+The following component displays the last key pressed and a running log of recent keystrokes:
+
+```glimmer-ts
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { on } from '@ember/modifier';
+import { Box, Text } from 'ember-tui';
+
+export default class KeyLogger extends Component {
+  @tracked lastKey = '—';
+  @tracked log: string[] = [];
+
+  handleKey = (event: any) => {
+    this.lastKey = event.key;
+    this.log = [`${event.key}${event.ctrlKey ? ' (Ctrl)' : ''}${event.altKey ? ' (Alt)' : ''}`, ...this.log].slice(0, 8);
+  };
+
+  <template>
+    <Box
+      {{on "keydown" this.handleKey}}
+      @flexDirection="column"
+      @borderStyle="round"
+      @borderColor="cyan"
+      @padding={{1}}
+      @gap={{1}}
+    >
+      <Text @bold={{true}} @color="cyan">Last key: <Text @color="white">{{this.lastKey}}</Text></Text>
+      {{#each this.log as |entry|}}
+        <Text @color="gray">{{entry}}</Text>
+      {{/each}}
     </Box>
   </template>
 }
