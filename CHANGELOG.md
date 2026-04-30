@@ -1,5 +1,22 @@
 # Changelog
 
+## Release (2026-04-30)
+
+* ember-tui 1.3.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-tui`
+  * [#122](https://github.com/patricklx/ember-tui/pull/122) Enhance event dispatching for keydown events ([@patricklx](https://github.com/patricklx))
+  * [#119](https://github.com/patricklx/ember-tui/pull/119) mouse-events ([@patricklx](https://github.com/patricklx))
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#121](https://github.com/patricklx/ember-tui/pull/121) fix unicode issues ([@patricklx](https://github.com/patricklx))
+  * [#118](https://github.com/patricklx/ember-tui/pull/118) fix overlay box rendering ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-04-28)
 
 * ember-tui 1.2.1 (patch)
