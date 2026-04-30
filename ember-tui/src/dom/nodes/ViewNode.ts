@@ -1,6 +1,7 @@
 import type DocumentNode from './DocumentNode';
 import {type Node as YogaNode} from 'yoga-layout';
 import { getViewMeta } from "../view-meta";
+import { registerListenerNode, unregisterListenerNode } from '../../input/hit-detection';
 
 function* elementIterator(el: any): Generator<any, void, unknown> {
   yield el;
@@ -308,6 +309,46 @@ export default class ViewNode<Attributes = any> {
       }
     }
     return null;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Per-node mouse event listeners
+  // ---------------------------------------------------------------------------
+
+  private _mouseListeners?: Map<string, EventListener[]>;
+  private _mouseListenerCount = 0;
+
+  private static readonly MOUSE_EVENTS = new Set([
+    'mousedown', 'mouseup', 'click', 'mousemove', 'wheel',
+    'mouseenter', 'mouseleave',
+  ]);
+
+  addEventListener(type: string, callback: EventListener): void {
+    if (!ViewNode.MOUSE_EVENTS.has(type)) return;
+
+    if (!this._mouseListeners) this._mouseListeners = new Map();
+    if (!this._mouseListeners.has(type)) this._mouseListeners.set(type, []);
+    this._mouseListeners.get(type)!.push(callback);
+
+    if (this._mouseListenerCount++ === 0) registerListenerNode(this);
+  }
+
+  removeEventListener(type: string, callback: EventListener): void {
+    const list = this._mouseListeners?.get(type);
+    if (!list) return;
+    const idx = list.indexOf(callback);
+    if (idx === -1) return;
+    list.splice(idx, 1);
+    if (list.length === 0) this._mouseListeners!.delete(type);
+
+    if (--this._mouseListenerCount === 0) unregisterListenerNode(this);
+  }
+
+  dispatchNodeEvent(event: any): void {
+    const list = this._mouseListeners?.get(event.type);
+    if (list) {
+      for (const cb of [...list]) cb(event);
+    }
   }
 
   getBoundingClientRect(): {

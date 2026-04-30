@@ -5,6 +5,7 @@ import ViewNode, { type EventListener } from './ViewNode';
 import { createElement } from '../element-registry';
 import { elementIterator } from './element-iterator';
 import type { NativeElementsTagNameMap } from '../native-elements-tag-name-map';
+import { hitTest } from '../../input/hit-detection';
 
 // Type alias for elements with nativeView property
 type NativeElementNode = ViewNode & { nativeView: any };
@@ -44,6 +45,7 @@ export default class DocumentNode extends ViewNode {
     dataset: {},
   };
   private keypressListeners: EventListener[] = [];
+  private mouseListeners: Map<string, EventListener[]> = new Map();
 
   static getInstance() {
     if (!document) {
@@ -99,6 +101,14 @@ export default class DocumentNode extends ViewNode {
       this.keypressListeners.push(callback);
       return;
     }
+    if (event === 'mousedown' || event === 'mouseup' || event === 'click' ||
+        event === 'mousemove' || event === 'wheel') {
+      if (!this.mouseListeners.has(event)) {
+        this.mouseListeners.set(event, []);
+      }
+      this.mouseListeners.get(event)!.push(callback);
+      return;
+    }
     console.error('unsupported event on document', event);
   }
 
@@ -110,6 +120,15 @@ export default class DocumentNode extends ViewNode {
       const index = this.keypressListeners.indexOf(handler);
       if (index > -1) {
         this.keypressListeners.splice(index, 1);
+      }
+      return;
+    }
+    if (event === 'mousedown' || event === 'mouseup' || event === 'click' ||
+        event === 'mousemove' || event === 'wheel') {
+      const listeners = this.mouseListeners.get(event);
+      if (listeners) {
+        const index = listeners.indexOf(handler);
+        if (index > -1) listeners.splice(index, 1);
       }
       return;
     }
@@ -215,6 +234,50 @@ export default class DocumentNode extends ViewNode {
     if (event.type === 'keydown') {
       for (const listener of this.keypressListeners) {
         listener(event);
+      }
+      return true;
+    }
+    if (event.type === 'mousedown' || event.type === 'mouseup' ||
+        event.type === 'click' || event.type === 'mousemove' ||
+        event.type === 'wheel') {
+
+      // Run hit-test only for events that carry coordinates
+      if (typeof event.x === 'number' && typeof event.y === 'number') {
+        const { hit, left } = hitTest(event.x, event.y);
+
+        // Build composedPath (deepest first) and pick the deepest as target
+        const enriched = {
+          ...event,
+          target: hit[0] ?? null,
+          composedPath: () => hit,
+        };
+
+        // Dispatch mouseleave to nodes that were previously hit but no longer are
+        if (left.length > 0) {
+          const leaveEvent = {
+            ...enriched,
+            type: 'mouseleave',
+            target: null,
+            composedPath: () => [] as ViewNode[],
+          };
+          for (const node of left) node.dispatchNodeEvent(leaveEvent);
+        }
+
+        // Dispatch the actual event to each hit node (deepest first)
+        for (const node of hit) node.dispatchNodeEvent(enriched);
+
+        // Document-level listeners also receive the enriched event
+        const listeners = this.mouseListeners.get(event.type);
+        if (listeners) {
+          for (const listener of listeners) listener(enriched);
+        }
+        return true;
+      }
+
+      // Events without coords (e.g. synthetic click built without x/y) — document only
+      const listeners = this.mouseListeners.get(event.type);
+      if (listeners) {
+        for (const listener of listeners) listener(event);
       }
       return true;
     }

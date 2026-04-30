@@ -16,4 +16,5 @@ Router.map(function () {
   this.route('static-test');
   this.route('file-editor');
   this.route('overlay-demo');
+  this.route('hover-demo');
 });

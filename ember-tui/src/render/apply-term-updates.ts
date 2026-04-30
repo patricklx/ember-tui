@@ -105,6 +105,11 @@ export function resetState(): void {
 	state.scrollBufferSize = 0;
 }
 
+/** Returns the number of content lines currently above the visible viewport. */
+export function getScrollBufferSize(): number {
+	return state.scrollBufferSize;
+}
+
 // Force flush stdout after writes in non-TTY environments
 function flushStdout() {
 	// Try multiple methods to flush stdout in non-TTY environments
@@ -519,7 +524,7 @@ export function render(rootNode: ElementNode, options?: RenderOptions | typeof P
 	}
 }
 
-function renderInternal(rootNode: ElementNode): void {
+export function renderInternal(rootNode: ElementNode): void {
 	debugLog('renderInternal called');
 	
 	const result = extractLines(rootNode, state, process.stdout);

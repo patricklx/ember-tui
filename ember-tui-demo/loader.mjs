@@ -252,6 +252,25 @@ export async function load(url, context, nextLoad) {
     return nextLoad(url, context);
   }
 
+  if (url.includes('node_modules') && !url.includes('vite/dist/client') && !url.includes('.json')) {
+    const filePath = fromFileUrl(cleanUrl);
+    try {
+      if (existsSync(filePath)) {
+        const source = readFileSync(filePath).toString();
+        if (!source?.includes('@embroider/macros') && !source.includes('precompileTemplate')) {
+          const format = isCommonJS(source) ? 'commonjs' : 'module';
+          return {
+            format,
+            source,
+            shortCircuit: true,
+          };
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   try {
     isLoading += 1;
     loadingStack.push(url);

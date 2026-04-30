@@ -2,7 +2,7 @@ import Yoga from 'yoga-layout';
 import widestLine from 'widest-line';
 import indentString from 'indent-string';
 import type ElementNode from '../dom/nodes/ElementNode';
-import { TerminaTextElement } from '../dom/native-elements/TerminaTextElement';
+import { TerminalTextElement } from '../dom/native-elements/TerminalTextElement';
 import { TerminalBoxElement } from '../dom/native-elements/TerminalBoxElement';
 import type Output from './Output';
 import type { OutputTransformer } from './Output';
@@ -141,7 +141,7 @@ export function renderNodeToOutput(
 	}
 
 	// Handle terminal-text elements
-	if (node instanceof TerminaTextElement) {
+	if (node instanceof TerminalTextElement) {
 		let text = node.text;
 
 		if (text.length > 0) {
