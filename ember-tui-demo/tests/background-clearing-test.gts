@@ -1,10 +1,8 @@
-/* eslint-disable no-control-regex */
-
 import "./globalSetup";
 import { setupRenderingContext } from 'ember-vitest';
 import App from '../app/app';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
-import { Text, Box, render } from "ember-tui";
+import { Text, render } from "ember-tui";
 import { rerender } from "@ember/test-helpers";
 import { trackedObject } from "@ember/reactive/collections";
 import { FakeTTY } from "ember-tui/test-utils/FakeTTY";
