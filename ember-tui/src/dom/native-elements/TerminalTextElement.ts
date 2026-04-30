@@ -64,7 +64,7 @@ interface Attributes {
 }
 
 
-export class TerminaTextElement extends ElementNode<Attributes> {
+export class TerminalTextElement extends ElementNode<Attributes> {
   text: string = '';
 
 
@@ -90,7 +90,7 @@ export class TerminaTextElement extends ElementNode<Attributes> {
 		// Only iterate direct children, not all descendants
 		// Child TerminaTextElements already have their text computed
 		for (const child of this.childNodes) {
-			if (child instanceof TerminaTextElement) {
+			if (child instanceof TerminalTextElement) {
 				// Child TerminaTextElements already have their text formatted, just use it directly
 				const childText = (child as any).text || '';
 				if (childText) parts.push(childText);
@@ -113,7 +113,7 @@ export class TerminaTextElement extends ElementNode<Attributes> {
     this.text = this.transform(t);
 
     // Notify parent TerminaTextElement to update if this element's text changed
-    if (this.parentNode instanceof TerminaTextElement) {
+    if (this.parentNode instanceof TerminalTextElement) {
       this.parentNode.updateText();
     }
   }

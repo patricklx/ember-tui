@@ -1,5 +1,5 @@
 import ViewNode from './ViewNode';
-import { TerminaTextElement } from "../native-elements/TerminaTextElement";
+import { TerminalTextElement } from "../native-elements/TerminalTextElement";
 
 export default class TextNode extends ViewNode {
   text: any;
@@ -26,7 +26,7 @@ export default class TextNode extends ViewNode {
   }
 
 	updateParentNode() {
-		if (this._parentNode instanceof TerminaTextElement) {
+		if (this._parentNode instanceof TerminalTextElement) {
 			this._parentNode.updateText();
 		}
 		if (this._parentNode instanceof TextNode) {

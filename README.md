@@ -35,6 +35,7 @@ that will create the app with emberjs blueprint and adjust some files for ember-
   - [`<Spacer>`](#spacer)
   - [`<Static>`](#static)
   - [`<Transform>`](#transform)
+- [Mouse Events](#mouse-events)
 - [API](#api)
 - [Examples](#examples)
 
@@ -856,6 +857,113 @@ Type: `number`
 
 The zero-indexed line number of the line that's currently being transformed.
 
+## Mouse Events
+
+Ember TUI supports terminal mouse events, including clicks, hover, scroll, and drag.
+Mouse events are attached to `<Box>` components using Ember's standard `{{on}}` modifier — no special API is required.
+
+### Enabling mouse tracking
+
+Call `enableMouseTracking` once at startup (before rendering) to tell the terminal to start reporting mouse events.
+Call `disableMouseTracking` when the app exits to restore the terminal to its default state.
+
+```typescript
+import { render, enableMouseTracking, disableMouseTracking } from 'ember-tui';
+
+enableMouseTracking(process.stdout);
+
+// ... render your app ...
+
+process.on('exit', () => disableMouseTracking(process.stdout));
+```
+
+### Supported event types
+
+| Event type    | Fired when…                                               |
+|---------------|-----------------------------------------------------------|
+| `mousedown`   | A mouse button is pressed                                 |
+| `mouseup`     | A mouse button is released                                |
+| `click`       | A button is pressed and released on the same element      |
+| `mousemove`   | The cursor moves (with or without a button held)          |
+| `wheel`       | The scroll wheel is turned                                |
+| `mouseenter`  | The cursor moves into the element's bounding box          |
+| `mouseleave`  | The cursor moves out of the element's bounding box        |
+
+### Attaching listeners
+
+Use Ember's `{{on}}` modifier on any `<Box>` component:
+
+```glimmer-ts
+import { on } from '@ember/modifier';
+import { Box, Text } from 'ember-tui';
+
+<template>
+  <Box
+    {{on "mouseenter" this.handleEnter}}
+    {{on "mouseleave" this.handleLeave}}
+    {{on "click" this.handleClick}}
+    @borderStyle="single"
+  >
+    <Text>Click me!</Text>
+  </Box>
+</template>
+```
+
+### `TerminalMouseEvent`
+
+Every listener receives a `TerminalMouseEvent` object with the following properties:
+
+| Property           | Type      | Description                                                                 |
+|--------------------|-----------|-----------------------------------------------------------------------------|
+| `type`             | `string`  | Event type (`mousedown`, `mouseup`, `click`, `mousemove`, `wheel`, etc.)    |
+| `x`                | `number`  | 1-based terminal column of the cursor                                       |
+| `y`                | `number`  | 1-based terminal row of the cursor                                          |
+| `button`           | `number`  | Button index: `0` = left, `1` = middle, `2` = right, `-1` = none           |
+| `buttons`          | `number`  | Bitmask of currently pressed buttons (browser `MouseEvent` convention)      |
+| `deltaY`           | `number`  | Wheel delta: `-1` = scroll up, `1` = scroll down, `0` = not a wheel event  |
+| `ctrlKey`          | `boolean` | `true` when Ctrl was held                                                   |
+| `altKey`           | `boolean` | `true` when Alt / Meta was held                                             |
+| `shiftKey`         | `boolean` | `true` when Shift was held                                                  |
+| `rawInput`         | `string`  | Raw terminal escape sequence (useful for debugging)                         |
+| `preventDefault()` | `function`| No-op stub for API compatibility                                            |
+| `stopPropagation()`| `function`| No-op stub for API compatibility                                            |
+
+### Example — interactive hover box
+
+The following component changes its background colour and border when the cursor hovers over it:
+
+```glimmer-ts
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { on } from '@ember/modifier';
+import { Box, Text } from 'ember-tui';
+
+export default class HoverBox extends Component {
+  @tracked isHovered = false;
+
+  onMouseEnter = () => { this.isHovered = true; };
+  onMouseLeave = () => { this.isHovered = false; };
+
+  <template>
+    <Box
+      {{on "mousemove" this.onMouseEnter}}
+      {{on "mouseleave" this.onMouseLeave}}
+      @backgroundColor={{if this.isHovered "blue" "gray"}}
+      @borderStyle="single"
+      @borderColor={{if this.isHovered "white" "gray"}}
+      @width={{24}}
+      @height={{3}}
+      @alignItems="center"
+      @justifyContent="center"
+    >
+      <Text @color="white" @bold={{this.isHovered}}>
+        {{if this.isHovered "▶ Hover!" "  Hover!"}}
+      </Text>
+    </Box>
+  </template>
+}
+```
+
 ## API
 
 ### render(tree, options?)
@@ -917,6 +1025,7 @@ Check out the [examples](ember-tui-demo/app/templates) directory for more exampl
 - [Box Layout Demo](ember-tui-demo/app/templates/box-demo.gts) - Shows flexbox layout capabilities
 - [Static Component](ember-tui-demo/app/templates/static-test.gts) - Example of using Static component
 - [Lorem Ipsum](ember-tui-demo/app/templates/lorem.gts) - Text wrapping and layout
+- [Hover Demo](ember-tui-demo/app/templates/hover-demo.gts) - Interactive mouse hover effects
 
 ## License
 

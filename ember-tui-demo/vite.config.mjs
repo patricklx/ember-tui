@@ -61,6 +61,7 @@ export default defineConfig({
 		},
 		ember(),
 		babel({
+			sourceMaps: 'inline',
 			babelHelpers: "runtime",
 			extensions,
 		}),

@@ -17,6 +17,9 @@ export { default as Spacer } from './components/Spacer.gts';
 export { default as Static } from './components/Static.gts';
 export { default as InspectorSupport } from './components/InspectorSupport.gts';
 
+// Input utilities
+export { enableMouseTracking, disableMouseTracking } from './input/mouse';
+
 // Test utilities
 export { FakeTTY } from './test-utils/FakeTTY';
 export { resetStaticCache } from './render/collect-lines';

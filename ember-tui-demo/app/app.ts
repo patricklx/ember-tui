@@ -101,7 +101,12 @@ async function startApp() {
   (globalThis as any).app = app;
 
   startRender(document as any as DocumentNode);
-  setupEmberInspector();
+  const client = setupEmberInspector();
+  setInterval(() => {
+    if (!client.socket?.connected) {
+      client.socket.connect();
+    }
+  }, 5000);
   await loadEmberDebug();
 
   // Force initial render to complete and flush output
