@@ -1,5 +1,5 @@
 /**
- * Shared registry of nodes that have mouse event listeners.
+ * Shared registry of nodes that have mouse or keyboard event listeners.
  *
  * Kept in its own leaf module so that ViewNode can import the
  * register/unregister helpers without pulling in hit-detection.ts
@@ -8,6 +8,10 @@
  */
 
 import type ViewNode from '../dom/nodes/ViewNode';
+
+// ---------------------------------------------------------------------------
+// Mouse listener registry
+// ---------------------------------------------------------------------------
 
 const listenerNodes: Set<ViewNode> = new Set();
 
@@ -21,4 +25,22 @@ export function unregisterListenerNode(node: ViewNode): void {
 
 export function getListenerNodes(): ReadonlySet<ViewNode> {
   return listenerNodes;
+}
+
+// ---------------------------------------------------------------------------
+// Key listener registry
+// ---------------------------------------------------------------------------
+
+const keyListenerNodes: Set<ViewNode> = new Set();
+
+export function registerKeyListenerNode(node: ViewNode): void {
+  keyListenerNodes.add(node);
+}
+
+export function unregisterKeyListenerNode(node: ViewNode): void {
+  keyListenerNodes.delete(node);
+}
+
+export function getKeyListenerNodes(): ReadonlySet<ViewNode> {
+  return keyListenerNodes;
 }
