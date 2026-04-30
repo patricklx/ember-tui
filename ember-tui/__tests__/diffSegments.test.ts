@@ -463,3 +463,152 @@ describe('updateLineMinimal - clear function behavior', () => {
     expect(segments.length).toBeGreaterThanOrEqual(0);
   });
 });
+
+
+describe('findDiffSegments - unicode / wide-char (emoji) rendering', () => {
+  // 🚀 is a wide character: it occupies 2 terminal columns.
+
+  it('should detect appended emoji at end of string', () => {
+    // "some text" → "some text 🚀"
+    // Diff starts at visual col 9 (after "some text")
+    const oldText = 'some text';
+    const newText = 'some text 🚀';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    expect(segments.length).toBe(1);
+    expect(segments[0].start).toBe(9);   // visual col 9
+    expect(segments[0].text).toContain('🚀');
+  });
+
+  it('should detect prepended emoji at start of string', () => {
+    // "some text" → "🚀 some text"
+    // All chars shift right by 3 cols (🚀=2 + space=1)
+    const oldText = 'some text';
+    const newText = '🚀 some text';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    // First segment starts at col 0
+    expect(segments.length).toBeGreaterThan(0);
+    expect(segments[0].start).toBe(0);
+    expect(segments[0].text).toContain('🚀');
+  });
+
+  it('should detect emoji inserted in the middle and re-emit subsequent text', () => {
+    // "abc def" → "abc 🚀 def"
+    // After the wide emoji the rest of the string is shifted right by 2 cols,
+    // so "def" must be re-written at the new visual position.
+    // The algorithm emits ONE merged segment starting at col 4 that contains
+    // both the emoji and the shifted trailing text ("🚀 def").
+    const oldText = 'abc def';
+    const newText = 'abc 🚀 def';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    // Single segment starting at col 4 ("abc " = 4 cols)
+    expect(segments.length).toBe(1);
+    expect(segments[0].start).toBe(4);
+    // Segment text must contain the emoji AND the trailing text
+    expect(segments[0].text).toContain('🚀');
+    expect(segments[0].text).toContain('def');
+  });
+
+  it('should clear phantom column when emoji is removed from middle', () => {
+    // "abc 🚀 def" → "abc X def"
+    // 🚀 (2 cols) replaced by X (1 col): subsequent chars shift LEFT by 1 col.
+    // All shifted chars (space + "def") are bundled into ONE merged segment
+    // starting at col 4 ("abc " prefix).
+    const oldText = 'abc 🚀 def';
+    const newText = 'abc X def';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    // Merged segment at col 4 writes "X def" (replacing 🚀 + space + def at new positions)
+    const replaceSeg = segments.find(s => s.text.includes('X'));
+    expect(replaceSeg).toBeDefined();
+    expect(replaceSeg!.start).toBe(4);
+    // The merged segment also contains the shifted "def"
+    expect(replaceSeg!.text).toContain('def');
+
+    // Old text was visually 10 cols; new is 9 cols → a clear segment must exist
+    const clearSeg = segments.find(s => s.text === '');
+    expect(clearSeg).toBeDefined();
+    expect(clearSeg!.start).toBe(9); // newVisualLength of "abc X def"
+  });
+
+  it('should emit full replacement when emoji replaces plain char in middle', () => {
+    // "abc X def" → "abc 🚀 def"
+    // X (1 col) replaced by 🚀 (2 cols): subsequent chars shift RIGHT by 1 col.
+    // All shifted chars are bundled into ONE merged segment starting at col 4.
+    const oldText = 'abc X def';
+    const newText = 'abc 🚀 def';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    // Single merged segment at col 4 containing emoji AND shifted trailing text
+    const emojiSeg = segments.find(s => s.text.includes('🚀'));
+    expect(emojiSeg).toBeDefined();
+    expect(emojiSeg!.start).toBe(4);
+    // The same segment also contains the shifted "def"
+    expect(emojiSeg!.text).toContain('def');
+  });
+
+  it('should handle multiple emoji in a row being appended', () => {
+    const oldText = 'Status: OK';
+    const newText = 'Status: OK 🎉🚀';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    expect(segments.length).toBe(1);
+    expect(segments[0].start).toBe(10); // "Status: OK" is 10 cols
+    expect(segments[0].text).toContain('🎉');
+    expect(segments[0].text).toContain('🚀');
+  });
+
+  it('should handle emoji removal at end', () => {
+    // "some text 🚀" → "some text"
+    // Old text is 12 visual cols (🚀 = 2), new is 9.
+    // A clear segment must be emitted at col 9.
+    const oldText = 'some text 🚀';
+    const newText = 'some text';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    const clearSeg = segments.find(s => s.text === '');
+    expect(clearSeg).toBeDefined();
+    expect(clearSeg!.start).toBe(9); // newVisualLength = 9
+  });
+
+  it('should produce no segments for identical strings containing emoji', () => {
+    const text = 'hello 🚀 world';
+    const segments = findDiffSegments(text, text);
+    expect(segments).toEqual([]);
+  });
+
+  it('should detect single emoji replacement at end', () => {
+    // "foo 🚀" → "foo 🎉"  — same visual width, just different emoji
+    const oldText = 'foo 🚀';
+    const newText = 'foo 🎉';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    expect(segments.length).toBe(1);
+    expect(segments[0].start).toBe(4); // "foo " = 4 cols
+    expect(segments[0].text).toContain('🎉');
+  });
+
+  it('should handle styled text with emoji appended', () => {
+    // '\x1b[32msome text\x1b[0m' → '\x1b[32msome text 🚀\x1b[0m'
+    const oldText = '\x1b[32msome text\x1b[0m';
+    const newText = '\x1b[32msome text 🚀\x1b[0m';
+
+    const segments = findDiffSegments(oldText, newText);
+
+    expect(segments.length).toBe(1);
+    expect(segments[0].start).toBe(9);
+    expect(segments[0].text).toContain('🚀');
+    // Should carry the green color
+    expect(segments[0].text).toContain('\x1b[32m');
+  });
+});
