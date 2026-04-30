@@ -1,8 +1,9 @@
-import ElementNode from "../dom/nodes/ElementNode";
+import type ElementNode from "../dom/nodes/ElementNode";
 import { calculateLayout, freeAllYogaNodes } from "../dom/layout";
 import Output from "./Output";
 import { renderNodeToOutput } from "./renderNodeToOutput";
 import type { TerminalBoxElement } from "../dom/native-elements/TerminalBoxElement";
+import { staticElementIterator } from "./static-element-iterator";
 
 // Cache for static element output
 let staticOutputCache: string[] = [];
@@ -11,18 +12,6 @@ export function resetStaticCache() {
 	staticOutputCache = [];
 }
 
-
-function* staticElementIterator(el: ElementNode): Generator<TerminalBoxElement, void, undefined> {
-  if (el.getAttribute('internal_static')) {
-		yield el as TerminalBoxElement;
-    return;
-  }
-  for (const child of el.childNodes) {
-    if (child instanceof ElementNode) {
-      yield* staticElementIterator(child);
-    }
-  }
-}
 
 
 /**

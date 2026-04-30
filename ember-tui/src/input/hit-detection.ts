@@ -15,6 +15,7 @@
 
 import type ViewNode from '../dom/nodes/ViewNode';
 import { getScrollBufferSize } from '../render/apply-term-updates';
+import { getListenerNodes } from './listener-nodes';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -83,22 +84,6 @@ export function getAbsRect(node: ViewNode): AbsRect | null {
 }
 
 // ---------------------------------------------------------------------------
-// Listener node registry  (maintained on addEventListener / removeEventListener)
-// ---------------------------------------------------------------------------
-
-const listenerNodes: Set<ViewNode> = new Set();
-
-/** Called from ViewNode.addEventListener when the first mouse listener is added. */
-export function registerListenerNode(node: ViewNode): void {
-  listenerNodes.add(node);
-}
-
-/** Called from ViewNode.removeEventListener when the last mouse listener is removed. */
-export function unregisterListenerNode(node: ViewNode): void {
-  listenerNodes.delete(node);
-}
-
-// ---------------------------------------------------------------------------
 // Hit test
 // ---------------------------------------------------------------------------
 
@@ -119,7 +104,7 @@ export function hitTest(x: number, y: number): HitTestResult {
 
   const hit: ViewNode[] = [];
 
-  for (const node of listenerNodes) {
+  for (const node of getListenerNodes()) {
     const rect = getAbsRect(node);
     if (!rect) continue;
     if (col >= rect.left && col < rect.right && row >= rect.top && row < rect.bottom) {

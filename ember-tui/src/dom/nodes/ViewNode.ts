@@ -1,7 +1,7 @@
 import type DocumentNode from './DocumentNode';
 import {type Node as YogaNode} from 'yoga-layout';
 import { getViewMeta } from "../view-meta";
-import { registerListenerNode, unregisterListenerNode } from '../../input/hit-detection';
+import { registerListenerNode, unregisterListenerNode } from '../../input/listener-nodes';
 
 function* elementIterator(el: any): Generator<any, void, unknown> {
   yield el;
