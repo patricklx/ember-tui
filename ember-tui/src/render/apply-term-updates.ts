@@ -263,11 +263,29 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 	
 	const segments: TextSegment[] = [];
 	const maxLength = Math.max(oldChars.length, newChars.length);
+
+	// Pre-compute visual lengths (wide/fullWidth chars count as 2 columns)
+	const oldVisualLength = oldChars.reduce((sum, c) => sum + (c.fullWidth ? 2 : 1), 0);
+	const newVisualLength = newChars.reduce((sum, c) => sum + (c.fullWidth ? 2 : 1), 0);
 	
 	let currentSegmentStart = -1;
 	let currentSegmentChars: StyledChar[] = [];
 	let currentSegmentAnsiState = '';
 	
+	/**
+	 * Running visual column position in the new text layout.
+	 * Each normal char advances by 1; wide (fullWidth) chars advance by 2.
+	 */
+	let visualPos = 0;
+
+	/**
+	 * Accumulated difference between new-char widths and old-char widths at the
+	 * same character index.  When non-zero, old and new chars at subsequent
+	 * indices are at *different* visual columns, so they must all be re-emitted
+	 * even if their glyph/style appears unchanged.
+	 */
+	let cumulativeWidthDiff = 0;
+
 	const closeSegment = () => {
 		if (currentSegmentStart !== -1 && currentSegmentChars.length > 0) {
 			// styledCharsToAnsiString already includes ANSI codes, don't prepend them
@@ -290,14 +308,20 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 	for (let i = 0; i < maxLength; i++) {
 		const oldChar = oldChars[i];
 		const newChar = newChars[i];
+
+		// Visual width of this char in old/new layouts (0 when char doesn't exist)
+		const oldCharWidth = oldChar?.fullWidth ? 2 : (oldChar ? 1 : 0);
+		const newCharWidth = newChar?.fullWidth ? 2 : (newChar ? 1 : 0);
 		
 		const oldAnsi = oldChar ? getActiveAnsiCodesFromChar(oldChar) : '';
 		const newAnsi = newChar ? getActiveAnsiCodesFromChar(newChar) : '';
 		const oldValue = oldChar?.value ?? '';
 		const newValue = newChar?.value ?? '';
 		
-		// Characters match if both value and ANSI codes are identical
-		const charsMatch = oldValue === newValue && oldAnsi === newAnsi;
+		// Characters match only if value AND ANSI codes are identical AND the
+		// accumulated visual-column offset between old and new is zero (i.e. all
+		// previous chars occupied the same number of columns in both layouts).
+		const charsMatch = cumulativeWidthDiff === 0 && oldValue === newValue && oldAnsi === newAnsi;
 		
 		debugLog(`Char ${i}`, {
 			oldValue: JSON.stringify(oldValue),
@@ -305,6 +329,8 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 			oldAnsi: oldAnsi.replace(/\x1b/g, '\\x1b'),
 			newAnsi: newAnsi.replace(/\x1b/g, '\\x1b'),
 			charsMatch,
+			visualPos,
+			cumulativeWidthDiff,
 			currentSegmentStart,
 			currentSegmentCharsLength: currentSegmentChars.length
 		});
@@ -312,17 +338,17 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 		if (!charsMatch) {
 			// Start new segment or continue existing one
 			if (currentSegmentStart === -1) {
-				currentSegmentStart = i;
+				currentSegmentStart = visualPos;  // visual column, not char index
 				currentSegmentAnsiState = newAnsi;
 				if (newChar) {
 					currentSegmentChars.push(newChar);
 				}
-				debugLog(`Started new segment at ${i}`);
+				debugLog(`Started new segment at visualPos ${visualPos} (i=${i})`);
 			} else if (newAnsi !== currentSegmentAnsiState) {
 				// ANSI state changed, close current segment and start new one
 				debugLog(`ANSI state changed at ${i}, closing segment`);
 				closeSegment();
-				currentSegmentStart = i;
+				currentSegmentStart = visualPos;  // visual column, not char index
 				currentSegmentAnsiState = newAnsi;
 				if (newChar) {
 					currentSegmentChars.push(newChar);
@@ -336,22 +362,28 @@ export function findDiffSegments(oldText: string, newText: string): TextSegment[
 		} else {
 			// Characters match - close segment if we have one
 			if (currentSegmentStart !== -1) {
-				debugLog(`Chars match at ${i}, closing segment`);
+				debugLog(`Chars match at ${i} (visualPos ${visualPos}), closing segment`);
 				closeSegment();
 			}
 		}
+
+		// Advance visual position by the new char's width (or old if beyond new text)
+		visualPos += newChar ? newCharWidth : 0;
+		// Track cumulative visual-width difference for misalignment detection
+		cumulativeWidthDiff += newCharWidth - oldCharWidth;
 	}
 	
 	// Close any remaining segment
 	closeSegment();
 	
-	// Handle case where new text is shorter - need to clear the rest
-	if (oldChars.length > newChars.length) {
+	// Handle case where old text is *visually* longer – need to clear the rest.
+	// Compare visual lengths (not char counts) to handle wide chars correctly.
+	if (oldVisualLength > newVisualLength) {
 		segments.push({
-			start: newChars.length,
+			start: newVisualLength,
 			text: ''
 		});
-		debugLog('Added clear segment', { start: newChars.length });
+		debugLog('Added clear segment', { start: newVisualLength });
 	}
 	
 	debugLog('findDiffSegments result', {
@@ -371,14 +403,15 @@ function expandTabs(text: string, tabWidth: number = 8): string {
 }
 
 /**
- * Calculate visual length of text (excluding ANSI codes and control characters)
+ * Calculate visual length of text (excluding ANSI codes and control characters).
+ * Wide characters (e.g. emoji, CJK) count as 2 columns.
  */
 function getVisualLength(text: string): number {
 	// Remove control characters like \r and \n before calculating visual length
 	const cleanText = text.replace(/[\r\n]/g, '');
 	const tokens = ansiTokenize(cleanText);
 	const chars = styledCharsFromTokens(tokens);
-	return chars.length;
+	return chars.reduce((sum, c) => sum + (c.fullWidth ? 2 : 1), 0);
 }
 
 /**
