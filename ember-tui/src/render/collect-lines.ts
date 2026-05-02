@@ -116,7 +116,9 @@ export function extractLines(rootNode: ElementNode, {
 	}
 
 	// Render the node tree to the output buffer, skipping static elements
+	// Enable skipClean to only render dirty nodes for performance
 	renderNodeToOutput(rootNode, dynamicOutputBuffer, {
+		skipClean: true,
 		offsetX: 0,
 		offsetY: 0,
 		transformers: [],

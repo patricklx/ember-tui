@@ -96,6 +96,7 @@ export function renderNodeToOutput(
 	node: ElementNode,
 	output: Output,
 	options: {
+		skipClean?: boolean;
 		offsetX?: number;
 		offsetY?: number;
 		transformers?: OutputTransformer[];
@@ -110,6 +111,18 @@ export function renderNodeToOutput(
 	} = options;
 
 	debugLogger.log(`renderNodeToOutput: node=${node.tagName || node.nodeType}, type=${node.nodeType}`);
+
+	// Skip clean nodes if skipClean is enabled (performance optimization)
+	if (options.skipClean && 'isDirty' in node && typeof (node as any).isDirty === 'function') {
+		if (!(node as any).isDirty()) {
+			debugLogger.log('  -> Node is clean, skipping');
+			return;
+		}
+		// Clear dirty flag after processing this node
+		if (typeof (node as any).clearDirty === 'function') {
+			(node as any).clearDirty();
+		}
+	}
 
 	// Skip static elements if requested
 	if (skipStaticElements && (node as any).internal_static) {
@@ -207,6 +220,7 @@ export function renderNodeToOutput(
 		for (const childNode of node.childNodes) {
 			if (childNode.nodeType === 1) {
 				renderNodeToOutput(childNode as ElementNode, output, {
+					skipClean: options.skipClean,
 					offsetX: x,
 					offsetY: y,
 					transformers: newTransformers,
@@ -227,6 +241,7 @@ export function renderNodeToOutput(
 		for (const childNode of node.childNodes) {
 			if (childNode.nodeType === 1) {
 				renderNodeToOutput(childNode as ElementNode, output, {
+					skipClean: options.skipClean,
 					offsetX: x,
 					offsetY: y,
 					transformers: newTransformers,

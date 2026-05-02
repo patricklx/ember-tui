@@ -18,6 +18,10 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
   declare _id: string;
   declare yogaNode?: YogaNode;
 	declare internal_transform?: OutputTransformer;
+	
+	// Dirty tracking for performance optimization
+	private _isDirty: boolean = true;
+	private _childrenDirty: boolean = false;
 
   /**
    * Convert camelCase to kebab-case
@@ -27,9 +31,36 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
   }
 
   /**
+   * Mark this node as dirty (needs re-render)
+   */
+  markDirty(): void {
+    this._isDirty = true;
+    // Propagate dirty flag up to parent
+    if (this.parentNode && this.parentNode instanceof ElementNode) {
+      this.parentNode._childrenDirty = true;
+    }
+  }
+
+  /**
+   * Check if this node or its children are dirty
+   */
+  isDirty(): boolean {
+    return this._isDirty || this._childrenDirty;
+  }
+
+  /**
+   * Clear dirty flags after rendering
+   */
+  clearDirty(): void {
+    this._isDirty = false;
+    this._childrenDirty = false;
+  }
+
+  /**
    * Override setAttribute to update Yoga styles when style attributes change
    */
   setAttribute(key: string, value: any): void {
+    this.markDirty();
     if (key === '__attrs__') {
       for (const [k, v] of Object.entries(value || {})) {
         // Convert camelCase to kebab-case for attributes
