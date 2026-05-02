@@ -137,7 +137,7 @@ function updateOverlapTracking(
 	}
 
 	const absoluteBox = { x, y, width, height };
-	const previousOverlapped = new Set((node as any)._overlappedNodes || []);
+	const previousOverlapped = new Set<ElementNode>((node as any)._overlappedNodes || []);
 	const currentOverlapped = new Set<ElementNode>();
 
 	// Check all previously rendered nodes for overlap
