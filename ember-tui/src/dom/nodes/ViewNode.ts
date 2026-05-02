@@ -190,10 +190,20 @@ export default class ViewNode<Attributes = any> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onInsertedChild(_childNode: ViewNode, _index: number) {}
+  onInsertedChild(_childNode: ViewNode, _index: number) {
+    // Mark parent as dirty when child is inserted
+    if ('markDirty' in this && typeof (this as any).markDirty === 'function') {
+      (this as any).markDirty();
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onRemovedChild(_childNode: ViewNode) {}
+  onRemovedChild(_childNode: ViewNode) {
+    // Mark parent as dirty when child is removed
+    if ('markDirty' in this && typeof (this as any).markDirty === 'function') {
+      (this as any).markDirty();
+    }
+  }
 
   insertBefore(childNode: ViewNode, referenceNode: ViewNode) {
     if (!childNode) {

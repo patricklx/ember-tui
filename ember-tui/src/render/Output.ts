@@ -57,6 +57,9 @@ export default class Output {
 	height: number;
 
 	private readonly operations: Operation[] = [];
+	
+	// Persistent buffer to keep state between renders
+	private buffer: StyledChar[][] = [];
 
 	constructor(options: Options) {
 		const {width, height} = options;
@@ -100,17 +103,34 @@ export default class Output {
 		});
 	}
 
+	/**
+	 * Clear the output buffer for reuse
+	 * Resets operations without recreating the entire Output instance
+	 */
+	clear(): void {
+		this.operations.length = 0;
+		// Keep buffer intact for incremental rendering
+		// When skipClean is enabled, we only render dirty nodes on top of existing buffer
+	}
+	
+	/**
+	 * Reset the buffer completely (for full redraws)
+	 */
+	resetBuffer(): void {
+		this.buffer = [];
+	}
+
 	get(): {output: string; height: number} {
 		debugLogger.log(`Output.get(): operations count=${this.operations.length}`);
 
-		// Initialize output array - start with terminal height but allow growth
-		const output: StyledChar[][] = [];
+		// Reuse existing buffer or initialize if empty
+		const output: StyledChar[][] = this.buffer.length > 0 ? this.buffer : [];
 
 		// Store operations to process, then clear the array to prevent memory leaks
 		const operationsToProcess = this.operations.slice();
 		this.operations.length = 0;
 
-		debugLogger.log(`  -> Processing ${operationsToProcess.length} operations`);
+		debugLogger.log(`  -> Processing ${operationsToProcess.length} operations, buffer rows=${output.length}`);
 
 		// Helper function to ensure row exists
 		const ensureRow = (y: number) => {
@@ -300,9 +320,13 @@ export default class Output {
 			})
 			.join('\n');
 
+		// Save buffer for next render
+		this.buffer = output;
+
 		return {
 			output: generatedOutput,
 			height: output.length,
 		};
 	}
 }
+

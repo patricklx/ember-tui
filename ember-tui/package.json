@@ -37,6 +37,20 @@
       },
       "default": "./src/index.ts"
     },
+    "./test-utils": {
+      "production": {
+        "default": "./dist/test-utils/index.js",
+        "types": "./declarations/test-utils/index.d.ts"
+      },
+      "default": "./src/test-utils/index.ts"
+    },
+    "./components/*": {
+      "production": {
+        "default": "./dist/components/*.js",
+        "types": "./declarations/components/*.d.ts"
+      },
+      "default": "./src/components/*.gts"
+    },
     "./*": {
       "production": {
         "default": "./dist/*.js",

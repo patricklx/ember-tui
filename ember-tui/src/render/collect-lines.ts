@@ -1,15 +1,22 @@
 import type ElementNode from "../dom/nodes/ElementNode";
-import { calculateLayout, freeAllYogaNodes } from "../dom/layout";
+import { calculateLayout, cleanupDisconnectedYogaNodes } from "../dom/layout";
 import Output from "./Output";
-import { renderNodeToOutput } from "./renderNodeToOutput";
+import { renderNodeToOutput, resetRenderedNodesTracking } from "./renderNodeToOutput";
 import type { TerminalBoxElement } from "../dom/native-elements/TerminalBoxElement";
 import { staticElementIterator } from "./static-element-iterator";
 
 // Cache for static element output
 let staticOutputCache: string[] = [];
 
+// Reusable Output buffer to avoid recreation on each render
+let dynamicOutputBuffer: Output | null = null;
+
 export function resetStaticCache() {
 	staticOutputCache = [];
+}
+
+export function resetOutputBuffer() {
+	dynamicOutputBuffer = null;
 }
 
 
@@ -33,8 +40,8 @@ export function extractLines(rootNode: ElementNode, {
 	dynamic: string[],
 } {
 
-	// Free all previously created Yoga nodes before creating new ones
-	freeAllYogaNodes();
+	// Cleanup only disconnected Yoga nodes instead of freeing all
+	cleanupDisconnectedYogaNodes();
 
 	// Calculate layout for the entire tree
 	const availableHeight = Math.max(0, terminalHeight - staticOutputCache.length);
@@ -94,13 +101,27 @@ export function extractLines(rootNode: ElementNode, {
 	// This prevents content from being rendered beyond the visible viewport
 	const constrainedHeight = Math.min(height, availableHeightForDynamic);
 	const outputWidth = rootNode.yogaNode?.getComputedWidth() ?? terminalWidth;
-	const output = new Output({
-		width: outputWidth,
-		height: constrainedHeight,
-	});
+	
+	// Reuse existing output buffer if dimensions match, otherwise create new one
+	if (!dynamicOutputBuffer || 
+	    dynamicOutputBuffer.width !== outputWidth || 
+	    dynamicOutputBuffer.height !== constrainedHeight) {
+		dynamicOutputBuffer = new Output({
+			width: outputWidth,
+			height: constrainedHeight,
+		});
+	} else {
+		// Clear the buffer for reuse
+		dynamicOutputBuffer.clear();
+	}
 
+	// Reset overlap tracking for this frame
+	resetRenderedNodesTracking();
+	
 	// Render the node tree to the output buffer, skipping static elements
-	renderNodeToOutput(rootNode, output, {
+	// Enable skipClean to only render dirty nodes for performance
+	renderNodeToOutput(rootNode, dynamicOutputBuffer, {
+		skipClean: true,
 		offsetX: 0,
 		offsetY: 0,
 		transformers: [],
@@ -108,7 +129,7 @@ export function extractLines(rootNode: ElementNode, {
 	});
 
 	// Extract the final output
-	const { output: renderedOutput } = output.get();
+	const { output: renderedOutput } = dynamicOutputBuffer.get();
 
 	// Convert to lines
 	const dynamicLines = renderedOutput
