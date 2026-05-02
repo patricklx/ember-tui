@@ -1,13 +1,10 @@
-# CI Task TODO - PR #123
-
-## Time Limit: 10 minutes MAX - MUST STOP AND PUSH
-
-- [ ] Create todo.md
-- [ ] Update GitHub comment with start status
-- [ ] Run pnpm install
-- [ ] Fix lint issues in ember-tui package
-- [ ] Fix lint issues in ember-tui-demo package
-- [ ] Commit changes
-- [ ] Push to branch
-- [ ] Update GitHub comment with completion status
-- [ ] **STOP at 10 minutes mark**
+- [ ] Add/update `/tmp/tmp9mnmtppt/repo/todo.md` with task checklist including a hard 10-minute stop
+- [ ] Post GitHub PR progress update to comment `4364369731`
+- [ ] Run `pnpm install`
+- [ ] Inspect `ember-tui-demo/tests/dirty-tracking-render-test.gts` and matching test patterns in related files
+- [ ] Fix types in `ember-tui-demo/tests/dirty-tracking-render-test.gts`
+- [ ] Adjust the test pattern to match other test files
+- [ ] Run focused verification for the changed test file(s)
+- [ ] Commit only the intended changed files with clear commit message(s)
+- [ ] Push branch `improve-perf`
+- [ ] HARD STOP: stop within 10 minutes from task start, commit completed work, and push even if partial
