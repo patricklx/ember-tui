@@ -192,15 +192,23 @@ export function renderNodeToOutput(
 	debugLogger.log(`renderNodeToOutput: node=${node.tagName || node.nodeType}, type=${node.nodeType}`);
 
 	// Skip clean nodes if skipClean is enabled (performance optimization)
-	if (options.skipClean && 'isDirty' in node && typeof (node as any).isDirty === 'function') {
-		if (!(node as any).isDirty()) {
-			debugLogger.log('  -> Node is clean, skipping');
-			return;
-		}
-		// Clear dirty flag after processing this node
-		if (typeof (node as any).clearDirty === 'function') {
-			(node as any).clearDirty();
-		}
+	// BUT: still process children if they might be dirty OR if there are overlapping absolute boxes
+	const isNodeDirty = options.skipClean && 'isDirty' in node && typeof (node as any).isDirty === 'function' 
+		? (node as any).isDirty() 
+		: true;
+	
+	const hasChildrenDirty = '_childrenDirty' in node ? (node as any)._childrenDirty : false;
+	const hasOverlappingBoxes = '_overlappingAbsoluteBoxes' in node && (node as any)._overlappingAbsoluteBoxes.size > 0;
+	
+	// Don't skip if: node is dirty, children are dirty, or node is overlapped by absolute boxes
+	if (options.skipClean && !isNodeDirty && !hasChildrenDirty && !hasOverlappingBoxes) {
+		debugLogger.log('  -> Node and children are clean, skipping');
+		return;
+	}
+	
+	// Clear dirty flag after processing this node
+	if (isNodeDirty && typeof (node as any).clearDirty === 'function') {
+		(node as any).clearDirty();
 	}
 
 	// Skip static elements if requested

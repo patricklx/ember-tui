@@ -109,7 +109,8 @@ export default class Output {
 	 */
 	clear(): void {
 		this.operations.length = 0;
-		// Keep buffer intact - don't clear it to preserve state
+		// Keep buffer intact for incremental rendering
+		// When skipClean is enabled, we only render dirty nodes on top of existing buffer
 	}
 	
 	/**
