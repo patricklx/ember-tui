@@ -53,7 +53,33 @@ function extractStylesFromElement(element: ElementNode): Record<string, any> {
 const createdYogaNodes: Array<{ node: YogaNode; element: ElementNode }> = [];
 
 /**
+ * Cleanup disconnected Yoga nodes to prevent memory leaks
+ * Only frees nodes whose elements are no longer connected to the DOM
+ */
+export function cleanupDisconnectedYogaNodes(): void {
+	// Iterate backwards to safely remove items
+	for (let i = createdYogaNodes.length - 1; i >= 0; i--) {
+		const { node, element } = createdYogaNodes[i];
+		
+		// Check if element is still connected to the DOM
+		if (!element.isConnected) {
+			try {
+				node.unsetMeasureFunc();
+				// Clear the reference on the element to allow GC
+				element.yogaNode = undefined;
+				node.free?.();
+			} catch {
+				// Node might already be freed, ignore
+			}
+			// Remove from tracking array
+			createdYogaNodes.splice(i, 1);
+		}
+	}
+}
+
+/**
  * Free all previously created Yoga nodes to prevent memory leaks
+ * @deprecated Use cleanupDisconnectedYogaNodes() for better performance
  */
 export function freeAllYogaNodes(): void {
 	// Free nodes in reverse order to avoid issues with parent-child relationships
@@ -104,6 +130,7 @@ export function createYogaNode(element: ElementNode): YogaNode {
 
 /**
  * Recursively builds Yoga node tree from DOM tree
+ * Reuses existing Yoga nodes when possible to improve performance
  */
 function buildYogaTree(node: ViewNode): void {
 	// Only process element nodes
@@ -117,8 +144,16 @@ function buildYogaTree(node: ViewNode): void {
 
 	const element = node as ElementNode;
 
-	// Create Yoga node if it doesn't exist
-  element.yogaNode = createYogaNode(element);
+	// Reuse existing Yoga node if available, otherwise create new one
+	if (!element.yogaNode) {
+		element.yogaNode = createYogaNode(element);
+	} else {
+		// Update styles on existing node
+		const styles = extractStylesFromElement(element);
+		if (Object.keys(styles).length > 0) {
+			applyStyles(element.yogaNode, styles as Styles);
+		}
+	}
 
 	// terminal-text elements are leaf nodes in Yoga tree (they have measure functions)
 	// They cannot have Yoga children, but can have DOM children for text aggregation
@@ -126,6 +161,15 @@ function buildYogaTree(node: ViewNode): void {
 		return;
 	}
 
+	// Track which children are already in the Yoga tree
+	const existingYogaChildren = new Set<YogaNode>();
+	const childCount = element.yogaNode.getChildCount();
+	for (let i = 0; i < childCount; i++) {
+		existingYogaChildren.add(element.yogaNode.getChild(i));
+	}
+
+	// Build children and ensure they're in the correct order
+	let yogaChildIndex = 0;
 	for (let i = 0; i < element.childNodes.length; i++) {
 		const child = element.childNodes[i];
 
@@ -136,9 +180,32 @@ function buildYogaTree(node: ViewNode): void {
 			buildYogaTree(childElement);
 
 			if (childElement.yogaNode) {
-				element.yogaNode.insertChild(childElement.yogaNode, element.yogaNode.getChildCount());
+				// Check if child already has a parent
+				const currentParent = childElement.yogaNode.getParent();
+				if (currentParent && currentParent !== element.yogaNode) {
+					currentParent.removeChild(childElement.yogaNode);
+				}
+
+				// Check if already a child at the correct position
+				const existingChild = yogaChildIndex < childCount ? element.yogaNode.getChild(yogaChildIndex) : null;
+				
+				if (existingChild !== childElement.yogaNode) {
+					// Remove from old position if exists
+					if (existingYogaChildren.has(childElement.yogaNode)) {
+						element.yogaNode.removeChild(childElement.yogaNode);
+					}
+					// Insert at correct position
+					element.yogaNode.insertChild(childElement.yogaNode, yogaChildIndex);
+				}
+				
+				yogaChildIndex++;
 			}
 		}
+	}
+
+	// Remove any extra children that are no longer in DOM
+	while (element.yogaNode.getChildCount() > yogaChildIndex) {
+		element.yogaNode.removeChild(element.yogaNode.getChild(yogaChildIndex));
 	}
 }
 

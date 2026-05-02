@@ -100,6 +100,14 @@ export default class Output {
 		});
 	}
 
+	/**
+	 * Clear the output buffer for reuse
+	 * Resets operations without recreating the entire Output instance
+	 */
+	clear(): void {
+		this.operations.length = 0;
+	}
+
 	get(): {output: string; height: number} {
 		debugLogger.log(`Output.get(): operations count=${this.operations.length}`);
 
