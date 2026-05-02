@@ -30,9 +30,11 @@ describe('Dirty Tracking Render Tests', () => {
     const boxElement = rootElement.querySelector('terminal-box');
     expect(boxElement).toBeDefined();
     
-    // After render, dirty flags should be cleared
-    // Note: We can't directly access private properties in tests,
-    // but we can verify the render output is correct
+    // Check internal dirty tracking state (now public with underscore prefix)
+    expect((boxElement as any)._isDirty).toBe(false);
+    expect((boxElement as any)._childrenDirty).toBe(false);
+    
+    // Verify render output is correct
     expect(ctx.lastFrame()).toContain('Hello');
     
     ctx.unmount();
@@ -52,8 +54,16 @@ describe('Dirty Tracking Render Tests', () => {
     const initialFrame = ctx.lastFrame();
     expect(initialFrame).toContain('Hello');
 
+    // Get the box element and verify it's clean after render
+    const boxElement = ctx.rootElement.querySelector('terminal-box');
+    expect((boxElement as any)._isDirty).toBe(false);
+
     // Change state - this should mark nodes as dirty
     state.text = 'World';
+    
+    // Before render, the text node should be marked dirty
+    const textElement = boxElement?.querySelector('terminal-text');
+    expect((textElement as any)._isDirty).toBe(true);
     
     // Wait for next render
     await ctx.render();
@@ -61,6 +71,10 @@ describe('Dirty Tracking Render Tests', () => {
     const newFrame = ctx.lastFrame();
     expect(newFrame).toContain('World');
     expect(newFrame).not.toContain('Hello');
+    
+    // After render, nodes should be clean again
+    expect((boxElement as any)._isDirty).toBe(false);
+    expect((textElement as any)._isDirty).toBe(false);
     
     ctx.unmount();
   });
@@ -106,6 +120,14 @@ describe('Dirty Tracking Render Tests', () => {
     // Verify overlay box has absolute positioning
     expect(overlayBox?.getAttribute('position')).toBe('absolute');
     
+    // Check overlap tracking internals
+    // The overlay box should track which nodes it overlaps
+    expect((overlayBox as any)._overlappedNodes).toBeDefined();
+    expect((overlayBox as any)._overlappedNodes.size).toBeGreaterThanOrEqual(0);
+    
+    // The background box should know about overlapping absolute boxes
+    expect((backgroundBox as any)._overlappingAbsoluteBoxes).toBeDefined();
+    
     // Change overlay box - should mark overlapped nodes as dirty
     state.showBox = false;
     await ctx.render();
@@ -113,6 +135,9 @@ describe('Dirty Tracking Render Tests', () => {
     const frameWithoutOverlay = ctx.lastFrame();
     expect(frameWithoutOverlay).not.toContain('Overlay');
     expect(frameWithoutOverlay).toContain('Background Content');
+    
+    // After removing overlay, background should have been marked dirty and re-rendered
+    expect((backgroundBox as any)._isDirty).toBe(false); // Clean after render
     
     ctx.unmount();
   });

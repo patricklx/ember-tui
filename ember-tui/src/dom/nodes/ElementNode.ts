@@ -20,14 +20,17 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
 	declare internal_transform?: OutputTransformer;
 	
 	// Dirty tracking for performance optimization
-	private _isDirty: boolean = true;
-	private _childrenDirty: boolean = false;
+	// Public with underscore prefix to allow test access
+	_isDirty: boolean = true;
+	_childrenDirty: boolean = false;
 	
 	// Track nodes that this absolute positioned box overlaps
-	private _overlappedNodes: Set<ElementNode> = new Set();
+	// Public with underscore prefix to allow test access
+	_overlappedNodes: Set<ElementNode> = new Set();
 	
 	// Track absolute positioned boxes that overlap this node
-	private _overlappingAbsoluteBoxes: Set<ElementNode> = new Set();
+	// Public with underscore prefix to allow test access
+	_overlappingAbsoluteBoxes: Set<ElementNode> = new Set();
 
   /**
    * Convert camelCase to kebab-case
