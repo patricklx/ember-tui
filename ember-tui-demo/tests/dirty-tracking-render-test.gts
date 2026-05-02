@@ -13,6 +13,8 @@ class TestState {
 describe('Dirty Tracking Render Tests', () => {
   it('should track dirty nodes after render', async () => {
     const state = new TestState();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _state = state; // Keep reference for template
 
     const ctx = await render(
       <template>
@@ -42,6 +44,8 @@ describe('Dirty Tracking Render Tests', () => {
 
   it('should mark nodes dirty when properties change', async () => {
     const state = new TestState();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _state = state; // Keep reference for template
 
     const ctx = await render(
       <template>
@@ -143,8 +147,6 @@ describe('Dirty Tracking Render Tests', () => {
   });
 
   it('should handle multiple overlapping absolute boxes', async () => {
-    const state = new TestState();
-
     const ctx = await render(
       <template>
         <Box>
@@ -234,8 +236,7 @@ describe('Dirty Tracking Render Tests', () => {
   });
 
   it('should correctly render when absolute box changes position', async () => {
-    const state = new TestState();
-    let top = 1;
+    const position = { top: 1 };
 
     const ctx = await render(
       <template>
@@ -246,8 +247,8 @@ describe('Dirty Tracking Render Tests', () => {
           <Box 
             id="moving-box"
             position="absolute" 
-            top={{top}} 
-            left={5} 
+            top={{position.top}} 
+            left={5}
             width={10} 
             height={3}
             borderStyle="single"
@@ -262,7 +263,7 @@ describe('Dirty Tracking Render Tests', () => {
     expect(frame1).toContain('Moving');
 
     // Change position
-    top = 5;
+    position.top = 5;
     await ctx.render();
     
     const frame2 = ctx.lastFrame();

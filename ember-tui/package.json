@@ -37,6 +37,20 @@
       },
       "default": "./src/index.ts"
     },
+    "./test-utils": {
+      "production": {
+        "default": "./dist/test-utils/FakeTTY.js",
+        "types": "./declarations/test-utils/FakeTTY.d.ts"
+      },
+      "default": "./src/test-utils/FakeTTY.ts"
+    },
+    "./components/*": {
+      "production": {
+        "default": "./dist/components/*.js",
+        "types": "./declarations/components/*.d.ts"
+      },
+      "default": "./src/components/*.gts"
+    },
     "./*": {
       "production": {
         "default": "./dist/*.js",

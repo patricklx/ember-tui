@@ -1,12 +1,13 @@
-# CI task todo
+# CI Task TODO - PR #123
 
-- [ ] STOP by 2026-05-02T10:16:40Z at the latest, commit current focused changes, push, and stop work
-- [ ] Post initial progress update to GitHub comment 4363556574
-- [ ] Inspect PR #123 diff on branch `improve-perf`
-- [ ] Run `pnpm install`
-- [ ] Run relevant tests and capture failures
-- [ ] Fix focused test/code issues related to render pipeline changes
-- [ ] Re-run tests
-- [ ] Update GitHub comment with status/outcome
-- [ ] Stage only relevant modified/created files
-- [ ] Commit with a clear message and push branch `improve-perf`
+## Time Limit: 10 minutes MAX - MUST STOP AND PUSH
+
+- [ ] Create todo.md
+- [ ] Update GitHub comment with start status
+- [ ] Run pnpm install
+- [ ] Fix lint issues in ember-tui package
+- [ ] Fix lint issues in ember-tui-demo package
+- [ ] Commit changes
+- [ ] Push to branch
+- [ ] Update GitHub comment with completion status
+- [ ] **STOP at 10 minutes mark**
