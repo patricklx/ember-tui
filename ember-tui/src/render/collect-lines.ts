@@ -1,7 +1,7 @@
 import type ElementNode from "../dom/nodes/ElementNode";
 import { calculateLayout, cleanupDisconnectedYogaNodes } from "../dom/layout";
 import Output from "./Output";
-import { renderNodeToOutput } from "./renderNodeToOutput";
+import { renderNodeToOutput, resetRenderedNodesTracking } from "./renderNodeToOutput";
 import type { TerminalBoxElement } from "../dom/native-elements/TerminalBoxElement";
 import { staticElementIterator } from "./static-element-iterator";
 
@@ -115,6 +115,9 @@ export function extractLines(rootNode: ElementNode, {
 		dynamicOutputBuffer.clear();
 	}
 
+	// Reset overlap tracking for this frame
+	resetRenderedNodesTracking();
+	
 	// Render the node tree to the output buffer, skipping static elements
 	// Enable skipClean to only render dirty nodes for performance
 	renderNodeToOutput(rootNode, dynamicOutputBuffer, {

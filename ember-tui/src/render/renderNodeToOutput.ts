@@ -90,6 +90,85 @@ function applyPaddingToText(node: ElementNode, text: string): string {
 }
 
 /**
+ * Check if two rectangles overlap
+ */
+function rectanglesOverlap(
+	r1: { x: number; y: number; width: number; height: number },
+	r2: { x: number; y: number; width: number; height: number }
+): boolean {
+	return !(
+		r1.x + r1.width <= r2.x ||
+		r2.x + r2.width <= r1.x ||
+		r1.y + r1.height <= r2.y ||
+		r2.y + r2.height <= r1.y
+	);
+}
+
+/**
+ * Track all rendered nodes with their absolute positions for overlap detection
+ */
+const renderedNodesInCurrentFrame: Array<{
+	node: ElementNode;
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}> = [];
+
+/**
+ * Reset the rendered nodes tracking (call at start of each frame)
+ */
+export function resetRenderedNodesTracking(): void {
+	renderedNodesInCurrentFrame.length = 0;
+}
+
+/**
+ * Update overlap tracking for absolute positioned boxes
+ */
+function updateOverlapTracking(
+	node: ElementNode,
+	x: number,
+	y: number,
+	width: number,
+	height: number
+): void {
+	if (!('isAbsolutePositioned' in node) || !(node as any).isAbsolutePositioned()) {
+		return;
+	}
+
+	const absoluteBox = { x, y, width, height };
+	const previousOverlapped = new Set((node as any)._overlappedNodes || []);
+	const currentOverlapped = new Set<ElementNode>();
+
+	// Check all previously rendered nodes for overlap
+	for (const rendered of renderedNodesInCurrentFrame) {
+		// Don't check against self
+		if (rendered.node === node) {
+			continue;
+		}
+
+		// Check if this absolute box overlaps the rendered node
+		if (rectanglesOverlap(absoluteBox, rendered)) {
+			currentOverlapped.add(rendered.node);
+			
+			// Add to overlap tracking if not already tracked
+			if (typeof (node as any).addOverlappedNode === 'function') {
+				(node as any).addOverlappedNode(rendered.node);
+			}
+		}
+	}
+
+	// Remove nodes that are no longer overlapped
+	for (const prevNode of previousOverlapped) {
+		if (!currentOverlapped.has(prevNode)) {
+			if (typeof (node as any).removeOverlappedNode === 'function') {
+				(node as any).removeOverlappedNode(prevNode);
+			}
+		}
+	}
+}
+
+/**
  * Render a node and its children to the output buffer
  */
 export function renderNodeToOutput(
@@ -146,6 +225,11 @@ export function renderNodeToOutput(
 	// Calculate absolute position
 	const x = offsetX + yogaNode.getComputedLeft();
 	const y = offsetY + yogaNode.getComputedTop();
+	const width = yogaNode.getComputedWidth();
+	const height = yogaNode.getComputedHeight();
+
+	// Track this node's position for overlap detection
+	renderedNodesInCurrentFrame.push({ node, x, y, width, height });
 
 	// Handle transformers
 	let newTransformers = transformers;
@@ -176,6 +260,9 @@ export function renderNodeToOutput(
 
 	// Handle terminal-box elements
 	if (node instanceof TerminalBoxElement) {
+		// Update overlap tracking for absolute positioned boxes
+		updateOverlapTracking(node, x, y, width, height);
+
 		// Render background
 		renderBackground(x, y, node, output);
 
