@@ -306,3 +306,4 @@ export default class Output {
 		};
 	}
 }
+
