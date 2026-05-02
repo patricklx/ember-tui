@@ -39,10 +39,10 @@
     },
     "./test-utils": {
       "production": {
-        "default": "./dist/test-utils/FakeTTY.js",
-        "types": "./declarations/test-utils/FakeTTY.d.ts"
+        "default": "./dist/test-utils/index.js",
+        "types": "./declarations/test-utils/index.d.ts"
       },
-      "default": "./src/test-utils/FakeTTY.ts"
+      "default": "./src/test-utils/index.ts"
     },
     "./components/*": {
       "production": {

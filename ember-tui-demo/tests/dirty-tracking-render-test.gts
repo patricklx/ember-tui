@@ -1,8 +1,11 @@
-import { render } from 'ember-tui/test-utils';
+import "./globalSetup";
+import { setupRenderingContext } from 'ember-vitest';
+import App from '../app/app';
 import { describe, it, expect } from 'vitest';
 import Box from 'ember-tui/components/Box';
 import Text from 'ember-tui/components/Text';
 import { tracked } from '@glimmer/tracking';
+import { rerender } from "@ember/test-helpers";
 
 class TestState {
   @tracked color = 'red';
