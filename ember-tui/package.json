@@ -93,7 +93,7 @@
     "@babel/plugin-transform-typescript": "^7.28.6",
     "@babel/types": "^7.29.0",
     "@embroider/addon-dev": "^8.3.0",
-    "@eslint/js": "^9.28.0",
+    "@eslint/js": "^10.0.1",
     "@glint/ember-tsc": "^1.0.8",
     "@glint/template": "^1.7.3",
     "@rollup/plugin-babel": "^6.1.0",
