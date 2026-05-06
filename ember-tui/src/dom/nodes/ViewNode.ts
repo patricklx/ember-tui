@@ -27,7 +27,6 @@ export default class ViewNode<Attributes = any> {
 
   // Properties used by layout and rendering
   yogaNode?: YogaNode;
-  staticRendered?: boolean;
   page?: any;
   location?: any;
 
@@ -190,10 +189,20 @@ export default class ViewNode<Attributes = any> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onInsertedChild(_childNode: ViewNode, _index: number) {}
+  onInsertedChild(_childNode: ViewNode, _index: number) {
+    // Mark parent as dirty when child is inserted
+    if ('markDirty' in this && typeof (this as any).markDirty === 'function') {
+      (this as any).markDirty();
+    }
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onRemovedChild(_childNode: ViewNode) {}
+  onRemovedChild(_childNode: ViewNode) {
+    // Mark parent as dirty when child is removed
+    if ('markDirty' in this && typeof (this as any).markDirty === 'function') {
+      (this as any).markDirty();
+    }
+  }
 
   insertBefore(childNode: ViewNode, referenceNode: ViewNode) {
     if (!childNode) {
@@ -282,11 +291,17 @@ export default class ViewNode<Attributes = any> {
       throw new Error(`Can't remove child, because its already removed`);
     }
 
-    childNode.parentNode = null;
-
-
-    this.childNodes = this.childNodes.filter((node) => node !== childNode);
+    // Call onRemovedChild BEFORE clearing parent reference
+    // This allows dirty flag propagation to work correctly
     this.onRemovedChild(childNode);
+    
+    // Clear overlap tracking if this is an ElementNode
+    if ('clearOverlapTracking' in childNode && typeof (childNode as any).clearOverlapTracking === 'function') {
+      (childNode as any).clearOverlapTracking();
+    }
+
+    childNode.parentNode = null;
+    this.childNodes = this.childNodes.filter((node) => node !== childNode);
   }
 
   clear(node: any) {

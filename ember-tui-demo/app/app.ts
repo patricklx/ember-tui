@@ -100,7 +100,9 @@ async function startApp() {
   // Make app available globally for debugging
   (globalThis as any).app = app;
 
-  startRender(document as any as DocumentNode);
+  startRender(document as any as DocumentNode, {
+    enableMouse: true
+  });
   const client = setupEmberInspector();
   setInterval(() => {
     if (!client.socket?.connected) {

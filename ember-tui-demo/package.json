@@ -4,7 +4,7 @@
 	"description": "Demo application for ember-tui",
 	"private": true,
 	"scripts": {
-		"start": "NODE_ENV=development node --inspect=9231 --enable-source-maps --loader ./loader.mjs app/app.ts",
+		"start": "NODE_ENV=development node --enable-source-maps --loader ./loader.mjs app/app.ts",
 		"dev": "rollup -c -w",
 		"build": "rollup -c",
 		"lint": "concurrently 'pnpm:lint:*(!fix)' --names 'lint:'",
@@ -32,7 +32,7 @@
 		"ember-resolver": "^13.2.0",
 		"ember-source": "^6.12.0",
 		"ember-tui": "link:../ember-tui",
-		"ember-vite-hmr": "^2.1.4",
+		"ember-vite-hmr": "^2.1.5",
 		"yoga-layout": "~3.2.1"
 	},
 	"devDependencies": {

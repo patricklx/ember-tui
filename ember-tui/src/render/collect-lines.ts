@@ -1,15 +1,15 @@
 import type ElementNode from "../dom/nodes/ElementNode";
-import { calculateLayout, freeAllYogaNodes } from "../dom/layout";
+import { calculateLayout, cleanupDisconnectedYogaNodes } from "../dom/layout";
 import Output from "./Output";
-import { renderNodeToOutput } from "./renderNodeToOutput";
-import type { TerminalBoxElement } from "../dom/native-elements/TerminalBoxElement";
-import { staticElementIterator } from "./static-element-iterator";
+import { renderNodeToOutput, resetRenderedNodesTracking, processOverlapTracking, clearAbsoluteNodeAreas } from "./renderNodeToOutput";
 
-// Cache for static element output
-let staticOutputCache: string[] = [];
 
-export function resetStaticCache() {
-	staticOutputCache = [];
+// Reusable Output buffer to avoid recreation on each render
+let dynamicOutputBuffer: Output | null = null;
+
+
+export function resetOutputBuffer() {
+	dynamicOutputBuffer = null;
 }
 
 
@@ -22,93 +22,75 @@ export function resetStaticCache() {
  * 2. Creates an Output instance for coordinate-based rendering
  * 3. Renders each node using renderNodeToOutput
  * 4. Extracts the final output and converts to lines
- * 5. Handles static elements separately - they are cached and not re-rendered
  */
 export function extractLines(rootNode: ElementNode, {
 	terminalHeight,
 	terminalWidth,
+	skipClean
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-}: { terminalHeight: number; terminalWidth: number }, _stdout: any) : {
-	static: string[],
+}: { terminalHeight: number; terminalWidth: number; skipClean?: boolean }, _stdout: any) : {
 	dynamic: string[],
 } {
 
-	// Free all previously created Yoga nodes before creating new ones
-	freeAllYogaNodes();
-
-	// Calculate layout for the entire tree
-	const availableHeight = Math.max(0, terminalHeight - staticOutputCache.length);
+	// Calculate layout for the entire tree first (needed to get dimensions for clearing)
+	const availableHeight = Math.max(0, terminalHeight);
 	calculateLayout(rootNode, terminalWidth, availableHeight);
 
-	// First, render static elements if they haven't been rendered yet
-	const staticElements: TerminalBoxElement[] = [];
-
-  for (const element of staticElementIterator(rootNode)) {
-    staticElements.push(element);
-  }
-
-	// If static elements have new children, render only the new ones and cache
-	if (staticElements.length) {
-
-		// Render only NEW children from static elements
-		for (const staticElement of staticElements) {
-			const staticHeight = staticElement.yogaNode!.getComputedHeight();
-			const staticOutput = new Output({
-				width: terminalWidth,
-				height: staticHeight,
-			});
-
-			if (!staticElement.firstElement() || staticElement.childNodes.every(c => c.staticRendered)) {
-				continue;
-			}
-
-			renderNodeToOutput(staticElement, staticOutput, {
-					offsetX: 0,
-					offsetY: 0,
-					transformers: [],
-					skipStaticElements: false,
-				});
-				const { output: staticRendered } = staticOutput.get();
-				const newStaticLines = staticRendered
-          .replace(/\r\n/g, '\n')
-          .replace(/\r/g, '\n')
-          .split('\n');
-
-			for (const el of staticElement.childNodes) {
-				el.staticRendered = true;
-				if (el.yogaNode) {
-					staticElement.yogaNode?.removeChild(el.yogaNode);
-				}
-			}
-
-				staticOutputCache.push(...newStaticLines);
-			}
-		}
-
-	const availableHeightForDynamic = Math.max(0, terminalHeight - staticOutputCache.length);
+	const availableHeightForDynamic = Math.max(0, terminalHeight);
 	calculateLayout(rootNode, terminalWidth, availableHeightForDynamic);
 
-	const height = rootNode.childNodes.map(c => c.yogaNode?.getComputedHeight() || 0).reduce((x, y) => x + y, 0);
+	// Exclude absolutely-positioned children from height: they are out of the flex flow.
+	// Including them would cause the Output buffer to be recreated (and thus emptied) every
+	// time an overlay box is added, which wipes out buffered text before the overlay can merge.
+	const height = rootNode.childNodes
+		.filter(c => c.getAttribute?.('position') !== 'absolute')
+		.map(c => c.yogaNode?.getComputedHeight() || 0)
+		.reduce((x, y) => x + y, 0);
 
 	// Create output buffer with calculated height, but constrain to available terminal height
 	// This prevents content from being rendered beyond the visible viewport
 	const constrainedHeight = Math.min(height, availableHeightForDynamic);
 	const outputWidth = rootNode.yogaNode?.getComputedWidth() ?? terminalWidth;
-	const output = new Output({
-		width: outputWidth,
-		height: constrainedHeight,
-	});
+	
+	// Reuse existing output buffer if dimensions match, otherwise create new one
+	if (!dynamicOutputBuffer || 
+	    dynamicOutputBuffer.width !== outputWidth || 
+	    dynamicOutputBuffer.height !== constrainedHeight) {
+		dynamicOutputBuffer = new Output({
+			width: outputWidth,
+			height: constrainedHeight,
+		});
+	} else {
+		// Clear the buffer for reuse
+		dynamicOutputBuffer.clear();
+	}
+
+	// Cleanup disconnected Yoga nodes and clear their areas
+	cleanupDisconnectedYogaNodes(dynamicOutputBuffer);
+
+	// Reset overlap tracking for this frame
+	resetRenderedNodesTracking();
+
+	// Pre-pass: clear the previous render areas of ALL absolute-positioned nodes
+	// first, before any regular content is written, so their stale pixels are
+	// gone before normal elements paint over those cells.
+	clearAbsoluteNodeAreas(rootNode, dynamicOutputBuffer);
 
 	// Render the node tree to the output buffer, skipping static elements
-	renderNodeToOutput(rootNode, output, {
+	// Enable skipClean to only render dirty nodes for performance
+	renderNodeToOutput(rootNode, dynamicOutputBuffer, {
+		skipClean,
 		offsetX: 0,
 		offsetY: 0,
 		transformers: [],
-		skipStaticElements: true,
 	});
+	
+	// Process overlap tracking after all nodes have been rendered
+	// This must happen after the render pass is complete
+	processOverlapTracking();
 
 	// Extract the final output
-	const { output: renderedOutput } = output.get();
+	const { output: renderedOutput } = dynamicOutputBuffer.get();
 
 	// Convert to lines
 	const dynamicLines = renderedOutput
@@ -117,7 +99,6 @@ export function extractLines(rootNode: ElementNode, {
     .split('\n');
 
 	return {
-		static: staticOutputCache,
 		dynamic: dynamicLines
 	};
 }

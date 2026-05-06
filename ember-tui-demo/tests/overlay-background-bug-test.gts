@@ -3,7 +3,7 @@ import "./globalSetup";
 import { setupRenderingContext } from 'ember-vitest';
 import App from '../app/app';
 import { describe, test, expect, beforeEach } from "vitest";
-import { Text, Box, render } from "ember-tui";
+import { Text, Box, render, resetState } from "ember-tui";
 import { rerender } from "@ember/test-helpers";
 import { trackedObject } from "@ember/reactive/collections";
 import { FakeTTY } from "ember-tui/test-utils/FakeTTY";
@@ -22,6 +22,7 @@ describe('Overlay background bug reproduction', () => {
 		fakeTTY = new FakeTTY();
 		fakeTTY.rows = 1000;
 		fakeTTY.columns = 200;
+		resetState();
 	});
 
 	test('should apply background color across entire line with multiple text segments', async () => {

@@ -227,8 +227,8 @@ importers:
         specifier: link:../ember-tui
         version: link:../ember-tui
       ember-vite-hmr:
-        specifier: ^2.1.4
-        version: 2.1.4(@embroider/compat@4.1.17(@embroider/core@4.4.7(@glint/template@1.7.3))(@glint/template@1.7.3))(babel-import-util@3.0.1)(babel-plugin-ember-template-compilation@4.0.0)
+        specifier: ^2.1.5
+        version: 2.1.5(@embroider/compat@4.1.17(@embroider/core@4.4.7(@glint/template@1.7.3))(@glint/template@1.7.3))(babel-import-util@3.0.1)(babel-plugin-ember-template-compilation@4.0.0)
       yoga-layout:
         specifier: ~3.2.1
         version: 3.2.1
@@ -4148,8 +4148,8 @@ packages:
   ember-strict-application-resolver@0.1.1:
     resolution: {integrity: sha512-/49JZ2Yk2ggicAGIoFNWcz05llhe2i+/2dpH5Pv1KlwZOBKkqMMJpTKEB4IMg+FjKBiE0r2yxuZzo9Oly9vc1A==}
 
-  ember-vite-hmr@2.1.4:
-    resolution: {integrity: sha512-8GXk2mhxzOdUSjMMUkqCUkK3sz9d56sVIBFE51wjU9bEMu7hCdRjmDJWsK8r4TkDw+2kK1p+jFnnmEJ5sq8A0A==}
+  ember-vite-hmr@2.1.5:
+    resolution: {integrity: sha512-I3z+81BELKG9OmdD/g30Sq+JzllrsGSn6xaSRFgADj/1Lt1BGVEBDpAJaP79GkYezLtG4m1+RtO7+WCbJuY++w==}
     engines: {node: 12.* || 14.* || >= 16}
     peerDependencies:
       '@embroider/compat': '*'
@@ -8498,6 +8498,11 @@ snapshots:
   '@babel/plugin-syntax-decorators@7.28.6(@babel/core@7.28.5)':
     dependencies:
       '@babel/core': 7.28.5
+      '@babel/helper-plugin-utils': 7.28.6
+
+  '@babel/plugin-syntax-decorators@7.28.6(@babel/core@7.29.0)':
+    dependencies:
+      '@babel/core': 7.29.0
       '@babel/helper-plugin-utils': 7.28.6
 
   '@babel/plugin-syntax-dynamic-import@7.8.3(@babel/core@7.28.5)':
@@ -12867,7 +12872,7 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  ember-vite-hmr@2.1.4(@embroider/compat@4.1.17(@embroider/core@4.4.7(@glint/template@1.7.3))(@glint/template@1.7.3))(babel-import-util@3.0.1)(babel-plugin-ember-template-compilation@4.0.0):
+  ember-vite-hmr@2.1.5(@embroider/compat@4.1.17(@embroider/core@4.4.7(@glint/template@1.7.3))(@glint/template@1.7.3))(babel-import-util@3.0.1)(babel-plugin-ember-template-compilation@4.0.0):
     dependencies:
       '@babel/core': 7.29.0
       '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.29.0)
@@ -15939,9 +15944,9 @@ snapshots:
 
   remove-types@1.0.0:
     dependencies:
-      '@babel/core': 7.28.5
-      '@babel/plugin-syntax-decorators': 7.28.6(@babel/core@7.28.5)
-      '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.28.5)
+      '@babel/core': 7.29.0
+      '@babel/plugin-syntax-decorators': 7.28.6(@babel/core@7.29.0)
+      '@babel/plugin-transform-typescript': 7.28.6(@babel/core@7.29.0)
       prettier: 2.8.8
     transitivePeerDependencies:
       - supports-color

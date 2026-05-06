@@ -6,7 +6,9 @@ import { FakeTTY } from '../src/test-utils/FakeTTY';
 
 // Mock extractLines to return controlled output
 vi.mock('../src/render/collect-lines', () => ({
-  extractLines: vi.fn()
+  extractLines: vi.fn(),
+  resetOutputBuffer: vi.fn(),
+  resetStaticCache: vi.fn()
 }));
 
 describe('apply-term-updates - render with fake TTY', () => {
@@ -43,7 +45,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Mock extractLines to return simple text
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Hello World']
     });
 
@@ -58,7 +60,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Mock extractLines to return colored text
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['\x1b[31mRed Text\x1b[0m']
     });
 
@@ -73,7 +75,7 @@ describe('apply-term-updates - render with fake TTY', () => {
     const root = new ElementNode('div');
 
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Line 1', 'Line 2', 'Line 3']
     });
 
@@ -90,7 +92,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // First render - establish baseline
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Static Line', 'Dynamic: 0']
     });
     render(root, global.process);
@@ -98,7 +100,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Second render - full content again to establish comparison baseline
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Static Line', 'Dynamic: 0']
     });
     render(root, global.process);
@@ -106,7 +108,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Third render - only second line changed (minimal update)
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Static Line', 'Dynamic: 1']
     });
     render(root, global.process);
@@ -127,7 +129,7 @@ describe('apply-term-updates - render with fake TTY', () => {
     const root = new ElementNode('div');
 
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['\x1b[44mBlue Background\x1b[0m']
     });
 
@@ -143,7 +145,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // First render with 3 lines
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Line 1', 'Line 2', 'Line 3']
     });
     render(root, global.process);
@@ -151,7 +153,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Second render with 2 lines
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Line 1', 'Line 2']
     });
     render(root, global.process);
@@ -165,7 +167,7 @@ describe('apply-term-updates - render with fake TTY', () => {
     const root = new ElementNode('div');
 
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: []
     });
 
@@ -179,7 +181,7 @@ describe('apply-term-updates - render with fake TTY', () => {
     const root = new ElementNode('div');
 
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['\x1b[32mGreen Text\x1b[0m']
     });
 
@@ -196,7 +198,7 @@ describe('apply-term-updates - render with fake TTY', () => {
     for (let i = 0; i <= 5; i++) {
       fakeTTY.clear();
       mockExtractLines.mockReturnValue({
-        static: [],
+        
         dynamic: [`Counter: ${i}`]
       });
       render(root, global.process);
@@ -207,41 +209,12 @@ describe('apply-term-updates - render with fake TTY', () => {
     }
   });
 
-  it('should handle mixed static and dynamic content', () => {
-    const root = new ElementNode('div');
-
-    // First render with static and dynamic
-    mockExtractLines.mockReturnValue({
-      static: ['\x1b[32m✔ Task #1\x1b[0m', '\x1b[32m✔ Task #2\x1b[0m'],
-      dynamic: ['Counter: 0']
-    });
-    render(root, global.process);
-
-    let output = fakeTTY.getVisibleOutput();
-    expect(output).toContain('✔ Task #1');
-    expect(output).toContain('✔ Task #2');
-    expect(output).toContain('Counter: 0');
-
-    fakeTTY.clear();
-
-    // Update only dynamic section
-    mockExtractLines.mockReturnValue({
-      static: ['\x1b[32m✔ Task #1\x1b[0m', '\x1b[32m✔ Task #2\x1b[0m'],
-      dynamic: ['Counter: 1']
-    });
-    render(root, global.process);
-
-    output = fakeTTY.getVisibleOutput();
-    // On minimal update, only changed part is written
-    expect(output).toContain('1');
-  });
-
   it('should hide cursor during render and show after', () => {
     const root = new ElementNode('div');
 
     // First render establishes baseline (full redraw, no cursor hide)
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Test']
     });
     render(root, global.process);
@@ -249,7 +222,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Second render triggers minimal update path which uses cursor hide/show
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Test2']
     });
     render(root, global.process);
@@ -271,7 +244,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // First render some content
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['Some content']
     });
     render(root, global.process);
@@ -297,7 +270,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Establish baseline state first (module-level state persists across tests)
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['   Indented Text']
     });
     render(root, global.process);
@@ -305,7 +278,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Re-render with same content to get a stable update (no-op)
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['   Indented Text']
     });
     render(root, global.process);
@@ -319,7 +292,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // First render - red
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['\x1b[31mRed\x1b[0m']
     });
     render(root, global.process);
@@ -327,7 +300,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Second render - blue
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['\x1b[34mBlue\x1b[0m']
     });
     render(root, global.process);
@@ -342,7 +315,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // First render
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['\x1b[44mLong text with blue background\x1b[0m                     ']
     });
     render(root, global.process);
@@ -350,7 +323,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Second render - trailing spaces removed
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['\x1b[44mLong text with blue background\x1b[0m']
     });
     render(root, global.process);
@@ -365,7 +338,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // First render
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['\x1b[32mGreen Text\x1b[0m']
     });
     render(root, global.process);
@@ -373,7 +346,7 @@ describe('apply-term-updates - render with fake TTY', () => {
 
     // Second render - completely different
     mockExtractLines.mockReturnValue({
-      static: [],
+      
       dynamic: ['   Plain Text']
     });
     render(root, global.process);

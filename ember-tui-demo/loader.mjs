@@ -2,6 +2,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { createServer } from 'vite';
 import { appendFileSync, existsSync, readFileSync, statSync } from 'node:fs';
+import { Preprocessor } from 'content-tag';
 
 function log(...args) {
   appendFileSync('log.txt', args.join(' '));
@@ -71,6 +72,8 @@ const devServer = await createServer({
 });
 
 await devServer.pluginContainer.buildStart({});
+
+const contentTagPreprocessor = new Preprocessor();
 
 async function viteResolve(source, importer) {
   const resolved = await devServer.pluginContainer.resolveId(source, importer);
@@ -299,6 +302,13 @@ export async function load(url, context, nextLoad) {
       }
 
       transformedCode = content;
+    }
+
+    if (filePath.endsWith('.gts') || filePath.endsWith('.gjs')) {
+      transformedCode = contentTagPreprocessor.process(transformedCode, {
+        filename: filePath,
+        inline_source_map: true,
+      }).code;
     }
 
     const format = isCommonJS(transformedCode) ? 'commonjs' : 'module';

@@ -2,7 +2,7 @@ import "./globalSetup";
 import { setupRenderingContext } from 'ember-vitest';
 import App from '../app/app';
 import { describe, test, expect as hardExpect, beforeEach } from "vitest";
-import { Text, render } from "ember-tui";
+import { Text, render, resetState } from "ember-tui";
 import { rerender } from "@ember/test-helpers";
 import { trackedObject } from "@ember/reactive/collections";
 import { FakeTTY } from "ember-tui/test-utils/FakeTTY";
@@ -16,6 +16,7 @@ describe("background color clearing", () => {
 		fakeTTY = new FakeTTY();
 		fakeTTY.rows = 1000; // Use large rows to avoid scroll buffer logic
 		fakeTTY.columns = 80;
+		resetState();
 	});
 
 	test("should reset ANSI codes when changing background colors", async () => {

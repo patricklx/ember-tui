@@ -66,6 +66,8 @@ interface Attributes {
 
 export class TerminalTextElement extends ElementNode<Attributes> {
   text: string = '';
+  /** Raw (unstyled) text before ANSI transform is applied. Used for accurate wrapping. */
+  rawText: string = '';
 
 
   constructor() {
@@ -110,7 +112,15 @@ export class TerminalTextElement extends ElementNode<Attributes> {
 		}
     // Join parts - preserve structure for pre-formatted text
     const t = preFormatted ? parts.join('') : parts.join(' ');
+    this.rawText = t;
     this.text = this.transform(t);
+
+    // Mark this node dirty so the skipClean optimisation does not skip it
+    this.markDirty();
+
+    // Tell Yoga the measure result may have changed so it re-invokes the
+    // measure function and recalculates layout (height) for the new text.
+    this.yogaNode?.markDirty();
 
     // Notify parent TerminaTextElement to update if this element's text changed
     if (this.parentNode instanceof TerminalTextElement) {

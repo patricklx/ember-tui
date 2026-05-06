@@ -105,6 +105,12 @@ export default ts.config(
       '@typescript-eslint/no-floating-promises': 'off'
     }
   },
+  {
+    files: ['tests/dirty-tracking-render-test.gts'],
+    rules: {
+      '@typescript-eslint/ban-ts-comment': 'off',
+    },
+  },
   /**
    * CJS node files
    */
