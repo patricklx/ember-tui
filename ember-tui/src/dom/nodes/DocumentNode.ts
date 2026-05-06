@@ -63,6 +63,8 @@ export default class DocumentNode extends ViewNode {
     this.nodeType = 9;
     this.head = new HeadNode('head', this);
     this.body = new HeadNode('body', this);
+    this.body._ownerDocument = this;
+    this.head._ownerDocument = this;
     this.appendChild(this.head);
     this.nodeMap = new Map();
   }

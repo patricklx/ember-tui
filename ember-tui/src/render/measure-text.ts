@@ -49,3 +49,54 @@ const measureText = (text: string): Output => {
 };
 
 export default measureText;
+
+/**
+ * Measure the dimensions of text when wrapped at maxWidth.
+ * Returns the wrapped height (number of visual lines) and the natural width.
+ */
+export function measureWrappedText(text: string, maxWidth: number): Output {
+	if (text.length === 0) {
+		return { width: 0, height: 0 };
+	}
+
+	if (maxWidth <= 0) {
+		return measureText(text);
+	}
+
+	const inputLines = text.split('\n');
+	let totalLines = 0;
+	let maxW = 0;
+
+	for (const line of inputLines) {
+		const lineWidth = widestLine(line);
+		if (lineWidth <= maxWidth) {
+			totalLines += 1;
+			if (lineWidth > maxW) maxW = lineWidth;
+			continue;
+		}
+
+		// Word-wrap this line
+		const words = line.split(' ');
+		let currentLine = '';
+		for (const word of words) {
+			const testLine = currentLine ? `${currentLine} ${word}` : word;
+			if (widestLine(testLine) <= maxWidth) {
+				currentLine = testLine;
+			} else {
+				if (currentLine) {
+					totalLines += 1;
+					const w = widestLine(currentLine);
+					if (w > maxW) maxW = w;
+				}
+				currentLine = word;
+			}
+		}
+		if (currentLine) {
+			totalLines += 1;
+			const w = widestLine(currentLine);
+			if (w > maxW) maxW = w;
+		}
+	}
+
+	return { width: Math.min(maxW, maxWidth), height: totalLines };
+}

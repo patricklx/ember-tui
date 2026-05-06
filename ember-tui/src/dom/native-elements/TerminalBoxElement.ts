@@ -86,13 +86,9 @@ interface Attributes {
   // Background
   readonly 'background-color'?: LiteralUnion<ForegroundColorName, string>;
   readonly overlay?: Styles['overlay'];
-
-  // Internal
-  readonly 'internal_static'?: string | boolean;
 }
 
 export class TerminalBoxElement extends ElementNode<Attributes> {
-  isStaticElement?: boolean;
 
   constructor() {
     super('terminal-box');
@@ -102,11 +98,6 @@ export class TerminalBoxElement extends ElementNode<Attributes> {
 
   setAttribute(key: string, value: any) {
     super.setAttribute(key, value);
-
-    // Track if this is a static element
-    if (key === 'internal_static') {
-      this.isStaticElement = value === 'true' || value === true;
-    }
 
     // If backgroundColor is set, propagate it to child text elements
     if (key === 'background-color') {

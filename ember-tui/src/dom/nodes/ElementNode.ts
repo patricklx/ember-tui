@@ -18,6 +18,29 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
   declare _id: string;
   declare yogaNode?: YogaNode;
 	declare internal_transform?: OutputTransformer;
+	
+	// Dirty tracking for performance optimization
+	// Public with underscore prefix to allow test access
+	_isDirty: boolean = true;
+	_childrenDirty: boolean = false;
+	
+	// Track nodes that this absolute positioned box overlaps
+	// Public with underscore prefix to allow test access
+	_overlappedNodes: Set<ElementNode> = new Set();
+	
+	// Track absolute positioned boxes that overlap this node
+	// Public with underscore prefix to allow test access
+	_overlappingAbsoluteBoxes: Set<ElementNode> = new Set();
+	
+	// Cache previous render state for clearing old positions
+	_previousRenderState: {
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+		hasBackground: boolean;
+    position: number;
+	} | null = null;
 
   /**
    * Convert camelCase to kebab-case
@@ -27,9 +50,135 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
   }
 
   /**
+   * Mark this node as dirty (needs re-render)
+   */
+  markDirty(): void {
+    this._isDirty = true;
+    // Propagate _childrenDirty up the entire ancestor chain so skipClean
+    // does not prematurely skip any ancestor that contains a dirty descendant
+    let parent = this.parentNode;
+    while (parent && parent instanceof ElementNode) {
+      parent._childrenDirty = true;
+      parent = parent.parentNode;
+    }
+    
+    // If this is an absolute positioned box, mark all overlapped nodes as dirty
+    if (this.isAbsolutePositioned()) {
+      for (const node of this._overlappedNodes) {
+        node._isDirty = true;
+      }
+    }
+  }
+
+  /**
+   * Mark this node AND every descendant as dirty so a full subtree
+   * re-render is triggered (e.g. after removing an overlay box that was
+   * covering nodes whose clean children would otherwise be skipped).
+   */
+  markSubtreeDirty(): void {
+    this._isDirty = true;
+    for (const child of this.childNodes) {
+      if (child instanceof ElementNode) {
+        child.markSubtreeDirty();
+      }
+    }
+    // Also propagate _childrenDirty upward through ancestors
+    let parent = this.parentNode;
+    while (parent) {
+      if ('_childrenDirty' in parent) {
+        (parent as any)._childrenDirty = true;
+      }
+      parent = parent.parentNode;
+    }
+  }
+
+  /**
+   * Check if this node or its children are dirty
+   */
+  isDirty(): boolean {
+    return this._isDirty || this._childrenDirty;
+  }
+
+  /**
+   * Clear dirty flags after rendering
+   */
+  clearDirty(): void {
+    this._isDirty = false;
+    this._childrenDirty = false;
+  }
+  
+  /**
+   * Check if this element has absolute positioning
+   */
+  isAbsolutePositioned(): boolean {
+    return this.getAttribute('position') === 'absolute';
+  }
+  
+  /**
+   * Register that this absolute positioned box overlaps another node
+   */
+  addOverlappedNode(node: ElementNode): void {
+    if (!this._overlappedNodes.has(node)) {
+      this._overlappedNodes.add(node);
+      node._overlappingAbsoluteBoxes.add(this);
+    }
+  }
+  
+  /**
+   * Remove a node from the overlapped set (no longer overlapping)
+   */
+  removeOverlappedNode(node: ElementNode): void {
+    if (this._overlappedNodes.has(node)) {
+      this._overlappedNodes.delete(node);
+      node._overlappingAbsoluteBoxes.delete(this);
+      // Use markDirty() so _childrenDirty propagates up the full ancestor chain
+      node.markDirty();
+    }
+  }
+  
+  /**
+   * Clear all overlap tracking for this node
+   */
+  clearOverlapTracking(): void {
+    // Remove this from all nodes it was overlapping.
+    // Use markSubtreeDirty so terminal-text children inside a clean outer Box
+    // also get re-rendered (needed to clear stale overlay ANSI codes from the buffer).
+    for (const node of this._overlappedNodes) {
+      node._overlappingAbsoluteBoxes.delete(this);
+      node.markSubtreeDirty();
+    }
+    this._overlappedNodes.clear();
+    
+    // Remove all absolute boxes that were overlapping this
+    for (const box of this._overlappingAbsoluteBoxes) {
+      box._overlappedNodes.delete(this);
+    }
+    this._overlappingAbsoluteBoxes.clear();
+  }
+  
+  /**
+   * Get the computed bounds of this element
+   */
+  getBounds(): { x: number; y: number; width: number; height: number } | null {
+    if (!this.yogaNode) {
+      return null;
+    }
+    
+    return {
+      x: this.yogaNode.getComputedLeft(),
+      y: this.yogaNode.getComputedTop(),
+      width: this.yogaNode.getComputedWidth(),
+      height: this.yogaNode.getComputedHeight(),
+    };
+  }
+
+  /**
    * Override setAttribute to update Yoga styles when style attributes change
    */
   setAttribute(key: string, value: any): void {
+    const wasAbsolute = this.isAbsolutePositioned();
+    this.markDirty();
+    
     if (key === '__attrs__') {
       for (const [k, v] of Object.entries(value || {})) {
         // Convert camelCase to kebab-case for attributes
@@ -43,6 +192,11 @@ export default class ElementNode<Attributes = any> extends ViewNode<Attributes> 
 			return;
 		}
     super.setAttribute(key, value);
+    
+    // If position changed to/from absolute, clear overlap tracking
+    if (key === 'position' && wasAbsolute !== this.isAbsolutePositioned()) {
+      this.clearOverlapTracking();
+    }
   }
 
   /**

@@ -3,7 +3,7 @@ import { Text, Box, InspectorSupport } from 'ember-tui';
 import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
 import type RouterService from '@ember/routing/router-service';
-import { hideCursor, enableMouseTracking } from "ember-tui";
+import { hideCursor } from "ember-tui";
 import Gradient from "../components/Gradient.gts";
 import HmrTest from "../components/HmrTest.gts";
 
@@ -15,7 +15,7 @@ const eq = (a: any, b: any) => a === b;
  */
 export default class AppTemplate extends Component {
 	@service declare router: RouterService;
-	@tracked selectedView: 'colors' | 'lorem' | 'tomster' | 'box-demo' | 'static-test' | 'file-editor' | 'menu' | 'component-test' | 'overlay-demo' | 'hover-demo' | 'keydown-demo' = 'menu';
+	@tracked selectedView: 'colors' | 'lorem' | 'tomster' | 'box-demo' | 'file-editor' | 'menu' | 'component-test' | 'overlay-demo' | 'hover-demo' | 'keydown-demo' = 'menu';
   @tracked counter = 0;
   @tracked debug = [];
 
@@ -32,7 +32,6 @@ export default class AppTemplate extends Component {
 		}
 
 		hideCursor();
-		enableMouseTracking(process.stdout);
 
 		// Start at menu
 		this.selectedView = 'menu';
@@ -73,18 +72,15 @@ export default class AppTemplate extends Component {
 				this.selectedView = 'component-test';
 				this.router.transitionTo('component-test');
 			} else if (key === '6') {
-				this.selectedView = 'static-test';
-				this.router.transitionTo('static-test');
-			} else if (key === '7') {
 				this.selectedView = 'file-editor';
 				this.router.transitionTo('file-editor');
-			} else if (key === '8') {
+			} else if (key === '7') {
 				this.selectedView = 'overlay-demo';
 				this.router.transitionTo('overlay-demo');
-			} else if (key === '9') {
+			} else if (key === '8') {
 				this.selectedView = 'hover-demo';
 				this.router.transitionTo('hover-demo');
-			} else if (key === '0') {
+			} else if (key === '9') {
 				this.selectedView = 'keydown-demo';
 				this.router.transitionTo('keydown-demo');
 			}
@@ -92,9 +88,9 @@ export default class AppTemplate extends Component {
 	}
 
 	startCounter = () => {
-		// setInterval(() => {
-		// 	this.counter += 1;
-		// }, 1000);
+		setInterval(() => {
+			this.counter += 1;
+		}, 1000);
 	}
 
 	<template>
@@ -102,20 +98,19 @@ export default class AppTemplate extends Component {
     <Box @flexDirection="column"  @height='100%' @alignItems={{if (eq this.selectedView 'file-editor') 'flex-start' 'center'}}>
       <HmrTest />
       {{#if (eq this.selectedView "menu")}}
-        <Gradient @name="rainbow" >Ember Console Demo - Main Menu 🚀</Gradient>
+        <Gradient @name="rainbow" >Ember Console Demo - Main Menu 🚀 {{this.counter}}</Gradient>
         <Text>---</Text>
         <Text @color="white">[1] Colors Demo</Text>
         <Text @color="white">[2] Lorem Ipsum Generator</Text>
         <Text @color="white">[3] Ember Tomster ASCII Art</Text>
         <Text @color="white">[4] Box Layout Demo</Text>
         <Text @color="white">[5] Component Test (Newline & Spacer)</Text>
-        <Text @color="white">[6] Static Component Test</Text>
-        <Text @color="white">[7] File Editor</Text>
-        <Text @color="white">[8] Overlay Feature Demo</Text>
-        <Text @color="white">[9] Mouse Hover Demo</Text>
-        <Text @color="white">[0] Keyboard Event Demo</Text>
+        <Text @color="white">[6] File Editor</Text>
+        <Text @color="white">[7] Overlay Feature Demo</Text>
+        <Text @color="white">[8] Mouse Hover Demo</Text>
+        <Text @color="white">[9] Keyboard Event Demo</Text>
         <Text>---</Text>
-        <Text @color="gray">Press 0-9 to select a demo</Text>
+        <Text @color="gray">Press 1-9 to select a demo</Text>
       {{else}}
         <Text @bold={{true}} @color="cyan">{{this.selectedView}}</Text>
         <Text>---</Text>

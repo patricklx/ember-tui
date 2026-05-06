@@ -1,9 +1,9 @@
 import { _backburner } from "@ember/runloop";
 import type { DocumentNode } from "./index";
-import { clearScreen, handleResize, render } from "./render/apply-term-updates";
-import { disableMouseTracking, isMouseSequence, parseMouseSequence } from "./input/mouse";
+import { clearScreen, handleResize } from "./render/apply-term-updates";
+import { render } from './render';
+import { disableMouseTracking, isMouseSequence, enableMouseTracking, parseMouseSequence } from "./input/mouse";
 import { parseKeySequence } from "./input/keys";
-import fs from "fs";
 
 
 /**
@@ -11,9 +11,14 @@ import fs from "fs";
  */
 export function startRender(
   document: DocumentNode,
+  options?: { enableMouse?: boolean }
 ): void {
   // Initial clear and render
   clearScreen();
+
+  if (options?.enableMouse) {
+    enableMouseTracking(process.stdout);
+  }
   
   // Force immediate render
   render(document.body!);
@@ -24,7 +29,9 @@ export function startRender(
   }
 
   // Set up reactive rendering on backburner end
-  _backburner.on('end', () => render(document.body!));
+  _backburner.on('end', () => render(document.body!, {
+    skipClean: true
+  }));
 
   const stdout = process.stdout;
   const stdin = process.stdin;
@@ -54,7 +61,6 @@ export function startRender(
       if (isMouseSequence(rawInput)) {
         const mouseEvent = parseMouseSequence(rawInput);
         if (mouseEvent) {
-          fs.appendFileSync('mouse.txt', JSON.stringify(mouseEvent, null, 2) + '\n')
           document.dispatchEvent(mouseEvent);
           // Synthesise a click event on left-button release (button 0)
           if (mouseEvent.type === 'mouseup' && mouseEvent.button === 0) {

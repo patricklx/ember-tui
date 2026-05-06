@@ -1,8 +1,9 @@
 import { invalidateRectCache } from '../input/hit-detection';
-import { renderInternal } from './apply-term-updates';
+import { render as applyRender, type RenderOptions } from './apply-term-updates';
 import type ElementNode from '../dom/nodes/ElementNode';
+import type Process from "node:process";
 
-export function render(rootNode: ElementNode): void {
+export function render(rootNode: ElementNode, options?: RenderOptions | typeof Process): void {
   invalidateRectCache();
-  renderInternal(rootNode);
+  applyRender(rootNode, options);
 }

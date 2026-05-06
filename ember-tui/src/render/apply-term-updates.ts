@@ -4,7 +4,7 @@
  */
 
 import type ElementNode from "../dom/nodes/ElementNode";
-import { extractLines } from "./collect-lines";
+import { extractLines, resetOutputBuffer } from "./collect-lines";
 import type { DocumentNode } from "../index";
 import type * as Process from "node:process";
 import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo, setProcess } from "./helpers";
@@ -68,6 +68,8 @@ export interface RenderOptions {
 	 * @default process.stderr
 	 */
 	stderr?: NodeJS.WriteStream;
+
+	skipClean?: boolean;
 }
 
 interface RenderState {
@@ -103,6 +105,9 @@ export function resetState(): void {
 	state.lines = [];
 	state.scrollOffset = 0;
 	state.scrollBufferSize = 0;
+	// Also reset the persistent Output buffer so stale content from previous
+	// renders cannot bleed into the next render cycle
+	resetOutputBuffer();
 }
 
 /** Returns the number of content lines currently above the visible viewport. */
@@ -522,7 +527,7 @@ export function showCursor() {
 /**
  * Render with line-by-line diffing using layout-based rendering
  */
-export function render(rootNode: ElementNode, options?: RenderOptions | typeof Process): void {
+export function render(rootNode: ElementNode, options?: RenderOptions): void {
 	debugLog('render called');
 	
 	// Support both old API (debugProcess) and new API (options)
@@ -551,19 +556,24 @@ export function render(rootNode: ElementNode, options?: RenderOptions | typeof P
 		}
 	} else {
 		// Old API with debugProcess or no options
-		process = (options as typeof Process) ?? process;
-		setProcess(process);
-		renderInternal(rootNode);
+		const p = {
+			...options,
+			...process,
+		}
+		setProcess(p as typeof Process);
+		renderInternal(rootNode, {
+			skipClean: options?.skipClean
+		});
 	}
 }
 
-export function renderInternal(rootNode: ElementNode): void {
+export function renderInternal(rootNode: ElementNode, options?: { skipClean?: boolean }): void {
 	debugLog('renderInternal called');
 	
-	const result = extractLines(rootNode, state, process.stdout);
+	const result = extractLines(rootNode, { ...state, skipClean: options?.skipClean }, process.stdout);
 	const oldLines = state.lines;
 
-	const newLines = [...result.static, ...result.dynamic];
+	const newLines = [...result.dynamic];
 	
 	debugLog('Lines extracted', {
 		oldLinesCount: oldLines.length,
@@ -724,6 +734,8 @@ export function handleResize(document: DocumentNode): void {
 	state.scrollBufferSize = 0;
 	clearScreen();
 	if (document.body) {
-		render(document.body);
+		render(document.body, {
+			skipClean: false,
+		});
 	}
 }

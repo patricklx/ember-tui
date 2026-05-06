@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 /**
  * Simple component for testing HMR functionality
  */
+// HMR TEST CHANGE
 export default class HmrTest extends Component {
   @tracked message = 'Initial HMR Test Message';
 

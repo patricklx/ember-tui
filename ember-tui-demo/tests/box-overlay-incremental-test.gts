@@ -8,6 +8,7 @@ import { Text, Box, render, resetState } from "ember-tui";
 import { rerender } from "@ember/test-helpers";
 import { trackedObject } from "@ember/reactive/collections";
 import { FakeTTY } from "ember-tui/test-utils/FakeTTY";
+import { logTestFailure, logTestStart, logTestSuccess } from './test-logger';
 
 const expect = hardExpect.soft;
 
@@ -23,6 +24,10 @@ describe("Box overlay - incremental rendering", () => {
 	});
 
 	test("should add overlay after initial render with single text element", async () => {
+		logTestStart("should add overlay after initial render with single text element");
+		const cleanOutput = '';
+		const rawOutput = '';
+		try {
 		await using ctx = await setupRenderingContext(App);
 		const state = trackedObject({ showOverlay: false });
 		
@@ -64,6 +69,11 @@ describe("Box overlay - incremental rendering", () => {
 		expect(cleanOutput).toContain("Base Content Here");
 		// Red background should now be applied
 		expect(rawOutput).toMatch(/\x1b\[41m/);
+		logTestSuccess("should add overlay after initial render with single text element");
+		} catch (error) {
+			logTestFailure("should add overlay after initial render with single text element", error, { cleanOutput: cleanOutput, rawOutput: rawOutput });
+			throw error;
+		}
 	});
 
 	test("should add overlay after initial render with multiple text elements", async () => {
@@ -334,13 +344,16 @@ describe("Box overlay - incremental rendering", () => {
 			{{/if}}
 		</template>);
 
+		// Use a single shared TTY so the buffer accumulates the full terminal
+		// state across incremental renders. A fresh TTY only receives the diff
+		// and therefore getCleanOutput() would return an empty string.
+
 		// Cycle 1: No overlay
-		const tty1 = new FakeTTY();
-		tty1.rows = 1000;
-		tty1.columns = 80;
-		render(ctx.element, { stdout: tty1 as any });
-		let cleanOutput = tty1.getCleanOutput();
-		let rawOutput = tty1.output.join('');
+		resetState();
+		fakeTTY.clear();
+		render(ctx.element, { stdout: fakeTTY as any });
+		let cleanOutput = fakeTTY.getCleanOutput();
+		let rawOutput = fakeTTY.getOutputSinceClear();
 		
 		expect(cleanOutput).toContain("First Bold");
 		expect(cleanOutput).toContain("Second Red");
@@ -348,15 +361,13 @@ describe("Box overlay - incremental rendering", () => {
 		expect(rawOutput).not.toMatch(/\x1b\[43m/);
 
 		// Cycle 2: Add overlay
-		const tty2 = new FakeTTY();
-		tty2.rows = 1000;
-		tty2.columns = 80;
+		fakeTTY.clear();
 		state.showOverlay = true;
 		await rerender();
-		render(ctx.element, { stdout: tty2 as any });
+		render(ctx.element, { stdout: fakeTTY as any });
 
-		cleanOutput = tty2.getCleanOutput();
-		rawOutput = tty2.output.join('');
+		cleanOutput = fakeTTY.getCleanOutput();
+		rawOutput = fakeTTY.getOutputSinceClear();
 
 		expect(cleanOutput).toContain("First Bold");
 		expect(cleanOutput).toContain("Second Red");
@@ -364,15 +375,13 @@ describe("Box overlay - incremental rendering", () => {
 		expect(rawOutput).toMatch(/\x1b\[43m/); // Yellow background
 
 		// Cycle 3: Remove overlay
-		const tty3 = new FakeTTY();
-		tty3.rows = 1000;
-		tty3.columns = 80;
+		fakeTTY.clear();
 		state.showOverlay = false;
 		await rerender();
-		render(ctx.element, { stdout: tty3 as any });
+		render(ctx.element, { stdout: fakeTTY as any });
 
-		cleanOutput = tty3.getCleanOutput();
-		rawOutput = tty3.output.join('');
+		cleanOutput = fakeTTY.getCleanOutput();
+		rawOutput = fakeTTY.getOutputSinceClear();
 
 		expect(cleanOutput).toContain("First Bold");
 		expect(cleanOutput).toContain("Second Red");
@@ -380,15 +389,13 @@ describe("Box overlay - incremental rendering", () => {
 		expect(rawOutput).not.toMatch(/\x1b\[43m/);
 
 		// Cycle 4: Add overlay again
-		const tty4 = new FakeTTY();
-		tty4.rows = 1000;
-		tty4.columns = 80;
+		fakeTTY.clear();
 		state.showOverlay = true;
 		await rerender();
-		render(ctx.element, { stdout: tty4 as any });
+		render(ctx.element, { stdout: fakeTTY as any });
 
-		cleanOutput = tty4.getCleanOutput();
-		rawOutput = tty4.output.join('');
+		cleanOutput = fakeTTY.getCleanOutput();
+		rawOutput = fakeTTY.getOutputSinceClear();
 
 		expect(cleanOutput).toContain("First Bold");
 		expect(cleanOutput).toContain("Second Red");

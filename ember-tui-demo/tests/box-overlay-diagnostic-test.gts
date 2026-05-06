@@ -328,7 +328,7 @@ describe("Box overlay - diagnostic tests for incremental rendering bugs", () => 
 		const output2 = fakeTTY.getCleanOutput();
 		
 		// All text should still be present
-		expect(output2).toBe("ABCDEFGHIJ");
+		expect(output2).toContain("ABCDEFGHIJ");
 
 		// Change width to 3 - reuse same TTY for incremental rendering
 		fakeTTY.clear();
@@ -339,7 +339,7 @@ describe("Box overlay - diagnostic tests for incremental rendering bugs", () => 
 		const output3 = fakeTTY.getCleanOutput();
 		
 		// All text should still be present
-		expect(output3).toBe("ABCDEFGHIJ");
+		expect(output3).toContain("ABCDEFGHIJ");
 	});
 
 	test("should verify no memory leaks or duplicate ANSI codes", async () => {

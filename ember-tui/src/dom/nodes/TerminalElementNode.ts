@@ -84,11 +84,8 @@ export default class TerminalElementNode extends ElementNode {
   style: TerminalStyles = {};
   declare yogaNode?: YogaNode;
   declare internal_transform?: OutputTransformer;
-  internal_static?: boolean;
 
   // For root node
-  isStaticDirty?: boolean;
-  staticNode?: TerminalElementNode;
   onComputeLayout?: () => void;
   onRender?: () => void;
   onImmediateRender?: () => void;
@@ -117,13 +114,6 @@ export default class TerminalElementNode extends ElementNode {
    */
   setTransform(transform: OutputTransformer): void {
     this.internal_transform = transform;
-  }
-
-  /**
-   * Mark as static content
-   */
-  setStatic(isStatic: boolean): void {
-    this.internal_static = isStatic;
   }
 
   /**
