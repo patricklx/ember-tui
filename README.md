@@ -33,11 +33,11 @@ that will create the app with emberjs blueprint and adjust some files for ember-
   - [`<Box>`](#box)
   - [`<Newline>`](#newline)
   - [`<Spacer>`](#spacer)
-  - [`<Static>`](#static)
   - [`<Transform>`](#transform)
 - [Mouse Events](#mouse-events)
 - [Keyboard Events](#keyboard-events)
 - [API](#api)
+- [Dirty Tracking](#dirty-tracking)
 - [Examples](#examples)
 
 ## Getting Started
@@ -778,63 +778,6 @@ const template = <template>
 render(template);
 ```
 
-### `<Static>`
-
-`<Static>` component permanently renders its output above everything else.
-It's useful for displaying activity like completed tasks or logs - things that
-don't change after they're rendered (hence the name "Static").
-
-```glimmer-ts
-import { render, Static, Box, Text } from 'ember-tui';
-import { tracked } from '@glimmer/tracking';
-
-class TestRunner {
-  @tracked tests = [];
-
-  constructor() {
-    let completedTests = 0;
-    const run = () => {
-      if (completedTests++ < 10) {
-        this.tests = [
-          ...this.tests,
-          {
-            id: this.tests.length,
-            title: `Test #${this.tests.length + 1}`
-          }
-        ];
-        setTimeout(run, 100);
-      }
-    };
-    run();
-  }
-}
-
-const runner = new TestRunner();
-
-const template = <template>
-  <Static @items={{runner.tests}} as |test|>
-    <Box key={{test.id}}>
-      <Text color="green">✔ {{test.title}}</Text>
-    </Box>
-  </Static>
-
-  <Box @marginTop={{1}}>
-    <Text @dimColor={{true}}>Completed tests: {{runner.tests.length}}</Text>
-  </Box>
-</template>;
-
-render(template);
-```
-
-**Note:** `<Static>` only renders new items in the `items` array and ignores items
-that were previously rendered.
-
-#### items
-
-Type: `Array`
-
-Array of items of any type to render using the block you pass as component content.
-
 ### `<Transform>`
 
 Transform a string representation of components before they're written to output.
@@ -1137,13 +1080,49 @@ Type: `object`
 
 Same options as `render()`.
 
+## Dirty Tracking
+
+Ember TUI uses an internal dirty-tracking system to minimise the amount of work done on every render cycle.
+Instead of re-rendering the entire component tree on every tick, only the nodes that have actually changed are re-processed.
+
+### How it works
+
+Every `ElementNode` in the virtual DOM carries two flags:
+
+| Flag             | Meaning                                                                      |
+|------------------|------------------------------------------------------------------------------|
+| `_isDirty`       | This node's own attributes or content changed and it must be re-rendered.    |
+| `_childrenDirty` | At least one descendant is dirty; the node itself may still be clean.        |
+
+When a node's attributes change (e.g. a new `@color` or `@width` is passed to a `<Box>` or `<Text>`), `markDirty()` is called automatically.
+The flag propagates **upward** through the entire ancestor chain so that no parent is skipped during traversal.
+
+During rendering, the engine uses a `skipClean` pass: if a node is neither dirty itself nor has any dirty descendants (and is not covered by a dirty absolute box), its subtree is skipped entirely.
+Once a node has been rendered, both flags are cleared via `clearDirty()`.
+
+### Absolute-positioned box overlap
+
+Boxes with `position="absolute"` can visually cover other nodes.
+The renderer tracks these overlap relationships:
+
+- When an absolute box **moves or changes**, every node it overlaps is automatically marked dirty so the underlying content is repainted correctly.
+- When an absolute box is **removed** or its `position` changes, `clearOverlapTracking()` is called, which marks the previously-covered nodes dirty (using `markSubtreeDirty()`) so stale ANSI codes are cleared from the output buffer.
+
+This means you do not need to do anything special when animating or toggling absolutely-positioned overlays — the dirty system handles repainting the content underneath.
+
+### Practical impact
+
+- **Reduced CPU usage** — static parts of the UI (unchanged text, stable boxes) are not reprocessed every frame.
+- **Correct overlay clearing** — content behind a removed or moved absolute box is always repainted.
+- **Transparent to the developer** — dirtiness is set automatically by `setAttribute` and child-insertion hooks; there is no public API to call.
+
 ## Examples
 
 Check out the [examples](ember-tui-demo/app/templates) directory for more examples:
 
 - [Colors Demo](ember-tui-demo/app/templates/colors.gts) - Demonstrates text colors and styles
 - [Box Layout Demo](ember-tui-demo/app/templates/box-demo.gts) - Shows flexbox layout capabilities
-- [Static Component](ember-tui-demo/app/templates/static-test.gts) - Example of using Static component
+
 - [Lorem Ipsum](ember-tui-demo/app/templates/lorem.gts) - Text wrapping and layout
 - [Hover Demo](ember-tui-demo/app/templates/hover-demo.gts) - Interactive mouse hover effects
 
