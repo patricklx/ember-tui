@@ -7,7 +7,7 @@
     "@alcalzone/ansi-tokenize": "^0.2.2",
     "slice-ansi": "^7.1.2",
     "string-width": "^8.1.0",
-    "widest-line": "^5.0.0"
+    "widest-line": "^6.0.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-typescript": "^7.28.5",
