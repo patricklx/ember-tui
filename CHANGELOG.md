@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-05-06)
+
+* ember-tui 2.0.0 (major)
+
+#### :boom: Breaking Change
+* `ember-tui`
+  * [#123](https://github.com/patricklx/ember-tui/pull/123) implement dirty tracking of dom nodes. remove static components ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-04-30)
 
 * ember-tui 1.3.0 (minor)
