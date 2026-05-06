@@ -1078,7 +1078,21 @@ The document node to render.
 
 Type: `object`
 
-Same options as `render()`.
+##### enableMouse
+
+Type: `boolean`\
+Default: `false`
+
+When `true`, enables terminal mouse tracking by calling `enableMouseTracking` automatically at startup.
+Mouse tracking is also disabled automatically on process exit (`exit`, `SIGINT`, `SIGTERM`).
+
+##### noRedrawOnBackBufferWrite
+
+Type: `boolean`\
+Default: `false`
+
+When `true`, the renderer will not trigger a full redraw when writes to the back buffer are detected.
+Useful in environments where background writes (e.g. subprocesses printing to stdout) would otherwise cause unnecessary screen flicker.
 
 ## Dirty Tracking
 
