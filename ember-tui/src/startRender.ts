@@ -1,6 +1,6 @@
 import { _backburner } from "@ember/runloop";
 import type { DocumentNode } from "./index";
-import { clearScreen, handleResize } from "./render/apply-term-updates";
+import { clearScreen, handleResize, setNoRedrawOnBackBufferWrite } from "./render/apply-term-updates";
 import { render } from './render';
 import { disableMouseTracking, isMouseSequence, enableMouseTracking, parseMouseSequence } from "./input/mouse";
 import { parseKeySequence } from "./input/keys";
@@ -11,8 +11,13 @@ import { parseKeySequence } from "./input/keys";
  */
 export function startRender(
   document: DocumentNode,
-  options?: { enableMouse?: boolean }
+  options?: { enableMouse?: boolean; noRedrawOnBackBufferWrite?: boolean }
 ): void {
+  // Configure no-redraw-on-back-buffer-write mode before the first render
+  if (options?.noRedrawOnBackBufferWrite) {
+    setNoRedrawOnBackBufferWrite(true);
+  }
+
   // Initial clear and render
   clearScreen();
 

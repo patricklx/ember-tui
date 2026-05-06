@@ -20,6 +20,21 @@ export { clearEntireLine, clearLineFromCursor, clearLineToStart, updateLineMinim
 
 let process = globalThis.process;
 
+// ---------------------------------------------------------------------------
+// noRedrawOnBackBufferWrite configuration
+// ---------------------------------------------------------------------------
+
+let noRedrawOnBackBufferWrite = false;
+
+/**
+ * When enabled, `renderInternal` will never trigger a full redraw due to back-
+ * buffer changes. Instead it dispatches a `backbuffer-write` event on
+ * `globalThis.document` so callers can react (e.g. scroll the viewport).
+ */
+export function setNoRedrawOnBackBufferWrite(enabled: boolean): void {
+	noRedrawOnBackBufferWrite = enabled;
+}
+
 // Debug logging
 const DEBUG_LOG_PATH = join(tmpdir(), 'ember-tui-render-debug.log');
 let debugEnabled = false;
@@ -590,7 +605,7 @@ export function renderInternal(rootNode: ElementNode, options?: { skipClean?: bo
 	// Check if we need a full redraw:
 	// Only check lines in the scroll buffer (before the visible viewport)
 	// If any line in scroll buffer changed, we need full redraw
-	const needsFullRedraw = oldLines.length === 0 || scrollBufferSize > 0 &&
+	const rawNeedsFullRedraw = scrollBufferSize > 0 &&
 		(() => {
 			// Check only lines in the scroll buffer (0 to scrollBufferSize)
 			for (let i = 0; i < scrollBufferSize; i++) {
@@ -600,6 +615,18 @@ export function renderInternal(rootNode: ElementNode, options?: { skipClean?: bo
 			}
 			return false;
 		})();
+
+	// When noRedrawOnBackBufferWrite is enabled, suppress the full redraw and
+	// dispatch a 'backbuffer-write' event so the caller can react instead.
+	if (noRedrawOnBackBufferWrite && rawNeedsFullRedraw) {
+		(globalThis as any).document?.dispatchEvent({
+			type: 'backbuffer-write',
+			preventDefault: () => {},
+			stopPropagation: () => {},
+		});
+	}
+
+	const needsFullRedraw = noRedrawOnBackBufferWrite ? oldLines.length === 0 : rawNeedsFullRedraw;
 
 	debugLog('Redraw decision', { needsFullRedraw, scrollBufferSize });
 
