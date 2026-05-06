@@ -1123,7 +1123,7 @@ Error stream.
 
 ### startRender(document, options?)
 
-Start the render loop for a document.
+Start the render loop for a document. Sets up reactive re-rendering on every Ember run-loop flush, wires up raw-mode keyboard/mouse input, and handles terminal resize.
 
 #### document
 
@@ -1135,7 +1135,36 @@ The document node to render.
 
 Type: `object`
 
-Same options as `render()`.
+##### enableMouse
+
+Type: `boolean`\
+Default: `false`
+
+Enable terminal mouse tracking. When `true`, `startRender` calls `enableMouseTracking` on `process.stdout` so that the terminal reports mouse events (clicks, moves, scroll). Mouse tracking is automatically disabled on process exit.
+
+```typescript
+startRender(document, { enableMouse: true });
+```
+
+##### noRedrawOnBackBufferWrite
+
+Type: `boolean`\
+Default: `false`
+
+Suppress full-screen redraws that would otherwise be triggered when the render output grows beyond the visible terminal viewport (i.e. when the scroll-back buffer is written to).
+
+When this option is `true`, the renderer will **never** clear the screen and repaint from scratch due to back-buffer overflow. Instead it dispatches a `backbuffer-write` event on `globalThis.document` so the application can react — for example by scrolling the viewport or trimming its content.
+
+```typescript
+startRender(document, { noRedrawOnBackBufferWrite: true });
+
+document.addEventListener('backbuffer-write', () => {
+  // content has grown past the terminal height –
+  // scroll, trim, or handle however you see fit
+});
+```
+
+> **Note:** Without this option, any content that scrolls off the top of the terminal triggers a full `\x1b[2J` clear + repaint, which can cause visible flicker in long-running apps. Enable `noRedrawOnBackBufferWrite` when your app manages its own scrolling or deliberately keeps output within the viewport.
 
 ## Examples
 
