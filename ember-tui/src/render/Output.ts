@@ -333,6 +333,22 @@ export default class Output {
 			}
 		}
 
+		// Trim trailing rows that are entirely plain spaces (no styles) from the bottom.
+		// This ensures clearRow() calls on bottom rows reduce the reported height.
+		let trimmedLength = output.length;
+		while (trimmedLength > 0) {
+			const row = output[trimmedLength - 1]!;
+			const isEmpty = row.every(
+				char => char.value === ' ' && char.styles.length === 0,
+			);
+			if (isEmpty) {
+				trimmedLength--;
+			} else {
+				break;
+			}
+		}
+		output.length = trimmedLength;
+
 		const generatedOutput = output
 			.map(line => {
 				// See https://github.com/vadimdemedes/ink/pull/564#issuecomment-1637022742
