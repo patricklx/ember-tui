@@ -81,7 +81,7 @@
   "license": "MIT",
   "dependencies": {
     "@alcalzone/ansi-tokenize": "^0.2.2",
-    "@babel/core": "^7.28.5",
+    "@babel/core": "^7.29.0",
     "@embroider/core": "^4.4.7",
     "@embroider/vite": "^1.7.1",
     "@glimmer/component": "^2.1.1",
@@ -98,7 +98,7 @@
     "yoga-layout": "~3.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.5",
+    "@babel/core": "^7.29.0",
     "@babel/eslint-parser": "^7.28.5",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/plugin-proposal-decorators": "^7.29.0",
