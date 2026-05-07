@@ -125,6 +125,11 @@ export function resetState(): void {
 	resetOutputBuffer();
 }
 
+export function forceFullRedraw(document: DocumentNode) {
+	resetState();
+	renderInternal(document.body!);
+}
+
 /** Returns the number of content lines currently above the visible viewport. */
 export function getScrollBufferSize(): number {
 	return state.scrollBufferSize;
@@ -605,7 +610,7 @@ export function renderInternal(rootNode: ElementNode, options?: { skipClean?: bo
 	// Check if we need a full redraw:
 	// Only check lines in the scroll buffer (before the visible viewport)
 	// If any line in scroll buffer changed, we need full redraw
-	const rawNeedsFullRedraw = scrollBufferSize > 0 &&
+	const rawNeedsFullRedraw = oldLines.length === 0 || scrollBufferSize > 0 &&
 		(() => {
 			// Check only lines in the scroll buffer (0 to scrollBufferSize)
 			for (let i = 0; i < scrollBufferSize; i++) {
