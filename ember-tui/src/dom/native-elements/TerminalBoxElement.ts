@@ -85,6 +85,7 @@ interface Attributes {
 
   // Background
   readonly 'background-color'?: LiteralUnion<ForegroundColorName, string>;
+  readonly overlay?: Styles['overlay'];
 
   // Internal
   readonly 'internal_static'?: string | boolean;

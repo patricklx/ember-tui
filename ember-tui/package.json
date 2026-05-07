@@ -76,7 +76,7 @@
     "chokidar": "^4.0.3",
     "cli-boxes": "^4.0.1",
     "ember-modifier": "^4.3.0",
-    "ember-vite-hmr": "^2.1.2",
+    "ember-vite-hmr": "^2.1.4",
     "indent-string": "^5.0.0",
     "slice-ansi": "^7.1.2",
     "string-width": "^8.1.0",

@@ -60,7 +60,7 @@ export default ts.config(
    * https://eslint.org/docs/latest/use/configure/ignore
    */
   {
-    ignores: ['dist/', 'node_modules/', 'declarations'],
+    ignores: ['dist/', 'node_modules/', 'declarations', 'test-logo-animation.ts'],
   },
   /**
    * https://eslint.org/docs/latest/use/configure/configuration-files#configuring-linter-options

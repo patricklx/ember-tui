@@ -8,11 +8,47 @@ import { extractLines } from "./collect-lines";
 import type { DocumentNode } from "../index";
 import type * as Process from "node:process";
 import { clearEntireLine, clearLineFromCursor, clearLineToStart, moveCursorTo, setProcess } from "./helpers";
+import { tokenize as ansiTokenize, styledCharsFromTokens, styledCharsToString } from '@alcalzone/ansi-tokenize';
+import type { StyledChar } from '@alcalzone/ansi-tokenize';
+import { appendFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
 
 // Re-export helper functions for testing
 export { clearEntireLine, clearLineFromCursor, clearLineToStart, updateLineMinimal };
 
 let process = globalThis.process;
+
+// Debug logging
+const DEBUG_LOG_PATH = join(tmpdir(), 'ember-tui-render-debug.log');
+let debugEnabled = false;
+
+function debugLog(message: string, data?: any): void {
+	if (!debugEnabled) return;
+	
+	try {
+		const timestamp = new Date().toISOString();
+		let logMessage = `[${timestamp}] ${message}`;
+		if (data !== undefined) {
+			logMessage += '\n' + JSON.stringify(data, null, 2);
+		}
+		logMessage += '\n---\n';
+		appendFileSync(DEBUG_LOG_PATH, logMessage, 'utf-8');
+	} catch {
+		// Silently fail if logging fails
+	}
+}
+
+export function enableDebugLogging(): void {
+	debugEnabled = true;
+	debugLog('=== Debug logging enabled ===');
+}
+
+export function disableDebugLogging(): void {
+	debugLog('=== Debug logging disabled ===');
+	debugEnabled = false;
+}
 
 export interface RenderOptions {
 	/**
@@ -60,26 +96,35 @@ const state: RenderState = {
 	}
 };
 
+/**
+ * Reset the render state - used in tests to prevent stale state between test runs
+ */
+export function resetState(): void {
+	state.lines = [];
+	state.scrollOffset = 0;
+	state.scrollBufferSize = 0;
+}
+
 // Force flush stdout after writes in non-TTY environments
 function flushStdout() {
 	// Try multiple methods to flush stdout in non-TTY environments
 	const stdout = process.stdout as any;
-	
+
 	// Method 1: Direct _handle flush
 	if (typeof stdout._handle?.flush === 'function') {
 		stdout._handle.flush();
 	}
-	
+
 	// Method 2: Cork/uncork to force flush
 	if (typeof stdout.uncork === 'function') {
 		stdout.uncork();
 	}
-	
+
 	// Method 3: Write empty buffer to trigger flush
 	if (!process.stdout.isTTY) {
 		process.stdout.write('');
 	}
-	
+
 	// Method 4: For Node.js streams, call internal flush
 	if (typeof stdout.flush === 'function') {
 		stdout.flush();
@@ -97,78 +142,44 @@ export interface TextSegment {
 }
 
 /**
- * Parse text into tokens, treating ANSI escape sequences as single units
+ * Legacy Token interface for backwards compatibility with tests
  */
 export interface Token {
 	start: number;
 	value: string;
 	isAnsi: boolean;
-	visualLength: number; // 0 for ANSI codes, 1 for regular chars
+	visualLength: number;
 }
 
 /**
- * Tokenizer class - Separates ANSI parsing logic
- */
-class AnsiTokenizer {
-	private static readonly ANSI_ESCAPE = '\x1b';
-	private static readonly ANSI_START = '[';
-	private static readonly ANSI_END_PATTERN = /[a-zA-Z]/;
-
-	static tokenize(text: string): Token[] {
-		const tokens: Token[] = [];
-		let i = 0;
-
-		let visualStart = 0;
-
-		while (i < text.length) {
-			const ansiToken = this.tryParseAnsiSequence(text, i);
-			if (ansiToken) {
-				tokens.push(ansiToken);
-				i += ansiToken.value.length;
-			} else {
-				tokens.push({
-					start: visualStart,
-					value: text[i],
-					isAnsi: false,
-					visualLength: 1
-				});
-				visualStart += 1;
-				i++;
-			}
-		}
-
-		return tokens;
-	}
-
-	private static tryParseAnsiSequence(text: string, startIndex: number): Token | null {
-		if (text[startIndex] !== this.ANSI_ESCAPE || text[startIndex + 1] !== this.ANSI_START) {
-			return null;
-		}
-
-		let endIndex = startIndex + 2;
-		while (endIndex < text.length && !this.ANSI_END_PATTERN.test(text[endIndex])) {
-			endIndex++;
-		}
-
-		if (endIndex < text.length) {
-			endIndex++; // Include the final letter
-			return {
-				start: startIndex,
-				value: text.slice(startIndex, endIndex),
-				isAnsi: true,
-				visualLength: 0
-			};
-		}
-
-		return null;
-	}
-}
-
-/**
- * Backwards compatible tokenize function
+ * Tokenize function for backwards compatibility with existing tests
+ * Converts @alcalzone/ansi-tokenize tokens to legacy format
  */
 export function tokenize(text: string): Token[] {
-	return AnsiTokenizer.tokenize(text);
+	const tokens = ansiTokenize(text);
+	const result: Token[] = [];
+	let visualPos = 0;
+	
+	for (const token of tokens) {
+		if (token.type === 'ansi') {
+			result.push({
+				start: visualPos,
+				value: (token as any).code,
+				isAnsi: true,
+				visualLength: 0
+			});
+		} else if (token.type === 'char') {
+			result.push({
+				start: visualPos,
+				value: token.value,
+				isAnsi: false,
+				visualLength: 1
+			});
+			visualPos++;
+		}
+	}
+	
+	return result;
 }
 
 /**
@@ -194,395 +205,163 @@ export function getActiveAnsiCodes(tokens: Token[], upToVisualPos: number): stri
 }
 
 /**
- * Represents a range of text with its active ANSI state
+ * Convert StyledChar array to string with ANSI codes
  */
-interface StateRange {
-	visualStart: number;
-	visualEnd: number;
-	ansiState: string;
-	text: string; // The visible text (without ANSI codes)
-	fullText: string; // The full text including ANSI codes
+function styledCharsToAnsiString(chars: StyledChar[]): string {
+	return styledCharsToString(chars);
+}
+/**
+ * Extract the active ANSI codes for a styled character
+ */
+function getActiveAnsiCodesFromChar(char: StyledChar): string {
+	if (!char.styles || char.styles.length === 0) {
+		return '';
+	}
+	
+	return char.styles
+		.filter(s => s.type === 'ansi')
+		.map(s => (s as any).code)
+		.join('');
 }
 
 /**
- * ANSI State Manager - Handles ANSI code state tracking
- */
-class AnsiStateManager {
-	private static readonly RESET_CODE = '\x1b[0m';
-
-	static extractStateRanges(tokens: Token[]): StateRange[] {
-		const builder = new StateRangeBuilder();
-
-		for (const token of tokens) {
-			if (token.isAnsi) {
-				builder.addAnsiCode(token.value);
-			} else {
-				builder.addCharacter(token.value);
-			}
-		}
-
-		return builder.build();
-	}
-}
-
-/**
- * Builder for constructing state ranges
- */
-class StateRangeBuilder {
-	private ranges: StateRange[] = [];
-	private currentAnsiState = '';
-	private currentText = '';
-	private currentFullText = '';
-	private rangeStart = 0;
-	private visualPos = 0;
-	private pendingAnsiCodes = '';
-	private static readonly RESET_CODE = '\x1b[0m';
-
-	reset(): void {
-		this.ranges = [];
-		this.currentAnsiState = '';
-		this.currentText = '';
-		this.currentFullText = '';
-		this.rangeStart = 0;
-		this.visualPos = 0;
-		this.pendingAnsiCodes = '';
-	}
-
-	addAnsiCode(code: string): void {
-		this.pendingAnsiCodes += code;
-
-		if (code === StateRangeBuilder.RESET_CODE) {
-			this.flushCurrentRange();
-			this.currentAnsiState = '';
-			this.pendingAnsiCodes = '';
-		}
-	}
-
-	addCharacter(char: string): void {
-		if (this.pendingAnsiCodes) {
-			this.applyPendingAnsiCodes();
-		}
-
-		this.currentText += char;
-		this.currentFullText += char;
-		this.visualPos++;
-	}
-
-	build(): StateRange[] {
-		this.flushCurrentRange();
-		return this.ranges;
-	}
-
-	private applyPendingAnsiCodes(): void {
-		if (this.currentText.length > 0) {
-			this.flushCurrentRange();
-			this.currentAnsiState = this.pendingAnsiCodes;
-		} else {
-			this.currentAnsiState += this.pendingAnsiCodes;
-		}
-		this.currentFullText += this.pendingAnsiCodes;
-		this.pendingAnsiCodes = '';
-	}
-
-	private flushCurrentRange(): void {
-		if (this.currentText.length > 0 || this.currentFullText.length > 0) {
-			this.ranges.push({
-				visualStart: this.rangeStart,
-				visualEnd: this.visualPos,
-				ansiState: this.currentAnsiState,
-				text: this.currentText,
-				fullText: this.currentFullText
-			});
-			this.currentText = '';
-			this.currentFullText = '';
-			this.rangeStart = this.visualPos;
-		}
-	}
-}
-
-/**
- * Extract ranges from tokens (backwards compatible)
- */
-export function extractStateRanges(tokens: Token[]): StateRange[] {
-	return AnsiStateManager.extractStateRanges(tokens);
-}
-
-/**
- * Diff Segment Builder - Constructs minimal diff segments
- */
-class DiffSegmentBuilder {
-	private segments: TextSegment[] = [];
-	private currentSegmentStart = -1;
-	private currentSegmentText = '';
-	private currentSegmentAnsiState = '';
-
-	reset(): void {
-		this.segments = [];
-		this.currentSegmentStart = -1;
-		this.currentSegmentText = '';
-		this.currentSegmentAnsiState = '';
-	}
-
-	addDifference(visualPos: number, newChar: string | undefined, newState: string): void {
-		if (this.currentSegmentStart === -1) {
-			this.startNewSegment(visualPos, newState);
-		} else if (this.currentSegmentAnsiState !== newState) {
-			this.closeAndStartNewSegment(visualPos, newState);
-		}
-
-		if (newChar !== undefined) {
-			this.currentSegmentText += newChar;
-		}
-	}
-
-	addMatchingCharacter(visualPos: number, char: string | undefined, hasNextDiffWithSameState: boolean): void {
-		if (this.currentSegmentStart !== -1) {
-			if (hasNextDiffWithSameState && char !== undefined) {
-				this.currentSegmentText += char;
-			} else {
-				this.closeCurrentSegment();
-			}
-		}
-	}
-
-	closeCurrentSegment(): void {
-		if (this.currentSegmentStart !== -1 && this.currentSegmentText.length > 0) {
-			this.segments.push({
-				start: this.currentSegmentStart,
-				text: this.currentSegmentAnsiState + this.currentSegmentText
-			});
-		}
-		this.resetCurrentSegment();
-	}
-
-	addEmptySegment(visualPos: number): void {
-		this.segments.push({
-			start: visualPos,
-			text: ''
-		});
-	}
-
-	addTrailingAnsiSegment(visualPos: number, ansiState: string, trailingAnsi: string): void {
-		const existingSegment = this.segments.find(s => s.start === visualPos);
-		if (existingSegment) {
-			existingSegment.text = ansiState + trailingAnsi;
-			existingSegment.isAnsiOnly = true;
-		} else {
-			this.segments.push({
-				start: visualPos,
-				text: ansiState + trailingAnsi,
-				isAnsiOnly: true,
-			});
-		}
-	}
-
-	build(): TextSegment[] {
-		this.closeCurrentSegment();
-		return this.segments;
-	}
-
-	private startNewSegment(visualPos: number, newState: string): void {
-		this.currentSegmentStart = visualPos;
-		this.currentSegmentAnsiState = newState;
-		this.currentSegmentText = '';
-	}
-
-	private closeAndStartNewSegment(visualPos: number, newState: string): void {
-		this.closeCurrentSegment();
-		this.startNewSegment(visualPos, newState);
-	}
-
-	private resetCurrentSegment(): void {
-		this.currentSegmentStart = -1;
-		this.currentSegmentText = '';
-		this.currentSegmentAnsiState = '';
-	}
-}
-
-/**
- * Range Lookup - Efficient range finding
- */
-class RangeLookup {
-	private ranges: StateRange[] = [];
-
-	reset(ranges: StateRange[]): void {
-		this.ranges = ranges;
-	}
-
-	findRangeAt(visualPos: number): StateRange | undefined {
-		return this.ranges.find(r => visualPos >= r.visualStart && visualPos < r.visualEnd);
-	}
-
-	getCharAt(visualPos: number): string | undefined {
-		const range = this.findRangeAt(visualPos);
-		return range ? range.text[visualPos - range.visualStart] : undefined;
-	}
-
-	getStateAt(visualPos: number): string {
-		const range = this.findRangeAt(visualPos);
-		return range ? range.ansiState : '';
-	}
-
-	getMaxVisualLength(): number {
-		return this.ranges.length > 0 ? this.ranges[this.ranges.length - 1].visualEnd : 0;
-	}
-}
-
-/**
- * Diff Analyzer - Main diffing logic
- */
-class DiffAnalyzer {
-	private oldLookup = new RangeLookup();
-	private newLookup = new RangeLookup();
-	private builder = new DiffSegmentBuilder();
-
-	reset(oldRanges: StateRange[], newRanges: StateRange[]): void {
-		this.oldLookup.reset(oldRanges);
-		this.newLookup.reset(newRanges);
-		this.builder.reset();
-	}
-
-	analyze(): TextSegment[] {
-		const maxVisualLength = Math.max(
-			this.oldLookup.getMaxVisualLength(),
-			this.newLookup.getMaxVisualLength()
-		);
-
-		for (let visualPos = 0; visualPos < maxVisualLength; visualPos++) {
-			this.analyzePosition(visualPos, maxVisualLength);
-		}
-
-		this.handleTrailingContent(maxVisualLength);
-
-		return this.builder.build();
-	}
-
-	private analyzePosition(visualPos: number, maxVisualLength: number): void {
-		const oldChar = this.oldLookup.getCharAt(visualPos);
-		const newChar = this.newLookup.getCharAt(visualPos);
-		const oldState = this.oldLookup.getStateAt(visualPos);
-		const newState = this.newLookup.getStateAt(visualPos);
-
-		const positionMatches = oldChar === newChar && oldState === newState;
-
-		if (!positionMatches) {
-			this.builder.addDifference(visualPos, newChar, newState);
-		} else {
-			const hasNextDiffWithSameState = this.lookAheadForNextDiff(visualPos, maxVisualLength, newState);
-			this.builder.addMatchingCharacter(visualPos, newChar, hasNextDiffWithSameState);
-		}
-	}
-
-	private lookAheadForNextDiff(currentPos: number, maxVisualLength: number, currentState: string): boolean {
-		for (let lookAhead = currentPos + 1; lookAhead < maxVisualLength; lookAhead++) {
-			const nextOldChar = this.oldLookup.getCharAt(lookAhead);
-			const nextNewChar = this.newLookup.getCharAt(lookAhead);
-			const nextOldState = this.oldLookup.getStateAt(lookAhead);
-			const nextNewState = this.newLookup.getStateAt(lookAhead);
-
-			if (nextOldChar !== nextNewChar || nextOldState !== nextNewState) {
-				return nextNewState === currentState;
-			}
-		}
-		return false;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	private handleTrailingContent(_maxVisualLength: number): void {
-		const oldVisualLength = this.oldLookup.getMaxVisualLength();
-		const newVisualLength = this.newLookup.getMaxVisualLength();
-
-		if (oldVisualLength > newVisualLength) {
-			this.builder.addEmptySegment(newVisualLength);
-		}
-	}
-}
-
-// Global reusable instances to prevent memory leaks from repeated allocations
-const globalStateRangeBuilder = new StateRangeBuilder();
-const globalDiffAnalyzer = new DiffAnalyzer();
-
-/**
- * Find all segments that differ between old and new text, considering ANSI color codes
+ * Find all segments that differ between old and new text using @alcalzone/ansi-tokenize
  */
 export function findDiffSegments(oldText: string, newText: string): TextSegment[] {
-	const oldTokens = tokenize(oldText);
-	const newTokens = tokenize(newText);
+	debugLog('findDiffSegments called', { oldText, newText });
+	
+	// Tokenize both strings using the native @alcalzone tokenizer
+	const oldTokens = ansiTokenize(oldText);
+	const newTokens = ansiTokenize(newText);
+	
+	debugLog('Tokens parsed', {
+		oldTokens: oldTokens.slice(0, 10),
+		newTokens: newTokens.slice(0, 10)
+	});
+	
+	// Convert to styled characters
+	const oldChars = styledCharsFromTokens(oldTokens);
+	const newChars = styledCharsFromTokens(newTokens);
 
-	// Reuse global builder instance
-	globalStateRangeBuilder.reset();
-	for (const token of oldTokens) {
-		if (token.isAnsi) {
-			globalStateRangeBuilder.addAnsiCode(token.value);
-		} else {
-			globalStateRangeBuilder.addCharacter(token.value);
-		}
-	}
-	const oldRanges = globalStateRangeBuilder.build();
-
-	globalStateRangeBuilder.reset();
-	for (const token of newTokens) {
-		if (token.isAnsi) {
-			globalStateRangeBuilder.addAnsiCode(token.value);
-		} else {
-			globalStateRangeBuilder.addCharacter(token.value);
-		}
-	}
-	const newRanges = globalStateRangeBuilder.build();
-
-	// Reuse global analyzer instance
-	globalDiffAnalyzer.reset(oldRanges, newRanges);
-	const segments = globalDiffAnalyzer.analyze();
-
-	// Handle trailing ANSI codes
-	const oldTrailingAnsi = getTrailingAnsi(oldTokens);
-	const newTrailingAnsi = getTrailingAnsi(newTokens);
-
-	if (oldTrailingAnsi !== newTrailingAnsi && newTrailingAnsi) {
-		const maxVisualLength = Math.max(
-			oldRanges.length > 0 ? oldRanges[oldRanges.length - 1].visualEnd : 0,
-			newRanges.length > 0 ? newRanges[newRanges.length - 1].visualEnd : 0
-		);
-		const lastRange = newRanges[newRanges.length - 1];
-		const lastAnsiState = lastRange ? lastRange.ansiState : '';
-
-		const builder = new DiffSegmentBuilder();
-		segments.forEach(s => builder.addEmptySegment(s.start)); // Preserve existing segments
-		builder.addTrailingAnsiSegment(maxVisualLength, lastAnsiState, newTrailingAnsi);
-
-		// Merge with existing segments
-		const existingSegment = segments.find(s => s.start === maxVisualLength);
-		if (existingSegment) {
-			existingSegment.text = lastAnsiState + newTrailingAnsi;
-		} else {
+	debugLog('findDiffSegments chars', {
+		oldTextLen: oldChars.length,
+		oldTextPreview: oldText.substring(0, 80),
+		newTextLen: newChars.length,
+		newTextPreview: newText.substring(0, 80),
+	});
+	debugLog('Styled chars created', {
+		oldCharsCount: oldChars.length,
+		newCharsCount: newChars.length,
+		oldChars: oldChars.slice(0, 10),
+		newChars: newChars.slice(0, 10)
+	});
+	
+	const segments: TextSegment[] = [];
+	const maxLength = Math.max(oldChars.length, newChars.length);
+	
+	let currentSegmentStart = -1;
+	let currentSegmentChars: StyledChar[] = [];
+	let currentSegmentAnsiState = '';
+	
+	const closeSegment = () => {
+		if (currentSegmentStart !== -1 && currentSegmentChars.length > 0) {
+			// styledCharsToAnsiString already includes ANSI codes, don't prepend them
+			const segmentText = styledCharsToAnsiString(currentSegmentChars);
 			segments.push({
-				start: maxVisualLength,
-				text: lastAnsiState + newTrailingAnsi
+				start: currentSegmentStart,
+				text: segmentText
+			});
+			debugLog('Segment closed', {
+				start: currentSegmentStart,
+				length: currentSegmentChars.length,
+				text: segmentText
 			});
 		}
+		currentSegmentStart = -1;
+		currentSegmentChars = [];
+		currentSegmentAnsiState = '';
+	};
+	
+	for (let i = 0; i < maxLength; i++) {
+		const oldChar = oldChars[i];
+		const newChar = newChars[i];
+		
+		const oldAnsi = oldChar ? getActiveAnsiCodesFromChar(oldChar) : '';
+		const newAnsi = newChar ? getActiveAnsiCodesFromChar(newChar) : '';
+		const oldValue = oldChar?.value ?? '';
+		const newValue = newChar?.value ?? '';
+		
+		// Characters match if both value and ANSI codes are identical
+		const charsMatch = oldValue === newValue && oldAnsi === newAnsi;
+		
+		debugLog(`Char ${i}`, {
+			oldValue: JSON.stringify(oldValue),
+			newValue: JSON.stringify(newValue),
+			oldAnsi: oldAnsi.replace(/\x1b/g, '\\x1b'),
+			newAnsi: newAnsi.replace(/\x1b/g, '\\x1b'),
+			charsMatch,
+			currentSegmentStart,
+			currentSegmentCharsLength: currentSegmentChars.length
+		});
+		
+		if (!charsMatch) {
+			// Start new segment or continue existing one
+			if (currentSegmentStart === -1) {
+				currentSegmentStart = i;
+				currentSegmentAnsiState = newAnsi;
+				if (newChar) {
+					currentSegmentChars.push(newChar);
+				}
+				debugLog(`Started new segment at ${i}`);
+			} else if (newAnsi !== currentSegmentAnsiState) {
+				// ANSI state changed, close current segment and start new one
+				debugLog(`ANSI state changed at ${i}, closing segment`);
+				closeSegment();
+				currentSegmentStart = i;
+				currentSegmentAnsiState = newAnsi;
+				if (newChar) {
+					currentSegmentChars.push(newChar);
+				}
+			} else {
+				// Continue current segment
+				if (newChar) {
+					currentSegmentChars.push(newChar);
+				}
+			}
+		} else {
+			// Characters match - close segment if we have one
+			if (currentSegmentStart !== -1) {
+				debugLog(`Chars match at ${i}, closing segment`);
+				closeSegment();
+			}
+		}
 	}
+	
+	// Close any remaining segment
+	closeSegment();
+	
+	// Handle case where new text is shorter - need to clear the rest
+	if (oldChars.length > newChars.length) {
+		segments.push({
+			start: newChars.length,
+			text: ''
+		});
+		debugLog('Added clear segment', { start: newChars.length });
+	}
+	
+	debugLog('findDiffSegments result', {
+		segmentCount: segments.length,
+		segments: segments.map(s => ({ start: s.start, textLen: s.text.length, textPreview: s.text.replace(/\x1b/g, '\\x1b').substring(0, 40) })),
+	});
 
 	return segments;
-}
-
-/**
- * Get trailing ANSI codes after the last visible character
- */
-function getTrailingAnsi(tokens: Token[]): string {
-	const lastVisibleIndex = tokens.findLastIndex(t => t.visualLength > 0);
-	return tokens
-		.slice(lastVisibleIndex + 1)
-		.filter(t => t.isAnsi)
-		.map(t => t.value)
-		.join('');
 }
 
 /**
  * Expand tabs to spaces based on column position
  * Tabs move to the next multiple of tabWidth (default 8)
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function expandTabs(text: string, _startColumn: number = 0, tabWidth: number = 8): string {
+function expandTabs(text: string, tabWidth: number = 8): string {
 	return text.replace(/\t/g, ' '.repeat(tabWidth));
 }
 
@@ -592,63 +371,80 @@ function expandTabs(text: string, _startColumn: number = 0, tabWidth: number = 8
 function getVisualLength(text: string): number {
 	// Remove control characters like \r and \n before calculating visual length
 	const cleanText = text.replace(/[\r\n]/g, '');
-	const tokens = tokenize(cleanText);
-	return tokens.reduce((sum, token) => sum + token.visualLength, 0);
+	const tokens = ansiTokenize(cleanText);
+	const chars = styledCharsFromTokens(tokens);
+	return chars.length;
 }
 
 /**
  * Apply minimal update to a line by only rewriting the changed portions
  * Appends operations to the provided buffer array
  */
-function updateLineMinimal(line: number, oldText: string, newText: string, buffer: string[], isLastLine: boolean = false): void {
+function updateLineMinimal(line: number, oldText: string, newText: string, buffer: string[]): void {
+	debugLog('updateLineMinimal called', { line, oldText, newText });
+	
 	// Expand tabs to spaces before processing
 	const expandedOldText = expandTabs(oldText);
 	const expandedNewText = expandTabs(newText);
 
 	const segments = findDiffSegments(expandedOldText, expandedNewText);
+	
+	debugLog('updateLineMinimal segments', { segments });
 
 	// If no segments, strings are identical
 	if (segments.length === 0) {
+		debugLog('No segments - texts are identical');
 		return;
 	}
 
 	const oldVisualLength = getVisualLength(expandedOldText);
 	const newVisualLength = getVisualLength(expandedNewText);
+	
+	debugLog('Visual lengths', { oldVisualLength, newVisualLength });
 
 	// Helper to add cursor movement to buffer
 	const addCursorMove = (col: number, row: number) => {
-		buffer.push(`\x1b[${row + 1};${col + 1}H`);
+		const escapeSeq = `\x1b[${row + 1};${col + 1}H`;
+		buffer.push(escapeSeq);
+		debugLog('Cursor move', { col, row, escapeSeq });
 	};
 
 	// If new line is empty, clear the entire line and return
 	if (newVisualLength === 0 && oldVisualLength > 0) {
 		addCursorMove(0, line);
-		buffer.push(isLastLine ? '\x1b[2K ' : '\x1b[2K'); // Clear entire line, add space for last line
+		buffer.push('\x1b[2K'); // Clear entire line
+		debugLog('Cleared entire line');
 		return;
 	}
 
 	// Apply each segment update
 	for (let i = 0; i < segments.length; i++) {
 		const segment = segments[i];
-		const isFirstSegment = i === 0;
 		const isLastSegment = i === segments.length - 1;
+
+		debugLog('Processing segment', { 
+			i, 
+			segment: {
+				start: segment.start,
+				text: segment.text,
+				textLength: segment.text.length
+			}, 
+			isLastSegment 
+		});
 
 		// Move cursor to the visual position of the changed segment
 		addCursorMove(segment.start, line);
 
-		if (isFirstSegment && segment.start > 0) {
-			const prevStart = AnsiTokenizer.tokenize(oldText).find(x => !x.isAnsi)?.start || segment.start;
-			if (prevStart < segment.start) {
-				buffer.push(isLastLine ? '\x1b[1K ' : '\x1b[1K'); // Clear from cursor to start, add space for last line
-			}
-		}
-
 		// Write the new text for this segment (including any ANSI codes)
 		if (segment.text.length > 0) {
 			buffer.push(segment.text);
+			debugLog('Wrote segment text', { 
+				text: segment.text,
+				textPreview: segment.text.substring(0, 50)
+			});
 		}
 
-		// If this is the last segment and new text is visually shorter, fill with spaces
+		// If this is the last segment and new text is visually shorter, clear the rest
 		const needsClearRight = isLastSegment && ((newVisualLength < oldVisualLength) || segment.text === '');
 
 		if (needsClearRight) {
@@ -656,13 +452,15 @@ function updateLineMinimal(line: number, oldText: string, newText: string, buffe
 			const spacesToFill = oldVisualLength - start;
 			if (spacesToFill > 0) {
 				addCursorMove(start, line);
-				buffer.push(isLastLine ? '\x1b[0K ' : '\x1b[0K'); // Clear from cursor to end, add space for last line
+				buffer.push('\x1b[0K'); // Clear from cursor to end
+				debugLog('Cleared right side', { start, spacesToFill });
 			}
 		}
 	}
 
 	// Reset ANSI codes at end of line to prevent color bleeding to next line
 	buffer.push('\x1b[0m');
+	debugLog('Reset ANSI codes');
 }
 
 export function cursorTo(y: number, x: number) {
@@ -687,6 +485,8 @@ export function showCursor() {
  * Render with line-by-line diffing using layout-based rendering
  */
 export function render(rootNode: ElementNode, options?: RenderOptions | typeof Process): void {
+	debugLog('render called');
+	
 	// Support both old API (debugProcess) and new API (options)
 	if (options && 'stdout' in options) {
 		// New API with RenderOptions
@@ -720,15 +520,25 @@ export function render(rootNode: ElementNode, options?: RenderOptions | typeof P
 }
 
 function renderInternal(rootNode: ElementNode): void {
+	debugLog('renderInternal called');
+	
 	const result = extractLines(rootNode, state, process.stdout);
 	const oldLines = state.lines;
 
 	const newLines = [...result.static, ...result.dynamic];
+	
+	debugLog('Lines extracted', {
+		oldLinesCount: oldLines.length,
+		newLinesCount: newLines.length,
+		oldLines: oldLines.slice(0, 3),
+		newLines: newLines.slice(0, 3)
+	});
 
 	// Calculate scroll buffer offset based on NEW content size
 	// This represents how many lines of NEW content are above the visible viewport
 	const scrollBufferSize = Math.max(state.scrollBufferSize, oldLines.length - state.terminalHeight);
 	state.scrollBufferSize = scrollBufferSize;
+	
 	// Check if we need a full redraw:
 	// Only check lines in the scroll buffer (before the visible viewport)
 	// If any line in scroll buffer changed, we need full redraw
@@ -743,8 +553,11 @@ function renderInternal(rootNode: ElementNode): void {
 			return false;
 		})();
 
+	debugLog('Redraw decision', { needsFullRedraw, scrollBufferSize });
+
 	// If scroll buffer changed, clear everything and redraw
 	if (needsFullRedraw) {
+		debugLog('Performing full redraw');
 		clearScreen();
 		state.lines = [];
 		try {
@@ -765,7 +578,9 @@ function renderInternal(rootNode: ElementNode): void {
 		state.scrollBufferSize = 0;
 		return;
 	}
+	
 	process.stdout.write('\x1b[?25l'); // Hide cursor
+	debugLog('Cursor hidden');
 
 	try {
 		// Calculate which lines are visible (after scroll buffer)
@@ -778,6 +593,8 @@ function renderInternal(rootNode: ElementNode): void {
 		// Buffer to accumulate all update operations
 		const buffer: string[] = [];
 
+		debugLog('Processing lines', { visibleStartLine, maxLines, lastRenderedLineIndex });
+
 		for (let i = visibleStartLine; i < maxLines; i++) {
 			const newLine = newLines[i];
 			const oldLine = oldLines[i];
@@ -786,6 +603,8 @@ function renderInternal(rootNode: ElementNode): void {
 				// Calculate screen position (relative to visible viewport)
 				const screenLine = i - scrollBufferSize;
 
+				debugLog('Line differs', { i, screenLine, oldLine, newLine });
+
 				// Only update lines within visible terminal viewport
 				if (i >= visibleStartLine && i < state.terminalHeight + scrollBufferSize) {
 					if (newLine === undefined || newLine === "") {
@@ -793,14 +612,16 @@ function renderInternal(rootNode: ElementNode): void {
 						const isLastLine = (i === lastRenderedLineIndex);
 						buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
 						buffer.push(isLastLine ? '\x1b[2K ' : '\x1b[2K'); // Clear entire line, add space for last line
+						debugLog('Line removed', { screenLine, isLastLine });
 					} else if (oldLine === undefined || oldLine === "") {
 						// New line - just write it (expand tabs)
 						buffer.push(`\x1b[${screenLine + 1};1H`); // Move cursor
 						buffer.push(expandTabs(newLine));
+						debugLog('New line added', { screenLine });
 					} else {
 						// Line changed - apply minimal update
-						const isLastLine = (i === lastRenderedLineIndex);
-						updateLineMinimal(screenLine, oldLine, newLine, buffer, isLastLine);
+					debugLog('Applying minimal update', { screenLine, oldLine: (oldLine ?? '').substring(0, 100), newLine: (newLine ?? '').substring(0, 100) });
+						updateLineMinimal(screenLine, oldLine, newLine, buffer);
 					}
 				} else if (screenLine >= state.terminalHeight) {
 					// Beyond previous content - just write newline and content
@@ -809,18 +630,21 @@ function renderInternal(rootNode: ElementNode): void {
 					if (newLine !== undefined) {
 						buffer.push(expandTabs(newLine));
 					}
+					debugLog('Line beyond viewport', { screenLine });
 				}
 			}
 		}
 
 		// Write all accumulated operations in a single write
 		if (buffer.length > 0) {
-			process.stdout.write(buffer.join(''));
+			const output = buffer.join('');
+			debugLog('Writing buffer to stdout', { bufferLength: buffer.length, outputLength: output.length });
+			process.stdout.write(output);
 		}
 
 		// Update state with all lines (not just visible ones)
 		state.lines = newLines;
-		
+
 		// Always flush after render to ensure output is visible in non-TTY mode
 		flushStdout();
 
@@ -829,8 +653,10 @@ function renderInternal(rootNode: ElementNode): void {
 		if (state.cursor.state === 'visible') {
 			process.stdout.write('\x1b[?25h');
 			moveCursorTo(state.cursor.y, state.cursor.x);
+			debugLog('Cursor shown');
 		} else {
 			process.stdout.write('\x1b[?25l');
+			debugLog('Cursor kept hidden');
 		}
 	}
 }
@@ -839,6 +665,7 @@ function renderInternal(rootNode: ElementNode): void {
  * Clear the entire screen and reset state
  */
 export function clearScreen(): void {
+	debugLog('clearScreen called');
 	// Clear screen and scrollback buffer
 	// Write even in non-TTY mode for testing purposes
 	process.stdout.write('\x1b[2J\x1b[3J\x1b[H');
@@ -851,6 +678,7 @@ export function clearScreen(): void {
  * Handle terminal resize
  */
 export function handleResize(document: DocumentNode): void {
+	debugLog('handleResize called');
 	const newHeight = process.stdout.rows;
 	const newWidth = process.stdout.columns;
 	state.terminalHeight = newHeight;

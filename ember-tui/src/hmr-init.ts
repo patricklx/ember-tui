@@ -5,7 +5,6 @@
  * Copyright IBM Corp. 2026
  *
  *--------------------------------------------------------------------------------------------*/
-import 'ember-vite-hmr/setup-ember-hmr';
 
 // Monkey patch emberHotReloadPlugin.canAcceptNew to normalize module URLs
 if (typeof globalThis !== 'undefined' && (globalThis as any).emberHotReloadPlugin) {
