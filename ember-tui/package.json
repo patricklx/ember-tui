@@ -75,7 +75,9 @@
     "test:update": "vitest --run --update"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "terminal",
+    "tui"
   ],
   "author": "",
   "license": "MIT",
