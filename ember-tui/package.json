@@ -77,7 +77,8 @@
   "keywords": [
     "ember-addon",
     "terminal",
-    "tui"
+    "tui",
+    "ink"
   ],
   "author": "",
   "license": "MIT",
