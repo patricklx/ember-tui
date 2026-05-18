@@ -1,5 +1,19 @@
 # Changelog
 
+## Release (2026-05-18)
+
+* ember-tui 2.0.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#130](https://github.com/patricklx/ember-tui/pull/130) clear bottom rows ([@patricklx](https://github.com/patricklx))
+
+#### :house: Internal
+* [#131](https://github.com/patricklx/ember-tui/pull/131) update readme ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-05-06)
 
 * ember-tui 2.0.0 (major)
