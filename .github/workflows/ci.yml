@@ -48,3 +48,6 @@ jobs:
 
       - name: Build ember-tui-demo
         run: pnpm --filter ember-tui-demo build
+
+      - name: Test create-app
+        run: bash scripts/test-create-app.sh

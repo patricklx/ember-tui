@@ -5,6 +5,8 @@ import { babel } from "@rollup/plugin-babel";
 import { hmr } from "ember-vite-hmr";
 import { builtinModules } from "node:module";
 
+const inline = ['ember-vitest', 'ember-tui'];
+
 export default defineConfig({
 	resolve: {
 		alias: {
@@ -14,25 +16,31 @@ export default defineConfig({
 	},
 	ssr: {
 		noExternal: ['chalk', 'ansi-styles'],
+		external: [...builtinModules, ...builtinModules.map(m => `node:${m}`)],
+	},
+	build: {
+		rollupOptions: {
+			external: [...builtinModules, ...builtinModules.map(m => `node:${m}`)],
+		},
 	},
 	// Add this config
 	test: {
 		environment: "node",
 		include: ["./tests/**/*-test.{gjs,gts}"],
 		deps: {
-			inline: ['ember-vitest'],
+			inline,
 		},
 		maxConcurrency: 1,
 		server: {
 			deps: {
-				inline: ['ember-vitest'],
+				inline,
 			},
 		},
 	},
 	// For dev server (if needed)
 	server: {
 		deps: {
-			inline: ['ember-vitest'],
+			inline,
 		},
 		hmr: {
 			protocol: 'ws',

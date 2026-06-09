@@ -5,7 +5,7 @@
 import { execSync } from 'child_process';
 import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
 
-const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/scripts/ember-tui-demo';
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo';
 
 // Get app name from arguments
 const args = process.argv.slice(2);
@@ -89,6 +89,7 @@ async function setup() {
   const filesToDownload = [
     { url: `${GITHUB_RAW_BASE}/app/config/environment.ts`, dest: 'app/config/environment.ts' },
     { url: `${GITHUB_RAW_BASE}/app/app.ts`, dest: 'app/app.ts' },
+    { url: `${GITHUB_RAW_BASE}/babel.config.mjs`, dest: 'babel.config.mjs' },
     { url: `${GITHUB_RAW_BASE}/vite.config.mjs`, dest: 'vite.config.mjs' },
     { url: `${GITHUB_RAW_BASE}/rollup.config.mjs`, dest: 'rollup.config.mjs' },
     { url: `${GITHUB_RAW_BASE}/README.md`, dest: 'README.md' },
@@ -113,8 +114,8 @@ async function setup() {
 
   // Download test file
   try {
-    await downloadFile(`${GITHUB_RAW_BASE}/tests/basic-test.gts`, 'tests/integration/basic-test.gts');
-    console.log('✓ Downloaded tests/integration/basic-test.gts');
+    await downloadFile(`${GITHUB_RAW_BASE}/tests/example-test.gts`, 'tests/example-test.gts');
+    console.log('✓ Downloaded tests/example-test.gts');
   } catch (error) {
     console.error('✗ Failed to download test file:', error.message);
   }
@@ -178,7 +179,7 @@ async function setup() {
   // Install dependencies
   console.log('\nInstalling dependencies...');
   try {
-    execSync(`${installCmd} --save-dev ember-tui ember-vitest vitest @rollup/plugin-babel @rollup/plugin-commonjs @rollup/plugin-json @rollup/plugin-node-resolve`, { stdio: 'inherit' });
+    execSync(`${installCmd} --save-dev ember-tui ember-vite-hmr content-tag ember-vitest vitest @rollup/plugin-babel @rollup/plugin-commonjs @rollup/plugin-json @rollup/plugin-node-resolve @babel/plugin-syntax-typescript @babel/plugin-proposal-decorators ember-native-devtools`, { stdio: 'inherit' });
     console.log('✓ Dependencies installed');
   } catch (error) {
     console.error('✗ Failed to install dependencies:', error.message);
