@@ -5,7 +5,7 @@
 import { execSync } from 'child_process';
 import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
 
-const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/create-test-for-create-app/ember-tui-demo';
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo';
 
 // Get app name from arguments
 const args = process.argv.slice(2);
