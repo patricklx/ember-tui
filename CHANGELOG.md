@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-06-09)
+
+* ember-tui 2.0.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#135](https://github.com/patricklx/ember-tui/pull/135) fix create-app script ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-05-18)
 
 * ember-tui 2.0.1 (patch)

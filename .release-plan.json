@@ -2,8 +2,8 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "2.0.0",
-      "newVersion": "2.0.1",
+      "oldVersion": "2.0.1",
+      "newVersion": "2.0.2",
       "tagName": "latest",
       "constraints": [
         {
@@ -15,5 +15,5 @@
     },
     "undefined": {}
   },
-  "description": "## Release (2026-05-18)\n\n* ember-tui 2.0.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#130](https://github.com/patricklx/ember-tui/pull/130) clear bottom rows ([@patricklx](https://github.com/patricklx))\n\n#### :house: Internal\n* [#131](https://github.com/patricklx/ember-tui/pull/131) update readme ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-06-09)\n\n* ember-tui 2.0.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#135](https://github.com/patricklx/ember-tui/pull/135) fix create-app script ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
