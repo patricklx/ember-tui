@@ -6,6 +6,7 @@ import { hmr } from "ember-vite-hmr";
 import { builtinModules } from "node:module";
 
 const inline = ['ember-vitest', 'ember-tui'];
+const prebundle = ['chalk', 'ansi-styles', 'supports-color'];
 
 export default defineConfig({
 	resolve: {
