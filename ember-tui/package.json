@@ -141,8 +141,7 @@
     "vitest": "^4.1.5"
   },
   "peerDependencies": {
-    "yoga-layout": "~3.2.1",
-    "ember-source": "^6.12.0"
+    "yoga-layout": "~3.2.1"
   },
   "ember-addon": {
     "version": 2,
