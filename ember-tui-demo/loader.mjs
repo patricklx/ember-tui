@@ -4,9 +4,13 @@ import { createServer } from 'vite';
 import { appendFileSync, existsSync, readFileSync, statSync } from 'node:fs';
 import { Preprocessor } from 'content-tag';
 
+const DEBUG_LOADER = process.env.DEBUG_LOADER === 'true';
+
 function log(...args) {
-  appendFileSync('log.txt', args.join(' '));
-  appendFileSync('log.txt', '\n');
+  if (DEBUG_LOADER) {
+    appendFileSync('log.txt', args.join(' '));
+    appendFileSync('log.txt', '\n');
+  }
 }
 
 // Setup browser globals for Vite HMR before any modules load
@@ -305,9 +309,10 @@ export async function load(url, context, nextLoad) {
     }
 
     if (filePath.endsWith('.gts') || filePath.endsWith('.gjs')) {
+      const isAppFile = !filePath.includes('node_modules');
       transformedCode = contentTagPreprocessor.process(transformedCode, {
         filename: filePath,
-        inline_source_map: true,
+        inline_source_map: isAppFile,
       }).code;
     }
 
