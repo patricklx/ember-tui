@@ -14,6 +14,13 @@ Since Ember TUI is built on Ember.js, all features of Ember.js are supported.
 Head over to the [Ember.js](https://emberjs.com) website for documentation on how to use it.
 Only Ember TUI's methods are documented in this readme.
 
+This includes routing: adding a normal `app/routes/application.ts` + `app/controllers/application.ts` pair, including one with
+an async `model()` hook, does not break `{{outlet}}` — nested route templates keep rendering as expected. The default app
+created by `create-app` skips these files simply because the demo doesn't need them, not because they're unsupported — add
+them the same way you would in any Ember app. This is covered by a regression test
+(`ember-tui-demo/tests/application-route-outlet-test.gts`); it exercises one route/controller shape, not every possible
+route hook, so if you hit an edge case please open an issue.
+
 ## start developing
 
 to create a new terminal app just run
