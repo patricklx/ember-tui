@@ -26,6 +26,14 @@ describe("application route outlet", () => {
 		expect(owner.lookup('route:application')).toBeInstanceOf(ApplicationRoute);
 		expect(owner.lookup('controller:application')).toBeInstanceOf(ApplicationController);
 
+		// Confirm the async model() hook actually ran and its resolved value
+		// flowed through to the controller. This is what gives the assertion
+		// below a real failure mode: it proves app.visit() waited out the
+		// route's full async lifecycle before the outlet content assertion
+		// below runs, rather than that assertion merely tolerating either
+		// outcome regardless of whether these files are present.
+		expect((owner.lookup('controller:application') as any).model).toEqual({ ready: true });
+
 		// Mirror the real user flow: the demo's application template shows a
 		// menu until a number key is pressed, at which point it transitions to
 		// a nested route whose template renders into {{outlet}}.
