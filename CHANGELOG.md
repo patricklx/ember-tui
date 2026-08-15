@@ -1,5 +1,17 @@
 # Changelog
 
+## Release (2026-08-15)
+
+* ember-tui 2.0.3 (patch)
+
+#### :house: Internal
+* `ember-tui`
+  * [#140](https://github.com/patricklx/ember-tui/pull/140) Verify application route/controller works with {{outlet}} ([@patricklx](https://github.com/patricklx))
+  * [#137](https://github.com/patricklx/ember-tui/pull/137) Optimize demo app startup time (3x faster) ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-06-09)
 
 * ember-tui 2.0.2 (patch)
