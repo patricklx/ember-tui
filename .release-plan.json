@@ -2,18 +2,18 @@
   "solution": {
     "ember-tui": {
       "impact": "patch",
-      "oldVersion": "2.0.1",
-      "newVersion": "2.0.2",
+      "oldVersion": "2.0.2",
+      "newVersion": "2.0.3",
       "tagName": "latest",
       "constraints": [
         {
           "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
+          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./ember-tui/package.json"
     },
     "undefined": {}
   },
-  "description": "## Release (2026-06-09)\n\n* ember-tui 2.0.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-tui`\n  * [#135](https://github.com/patricklx/ember-tui/pull/135) fix create-app script ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
+  "description": "## Release (2026-08-15)\n\n* ember-tui 2.0.3 (patch)\n\n#### :house: Internal\n* `ember-tui`\n  * [#140](https://github.com/patricklx/ember-tui/pull/140) Verify application route/controller works with {{outlet}} ([@patricklx](https://github.com/patricklx))\n  * [#137](https://github.com/patricklx/ember-tui/pull/137) Optimize demo app startup time (3x faster) ([@patricklx](https://github.com/patricklx))\n\n#### Committers: 1\n- Patrick Pircher ([@patricklx](https://github.com/patricklx))\n"
 }
