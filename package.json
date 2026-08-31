@@ -10,7 +10,7 @@
     "widest-line": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-syntax-typescript": "^7.28.5",
+    "@babel/plugin-syntax-typescript": "^8.0.3",
     "@glint/tsserver-plugin": "^2.0.8",
     "@rollup/plugin-json": "^6.1.0",
     "release-plan": "^0.18.0"
