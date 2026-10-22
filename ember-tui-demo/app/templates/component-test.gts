@@ -41,5 +41,4 @@ const ComponentTestTemplate = <template>
   </Box>
 </template>;
 
-// eslint-disable-next-line ember/no-test-import-export
 export default ComponentTestTemplate;

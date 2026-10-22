@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-env node */
 /* eslint-disable no-undef */
 
 import { execSync } from 'child_process';
@@ -179,7 +178,7 @@ async function setup() {
   // Install dependencies
   console.log('\nInstalling dependencies...');
   try {
-    execSync(`${installCmd} --save-dev ember-tui ember-vite-hmr@~2.1.5 content-tag ember-vitest vitest @rollup/plugin-babel @rollup/plugin-commonjs @rollup/plugin-json @rollup/plugin-node-resolve @babel/plugin-syntax-typescript@^7.28.5 @babel/plugin-proposal-decorators@^7.29.0 ember-native-devtools`, { stdio: 'inherit' });
+    execSync(`${installCmd} --save-dev ember-tui ember-vite-hmr@~2.1.5 @glimmer/component@~2.1.1 content-tag ember-vitest@^0.3.3 vitest@^4.1.5 @rollup/plugin-babel @rollup/plugin-commonjs @rollup/plugin-json @rollup/plugin-node-resolve @babel/plugin-syntax-typescript@^7.28.5 @babel/plugin-proposal-decorators@^7.29.0 ember-native-devtools`, { stdio: 'inherit' });
     console.log('✓ Dependencies installed');
   } catch (error) {
     console.error('✗ Failed to install dependencies:', error.message);

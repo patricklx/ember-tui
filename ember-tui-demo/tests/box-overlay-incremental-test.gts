@@ -429,7 +429,6 @@ describe("Box overlay - incremental rendering", () => {
 		// Initial render without overlay
 		render(ctx.element, { stdout: fakeTTY as any });
 		let cleanOutput = fakeTTY.getCleanOutput();
-		let rawOutput = fakeTTY.output.join('');
 		
 		expect(cleanOutput).toContain("AAAA BBBB CCCC DDDD");
 		expect(cleanOutput).toContain("EEEE FFFF GGGG HHHH");
@@ -442,7 +441,7 @@ describe("Box overlay - incremental rendering", () => {
 		render(ctx.element, { stdout: fakeTTY as any });
 
 		cleanOutput = fakeTTY.getCleanOutput();
-		rawOutput = fakeTTY.output.join('');
+		const rawOutput = fakeTTY.output.join('');
 
 		// All text should be preserved
 		expect(cleanOutput).toContain("AAAA BBBB CCCC DDDD");

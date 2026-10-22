@@ -22,9 +22,6 @@ import ember from 'eslint-plugin-ember/recommended';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import n from 'eslint-plugin-n';
 
-import babelParser from '@babel/eslint-parser';
-
-
 
 const parserOptions = {
   esm: {
@@ -68,12 +65,6 @@ export default ts.config(
   {
     linterOptions: {
       reportUnusedDisableDirectives: 'error',
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      parser: babelParser,
     },
   },
   {
