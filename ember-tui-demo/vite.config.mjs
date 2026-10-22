@@ -3,9 +3,13 @@ import path from "node:path";
 import { ember, extensions } from "@embroider/vite";
 import { babel } from "@rollup/plugin-babel";
 import { hmr } from "ember-vite-hmr";
-import { builtinModules } from "node:module";
+import { builtinModules, createRequire } from "node:module";
 
-const inline = ['ember-vitest', 'ember-tui'];
+const inline = ['ember-vitest', 'ember-tui', '@glimmer/component'];
+
+// Absolute path, so embroider's resolver doesn't reject the alias as an
+// undeclared dependency of ember-vitest.
+const vitestBrowserShim = createRequire(import.meta.url).resolve('ember-tui/test-utils/vitest-browser-shim');
 
 export default defineConfig({
 	resolve: {
@@ -27,10 +31,17 @@ export default defineConfig({
 	test: {
 		environment: "node",
 		include: ["./tests/**/*-test.{gjs,gts}"],
+		// ember-vitest imports `vitest/browser`, which only works in Browser Mode.
+		alias: {
+			'vitest/browser': vitestBrowserShim,
+		},
 		deps: {
 			inline,
 		},
 		maxConcurrency: 1,
+		// The persistent module cache (on by default since vitest 5) keeps stale
+		// transforms of embroider's virtual modules, failing every run after the first.
+		fsModuleCache: false,
 		server: {
 			deps: {
 				inline,
