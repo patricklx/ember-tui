@@ -7,9 +7,19 @@ import { builtinModules, createRequire } from "node:module";
 
 const inline = ['ember-vitest', 'ember-tui', '@glimmer/component'];
 
-// Absolute path, so embroider's resolver doesn't reject the alias as an
-// undeclared dependency of ember-vitest.
-const vitestBrowserShim = createRequire(import.meta.url).resolve('ember-tui/test-utils/vitest-browser-shim');
+// ember-vitest imports `vitest/browser`, which only works in Browser Mode, so it
+// is aliased to a node shim. Absolute path, so embroider's resolver doesn't
+// reject the alias as an undeclared dependency of ember-vitest. Older ember-tui
+// releases don't ship the shim (apps created by create-app copy this file).
+function resolveVitestBrowserShim() {
+	try {
+		return createRequire(import.meta.url).resolve('ember-tui/test-utils/vitest-browser-shim');
+	} catch {
+		return undefined;
+	}
+}
+
+const vitestBrowserShim = resolveVitestBrowserShim();
 
 export default defineConfig({
 	resolve: {
@@ -31,10 +41,7 @@ export default defineConfig({
 	test: {
 		environment: "node",
 		include: ["./tests/**/*-test.{gjs,gts}"],
-		// ember-vitest imports `vitest/browser`, which only works in Browser Mode.
-		alias: {
-			'vitest/browser': vitestBrowserShim,
-		},
+		alias: vitestBrowserShim ? { 'vitest/browser': vitestBrowserShim } : {},
 		deps: {
 			inline,
 		},
