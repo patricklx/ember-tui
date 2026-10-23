@@ -3,8 +3,16 @@
 
 import { execSync } from 'child_process';
 import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
+import { resolve } from 'path';
 
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/patricklx/ember-tui/refs/heads/main/ember-tui-demo';
+
+// Where the demo app files are copied from. Defaults to the demo on GitHub main;
+// EMBER_TUI_TEMPLATE_BASE can point at a local ember-tui-demo checkout instead
+// (used by scripts/test-create-app.sh so CI tests the files of the current change).
+const TEMPLATE_BASE = process.env.EMBER_TUI_TEMPLATE_BASE
+  ? resolve(process.env.EMBER_TUI_TEMPLATE_BASE)
+  : GITHUB_RAW_BASE;
 
 // Get app name from arguments
 const args = process.argv.slice(2);
@@ -39,12 +47,20 @@ try {
   process.exit(1);
 }
 
-async function downloadFile(url, destination) {
+async function readTemplateFile(path) {
+  if (TEMPLATE_BASE !== GITHUB_RAW_BASE) {
+    return readFileSync(`${TEMPLATE_BASE}/${path}`, 'utf8');
+  }
+  const url = `${TEMPLATE_BASE}/${path}`;
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to download ${url}: ${response.status}`);
   }
-  const data = await response.text();
+  return response.text();
+}
+
+async function downloadFile(path, destination) {
+  const data = await readTemplateFile(path);
 
   // Create directory if it doesn't exist
   const dir = destination.substring(0, destination.lastIndexOf('/'));
@@ -86,20 +102,20 @@ async function setup() {
 
   // Download configuration files
   const filesToDownload = [
-    { url: `${GITHUB_RAW_BASE}/app/config/environment.ts`, dest: 'app/config/environment.ts' },
-    { url: `${GITHUB_RAW_BASE}/app/app.ts`, dest: 'app/app.ts' },
-    { url: `${GITHUB_RAW_BASE}/babel.config.mjs`, dest: 'babel.config.mjs' },
-    { url: `${GITHUB_RAW_BASE}/vite.config.mjs`, dest: 'vite.config.mjs' },
-    { url: `${GITHUB_RAW_BASE}/rollup.config.mjs`, dest: 'rollup.config.mjs' },
-    { url: `${GITHUB_RAW_BASE}/README.md`, dest: 'README.md' },
-    { url: `${GITHUB_RAW_BASE}/loader.mjs`, dest: 'loader.mjs' },
-    { url: `${GITHUB_RAW_BASE}/tests/globalSetup.js`, dest: 'tests/globalSetup.js' },
+    { path: 'app/config/environment.ts', dest: 'app/config/environment.ts' },
+    { path: 'app/app.ts', dest: 'app/app.ts' },
+    { path: 'babel.config.mjs', dest: 'babel.config.mjs' },
+    { path: 'vite.config.mjs', dest: 'vite.config.mjs' },
+    { path: 'rollup.config.mjs', dest: 'rollup.config.mjs' },
+    { path: 'README.md', dest: 'README.md' },
+    { path: 'loader.mjs', dest: 'loader.mjs' },
+    { path: 'tests/globalSetup.js', dest: 'tests/globalSetup.js' },
   ];
 
   console.log('Downloading configuration files...');
   for (const file of filesToDownload) {
     try {
-      await downloadFile(file.url, file.dest);
+      await downloadFile(file.path, file.dest);
       console.log(`✓ Downloaded ${file.dest}`);
     } catch (error) {
       console.error(`✗ Failed to download ${file.dest}:`, error.message);
@@ -113,7 +129,7 @@ async function setup() {
 
   // Download test file
   try {
-    await downloadFile(`${GITHUB_RAW_BASE}/tests/example-test.gts`, 'tests/example-test.gts');
+    await downloadFile('tests/example-test.gts', 'tests/example-test.gts');
     console.log('✓ Downloaded tests/example-test.gts');
   } catch (error) {
     console.error('✗ Failed to download test file:', error.message);
@@ -155,11 +171,7 @@ async function setup() {
   console.log('Updating package.json...');
   try {
     // Download remote package.json
-    const response = await fetch(`${GITHUB_RAW_BASE}/package.json`);
-    if (!response.ok) {
-      throw new Error(`Failed to download: ${response.status}`);
-    }
-    const remotePackageData = await response.text();
+    const remotePackageData = await readTemplateFile('package.json');
 
     if (existsSync('package.json')) {
       const localPackage = JSON.parse(readFileSync('package.json', 'utf8'));
@@ -178,7 +190,7 @@ async function setup() {
   // Install dependencies
   console.log('\nInstalling dependencies...');
   try {
-    execSync(`${installCmd} --save-dev ember-tui ember-vite-hmr@~2.1.5 @glimmer/component@~2.1.1 content-tag ember-vitest@^0.3.3 vitest@^4.1.5 @rollup/plugin-babel @rollup/plugin-commonjs @rollup/plugin-json @rollup/plugin-node-resolve @babel/plugin-syntax-typescript@^7.28.5 @babel/plugin-proposal-decorators@^7.29.0 ember-native-devtools`, { stdio: 'inherit' });
+    execSync(`${installCmd} --save-dev ember-tui ember-vite-hmr@~2.1.5 @glimmer/component content-tag ember-vitest vitest @rollup/plugin-babel @rollup/plugin-commonjs @rollup/plugin-json @rollup/plugin-node-resolve @babel/plugin-syntax-typescript@^7.28.5 @babel/plugin-proposal-decorators@^7.29.0 ember-native-devtools`, { stdio: 'inherit' });
     console.log('✓ Dependencies installed');
   } catch (error) {
     console.error('✗ Failed to install dependencies:', error.message);

@@ -16,8 +16,8 @@ rm -f pnpm-workspace.yaml
 rm -rf node_modules
 rm -rf ember-tui/node_modules
 
-# Create new app
-node ember-tui/bin/create-app.js my-app --pnpm
+# Create new app, using the demo files of this checkout instead of GitHub main
+EMBER_TUI_TEMPLATE_BASE=ember-tui-demo node ember-tui/bin/create-app.js my-app --pnpm
 
 # Install from packed .tgz
 cd my-app
