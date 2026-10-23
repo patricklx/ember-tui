@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2026-10-23)
+
+* ember-tui 2.0.4 (patch)
+
+#### :bug: Bug Fix
+* `ember-tui`
+  * [#146](https://github.com/patricklx/ember-tui/pull/146) Support @glimmer/component 2.2, vitest 5 and ember-vitest 0.9; drop create-app pins ([@patricklx](https://github.com/patricklx))
+
+#### :house: Internal
+* `ember-tui`
+  * [#144](https://github.com/patricklx/ember-tui/pull/144) Bump eslint 10 and related lint deps (combines dependabot #80 #126 #141 #142 #143) ([@patricklx](https://github.com/patricklx))
+
+#### Committers: 1
+- Patrick Pircher ([@patricklx](https://github.com/patricklx))
+
 ## Release (2026-08-15)
 
 * ember-tui 2.0.3 (patch)
